@@ -1,18 +1,139 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div>
+    <van-swipe :autoplay="3000" indicator-color="white">
+      <van-swipe-item :key="index" @click="_goAd(item.url)" v-for="(item, index) in swipe">
+        <van-image :src="item.pic" style="vertical-align: bottom;"></van-image>
+      </van-swipe-item>
+    </van-swipe>
+    <merchant-card></merchant-card>
+    <div class="white-space"></div>
+    <div class="wing-blank">
+      <div class="card-panel">
+        <map-grid :data="mdata" size="45"></map-grid>
+        <v-chart :options="polar" autoresize></v-chart>
+      </div>
+    </div>
+    <div class="white-space"></div>
+    <div class="wing-blank" style="margin-bottom: ">
+      <div class="card-panel">
+        <map-grid :data="pdata"></map-grid>
+      </div>
+    </div>
   </div>
 </template>
-
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import { mapState, mapActions } from 'vuex'
+import { ManagementGrid, PopularizeGrid } from '@/common/grid'
+import MerchantCard from '@/components/MerchantCard'
+import MapGrid from '@/components/MapGrid'
 
 export default {
-  name: "home",
+  name: 'Home',
+
+  mixins: [],
+
   components: {
-    HelloWorld
-  }
-};
+    MerchantCard,
+    MapGrid,
+  },
+
+  props: {},
+
+  data() {
+    return {
+      active: 0,
+      icons: {
+        home: {
+          active: require('@/assets/image/home.png'),
+          unactive: require('@/assets/image/home_gray.png'),
+        },
+        order: {
+          active: require('@/assets/image/order.png'),
+          unactive: require('@/assets/image/order_gray.png'),
+        },
+        marketing: {
+          active: require('@/assets/image/marketing.png'),
+          unactive: require('@/assets/image/marketing_gray.png'),
+        },
+        mine: {
+          active: require('@/assets/image/mine.png'),
+          unactive: require('@/assets/image/mine_gray.png'),
+        },
+      },
+      mdata: ManagementGrid,
+      pdata: PopularizeGrid,
+      polar: {
+        color: ['#ffb000'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow',
+            crossStyle: {
+              color: '#999',
+            },
+          },
+        },
+        grid: {
+          top: 10,
+          bottom: 30,
+          right: 0,
+          left: '13%',
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: [12, 3, 4, 5, 6, 7, 3, 2, 3, 4],
+            axisPointer: {
+              type: 'shadow',
+            },
+          },
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            name: '元',
+          },
+        ],
+        series: [
+          {
+            name: 'seriesLabel',
+            type: 'bar',
+            data: [12, 3, 4, 5, 6, 7, 3, 2, 3, 4],
+          },
+        ],
+      },
+    }
+  },
+
+  computed: {
+    ...mapState('home', ['commonInfo']),
+    swipe() {
+      return this.commonInfo.wap_MerchantAd
+    },
+  },
+
+  watch: {},
+
+  created() {},
+
+  mounted() {
+    this.getHomeInfo()
+  },
+
+  destroyed() {},
+
+  methods: {
+    ...mapActions('home', ['getHomeInfo']),
+    _goAd(url) {
+      window.location.href = url
+    },
+  },
+}
 </script>
+
+<style lang="less" scoped>
+.echarts {
+  width: 310px;
+  height: 180px;
+}
+</style>
