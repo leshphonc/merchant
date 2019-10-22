@@ -9,6 +9,7 @@ import {
   Popup,
   DatetimePicker,
   Field,
+  Picker,
   Switch,
   SwitchCell,
   Uploader,
@@ -34,6 +35,7 @@ Vue.use(Row).use(Col)
 Vue.use(Popup)
 Vue.use(DatetimePicker)
 Vue.use(Field)
+Vue.use(Picker)
 Vue.use(Switch).use(SwitchCell)
 Vue.use(Uploader)
 Vue.use(Notify)

@@ -5,6 +5,8 @@ import store from './store'
 import '@/common/vant'
 import '@/common/interceptors'
 import '@/common/echarts'
+import '@/common/editor'
+import '@/common/validator'
 import '@/assets/iconfont/iconfont.css'
 
 Vue.config.productionTip = false

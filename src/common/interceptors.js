@@ -17,7 +17,7 @@ axios.interceptors.request.use(
   error => {
     console.log(error)
     Toast.fail(error.message)
-  },
+  }
 )
 axios.interceptors.response.use(
   config => {
@@ -46,5 +46,5 @@ axios.interceptors.response.use(
   error => {
     console.log(error)
     Toast.fail(error.message)
-  },
+  }
 )
