@@ -1,4 +1,4 @@
-import storefront from '@/api/management/storefront'
+import storeFrontAPI from '@/api/management/storeFront'
 
 // initial state
 const state = {
@@ -11,10 +11,18 @@ const getters = {}
 // actions
 const actions = {
   async getStoreFrontList({ commit }) {
-    const data = await storefront.getStoreFrontList()
+    const data = await storeFrontAPI.getStoreFrontList()
     if (data) {
       commit('setStoreFrontList', data)
     }
+  },
+  async createStoreFront(context, payload) {
+    return new Promise(async resolve => {
+      const data = await storeFrontAPI.createStoreFront(payload)
+      if (data) {
+        resolve()
+      }
+    })
   },
 }
 

@@ -1,9 +1,17 @@
 <template>
   <div>
-    <van-cell :required="required" :title="title" class="cell">
-      <van-uploader :before-read="_beforeRead" :max-count="count" v-model="picList" />
-    </van-cell>
-    <van-popup class="popup" position="bottom" safe-area-inset-bottom v-model="showPopup">
+    <ValidationProvider :name="field" :rules="field ? 'required' : null" slim v-slot="{ errors }">
+      <van-field
+        :error-message="errors[0]"
+        :label="title"
+        :required="field ? true : false"
+        class="upload-field"
+        v-model="validate"
+      >
+        <van-uploader :before-read="_beforeRead" :max-count="count" @delete="_delete" slot="input" v-model="picList" />
+      </van-field>
+    </ValidationProvider>
+    <van-popup class="upload-popup" position="bottom" safe-area-inset-bottom v-model="showPopup">
       <vue-cropper
         :fixed="fixedRatio"
         :fixedNumber="ratio"
@@ -16,10 +24,10 @@
       ></vue-cropper>
       <van-row>
         <van-col span="12">
-          <van-button @click="_cancel">取消</van-button>
+          <van-button @click="_cancel" native-type="button">取消</van-button>
         </van-col>
         <van-col span="12">
-          <van-button @click="_cropper" type="primary">截图</van-button>
+          <van-button @click="_cropper" native-type="button" type="primary">截图</van-button>
         </van-col>
       </van-row>
     </van-popup>
@@ -41,25 +49,34 @@ export default {
   },
 
   props: {
+    // 名称
     title: {
       type: String,
       required: true,
     },
-    required: {
-      type: Boolean,
-      default: false,
+    // 返回值截取结果
+    confirm: {
+      type: Function,
+      required: true,
     },
-    ratio: {
-      type: Array,
-      default: () => [1, 1],
-    },
+    // 可截取图片数量
     count: {
       type: Number,
       default: 1,
     },
+    // 默认截图框宽高比
+    ratio: {
+      type: Array,
+      default: () => [1, 1],
+    },
+    // 截图框比例可更改
     fixedRatio: {
       type: Boolean,
       default: true,
+    },
+    // 是否开始验证
+    field: {
+      type: String,
     },
   },
 
@@ -71,7 +88,14 @@ export default {
     }
   },
 
-  computed: {},
+  computed: {
+    validate() {
+      if (this.picList.length) {
+        return JSON.stringify(this.picList.length)
+      }
+      return undefined
+    },
+  },
 
   watch: {},
 
@@ -98,6 +122,7 @@ export default {
           })
           .then(res => {
             this.picList.push({ url: res })
+            this.confirm(this.picList)
             this._cancel()
           })
           .catch(e => {
@@ -108,19 +133,34 @@ export default {
     _cancel() {
       this.showPopup = false
     },
+    _delete(file, { index }) {
+      this.picList.splice(index, 1)
+      console.log(this.picList)
+    },
   },
 }
 </script>
 
-<style lang="less" scoped>
-.cell {
+<style lang="less">
+.upload-field {
   .van-cell__value {
-    flex: 1.1;
     padding-top: 10px;
+  }
+  .van-uploader__preview-image {
+    width: 76px;
+    height: 76px;
+  }
+  .van-uploader__upload {
+    width: 76px;
+    height: 76px;
+  }
+  .van-uploader__file {
+    width: 76px;
+    height: 76px;
   }
 }
 
-.popup {
+.upload-popup {
   height: 100%;
 
   .van-button {

@@ -288,12 +288,4 @@ const ListData = [
   },
 ]
 
-export {
-  ManagementGrid,
-  PopularizeGrid,
-  AllianceGrid,
-  SettingGrid,
-  BusinessGrid,
-  BillGrid,
-  ListData,
-}
+export { ManagementGrid, PopularizeGrid, AllianceGrid, SettingGrid, BusinessGrid, BillGrid, ListData }

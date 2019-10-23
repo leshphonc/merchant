@@ -13,13 +13,17 @@ import {
   Switch,
   SwitchCell,
   Uploader,
+  Loading,
   Notify,
   Toast,
+  Collapse,
+  CollapseItem,
   Lazyload,
   List,
   Panel,
   Swipe,
   SwipeItem,
+  Tag,
   Grid,
   GridItem,
   NavBar,
@@ -38,12 +42,15 @@ Vue.use(Field)
 Vue.use(Picker)
 Vue.use(Switch).use(SwitchCell)
 Vue.use(Uploader)
+Vue.use(Loading)
 Vue.use(Notify)
 Vue.use(Toast)
+Vue.use(Collapse).use(CollapseItem)
 Vue.use(Lazyload)
 Vue.use(List)
 Vue.use(Panel)
 Vue.use(Swipe).use(SwipeItem)
+Vue.use(Tag)
 Vue.use(Grid).use(GridItem)
 Vue.use(NavBar)
 Vue.use(Tabbar).use(TabbarItem)

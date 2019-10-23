@@ -9,14 +9,14 @@
     <div class="white-space"></div>
     <div class="wing-blank">
       <div class="card-panel">
-        <map-grid :data="mdata" size="45"></map-grid>
+        <grid-map :data="mdata" size="45"></grid-map>
         <v-chart :options="polar" autoresize></v-chart>
       </div>
     </div>
     <div class="white-space"></div>
     <div class="wing-blank" style="margin-bottom: ">
       <div class="card-panel">
-        <map-grid :data="pdata"></map-grid>
+        <grid-map :data="pdata"></grid-map>
       </div>
     </div>
   </div>
@@ -25,7 +25,7 @@
 import { mapState, mapActions } from 'vuex'
 import { ManagementGrid, PopularizeGrid } from '@/common/grid'
 import MerchantCard from '@/components/MerchantCard'
-import MapGrid from '@/components/MapGrid'
+import GridMap from '@/components/GridMap'
 
 export default {
   name: 'Home',
@@ -34,7 +34,7 @@ export default {
 
   components: {
     MerchantCard,
-    MapGrid,
+    GridMap,
   },
 
   props: {},

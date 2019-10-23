@@ -1,31 +1,14 @@
 <template>
   <div>
     <router-view></router-view>
-    <van-tabbar
-      :border="false"
-      active-color="#ffb000"
-      class="shadow-bar"
-      route
-      safe-area-inset-bottom
-      v-model="active"
-    >
+    <van-tabbar :border="false" active-color="#ffb000" class="shadow-bar" route safe-area-inset-bottom v-model="active">
       <van-tabbar-item replace to="/">
         <span>首页</span>
-        <img
-          :src="props.active ? icons.home.active : icons.home.unactive"
-          alt
-          slot="icon"
-          slot-scope="props"
-        />
+        <img :src="props.active ? icons.home.active : icons.home.unactive" alt slot="icon" slot-scope="props" />
       </van-tabbar-item>
       <van-tabbar-item>
         <span>订单</span>
-        <img
-          :src="props.active ? icons.order.active : icons.order.unactive"
-          alt
-          slot="icon"
-          slot-scope="props"
-        />
+        <img :src="props.active ? icons.order.active : icons.order.unactive" alt slot="icon" slot-scope="props" />
       </van-tabbar-item>
       <van-tabbar-item class="add-btn">
         <div></div>
@@ -33,23 +16,11 @@
       </van-tabbar-item>
       <van-tabbar-item>
         <span>营销活动</span>
-        <img
-          :src="
-            props.active ? icons.marketing.active : icons.marketing.unactive
-          "
-          alt
-          slot="icon"
-          slot-scope="props"
-        />
+        <img :src="props.active ? icons.marketing.active : icons.marketing.unactive" alt slot="icon" slot-scope="props" />
       </van-tabbar-item>
       <van-tabbar-item replace to="/mine">
         <span>我的</span>
-        <img
-          :src="props.active ? icons.mine.active : icons.mine.unactive"
-          alt
-          slot="icon"
-          slot-scope="props"
-        />
+        <img :src="props.active ? icons.mine.active : icons.mine.unactive" alt slot="icon" slot-scope="props" />
       </van-tabbar-item>
     </van-tabbar>
   </div>

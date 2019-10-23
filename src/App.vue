@@ -4,8 +4,8 @@
 
 <style lang="less">
 body {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei,
-    Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue,
+    Helvetica, Arial, sans-serif;
   background-color: #f5f5f9;
 }
 
@@ -14,8 +14,7 @@ body {
 }
 
 .card-panel {
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
-    0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   padding: 15px;
   background-color: #fff;
@@ -39,6 +38,10 @@ body {
 // van-switch
 .van-switch {
   vertical-align: middle;
+}
+
+.van-tag:not(:last-child) {
+  margin-right: 5px;
 }
 
 .ql-editor {

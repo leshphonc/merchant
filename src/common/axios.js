@@ -1,4 +1,5 @@
 import axios from 'axios'
+import qs from 'qs'
 import router from '@/router'
 import { Notify, Toast } from 'vant'
 import errorcode from '@/common/errorcode'
@@ -12,6 +13,7 @@ axios.interceptors.request.use(
       message: '加载中...',
       duration: 0,
     })
+    config.data = qs.stringify(config.data) // 转为formdata数据格式
     return config
   },
   error => {

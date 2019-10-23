@@ -10,7 +10,7 @@
     <div class="white-space"></div>
     <div class="wing-blank">
       <div class="card-panel">
-        <map-grid :data="billData"></map-grid>
+        <grid-map :data="billData"></grid-map>
       </div>
     </div>
   </div>
@@ -18,7 +18,7 @@
 
 <script>
 import MerchantCard from '@/components/MerchantCard'
-import MapGrid from '@/components/MapGrid'
+import GridMap from '@/components/GridMap'
 import { SettingGrid, BillGrid } from '@/common/grid'
 export default {
   name: '',
@@ -27,7 +27,7 @@ export default {
 
   components: {
     MerchantCard,
-    MapGrid,
+    GridMap,
   },
 
   props: {},
