@@ -8,7 +8,7 @@ module.exports = {
     loaderOptions: {
       less: {
         modifyVars: {
-          green: '#ffb000',
+          // green: '#ffb000',
         },
       },
       postcss: {

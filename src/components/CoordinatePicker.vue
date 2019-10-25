@@ -1,22 +1,38 @@
+<!--
+  功能：弹出层地图坐标拾取
+  作者：cc
+  时间：2019年10月25日
+  版本：v1.0
+  修改记录：
+  修改内容：
+  修改人员：
+  修改时间：
+  props：
+    show<Boolean>：控制popup显示状态
+    confirm<Function>：点击确定按钮，用于接收结果 lng, lat, address
+    cancel<Function>：点击取消按钮，用于外层控制关闭popup
+-->
 <template>
-  <div class="container">
-    <div class="cur-adress">
-      <div class="van-hairline--right">
-        <i class="iconfont">&#xe61f;</i>
+  <van-popup position="bottom" safe-area-inset-bottom v-model="show">
+    <div class="container">
+      <div class="cur-adress">
+        <div class="van-hairline--right">
+          <i class="iconfont">&#xe61f;</i>
+        </div>
+        <div class="van-ellipsis">{{ address }}</div>
       </div>
-      <div class="van-ellipsis">{{ address }}</div>
+      <i class="iconfont pointer">&#xe61f;</i>
+      <baidu-map :zoom="15" @ready="_mapReady" ak="PnrYhOtqMcvwyLsv0F0ln4hUFQ00NWMY" center="杭州" class="map"></baidu-map>
+      <van-row>
+        <van-col span="12">
+          <van-button @click="cancel" native-type="button">取消</van-button>
+        </van-col>
+        <van-col span="12">
+          <van-button @click="_confirm" native-type="button" type="primary">确定</van-button>
+        </van-col>
+      </van-row>
     </div>
-    <i class="iconfont pointer">&#xe61f;</i>
-    <baidu-map :zoom="15" @ready="_mapReady" ak="PnrYhOtqMcvwyLsv0F0ln4hUFQ00NWMY" center="杭州" class="map"></baidu-map>
-    <van-row>
-      <van-col span="12">
-        <van-button @click="cancel" native-type="button">取消</van-button>
-      </van-col>
-      <van-col span="12">
-        <van-button @click="_confirm" native-type="button" type="primary">确定</van-button>
-      </van-col>
-    </van-row>
-  </div>
+  </van-popup>
 </template>
 
 <script>
@@ -32,8 +48,18 @@ export default {
   },
 
   props: {
-    confirm: Function,
-    cancel: Function,
+    show: {
+      type: Boolean,
+      required: true,
+    },
+    confirm: {
+      type: Function,
+      required: true,
+    },
+    cancel: {
+      type: Function,
+      required: true,
+    },
   },
 
   data() {

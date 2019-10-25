@@ -227,9 +227,7 @@
       <van-area :area-list="areaData" @cancel="_controlAreaPicker" @confirm="_pickArea" />
     </van-popup>
     <!-- 坐标选择 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showCoordinatePicker">
-      <coordinate-picker :cancel="_controlCoordinatePicker" :confirm="_pickCoordinate"></coordinate-picker>
-    </van-popup>
+    <coordinate-picker :cancel="_controlCoordinatePicker" :confirm="_pickCoordinate" :show="showCoordinatePicker"></coordinate-picker>
     <!-- 店铺业务 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showStoreBusiness">
       <van-picker
@@ -442,9 +440,6 @@ export default {
       'updateStoreFront',
       'getPlatformStoreFrontCategory',
     ]),
-    _goBack() {
-      this.$router.go(-1)
-    },
     // 地区选择开关
     _controlAreaPicker() {
       this.showAreaPicker = !this.showAreaPicker

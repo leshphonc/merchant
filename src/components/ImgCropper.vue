@@ -1,3 +1,21 @@
+<!--
+  功能：cell点击弹出层裁剪图片
+  作者：cc
+  时间：2019年10月12日
+  版本：v1.0
+  修改记录：
+  修改内容：
+  修改人员：
+  修改时间：
+  props：
+    title<String>：cell展示的名称
+    confirm<Function>：用于接收裁剪结果 格式为[{ url: http://abc.jpg }]
+    list<Array>：默认图片
+    count<Number>：可截取图片数量
+    ratio<Array>：默认截图框宽高比
+    fixedRatio<Boolean>：截图框比例可更改
+    field<String>：传入字段名，判断是否开始验证
+-->
 <template>
   <div>
     <ValidationProvider :name="field" :rules="field ? 'required' : null" slim v-slot="{ errors }">

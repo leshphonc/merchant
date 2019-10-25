@@ -81,9 +81,6 @@ export default {
 
   methods: {
     ...mapActions('storeFront', ['getStoreFrontList']),
-    _goBack() {
-      this.$router.go(-1)
-    },
     _createStoreFront() {
       this.$router.push('/storefront/storefrontCRU')
     },

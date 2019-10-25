@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueQuillEditor from 'vue-quill-editor'
 
-// require styles
+// 引入所需css
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
+// 配置基础信息
 Vue.use(VueQuillEditor, {
   placeholder: '请在这里输入',
   modules: {
@@ -21,6 +22,7 @@ Vue.use(VueQuillEditor, {
   },
 })
 
+// 全部配置
 // toolbar: [
 //   ['bold', 'italic', 'underline', 'strike'], //加粗，斜体，下划线，删除线
 //   ['blockquote', 'code-block'], //引用，代码块

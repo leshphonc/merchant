@@ -1,21 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import actions from './actions'
-import storeFront from './modules/management/storeFront'
 import home from './modules/home'
+import management from './modules/management'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    cascadeAddress: [],
-  },
+  state: {},
   mutations: {},
   actions: {
     ...actions,
   },
   modules: {
-    storeFront,
     home,
+    ...management,
   },
 })

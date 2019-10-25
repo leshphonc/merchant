@@ -3,6 +3,7 @@ import {
   Button,
   Cell,
   CellGroup,
+  Icon,
   Image,
   Row,
   Col,
@@ -10,23 +11,32 @@ import {
   DatetimePicker,
   Field,
   Picker,
+  Search,
   Switch,
   SwitchCell,
   Uploader,
+  DropdownMenu,
+  DropdownItem,
   Loading,
   Notify,
+  PullRefresh,
   Toast,
   Collapse,
   CollapseItem,
   Lazyload,
   List,
   Panel,
+  Sticky,
   Swipe,
   SwipeItem,
   Tag,
   Grid,
   GridItem,
   NavBar,
+  Sidebar,
+  SidebarItem,
+  Tab,
+  Tabs,
   Tabbar,
   TabbarItem,
   Area,
@@ -34,24 +44,32 @@ import {
 
 Vue.use(Button)
 Vue.use(Cell).use(CellGroup)
+Vue.use(Icon)
 Vue.use(Image)
 Vue.use(Row).use(Col)
 Vue.use(Popup)
 Vue.use(DatetimePicker)
 Vue.use(Field)
 Vue.use(Picker)
+Vue.use(Search)
 Vue.use(Switch).use(SwitchCell)
 Vue.use(Uploader)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
 Vue.use(Loading)
 Vue.use(Notify)
+Vue.use(PullRefresh)
 Vue.use(Toast)
 Vue.use(Collapse).use(CollapseItem)
 Vue.use(Lazyload)
 Vue.use(List)
 Vue.use(Panel)
+Vue.use(Sticky)
 Vue.use(Swipe).use(SwipeItem)
 Vue.use(Tag)
 Vue.use(Grid).use(GridItem)
 Vue.use(NavBar)
+Vue.use(Sidebar).use(SidebarItem)
+Vue.use(Tab).use(Tabs)
 Vue.use(Tabbar).use(TabbarItem)
 Vue.use(Area)

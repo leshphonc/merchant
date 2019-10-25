@@ -13,7 +13,8 @@ axios.interceptors.request.use(
       forbidClick: true,
       duration: 0,
     })
-    config.data = qs.stringify(config.data) // 转为formdata数据格式
+    // 转为formdata数据格式
+    config.data = qs.stringify(config.data)
     return config
   },
   error => {

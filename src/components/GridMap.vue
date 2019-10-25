@@ -1,3 +1,16 @@
+<!--
+  功能：渲染首页grid工具
+  作者：cc
+  时间：2019年10月12日
+  版本：v1.0
+  修改记录：
+  修改内容：
+  修改人员：
+  修改时间：
+  props：
+    data<Object>：用于渲染grid的数据，详细格式见 @/common/gird
+    size<String>：图标大小px
+-->
 <template>
   <div>
     <div class="title" v-if="data.title">{{ data.title }}</div>
@@ -16,7 +29,10 @@ export default {
   components: {},
 
   props: {
-    data: Object,
+    data: {
+      type: Object,
+      required: true,
+    },
     size: {
       type: String,
       default: '35',

@@ -1,3 +1,15 @@
+<!--
+  功能：首页公用用户信息卡片
+  作者：cc
+  时间：2019年10月12日
+  版本：v1.0
+  修改记录：
+  修改内容：
+  修改人员：
+  修改时间：
+  props：
+    暂无
+-->
 <template>
   <div class="container">
     <van-row align="center" class="info" justify="center" type="flex">
