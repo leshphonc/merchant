@@ -31,9 +31,9 @@ const getters = {
 // actions
 const actions = {
   async getHomeInfo({ commit }) {
-    const response = await home.getHomeInfo()
-    if (response) {
-      commit('saveCommonInfo', response)
+    const data = await home.getHomeInfo()
+    if (data) {
+      commit('saveCommonInfo', data)
     }
   },
 }

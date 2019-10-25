@@ -8,7 +8,7 @@
         class="upload-field"
         v-model="validate"
       >
-        <van-uploader :before-read="_beforeRead" :max-count="count" @delete="_delete" slot="input" v-model="picList" />
+        <van-uploader :before-read="_beforeRead" :max-count="count" slot="input" v-model="picList" />
       </van-field>
     </ValidationProvider>
     <van-popup class="upload-popup" position="bottom" safe-area-inset-bottom v-model="showPopup">
@@ -59,6 +59,11 @@ export default {
       type: Function,
       required: true,
     },
+    // 默认数据
+    list: {
+      type: Array,
+      default: () => [],
+    },
     // 可截取图片数量
     count: {
       type: Number,
@@ -97,7 +102,11 @@ export default {
     },
   },
 
-  watch: {},
+  watch: {
+    list() {
+      this.picList = this.list
+    },
+  },
 
   created() {},
 
@@ -132,10 +141,6 @@ export default {
     },
     _cancel() {
       this.showPopup = false
-    },
-    _delete(file, { index }) {
-      this.picList.splice(index, 1)
-      console.log(this.picList)
     },
   },
 }

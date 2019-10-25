@@ -7,7 +7,9 @@ import home from './modules/home'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    cascadeAddress: [],
+  },
   mutations: {},
   actions: {
     ...actions,

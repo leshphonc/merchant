@@ -1,10 +1,10 @@
 <template>
-  <router-view></router-view>
+  <div>123</div>
 </template>
 
 <script>
 export default {
-  name: 'StoreFrontRoute',
+  name: 'commodityList',
 
   mixins: [],
 

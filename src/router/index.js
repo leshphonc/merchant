@@ -2,8 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '@/views/Index'
 import Home from '@/views/Home'
-import StoreFrontRoute from '@/views/management/storeFront/StoreFrontRoute'
-import StoreFrontList from '@/views/management/storeFront/StoreFrontList'
+import Management from './management'
 
 Vue.use(VueRouter)
 
@@ -22,32 +21,20 @@ const routes = [
       },
     ],
   },
-  {
-    path: '/storefront',
-    component: StoreFrontRoute,
-    children: [
-      {
-        path: '/',
-        component: StoreFrontList,
-      },
-      {
-        path: 'storefrontCRU',
-        component: () => import('@/views/management/storeFront/StoreFrontCRU'),
-      },
-    ],
-  },
+  ...Management,
   {
     path: '/login',
     name: 'login',
-    // route level code-splitting
-    // this generates a separate chunk (login.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     component: () => import(/* webpackChunkName: "login" */ '@/views/Login'),
   },
   {
     path: '*',
     name: '404',
-    component: () => import('@/views/404'),
+    // route level code-splitting
+    // this generates a separate chunk (login.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "404" */ '@/views/404'),
   },
 ]
 

@@ -25,7 +25,7 @@
         <div class="footer" slot="footer">
           <van-button size="small" type="primary">资质审核</van-button>
           <van-button size="small" type="primary">业务信息</van-button>
-          <van-button size="small" type="primary">基础信息</van-button>
+          <van-button :to="`/storefront/storefrontCRU/${item.store_id}`" size="small" type="primary">基础信息</van-button>
         </div>
       </van-panel>
       <div class="white-space"></div>
@@ -34,10 +34,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
-  name: '',
+  name: 'storeFrontList',
 
   mixins: [],
 
@@ -47,6 +47,7 @@ export default {
 
   data() {
     return {
+      storeFrontList: [],
       status: {
         1: {
           label: '正常',
@@ -64,16 +65,16 @@ export default {
     }
   },
 
-  computed: {
-    ...mapState('storeFront', ['storeFrontList']),
-  },
+  computed: {},
 
   watch: {},
 
   created() {},
 
   mounted() {
-    this.getStoreFrontList()
+    this.getStoreFrontList().then(res => {
+      this.storeFrontList = res
+    })
   },
 
   destroyed() {},
@@ -84,9 +85,7 @@ export default {
       this.$router.go(-1)
     },
     _createStoreFront() {
-      this.$router.push('/storefront/storefrontCRU').catch(err => {
-        err
-      })
+      this.$router.push('/storefront/storefrontCRU')
     },
   },
 }

@@ -4,7 +4,7 @@
     <div class="white-space"></div>
     <div class="wing-blank">
       <div class="card-panel">
-        <map-grid :data="settingData"></map-grid>
+        <grid-map :data="settingData"></grid-map>
       </div>
     </div>
     <div class="white-space"></div>

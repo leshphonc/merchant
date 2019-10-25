@@ -114,7 +114,6 @@ export default {
       reader.readAsDataURL(file)
       let blob = null
       reader.onloadend = () => {
-        console.log(reader.result)
         blob = reader.result
         resolve(blob)
       }

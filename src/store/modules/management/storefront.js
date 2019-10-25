@@ -1,35 +1,57 @@
 import storeFrontAPI from '@/api/management/storeFront'
 
 // initial state
-const state = {
-  storeFrontList: [],
-}
+const state = {}
 
 // getters
 const getters = {}
 
 // actions
 const actions = {
-  async getStoreFrontList({ commit }) {
-    const data = await storeFrontAPI.getStoreFrontList()
-    if (data) {
-      commit('setStoreFrontList', data)
-    }
+  // 店铺列表
+  async getStoreFrontList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.getStoreFrontList()
+      data ? resolve(data) : reject()
+    })
   },
+  // 创建店铺
   async createStoreFront(context, payload) {
-    return new Promise(async resolve => {
+    return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.createStoreFront(payload)
-      if (data) {
-        resolve()
-      }
+      data ? resolve() : reject()
+    })
+  },
+  // 店铺详情
+  async getStoreFrontDetail(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.getStoreFrontDetail(id)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 编辑店铺
+  async updateStoreFront(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.updateStoreFront(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 平台店铺分类
+  async getPlatformStoreFrontCategory() {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.getPlatformStoreFrontCategory()
+      data ? resolve(data) : reject()
     })
   },
 }
 
 // mutations
 const mutations = {
-  setStoreFrontList(state, data) {
-    state.storeFrontList = data
+  save(state, data) {
+    const keys = Object.keys(data)
+    keys.forEach(item => {
+      state[item] = data[item]
+    })
   },
 }
 

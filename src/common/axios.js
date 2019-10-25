@@ -9,8 +9,8 @@ axios.interceptors.request.use(
   config => {
     // console.log(config);
     Toast.loading({
-      mask: false,
       message: '加载中...',
+      forbidClick: true,
       duration: 0,
     })
     config.data = qs.stringify(config.data) // 转为formdata数据格式
@@ -31,8 +31,9 @@ axios.interceptors.response.use(
       }
       if (config.data.errorCode === errorcode.NOTICKET || config.data.errorCode === errorcode.TIMEOUT) {
         Toast({
-          icon: 'warn-o',
           message: '登录验证失效',
+          icon: 'warn-o',
+          forbidClick: true,
           duration: 1500,
           onClose: () => {
             router.replace('/login')
