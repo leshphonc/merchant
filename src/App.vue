@@ -46,8 +46,8 @@ body {
 }
 
 // van-button
-.van-button:not(:last-child) {
-  margin-right: 6px;
+.van-button + .van-button {
+  margin-left: 5px;
 }
 
 // van-switch
@@ -56,7 +56,20 @@ body {
 }
 
 // van-tag
-.van-tag:not(:last-child) {
-  margin-right: 5px;
+.van-tag + .van-tag {
+  margin-left: 5px;
+}
+
+//van-card
+.van-card__content {
+  .van-card__title {
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  div + div {
+    margin-top: 4px;
+  }
 }
 </style>

@@ -1,12 +1,18 @@
 <template>
   <div>
-    <van-nav-bar :border="false" :title="`商品列表`" @click-left="_goBack" fixed left-arrow>
-      <van-icon name="ellipsis" slot="right" />
-    </van-nav-bar>
+    <van-nav-bar
+      :border="false"
+      :title="`商品列表`"
+      @click-left="_goBack"
+      @click-right="_createCommodity"
+      fixed
+      left-arrow
+      right-text="创建"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <van-tabs :offset-top="offsetTop" sticky v-model="active">
+    <van-tabs :offset-top="offsetTop" sticky swipeable v-model="active">
       <van-tab title="电商">
-        <eCommerce-product></eCommerce-product>
+        <e-commerce-commodity></e-commerce-commodity>
       </van-tab>
       <van-tab title="外卖">内容 2</van-tab>
       <van-tab title="服务">内容 3</van-tab>
@@ -16,7 +22,7 @@
 </template>
 
 <script>
-import ECommerceProduct from './ECommerceProduct'
+import ECommerceCommodity from './ECommerceCommodity'
 
 export default {
   name: 'commodityList',
@@ -24,7 +30,7 @@ export default {
   mixins: [],
 
   components: {
-    ECommerceProduct,
+    ECommerceCommodity,
   },
 
   props: {},
@@ -49,7 +55,26 @@ export default {
 
   destroyed() {},
 
-  methods: {},
+  methods: {
+    _createCommodity() {
+      switch (this.active) {
+        case 0:
+          this.$router.push('/commodity/eCommerceCommodityCRU')
+          break
+        case 1:
+          this.$router.push('/commodity/eCommerceCommodityCRU')
+          break
+        case 2:
+          this.$router.push('/commodity/eCommerceCommodityCRU')
+          break
+        case 3:
+          this.$router.push('/commodity/eCommerceCommodityCRU')
+          break
+        default:
+          break
+      }
+    },
+  },
 }
 </script>
 

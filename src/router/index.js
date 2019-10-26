@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Index from '@/views/Index'
 import Home from '@/views/Home'
 import Management from './management'
+import Setting from './setting'
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,7 @@ const routes = [
     ],
   },
   ...Management,
+  ...Setting,
   {
     path: '/login',
     name: 'login',

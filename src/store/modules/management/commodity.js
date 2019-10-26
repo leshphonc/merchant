@@ -9,17 +9,16 @@ const getters = {}
 // actions
 const actions = {
   // 电商商品列表
-  async getCommodityList(context, page = 1) {
+  async getECommerceCommodityList(context, page = 1) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getCommodityList(page)
+      const data = await commodityAPI.getECommerceCommodityList(page)
       data ? resolve(data) : reject()
     })
   },
-  // 创建店铺
-  async createStoreFront(context, payload) {
+  async deleteECommerceCommodity(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.createStoreFront(payload)
-      data ? resolve() : reject()
+      const data = await commodityAPI.deleteECommerceCommodity(payload)
+      data ? resolve(data) : reject()
     })
   },
 }

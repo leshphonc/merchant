@@ -2,7 +2,7 @@ const ManagementGrid = {
   list: [
     {
       name: '店铺管理',
-      path: '/storefront',
+      path: '/storeFront',
       enable: require('../assets/image/dpgl.png'),
       disable: require('../assets/image/dpgl_gray.png'),
     },
@@ -128,7 +128,7 @@ const SettingGrid = {
     },
     {
       name: '运费设置',
-      path: '3',
+      path: '/freight',
       enable: require('../assets/image/yfsz.png'),
       disable: require('../assets/image/yfsz_gray.png'),
     },

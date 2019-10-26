@@ -2,7 +2,7 @@
   <div>
     <van-nav-bar @click-left="_goBack" @click-right="_createStoreFront" fixed left-arrow right-text="创建店铺" title="店铺列表"></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <div :key="i" v-for="(item, i) in storeFrontList">
+    <div :key="i" v-for="(item, i) in list">
       <van-panel>
         <van-row class="row" slot="header">
           <van-col span="20">
@@ -47,7 +47,7 @@ export default {
 
   data() {
     return {
-      storeFrontList: [],
+      list: [],
       status: {
         1: {
           label: '正常',
@@ -72,17 +72,21 @@ export default {
   created() {},
 
   mounted() {
-    this.getStoreFrontList().then(res => {
-      this.storeFrontList = res
-    })
+    this._getStoreFrontList()
   },
 
   destroyed() {},
 
   methods: {
     ...mapActions('storeFront', ['getStoreFrontList']),
+    // 创建店铺
     _createStoreFront() {
-      this.$router.push('/storefront/storefrontCRU')
+      this.$router.push('/storeFront/storeFrontCRU')
+    },
+    _getStoreFrontList() {
+      this.getStoreFrontList().then(res => {
+        this.list = res
+      })
     },
   },
 }

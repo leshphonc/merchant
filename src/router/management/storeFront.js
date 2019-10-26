@@ -2,7 +2,7 @@ import Index from '@/views/management/storeFront'
 import StoreFrontList from '@/views/management/storeFront/StoreFrontList'
 
 export default {
-  path: '/storefront',
+  path: '/storeFront',
   component: Index,
   children: [
     {
@@ -10,7 +10,7 @@ export default {
       component: StoreFrontList,
     },
     {
-      path: 'storefrontCRU/:id?',
+      path: 'storeFrontCRU/:id?',
       component: () => import('@/views/management/storeFront/StoreFrontCRU'),
     },
   ],

@@ -9,9 +9,9 @@ export default {
       path: '/',
       component: CommodityList,
     },
-    // {
-    //   path: 'commodityCRU/:id?',
-    //   component: () => import('@/views/management/storeFront/StoreFrontCRU'),
-    // },
+    {
+      path: 'eCommerceCommodityCRU/:id?',
+      component: () => import('@/views/management/commodity/ECommerceCommodityCRU'),
+    },
   ],
 }

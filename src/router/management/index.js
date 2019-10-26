@@ -1,4 +1,4 @@
-import StoreFront from './storeFront'
-import Commodity from './commodity'
+import storeFront from './storeFront'
+import commodity from './commodity'
 
-export default [StoreFront, Commodity]
+export default [storeFront, commodity]

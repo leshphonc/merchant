@@ -8,6 +8,8 @@ import {
   Row,
   Col,
   Popup,
+  Checkbox,
+  CheckboxGroup,
   DatetimePicker,
   Field,
   Picker,
@@ -15,14 +17,17 @@ import {
   Switch,
   SwitchCell,
   Uploader,
+  Dialog,
   DropdownMenu,
   DropdownItem,
   Loading,
   Notify,
   PullRefresh,
+  SwipeCell,
   Toast,
   Collapse,
   CollapseItem,
+  Divider,
   Lazyload,
   List,
   Panel,
@@ -40,6 +45,7 @@ import {
   Tabbar,
   TabbarItem,
   Area,
+  Card,
 } from 'vant'
 
 Vue.use(Button)
@@ -48,19 +54,23 @@ Vue.use(Icon)
 Vue.use(Image)
 Vue.use(Row).use(Col)
 Vue.use(Popup)
+Vue.use(Checkbox).use(CheckboxGroup)
 Vue.use(DatetimePicker)
 Vue.use(Field)
 Vue.use(Picker)
 Vue.use(Search)
 Vue.use(Switch).use(SwitchCell)
 Vue.use(Uploader)
+Vue.use(Dialog)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
 Vue.use(Loading)
 Vue.use(Notify)
 Vue.use(PullRefresh)
+Vue.use(SwipeCell)
 Vue.use(Toast)
 Vue.use(Collapse).use(CollapseItem)
+Vue.use(Divider)
 Vue.use(Lazyload)
 Vue.use(List)
 Vue.use(Panel)
@@ -73,3 +83,4 @@ Vue.use(Sidebar).use(SidebarItem)
 Vue.use(Tab).use(Tabs)
 Vue.use(Tabbar).use(TabbarItem)
 Vue.use(Area)
+Vue.use(Card)

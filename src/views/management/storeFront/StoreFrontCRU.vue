@@ -102,8 +102,8 @@
         <ValidationProvider name="店铺业务" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
-            :value="storeBusinessLabel"
-            @click="_controlStoreBusiness"
+            :value="businessLabel"
+            @click="_controlBusinessPicker"
             error-message-align="right"
             input-align="right"
             is-link
@@ -117,7 +117,7 @@
           <van-field
             :error-message="errors[0]"
             :value="storeFrontCategoryLabel"
-            @click="_controlStoreFrontCategory"
+            @click="_controlStoreFrontCategoryPicker"
             error-message-align="right"
             input-align="right"
             is-link
@@ -131,7 +131,7 @@
           <van-field
             :error-message="errors[0]"
             :value="startTimeLabel"
-            @click="_controlStartTime"
+            @click="_controlStartTimePicker"
             error-message-align="right"
             input-align="right"
             is-link
@@ -145,7 +145,7 @@
           <van-field
             :error-message="errors[0]"
             :value="endTimeLabel"
-            @click="_controlEndTime"
+            @click="_controlEndTimePicker"
             error-message-align="right"
             input-align="right"
             is-link
@@ -181,7 +181,7 @@
         ></img-cropper>
         <van-field
           :value="disCountLabel"
-          @click="_controlDisCount"
+          @click="_controlDisCountPicker"
           error-message-align="right"
           input-align="right"
           is-link
@@ -229,12 +229,12 @@
     <!-- 坐标选择 -->
     <coordinate-picker :cancel="_controlCoordinatePicker" :confirm="_pickCoordinate" :show="showCoordinatePicker"></coordinate-picker>
     <!-- 店铺业务 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showStoreBusiness">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showBusinessPicker">
       <van-picker
-        :columns="storeBusinessColumns"
+        :columns="businessColumns"
         :default-index="storeBussinessIndex"
-        @cancel="_controlStoreBusiness"
-        @confirm="_pickStoreBusiness"
+        @cancel="_controlBusinessPicker"
+        @confirm="_pickBusiness"
         show-toolbar
         value-key="label"
       ></van-picker>
@@ -243,7 +243,7 @@
     <van-popup position="bottom" safe-area-inset-bottom v-model="showStoreFrontCategory">
       <van-picker
         :columns="storeFrontCategory"
-        @cancel="_controlStoreFrontCategory"
+        @cancel="_controlStoreFrontCategoryPicker"
         @change="_changeStoreFrontCategory"
         @confirm="_pickStoreFrontCategory"
         show-toolbar
@@ -252,17 +252,27 @@
     </van-popup>
     <!-- 开始时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showStartTimePicker">
-      <van-datetime-picker @cancel="_controlStartTime" @confirm="_pickStartTime" type="time" v-model="formData.open_1" />
+      <van-datetime-picker
+        @cancel="_controlStartTimePicker"
+        @confirm="_pickStartTime"
+        type="time"
+        v-model="formData.open_1"
+      />
     </van-popup>
     <!-- 结束时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showEndTimePicker">
-      <van-datetime-picker @cancel="_controlEndTime" @confirm="_pickEndTime" type="time" v-model="formData.close_1" />
+      <van-datetime-picker
+        @cancel="_controlEndTimePicker"
+        @confirm="_pickEndTime"
+        type="time"
+        v-model="formData.close_1"
+      />
     </van-popup>
     <!-- 优惠类型 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showDisCount">
       <van-picker
         :columns="disCountColumns"
-        @cancel="_controlDisCount"
+        @cancel="_controlDisCountPicker"
         @confirm="_pickDisCount"
         show-toolbar
         value-key="label"
@@ -291,36 +301,6 @@ export default {
 
   data() {
     return {
-      // 地区pickerData
-      areaData,
-      // 店铺业务pickerData
-      storeBusinessColumns: [
-        { label: '标准', value: 'have_service' },
-        { label: '外卖', value: 'have_peisong' },
-        { label: '餐饮', value: 'have_meal' },
-        { label: '酒店', value: 'have_hotel' },
-        { label: '汽配', value: 'have_auto_parts' },
-      ],
-      storeFrontCategoryOrigin: [],
-      storeFrontCategory: [],
-      // 优惠类型pickerData
-      disCountColumns: [{ label: '无优惠', value: '0' }, { label: '折扣', value: '1' }, { label: '满减', value: '2' }],
-      // 控制开关
-      showAreaPicker: false,
-      showCoordinatePicker: false,
-      showStoreBusiness: false,
-      showStartTimePicker: false,
-      showEndTimePicker: false,
-      showStoreFrontCategory: false,
-      showDisCount: false,
-      loading: false,
-      // picker placeholder
-      storeBusinessValue: 'have_service',
-      area: [],
-      // 默认数据
-      shop_logo: [],
-      pic: [],
-      qrcode_backgroup: [],
       formData: {
         name: '',
         ismain: false,
@@ -353,6 +333,40 @@ export default {
         minus_price: '',
         context: '',
       },
+      // 默认数据
+      shop_logo: [],
+      pic: [],
+      qrcode_backgroup: [],
+      // 地区pickerData
+      areaData,
+      // 店铺业务pickerData
+      businessColumns: [
+        { label: '标准', value: 'have_service' },
+        { label: '外卖', value: 'have_peisong' },
+        { label: '餐饮', value: 'have_meal' },
+        { label: '酒店', value: 'have_hotel' },
+        { label: '汽配', value: 'have_auto_parts' },
+      ],
+      // 优惠类型pickerData
+      disCountColumns: [{ label: '无优惠', value: '0' }, { label: '折扣', value: '1' }, { label: '满减', value: '2' }],
+      // 店铺分类数据，用于更改一级分类时遍历出二级分类
+      storeFrontCategoryOrigin: [],
+      // 用于picker的店铺分类数据
+      storeFrontCategory: [],
+      // 控制开关
+      showAreaPicker: false,
+      showCoordinatePicker: false,
+      showBusinessPicker: false,
+      showStartTimePicker: false,
+      showEndTimePicker: false,
+      showStoreFrontCategory: false,
+      showDisCount: false,
+      // 锁
+      loading: false,
+      // 地址选择后的数据，用于遍历出地址的label
+      area: [],
+      // 后续需要后台更改的字段
+      businessValue: 'have_service',
     }
   },
 
@@ -374,8 +388,8 @@ export default {
       return this.formData.long + ', ' + this.formData.lat
     },
     // 店铺业务非空验证
-    storeBusinessLabel() {
-      const item = this.storeBusinessColumns.find(item => item.value === this.storeBusinessValue)
+    businessLabel() {
+      const item = this.businessColumns.find(item => item.value === this.businessValue)
       return item && item.label
     },
     // 店铺分类非空验证
@@ -408,8 +422,8 @@ export default {
     },
     // 店铺业务默认数据
     storeBussinessIndex() {
-      const index = this.storeBusinessColumns.findIndex(item => {
-        return item.value === this.storeBusinessValue
+      const index = this.businessColumns.findIndex(item => {
+        return item.value === this.businessValue
       })
       return index
     },
@@ -449,23 +463,23 @@ export default {
       this.showCoordinatePicker = !this.showCoordinatePicker
     },
     // 店铺业务开关
-    _controlStoreBusiness() {
-      this.showStoreBusiness = !this.showStoreBusiness
+    _controlBusinessPicker() {
+      this.showBusinessPicker = !this.showBusinessPicker
     },
     // 店铺分类开关
-    _controlStoreFrontCategory() {
+    _controlStoreFrontCategoryPicker() {
       this.showStoreFrontCategory = !this.showStoreFrontCategory
     },
     // 开始时间开关
-    _controlStartTime() {
+    _controlStartTimePicker() {
       this.showStartTimePicker = !this.showStartTimePicker
     },
     // 结束时间开关
-    _controlEndTime() {
+    _controlEndTimePicker() {
       this.showEndTimePicker = !this.showEndTimePicker
     },
     // 优惠类型开关
-    _controlDisCount() {
+    _controlDisCountPicker() {
       this.showDisCount = !this.showDisCount
     },
     // 生成店铺业务第二行数据
@@ -492,25 +506,25 @@ export default {
       this._controlCoordinatePicker()
     },
     // 店铺业务选择
-    _pickStoreBusiness(data) {
-      this.storeBusinessValue = data.value
-      this._controlStoreBusiness()
+    _pickBusiness(data) {
+      this.businessValue = data.value
+      this._controlBusinessPicker()
     },
     // 店铺分类选择
     _pickStoreFrontCategory(data) {
       this.formData.cat_fid = data[0].value
       this.formData.cat_id = data[1].value
-      this._controlStoreFrontCategory()
+      this._controlStoreFrontCategoryPicker()
     },
     // 开始时间选择
     _pickStartTime(data) {
       this.formData.open_1 = data
-      this._controlStartTime()
+      this._controlStartTimePicker()
     },
     // 结束时间选择
     _pickEndTime(data) {
       this.formData.close_1 = data
-      this._controlEndTime()
+      this._controlEndTimePicker()
     },
     // 截取商户LOGO
     _pickShopLogo(data) {
@@ -527,7 +541,7 @@ export default {
     // 优惠类型选择
     _pickDisCount(data) {
       this.formData.discount_type = data.value
-      this._controlDisCount()
+      this._controlDisCountPicker()
     },
     // 获取平台店铺分类
     _getPlatformStoreFrontCategory(fid, id) {
@@ -594,7 +608,7 @@ export default {
     async _submit() {
       // 锁
       if (this.loading) return false
-      // 验证表单完整性
+      // 验证表单
       const isValid = await this.$refs.observer.validate()
       console.log(this.formData)
       // 表单不完整
@@ -610,11 +624,11 @@ export default {
             message: '请填写完整信息',
           })
         } else {
-          // 解锁
+          // 加锁
           this.loading = true
           // 表单完整，进行数据修改并提交
           this.formData.ismain ? (this.formData.ismain = '1') : (this.formData.ismain = '0')
-          this.formData[this.storeBusinessValue] = '1'
+          this.formData[this.businessValue] = '1'
           let method = 'createStoreFront'
           const { id } = this.$route.params
           if (id) {
@@ -628,6 +642,7 @@ export default {
                 forbidClick: true,
                 duration: 1500,
                 onClose: () => {
+                  // 解锁
                   this.loading = false
                   this._goBack()
                 },
