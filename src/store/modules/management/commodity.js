@@ -1,7 +1,9 @@
 import commodityAPI from '@/api/management/commodity'
 
 // initial state
-const state = {}
+const state = {
+  navText: ['创建', '创建', '创建', '创建'],
+}
 
 // getters
 const getters = {}
@@ -15,9 +17,24 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 删除电商商品
   async deleteECommerceCommodity(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.deleteECommerceCommodity(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 电商商品1级分类
+  async getECommerceCommodityFirstCategoryList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getECommerceCommodityFirstCategoryList()
+      data ? resolve(data) : reject()
+    })
+  },
+  // 电商商品2级分类
+  async getECommerceCommoditySecondCategoryList(context, sort_id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getECommerceCommoditySecondCategoryList(sort_id)
       data ? resolve(data) : reject()
     })
   },
@@ -30,6 +47,14 @@ const mutations = {
     keys.forEach(item => {
       state[item] = data[item]
     })
+  },
+  changeRightText(state, { index, text }) {
+    console.log(state.navText)
+    const arr = state.navText
+    arr[index] = text
+    state.navText = []
+    state.navText = arr
+    console.log(arr)
   },
 }
 

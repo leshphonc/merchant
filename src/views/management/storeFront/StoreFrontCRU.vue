@@ -8,7 +8,7 @@
           <van-field :error-message="errors[0]" label="店铺名称" placeholder="店铺名称" required v-model.trim="formData.name" />
         </ValidationProvider>
         <van-cell placeholder="请输入用户名" title="是否设置成主店">
-          <van-switch size="20px" slot="default" v-model="formData.ismain"></van-switch>
+          <van-switch slot="default" v-model="formData.ismain"></van-switch>
         </van-cell>
         <ValidationProvider name="联系电话" rules="required|phone" slim v-slot="{ errors }">
           <van-field
@@ -662,5 +662,9 @@ export default {
 .submit {
   margin: 10px 0;
   width: 100%;
+}
+
+.van-switch {
+  font-size: 20px !important;
 }
 </style>

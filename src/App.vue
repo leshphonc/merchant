@@ -35,10 +35,18 @@ body {
   margin-left: 8px;
   margin-right: 8px;
   box-sizing: border-box;
+  &-lg {
+    margin-left: 16px;
+    margin-right: 16px;
+    box-sizing: border-box;
+  }
 }
 
 .white-space {
   height: 8px;
+  &-lg {
+    height: 16px;
+  }
 }
 
 .ql-editor {
@@ -56,8 +64,17 @@ body {
 }
 
 // van-tag
-.van-tag + .van-tag {
-  margin-left: 5px;
+.van-card {
+  .van-tag + .van-tag {
+    margin-left: 5px;
+  }
+}
+
+.van-collapse {
+  .van-tag {
+    margin-right: 5px;
+    margin-top: 5px;
+  }
 }
 
 //van-card

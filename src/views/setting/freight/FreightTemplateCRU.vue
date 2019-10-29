@@ -14,7 +14,7 @@
       >
         <van-cell center>
           <van-tag :key="id" plain size="medium" slot="title" v-for="id in item.aids">{{ _getAreaName(id) }}</van-tag>
-          <van-icon @click="_deleteDom(index)" color="red" name="close" size="16" slot="right-icon" />
+          <van-icon @click="_deleteDom(index)" class="delete-icon" color="red" name="close" slot="right-icon" />
         </van-cell>
         <ValidationProvider :name="`区域${index + 1}运费`" rules="required" slim v-slot="{ errors }">
           <van-field
@@ -226,6 +226,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.delete-icon {
+  font-size: 16px;
+}
 .add-btn {
   position: fixed;
   bottom: 100px;

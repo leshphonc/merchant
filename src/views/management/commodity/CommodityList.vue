@@ -2,15 +2,15 @@
   <div>
     <van-nav-bar
       :border="false"
+      :right-text="rightText"
       :title="`商品列表`"
       @click-left="_goBack"
       @click-right="_createCommodity"
       fixed
       left-arrow
-      right-text="创建"
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <van-tabs :offset-top="offsetTop" sticky swipeable v-model="active">
+    <van-tabs :offset-top="offsetTop" sticky v-model="active">
       <van-tab title="电商">
         <e-commerce-commodity></e-commerce-commodity>
       </van-tab>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import ECommerceCommodity from './ECommerceCommodity'
 
 export default {
@@ -38,12 +39,19 @@ export default {
   data() {
     return {
       active: 0,
+      eCommerceActive: 0,
     }
   },
 
   computed: {
+    ...mapState('commodity', ['navText']),
     offsetTop() {
       return (46 / 375) * document.body.clientWidth
+    },
+    // 根据当前tab的index获得rightText
+    rightText() {
+      console.log(this.navText)
+      return this.navText[this.active]
     },
   },
 
@@ -56,22 +64,27 @@ export default {
   destroyed() {},
 
   methods: {
+    // 创建商品
     _createCommodity() {
-      switch (this.active) {
-        case 0:
-          this.$router.push('/commodity/eCommerceCommodityCRU')
-          break
-        case 1:
-          this.$router.push('/commodity/eCommerceCommodityCRU')
-          break
-        case 2:
-          this.$router.push('/commodity/eCommerceCommodityCRU')
-          break
-        case 3:
-          this.$router.push('/commodity/eCommerceCommodityCRU')
-          break
-        default:
-          break
+      if (this.rightText === '创建') {
+        switch (this.active) {
+          case 0:
+            this.$router.push('/commodity/eCommerceCommodityCRU')
+            break
+          case 1:
+            this.$router.push('/commodity/eCommerceCommodityCRU')
+            break
+          case 2:
+            this.$router.push('/commodity/eCommerceCommodityCRU')
+            break
+          case 3:
+            this.$router.push('/commodity/eCommerceCommodityCRU')
+            break
+          default:
+            break
+        }
+      } else {
+        console.log('管理')
       }
     },
   },
