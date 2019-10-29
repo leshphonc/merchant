@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default {
-  // 电商商品列表
+  // 读取电商商品列表
   getECommerceCommodityList: page =>
     axios.get('/appapi.php?c=SpaceMerchant&a=spro', {
       params: {
@@ -18,17 +18,51 @@ export default {
       goods_id,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 电商商品1级分类
+  // 读取电商商品1级分类
   getECommerceCommodityFirstCategoryList: () =>
     axios.get('/appapi.php?c=SpaceMerchant&a=getShopCate', {
       params: {
         ticket: localStorage.getItem('ticket'),
       },
     }),
-  // 电商商品2级分类
+  // 读取电商商品2级分类
   getECommerceCommoditySecondCategoryList: sort_id =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getShopTwoCate', {
       sort_id,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 读取平台电商商品分类
+  getPlatformEcommerceCommodityCategoryList: () =>
+    axios.get('/appapi.php?c=SpaceMerchant&a=goods_category', {
+      params: {
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // 新增电商分类
+  createECommerceCommodityCategory: ({ name, sort, is_week, week, discount, fid }) => {
+    let method = 'addEditShopCate'
+    if (fid !== '0') {
+      method = 'addEditShopTwo'
+    }
+    return axios.post(`/appapi.php?c=SpaceMerchant&a=${method}`, {
+      fid,
+      name,
+      sort,
+      is_week,
+      week,
+      discount,
+      ticket: localStorage.getItem('ticket'),
+    })
+  },
+  // 删除电商分类
+  deleteECommerceCommodityCategory: ({ sort_id, type }) => {
+    let method = 'delShopCate'
+    if (type !== 1) {
+      method = 'delShopTwo'
+    }
+    return axios.post(`/appapi.php?c=SpaceMerchant&a=${method}`, {
+      sort_id,
+      ticket: localStorage.getItem('ticket'),
+    })
+  },
 }

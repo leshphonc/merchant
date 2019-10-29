@@ -1,8 +1,8 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}店铺`" @click-left="_goBack" fixed left-arrow></van-nav-bar>
+    <van-nav-bar :title="`${type}店铺`" @click-left="_goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <ValidationObserver @submit.prevent="_submit" ref="observer" tag="form" v-slot="{ invalid }">
+    <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
         <ValidationProvider name="店铺名称" rules="required" slim v-slot="{ errors }">
           <van-field :error-message="errors[0]" label="店铺名称" placeholder="店铺名称" required v-model.trim="formData.name" />
@@ -169,16 +169,9 @@
             v-model.trim="formData.txt_info"
           ></van-field>
         </ValidationProvider>
-        <img-cropper :confirm="_pickShopLogo" :list="shop_logo" field="商户LOGO" ref="shopLogo" title="商户LOGO"></img-cropper>
-        <img-cropper :confirm="_pickPic" :count="5" :list="pic" :ratio="[2, 1]" field="店铺图片" ref="pic" title="店铺图片"></img-cropper>
-        <img-cropper
-          :confirm="_pickQRCode"
-          :fixedRatio="false"
-          :list="qrcode_backgroup"
-          field="二维码背景图"
-          ref="qrcode"
-          title="二维码背景图"
-        ></img-cropper>
+        <img-cropper :confirm="_pickShopLogo" :list="shop_logo" field="商户LOGO" title="商户LOGO"></img-cropper>
+        <img-cropper :confirm="_pickPic" :count="5" :list="pic" :ratio="[2, 1]" field="店铺图片" title="店铺图片"></img-cropper>
+        <img-cropper :confirm="_pickQRCode" :fixedRatio="false" :list="qrcode_backgroup" field="二维码背景图" title="二维码背景图"></img-cropper>
         <van-field
           :value="disCountLabel"
           @click="_controlDisCountPicker"
@@ -218,7 +211,6 @@
         <van-cell required title="店铺详情"></van-cell>
         <quill-editor ref="myQuillEditor" v-model.trim="formData.context"></quill-editor>
       </van-cell-group>
-      <van-button :loading="loading" class="submit">保存</van-button>
     </ValidationObserver>
 
     <!-- 弹出层 -->
@@ -394,10 +386,16 @@ export default {
     },
     // 店铺分类非空验证
     storeFrontCategoryLabel() {
-      if (!this.storeFrontCategoryOrigin.length || !this.formData.cat_fid || !this.formData.cat_id) return ''
-      const item1 = this.storeFrontCategoryOrigin.find(item => item.value === this.formData.cat_fid)
-      const item2 = item1.children.find(item => item.value === this.formData.cat_id)
-      return item1.label + ' / ' + item2.label
+      let resultStr = ''
+      const item = this.storeFrontCategoryOrigin.find(item => item.value === this.formData.cat_fid)
+      if (item) {
+        resultStr = item.label
+        if (item.children) {
+          const { label } = item.children.find(item => item.value === this.formData.cat_id)
+          resultStr += ' / ' + label
+        }
+      }
+      return resultStr
     },
     // 开始时间非空验证
     startTimeLabel() {
@@ -484,14 +482,12 @@ export default {
     },
     // 生成店铺业务第二行数据
     _changeStoreFrontCategory(picker, values) {
-      const data = this.storeFrontCategoryOrigin.find(item => item.label === values[0].label)
-      let result = []
-      if (data.children.length) {
-        result = data.children.map(item => {
-          return { label: item.label, value: item.value }
-        })
+      console.log(values)
+      if (values[0].children) {
+        picker.setColumnValues(1, values[0].children)
+      } else {
+        picker.setColumnValues(1, [])
       }
-      picker.setColumnValues(1, result)
     },
     // 地区选择
     _pickArea(data) {
@@ -513,7 +509,11 @@ export default {
     // 店铺分类选择
     _pickStoreFrontCategory(data) {
       this.formData.cat_fid = data[0].value
-      this.formData.cat_id = data[1].value
+      if (data[1]) {
+        this.formData.cat_id = data[1].value
+      } else {
+        this.formData.cat_id = ''
+      }
       this._controlStoreFrontCategoryPicker()
     },
     // 开始时间选择
@@ -564,15 +564,11 @@ export default {
       }
       this.storeFrontCategory = [
         {
-          values: data.map(item => {
-            return { label: item.label, value: item.value }
-          }),
+          values: data,
           defaultIndex: index1,
         },
         {
-          values: data[index1].children.map(item => {
-            return { label: item.label, value: item.value }
-          }),
+          values: data[index1].children,
           defaultIndex: index2,
         },
       ]

@@ -19,6 +19,13 @@ extend('phone', {
   message: '请输入正确的电话号码',
 })
 
+extend('decimal-max1', {
+  validate: value => {
+    return new RegExp(/^[0-9]{1}(\.[0-9])?$/).test(value)
+  },
+  message: '最多支持1位小数',
+})
+
 // 全局注册组件
 Vue.component('ValidationObserver', ValidationObserver)
 Vue.component('ValidationProvider', ValidationProvider)

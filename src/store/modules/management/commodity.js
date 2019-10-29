@@ -10,7 +10,7 @@ const getters = {}
 
 // actions
 const actions = {
-  // 电商商品列表
+  // 读取电商商品列表
   async getECommerceCommodityList(context, page = 1) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.getECommerceCommodityList(page)
@@ -21,21 +21,42 @@ const actions = {
   async deleteECommerceCommodity(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.deleteECommerceCommodity(payload)
-      data ? resolve(data) : reject()
+      data ? resolve() : reject()
     })
   },
-  // 电商商品1级分类
+  // 读取电商商品1级分类
   async getECommerceCommodityFirstCategoryList() {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.getECommerceCommodityFirstCategoryList()
       data ? resolve(data) : reject()
     })
   },
-  // 电商商品2级分类
+  // 读取电商商品2级分类
   async getECommerceCommoditySecondCategoryList(context, sort_id) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.getECommerceCommoditySecondCategoryList(sort_id)
       data ? resolve(data) : reject()
+    })
+  },
+  // 读取平台电商商品分类
+  async getPlatformEcommerceCommodityCategoryList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getPlatformEcommerceCommodityCategoryList()
+      data ? resolve(data) : reject()
+    })
+  },
+  // 新增电商分类
+  async createECommerceCommodityCategory(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.createECommerceCommodityCategory(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 删除电商分类
+  async deleteECommerceCommodityCategory(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.deleteECommerceCommodityCategory(payload)
+      data ? resolve() : reject()
     })
   },
 }
@@ -49,12 +70,10 @@ const mutations = {
     })
   },
   changeRightText(state, { index, text }) {
-    console.log(state.navText)
     const arr = state.navText
     arr[index] = text
     state.navText = []
     state.navText = arr
-    console.log(arr)
   },
 }
 

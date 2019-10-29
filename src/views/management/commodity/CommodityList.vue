@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import ECommerceCommodity from './ECommerceCommodity'
 
 export default {
@@ -64,6 +64,7 @@ export default {
   destroyed() {},
 
   methods: {
+    ...mapMutations('commodity', ['changeRightText']),
     // 创建商品
     _createCommodity() {
       if (this.rightText === '创建') {
@@ -84,7 +85,17 @@ export default {
             break
         }
       } else {
-        console.log('管理')
+        if (this.active === 0) {
+          this.rightText === '管理'
+            ? this.changeRightText({
+                index: 0,
+                text: '取消',
+              })
+            : this.changeRightText({
+                index: 0,
+                text: '管理',
+              })
+        }
       }
     },
   },

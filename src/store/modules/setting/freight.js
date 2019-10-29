@@ -8,7 +8,7 @@ const getters = {}
 
 // actions
 const actions = {
-  // 运费模版列表
+  // 查询运费模版列表
   async getFreightTemPlateList() {
     return new Promise(async (resolve, reject) => {
       const data = await freightAPI.getFreightTemPlateList()
