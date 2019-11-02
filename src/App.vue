@@ -77,6 +77,12 @@ body {
   }
 }
 
+.van-panel {
+  .van-tag + .van-tag {
+    margin-left: 5px;
+  }
+}
+
 //van-card
 .van-card__content {
   .van-card__title {

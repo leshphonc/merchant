@@ -1,6 +1,7 @@
 import common from '@/api/common'
 
 export default {
+  // 登录
   login(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await common.login(payload)
@@ -11,6 +12,13 @@ export default {
       } else {
         reject()
       }
+    })
+  },
+  // 优惠券列表
+  getCouponList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await common.getCouponList()
+      data ? resolve(data) : reject()
     })
   },
 }

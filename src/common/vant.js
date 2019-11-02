@@ -14,6 +14,7 @@ import {
   Field,
   Picker,
   Search,
+  Stepper,
   Switch,
   SwitchCell,
   Uploader,
@@ -59,6 +60,7 @@ Vue.use(DatetimePicker)
 Vue.use(Field)
 Vue.use(Picker)
 Vue.use(Search)
+Vue.use(Stepper)
 Vue.use(Switch).use(SwitchCell)
 Vue.use(Uploader)
 Vue.use(Dialog)

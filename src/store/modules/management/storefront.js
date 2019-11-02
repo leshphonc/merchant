@@ -23,9 +23,9 @@ const actions = {
     })
   },
   // 店铺详情
-  async getStoreFrontDetail(context, id) {
+  async readStoreFrontDetail(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await storeFrontAPI.getStoreFrontDetail(id)
+      const data = await storeFrontAPI.readStoreFrontDetail(id)
       data ? resolve(data) : reject()
     })
   },

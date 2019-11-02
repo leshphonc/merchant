@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: 'Index',
+  name: 'index',
 
   mixins: [],
 

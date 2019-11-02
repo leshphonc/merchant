@@ -802,10 +802,10 @@
   resolved "https://registry.npm.taobao.org/@types/q/download/@types/q-1.5.2.tgz?cache=0&sync_timestamp=1567534086032&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fq%2Fdownload%2F%40types%2Fq-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
   integrity sha1-aQoUdbhPKohP0HzXl8APXzE1bqg=
 
-"@vant/icons@1.1.14":
-  version "1.1.14"
-  resolved "https://registry.npm.taobao.org/@vant/icons/download/@vant/icons-1.1.14.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vant%2Ficons%2Fdownload%2F%40vant%2Ficons-1.1.14.tgz#76dfb7be055f98875d703af59a6216539c32a8cd"
-  integrity sha1-dt+3vgVfmIddcDr1mmIWU5wyqM0=
+"@vant/icons@1.1.15":
+  version "1.1.15"
+  resolved "https://registry.npm.taobao.org/@vant/icons/download/@vant/icons-1.1.15.tgz#53c51ace21e9992bfeeb2e1ad9094fbf6506d116"
+  integrity sha1-U8UaziHpmSv+6y4a2QlPv2UG0RY=
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.0.0":
   version "1.0.0"
@@ -5291,6 +5291,11 @@ mkdirp@0.5.1, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
+moment@^2.24.0:
+  version "2.24.0"
+  resolved "https://registry.npm.taobao.org/moment/download/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha1-DQVdU/UFKqZTyfbraLtdEr9cK1s=
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/move-concurrently/download/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
@@ -8075,13 +8080,13 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-vant@^2.2.9:
-  version "2.2.9"
-  resolved "https://registry.npm.taobao.org/vant/download/vant-2.2.9.tgz#ac3b5829faec8173896af6fc15864ec33e34fea8"
-  integrity sha1-rDtYKfrsgXOJavb8FYZOwz40/qg=
+vant@^2.2.10:
+  version "2.2.10"
+  resolved "https://registry.npm.taobao.org/vant/download/vant-2.2.10.tgz#ac0aa43e7f27e56a7209774f87b87ad936083b51"
+  integrity sha1-rAqkPn8n5WpyCXdPh7h62TYIO1E=
   dependencies:
     "@babel/runtime" "7.x"
-    "@vant/icons" "1.1.14"
+    "@vant/icons" "1.1.15"
     "@vue/babel-helper-vue-jsx-merge-props" "^1.0.0"
     vue-lazyload "1.2.3"
 

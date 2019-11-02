@@ -19,6 +19,7 @@
         <grid-map :data="pdata"></grid-map>
       </div>
     </div>
+    <div class="tab-bar-holder-sp"></div>
   </div>
 </template>
 <script>
@@ -28,7 +29,7 @@ import MerchantCard from '@/components/MerchantCard'
 import GridMap from '@/components/GridMap'
 
 export default {
-  name: 'Home',
+  name: 'home',
 
   mixins: [],
 

@@ -1,15 +1,6 @@
-import commodityAPI from '@/api/management/commodity'
+import commodityAPI from '@/api/management/commodity/index'
 
-// initial state
-const state = {
-  navText: ['创建', '创建', '创建', '创建'],
-}
-
-// getters
-const getters = {}
-
-// actions
-const actions = {
+export default {
   // 读取电商商品列表
   async getECommerceCommodityList(context, page = 1) {
     return new Promise(async (resolve, reject) => {
@@ -45,7 +36,7 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
-  // 新增电商分类
+  // 创建电商分类
   async createECommerceCommodityCategory(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.createECommerceCommodityCategory(payload)
@@ -59,28 +50,32 @@ const actions = {
       data ? resolve() : reject()
     })
   },
-}
-
-// mutations
-const mutations = {
-  save(state, data) {
-    const keys = Object.keys(data)
-    keys.forEach(item => {
-      state[item] = data[item]
+  // 创建电商商品
+  async createECommerceCommodity(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.createECommerceCommodity(payload)
+      data ? resolve() : reject()
     })
   },
-  changeRightText(state, { index, text }) {
-    const arr = state.navText
-    arr[index] = text
-    state.navText = []
-    state.navText = arr
+  // 查询电商商品详情
+  async readECommerceCommodityDetail(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.readECommerceCommodityDetail(id)
+      data ? resolve(data) : reject()
+    })
   },
-}
-
-export default {
-  namespaced: true,
-  state,
-  getters,
-  actions,
-  mutations,
+  // 修改电商商品
+  async updateECommerceCommodity(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.updateECommerceCommodity(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 修改电商商品优惠
+  async updateECommerceCommodityPreferential(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.updateECommerceCommodityPreferential(payload)
+      data ? resolve() : reject()
+    })
+  },
 }

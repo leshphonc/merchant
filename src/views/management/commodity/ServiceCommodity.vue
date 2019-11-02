@@ -6,27 +6,42 @@
           <van-card
             :key="item.goods_id"
             :num="item.stock_num === '-1' ? '∞' : item.stock_num"
-            :origin-price="item.old_price"
-            :price="item.price"
-            :tag="item.statusstr"
-            :thumb="item.image"
-            :title="item.s_name"
+            :price="item.old_price"
+            :tag="item.payment_status === '1' ? '定金' : null"
+            :thumb="item.pic"
+            :title="item.appoint_name"
             lazy-load
             v-for="item in list"
           >
             <div slot="tags">
-              <van-tag plain type="danger">标签</van-tag>
-              <van-tag plain type="danger">标签</van-tag>
+              <van-tag plain type="danger">
+                <van-icon name="tosend" />
+                {{ item.appoint_date_num }}天
+              </van-tag>
+              <van-tag plain type="danger">
+                <van-icon name="clock-o" />
+                {{ item.expend_time }}分钟
+              </van-tag>
+              <van-tag plain type="danger">
+                <van-icon name="flag-o" />
+                {{ item.appoint_type === '0' ? '到店' : '上门' }}
+              </van-tag>
+            </div>
+            <div slot="bottom">
+              <div v-if="item.payment_status === '1'">定金：¥{{ item.payment_money }}</div>
+              <div>预约开始: {{ $moment(item.start_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
+              <div>预约结束: {{ $moment(item.start_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
+              <div class="white-space"></div>
             </div>
             <div slot="footer">
-              <van-button @click="_deleteCommodity(item.store_id, item.goods_id)" size="small" type="danger">删除</van-button>
-              <van-button :to="`/commodity/eCommerceCommodityPreferential/${item.goods_id}`" size="small">优惠</van-button>
-              <van-button :to="`/commodity/eCommerceCommodityCRU/${item.goods_id}`" size="small">编辑</van-button>
+              <van-button @click="_deleteCommodity(item.appoint_id)" size="small" type="danger">删除</van-button>
+              <van-button :to="`/commodity/serviceCommoditySalesRecord/${item.appoint_id}`" size="small">销售记录</van-button>
+              <van-button :to="`/commodity/ServiceCommodityCRU/${item.appoint_id}`" size="small">编辑</van-button>
             </div>
           </van-card>
         </van-list>
       </van-pull-refresh>
-      <van-divider :hairline="false" v-show="!loading && !list.length">点击右上角创建商品</van-divider>
+      <van-divider :hairline="false" v-show="!loading && !list.length">点击右上角创建服务</van-divider>
     </div>
     <div v-if="active === 1">
       <van-sticky :offset-top="offsetTop">
@@ -40,38 +55,44 @@
       </van-sticky>
       <van-collapse accordion v-model="activeCategory">
         <van-collapse-item
-          :key="item.sort_id"
-          :name="item.sort_id"
-          :title="item.sort_name"
+          :key="item.cat_id"
+          :name="item.cat_id"
+          :title="item.cat_name"
           v-for="item in firstCategoryList"
         >
-          <div @click.stop="_deleteCategory(item.sort_id, 1)" slot="icon" v-show="navText[0] === '取消'">
+          <div @click.stop="_deleteCategory(item.cat_id, 1)" slot="icon" v-show="navText[2] === '取消'">
             <van-icon class="delete-icon" name="close" />
           </div>
           <div v-if="!item.children.length">暂无分类</div>
           <van-tag
-            :closeable="navText[0] === '取消'"
-            :key="child.sort_id"
-            @close="_deleteCategory(child.sort_id, 2)"
+            :closeable="navText[2] === '取消'"
+            :key="child.cat_id"
+            @close="_deleteCategory(child.cat_id, 2)"
             size="medium"
             type="primary"
             v-for="child in item.children"
           >
-            <div>{{ child.sort_name }}</div>
+            <div>{{ child.cat_name }}</div>
           </van-tag>
         </van-collapse-item>
       </van-collapse>
     </div>
     <div class="tab-bar-holder-sp"></div>
     <van-tabbar @change="_changeTab" fixed v-model="active">
-      <van-tabbar-item icon="apps-o">商品</van-tabbar-item>
+      <van-tabbar-item icon="apps-o">服务</van-tabbar-item>
       <van-tabbar-item icon="label-o">分类</van-tabbar-item>
     </van-tabbar>
     <van-popup class="category-cru-popup" position="bottom" v-model="showCategoryCRUPopup">
       <ValidationObserver @submit.prevent="_submit" ref="observer" tag="form" v-slot="{ invalid }">
         <van-cell-group>
           <ValidationProvider name="分类名称" rules="required" slim v-slot="{ errors }">
-            <van-field :error-message="errors[0]" label="分类名称" placeholder="请填写分类名称" required v-model="formData.name"></van-field>
+            <van-field
+              :error-message="errors[0]"
+              label="分类名称"
+              placeholder="请填写分类名称"
+              required
+              v-model="formData.cat_name"
+            ></van-field>
           </ValidationProvider>
           <van-field
             :placeholder="categoryLabel"
@@ -81,23 +102,6 @@
             label="分类归属"
             readonly
           ></van-field>
-          <van-cell title="开启周几显示">
-            <van-switch v-model="formData.is_week" />
-          </van-cell>
-          <van-cell v-if="formData.is_week">
-            <van-checkbox :key="item.label" shape="square" v-for="item in week" v-model="item.value">{{ item.label }}</van-checkbox>
-          </van-cell>
-          <ValidationProvider name="折扣率" rules="required|between:0, 10|decimal-max1" slim v-slot="{ errors }">
-            <van-field
-              :error-message="errors[0]"
-              @click-right-icon="$toast('0或10代表无折扣，8.5代表85折')"
-              label="折扣率"
-              placeholder="0 ～ 10 之间的数字，支持小数"
-              required
-              right-icon="question-o"
-              v-model="formData.discount"
-            ></van-field>
-          </ValidationProvider>
         </van-cell-group>
         <div class="white-space-lg"></div>
         <div class="wing-blank-lg">
@@ -107,7 +111,7 @@
       </ValidationObserver>
     </van-popup>
     <van-popup position="bottom" v-model="showCategoryPicker">
-      <van-picker :columns="firstCategoryListAddNull" @change="_changeCategory" value-key="sort_name" />
+      <van-picker :columns="firstCategoryListAddNull" @change="_changeCategory" value-key="cat_name" />
     </van-popup>
   </div>
 </template>
@@ -115,7 +119,7 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 export default {
-  name: 'eCommerceCommodity',
+  name: 'serviceCommodity',
 
   mixins: [],
 
@@ -126,12 +130,8 @@ export default {
   data() {
     return {
       formData: {
-        name: '',
-        sort: 1,
-        discount: '',
-        week: '',
-        is_week: false,
-        fid: '0',
+        cat_name: '',
+        cat_fid: '0',
       },
       list: [],
       page: 1,
@@ -145,36 +145,6 @@ export default {
       showCategoryCRUPopup: false,
       showCategoryPicker: false,
       columns: ['杭州', '宁波', '温州', '嘉兴', '湖州'],
-      week: [
-        {
-          label: '周一',
-          value: false,
-        },
-        {
-          label: '周二',
-          value: false,
-        },
-        {
-          label: '周三',
-          value: false,
-        },
-        {
-          label: '周四',
-          value: false,
-        },
-        {
-          label: '周五',
-          value: false,
-        },
-        {
-          label: '周六',
-          value: false,
-        },
-        {
-          label: '周日',
-          value: false,
-        },
-      ],
     }
   },
 
@@ -189,8 +159,8 @@ export default {
     firstCategoryListAddNull() {
       const arr = JSON.parse(JSON.stringify(this.firstCategoryList))
       arr.unshift({
-        sort_id: '0',
-        sort_name: '无',
+        cat_id: '0',
+        cat_name: '无',
         children: [],
       })
       return arr
@@ -202,8 +172,8 @@ export default {
   created() {},
 
   mounted() {
-    // 电商商品一级分类
-    this._getECommerceCommodityFirstCategoryList()
+    // 服务商品一级分类
+    this._getServiceCommodityCategoryList()
   },
 
   destroyed() {},
@@ -211,11 +181,11 @@ export default {
   methods: {
     ...mapMutations('commodity', ['changeRightText']),
     ...mapActions('commodity', [
-      'getECommerceCommodityList',
-      'deleteECommerceCommodity',
-      'getECommerceCommodityFirstCategoryList',
-      'createECommerceCommodityCategory',
-      'deleteECommerceCommodityCategory',
+      'getServiceCommodityList',
+      'deleteServiceCommodity',
+      'getServiceCommodityCategoryList',
+      'createServiceCommodityCategory',
+      'deleteServiceCommodityCategory',
     ]),
     // 分类编辑开关
     _controlCategoryCRUPopup() {
@@ -225,35 +195,35 @@ export default {
     _controlCategoryPicker() {
       this.showCategoryPicker = !this.showCategoryPicker
     },
-    // 异步更新电商商品数据
+    // 异步更新服务商品数据
     _onLoad() {
-      this.getECommerceCommodityList(this.page).then(res => {
+      this.getServiceCommodityList(this.page).then(res => {
         this.loading = false
-        if (res.lists.length < 10) {
+        if (res.length < 10) {
           this.finished = true
         } else {
           this.page += 1
-          this.list.push(...res.lists)
+          this.list.push(...res)
         }
       })
     },
-    // 刷新电商商品列表
+    // 刷新服务商品列表
     _onRefresh() {
-      this.getECommerceCommodityList().then(res => {
+      this.getServiceCommodityList().then(res => {
         this.page = 1
-        this.list = res.lists
+        this.list = res
         this.refreshing = false
       })
     },
-    // 删除电商产品
-    _deleteCommodity(store_id, goods_id) {
+    // 删除服务产品
+    _deleteCommodity(app_id) {
       this.$dialog
         .confirm({
           title: '删除',
           message: '删除后无法恢复，是否继续',
           beforeClose: (action, done) => {
             if (action === 'confirm') {
-              this.deleteECommerceCommodity({ store_id, goods_id })
+              this.deleteServiceCommodity(app_id)
                 .then(() => {
                   this.$toast.success({
                     message: '删除成功',
@@ -286,13 +256,13 @@ export default {
           message: '删除后无法恢复，是否继续',
           beforeClose: (action, done) => {
             if (action === 'confirm') {
-              this.deleteECommerceCommodityCategory({ sort_id: id, type })
+              this.deleteServiceCommodityCategory({ cat_id: id, type })
                 .then(() => {
                   this.$toast.success({
                     message: '删除成功',
                     duration: 800,
                     onClose: () => {
-                      this._getECommerceCommodityFirstCategoryList()
+                      this._getServiceCommodityCategoryList()
                     },
                   })
                   done()
@@ -313,21 +283,25 @@ export default {
     _changeTab(tabIndex) {
       console.log(tabIndex)
       this.changeRightText({
-        index: 0,
+        index: 2,
         text: tabIndex ? '管理' : '创建',
       })
     },
-    // 获取电商商品一级分类
-    _getECommerceCommodityFirstCategoryList() {
-      this.getECommerceCommodityFirstCategoryList().then(res => {
+    // 获取服务商品一级分类
+    _getServiceCommodityCategoryList() {
+      this.getServiceCommodityCategoryList().then(res => {
         this.firstCategoryList = res
       })
     },
     // 分类归属变更
     _changeCategory(picker, item) {
       console.log(item)
-      this.formData.fid = item.sort_id
-      this.categoryLabel = item.sort_name
+      this.formData.cat_fid = item.cat_id
+      this.categoryLabel = item.cat_name
+    },
+    // 格式化时间
+    _formatData(data) {
+      return this.$moment(data * 1000).format('YYYY-MM-DD HH:mm')
     },
     // 提交表单
     async _submit() {
@@ -344,24 +318,7 @@ export default {
       } else {
         // 加锁
         this.loading = true
-        const params = JSON.parse(JSON.stringify(this.formData))
-        params.is_week = this.formData.is_week ? '1' : '0'
-        const weekArr = []
-        this.week.forEach((item, index) => {
-          if (item.value) {
-            weekArr.push(index + 1)
-          }
-        })
-        params.week = weekArr.join()
-        if (!params.week) {
-          this.$notify({
-            type: 'warning',
-            message: '请勾选要显示的日期',
-          })
-          this.loading = false
-          return false
-        }
-        this.createECommerceCommodityCategory(this.formData)
+        this.createServiceCommodityCategory(this.formData)
           .then(() => {
             this.$toast.success({
               message: '操作成功',
@@ -370,15 +327,11 @@ export default {
               onClose: () => {
                 // 解锁
                 this.loading = false
-                this._getECommerceCommodityFirstCategoryList()
+                this._getServiceCommodityCategoryList()
                 this._controlCategoryCRUPopup()
                 this.formData = {
-                  name: '',
-                  sort: 1,
-                  discount: '',
-                  week: '',
-                  is_week: false,
-                  fid: '0',
+                  cat_name: '',
+                  cat_fid: '0',
                 }
                 this.$nextTick(() => {
                   this.$refs.observer.reset()
@@ -396,6 +349,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.van-tag {
+  .van-icon {
+    margin-right: 4px;
+  }
+}
+
 .add-icon {
   margin-right: 10px;
   font-size: 18px;
@@ -419,16 +378,5 @@ export default {
 
 .van-switch {
   font-size: 18px !important;
-}
-
-.van-checkbox {
-  display: inline-block;
-  /deep/ .van-checkbox__icon {
-    display: inline-block;
-  }
-  /deep/.van-checkbox__label {
-    vertical-align: 3px;
-    margin-right: 29px;
-  }
 }
 </style>

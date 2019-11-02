@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}运费模版`" @click-left="_goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar :title="`${type}运费模版`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <ValidationProvider name="模版名称" rules="required" slim v-slot="{ errors }">
@@ -75,7 +75,7 @@ import { mapActions } from 'vuex'
 import { TemplateArea } from '@/common/constant'
 
 export default {
-  name: '',
+  name: 'freightTemplateCRU',
 
   mixins: [],
 
@@ -212,7 +212,7 @@ export default {
               onClose: () => {
                 // 解锁
                 this.loading = false
-                this._goBack()
+                this.$goBack()
               },
             })
           })

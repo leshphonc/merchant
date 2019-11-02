@@ -13,6 +13,7 @@
         <grid-map :data="billData"></grid-map>
       </div>
     </div>
+    <div class="tab-bar-holder-sp"></div>
   </div>
 </template>
 
@@ -21,7 +22,7 @@ import MerchantCard from '@/components/MerchantCard'
 import GridMap from '@/components/GridMap'
 import { SettingGrid, BillGrid } from '@/common/grid'
 export default {
-  name: '',
+  name: 'mine',
 
   mixins: [],
 

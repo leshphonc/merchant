@@ -15,7 +15,7 @@ export default {
       ticket: localStorage.getItem('ticket'),
     }),
   // 店铺详情
-  getStoreFrontDetail: id =>
+  readStoreFrontDetail: id =>
     axios.post('/appapi.php?c=Merchantapp&a=store_details', {
       store_id: id,
       ticket: localStorage.getItem('ticket'),

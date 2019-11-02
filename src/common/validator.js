@@ -21,9 +21,16 @@ extend('phone', {
 
 extend('decimal-max1', {
   validate: value => {
-    return new RegExp(/^[0-9]{1}(\.[0-9])?$/).test(value)
+    return new RegExp(/^(([1-9][0-9]*)|(([0]\.\d?|[1-9][0-9]*\.\d?)))$/).test(value)
   },
   message: '最多支持1位小数',
+})
+
+extend('decimal-max2', {
+  validate: value => {
+    return new RegExp(/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/).test(value)
+  },
+  message: '最多支持2位小数',
 })
 
 // 全局注册组件

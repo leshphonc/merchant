@@ -45,4 +45,11 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  // 优惠券列表
+  getCouponList: () =>
+    axios.get('/appapi.php?c=SpaceMerchant&a=select_card_coupon', {
+      params: {
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar @click-left="_goBack" @click-right="_createStoreFront" fixed left-arrow right-text="创建店铺" title="店铺列表"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" @click-right="_createStoreFront" fixed left-arrow right-text="创建店铺" title="店铺列表"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <div :key="i" v-for="(item, i) in list">
       <van-panel>

@@ -4,7 +4,7 @@
       :border="false"
       :right-text="rightText"
       :title="`商品列表`"
-      @click-left="_goBack"
+      @click-left="$goBack"
       @click-right="_createCommodity"
       fixed
       left-arrow
@@ -15,8 +15,12 @@
         <e-commerce-commodity></e-commerce-commodity>
       </van-tab>
       <van-tab title="外卖">内容 2</van-tab>
-      <van-tab title="服务">内容 3</van-tab>
-      <van-tab title="套餐">内容 4</van-tab>
+      <van-tab title="服务">
+        <service-commodity></service-commodity>
+      </van-tab>
+      <van-tab title="套餐">
+        <package-commodity></package-commodity>
+      </van-tab>
     </van-tabs>
   </div>
 </template>
@@ -24,6 +28,8 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import ECommerceCommodity from './ECommerceCommodity'
+import ServiceCommodity from './ServiceCommodity'
+import PackageCommodity from './PackageCommodity'
 
 export default {
   name: 'commodityList',
@@ -32,6 +38,8 @@ export default {
 
   components: {
     ECommerceCommodity,
+    ServiceCommodity,
+    PackageCommodity,
   },
 
   props: {},
@@ -61,10 +69,13 @@ export default {
 
   mounted() {},
 
-  destroyed() {},
+  destroyed() {
+    // 重置右上角文字
+    this.resetRightText()
+  },
 
   methods: {
-    ...mapMutations('commodity', ['changeRightText']),
+    ...mapMutations('commodity', ['changeRightText', 'resetRightText']),
     // 创建商品
     _createCommodity() {
       if (this.rightText === '创建') {
@@ -76,26 +87,24 @@ export default {
             this.$router.push('/commodity/eCommerceCommodityCRU')
             break
           case 2:
-            this.$router.push('/commodity/eCommerceCommodityCRU')
+            this.$router.push('/commodity/serviceCommodityCRU')
             break
           case 3:
-            this.$router.push('/commodity/eCommerceCommodityCRU')
+            this.$router.push('/commodity/packageCommodityCRU')
             break
           default:
             break
         }
       } else {
-        if (this.active === 0) {
-          this.rightText === '管理'
-            ? this.changeRightText({
-                index: 0,
-                text: '取消',
-              })
-            : this.changeRightText({
-                index: 0,
-                text: '管理',
-              })
-        }
+        this.rightText === '管理'
+          ? this.changeRightText({
+              index: this.active,
+              text: '取消',
+            })
+          : this.changeRightText({
+              index: this.active,
+              text: '管理',
+            })
       }
     },
   },

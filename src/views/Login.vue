@@ -28,7 +28,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
-  name: 'Login',
+  name: 'login',
 
   mixins: [],
 

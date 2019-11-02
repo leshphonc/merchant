@@ -38,7 +38,7 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
-  // 新增电商分类
+  // 创建电商分类
   createECommerceCommodityCategory: ({ name, sort, is_week, week, discount, fid }) => {
     let method = 'addEditShopCate'
     if (fid !== '0') {
@@ -65,4 +65,30 @@ export default {
       ticket: localStorage.getItem('ticket'),
     })
   },
+  // 创建电商商品
+  createECommerceCommodity: payload =>
+    axios.post(`/appapi.php?c=SpaceMerchant&a=goods_add`, {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 查询电商商品详情
+  readECommerceCommodityDetail: id =>
+    axios.get(`/appapi.php?c=SpaceMerchant&a=goods_detail`, {
+      params: {
+        goods_id: id,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // 修改电商商品
+  updateECommerceCommodity: payload =>
+    axios.post(`/appapi.php?c=SpaceMerchant&a=goods_edit`, {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 修改电商商品优惠
+  updateECommerceCommodityPreferential: payload =>
+    axios.post(`/appapi.php?c=SpaceMerchant&a=goods_discount`, {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

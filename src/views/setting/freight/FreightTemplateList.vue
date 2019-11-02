@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar @click-left="_goBack" @click-right="_create" fixed left-arrow right-text="创建" title="运费模版"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" @click-right="_create" fixed left-arrow right-text="创建" title="运费模版"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-cell-group title="模版列表">
       <van-swipe-cell :key="item.value" v-for="item in list">
@@ -17,7 +17,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: '',
+  name: 'freightTemplateList',
 
   mixins: [],
 

@@ -54,7 +54,6 @@
 
 <script>
 import { VueCropper } from 'vue-cropper'
-import axios from 'axios'
 import Utils from '@/utils'
 
 export default {
@@ -142,7 +141,7 @@ export default {
     },
     _cropper() {
       this.$refs.cropper.getCropData(data => {
-        axios
+        this.$axios
           .post('/appapi.php?c=Merchantapp&a=base64change', {
             imgBase: data,
             ticket: localStorage.getItem('ticket'),

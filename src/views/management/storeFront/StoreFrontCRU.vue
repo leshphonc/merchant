@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}店铺`" @click-left="_goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar :title="`${type}店铺`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
@@ -209,7 +209,7 @@
           />
         </ValidationProvider>
         <van-cell required title="店铺详情"></van-cell>
-        <quill-editor ref="myQuillEditor" v-model.trim="formData.context"></quill-editor>
+        <quill-editor :context="formData.context" ref="editor"></quill-editor>
       </van-cell-group>
     </ValidationObserver>
 
@@ -278,6 +278,7 @@ import { mapActions } from 'vuex'
 import areaData from '@/assets/js/area'
 import ImgCropper from '@/components/ImgCropper'
 import CoordinatePicker from '@/components/CoordinatePicker'
+import QuillEditor from '@/components/QuillEditor'
 // import Utils from '@/utils/index'
 export default {
   name: 'storeFrontCRU',
@@ -287,6 +288,7 @@ export default {
   components: {
     ImgCropper,
     CoordinatePicker,
+    QuillEditor,
   },
 
   props: {},
@@ -437,7 +439,7 @@ export default {
     const { id } = this.$route.params
     // 获取平台店铺分类
     if (id) {
-      this._getStoreFrontDetail(id)
+      this._readStoreFrontDetail(id)
     } else {
       this._getPlatformStoreFrontCategory()
     }
@@ -448,7 +450,7 @@ export default {
   methods: {
     ...mapActions('storeFront', [
       'createStoreFront',
-      'getStoreFrontDetail',
+      'readStoreFrontDetail',
       'updateStoreFront',
       'getPlatformStoreFrontCategory',
     ]),
@@ -550,7 +552,7 @@ export default {
         this._serializationStoreFrontCategory(fid, id)
       })
     },
-    // 序列化店铺分类数据用于picker
+    // 根据columns原始数据序列化店铺分类数据用于picker
     _serializationStoreFrontCategory(fid, id) {
       const data = this.storeFrontCategoryOrigin
       let index1 = 0
@@ -574,8 +576,8 @@ export default {
       ]
     },
     // 获取店铺默认数据
-    _getStoreFrontDetail(id) {
-      this.getStoreFrontDetail(id).then(res => {
+    _readStoreFrontDetail(id) {
+      this.readStoreFrontDetail(id).then(res => {
         console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
@@ -595,7 +597,7 @@ export default {
         ]
         this._getPlatformStoreFrontCategory(res.cat_fid, res.cat_id)
         this.$nextTick(function() {
-          this.$refs.myQuillEditor.quill.blur()
+          this.$refs.editor.$refs.quillEditor.quill.blur()
           window.scroll(0, 0)
         })
       })
@@ -614,7 +616,7 @@ export default {
           message: '请填写完整信息',
         })
       } else {
-        if (!this.formData.context) {
+        if (!this.$refs.editor.editorHtml) {
           this.$notify({
             type: 'warning',
             message: '请填写完整信息',
@@ -624,6 +626,7 @@ export default {
           this.loading = true
           // 表单完整，进行数据修改并提交
           this.formData.ismain ? (this.formData.ismain = '1') : (this.formData.ismain = '0')
+          this.formData.context = this.$refs.editor.editorHtml
           this.formData[this.businessValue] = '1'
           let method = 'createStoreFront'
           const { id } = this.$route.params
@@ -640,7 +643,7 @@ export default {
                 onClose: () => {
                   // 解锁
                   this.loading = false
-                  this._goBack()
+                  this.$goBack()
                 },
               })
             })

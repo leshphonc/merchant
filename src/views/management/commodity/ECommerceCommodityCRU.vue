@@ -1,8 +1,8 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}电商商品`" @click-left="_goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar :title="`${type}电商商品`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <ValidationObserver ref="observer" tag="form" v-slot="{ invalid }">
+    <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
         <ValidationProvider name="商品名称" rules="required" slim v-slot="{ errors }">
           <van-field
@@ -25,7 +25,7 @@
             v-model.trim="formData.unit"
           />
         </ValidationProvider>
-        <ValidationProvider name="原价" rules="required|numeric" slim v-slot="{ errors }">
+        <ValidationProvider name="原价" rules="required|decimal-max2" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             label="原价"
@@ -35,7 +35,7 @@
             v-model.trim="formData.old_price"
           />
         </ValidationProvider>
-        <ValidationProvider name="现价" rules="required|numeric" slim v-slot="{ errors }">
+        <ValidationProvider name="现价" rules="required|decimal-max2" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             label="现价"
@@ -73,7 +73,7 @@
           label="类型"
           readonly
         />
-        <ValidationProvider name="商家分类" rules="required" slim v-slot="{ errors }">
+        <ValidationProvider name="商家电商分类" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             :value="categoryLabel"
@@ -119,7 +119,7 @@
             required
           />
         </ValidationProvider>
-        <ValidationProvider name="其他区域运费" rules="required|numeric" slim v-slot="{ errors }">
+        <ValidationProvider name="其他区域运费" rules="required|decimal-max2" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             label="其他区域运费"
@@ -138,9 +138,9 @@
           label="运费计算方式"
           readonly
         />
-        <img-cropper :confirm="_pickPic" field="商品图片" title="商品图片"></img-cropper>
+        <img-cropper :confirm="_pickPic" :list="pic" field="商品图片" title="商品图片"></img-cropper>
         <van-cell required title="店铺详情"></van-cell>
-        <quill-editor ref="myQuillEditor" v-model.trim="formData.des"></quill-editor>
+        <quill-editor :context="formData.des" ref="editor"></quill-editor>
       </van-cell-group>
     </ValidationObserver>
     <!-- 弹出层 -->
@@ -175,7 +175,7 @@
         @change="_changeCategory"
         @confirm="_pickCategory"
         show-toolbar
-        value-key="sort_id"
+        value-key="sort_name"
       ></van-picker>
     </van-popup>
     <!-- 所属商城分类 -->
@@ -218,14 +218,16 @@
 <script>
 import { mapActions } from 'vuex'
 import ImgCropper from '@/components/ImgCropper'
+import QuillEditor from '@/components/QuillEditor'
 
 export default {
-  name: '',
+  name: 'eCommerceCommodityCRU',
 
   mixins: [],
 
   components: {
     ImgCropper,
+    QuillEditor,
   },
 
   props: {},
@@ -264,6 +266,11 @@ export default {
       showPlatformCategoryPicker: false,
       showFreightTemplate: false,
       showFreightType: false,
+      pic: [],
+      // submit锁
+      loading: false,
+      // 后期需要修改的
+      sort_fid: '',
     }
   },
 
@@ -310,7 +317,19 @@ export default {
     },
     // 所属电商分类非空验证
     categoryLabel() {
-      return ''
+      let resultStr = ''
+      if (this.sort_fid) {
+        const item = this.categoryColumnsOrigin.find(item => item.sort_id === this.sort_fid)
+        if (item) {
+          resultStr += item.sort_name
+          const child = item.children.find(item => item.sort_id === this.formData.sort_id)
+          child && (resultStr += ' / ' + child.sort_name)
+        }
+      } else {
+        const item = this.categoryColumnsOrigin.find(item => item.sort_id === this.formData.sort_id)
+        item && (resultStr += item.sort_name)
+      }
+      return resultStr
     },
     // 平台商城电商分类非空验证
     platformCategoryLabel() {
@@ -342,15 +361,30 @@ export default {
   created() {},
 
   mounted() {
+    // 运费模版
     this._getFreightTemPlateList()
-    this._getECommerceCommodityFirstCategoryList()
+    // 平台电商分类
     this._getPlatformECommerceCommodityCategoryList()
+    // 是否为编辑店铺
+    const { id } = this.$route.params
+    if (id) {
+      this._readECommerceCommodityDetail(id)
+    } else {
+      // 电商分类
+      this._getECommerceCommodityFirstCategoryList()
+    }
   },
 
   destroyed() {},
 
   methods: {
-    ...mapActions('commodity', ['getECommerceCommodityFirstCategoryList', 'getPlatformEcommerceCommodityCategoryList']),
+    ...mapActions('commodity', [
+      'getECommerceCommodityFirstCategoryList',
+      'getPlatformEcommerceCommodityCategoryList',
+      'createECommerceCommodity',
+      'updateECommerceCommodity',
+      'readECommerceCommodityDetail',
+    ]),
     ...mapActions('freight', ['getFreightTemPlateList']),
     // 商品状态开关
     _controlStatusPicker() {
@@ -388,7 +422,13 @@ export default {
     },
     // 商品分类选择
     _pickCategory(data) {
-      this.formData.sort_id = data.value
+      if (data[1]) {
+        this.sort_fid = data[0].sort_id
+        this.formData.sort_id = data[1].sort_id
+      } else {
+        this.sort_fid = ''
+        this.formData.sort_id = data[0].sort_id
+      }
       this._controlCategoryPicker()
     },
     // 平台商城 商品分类 选择开关
@@ -447,18 +487,21 @@ export default {
         this.freightTemplateColumns = res
       })
     },
-    // 序列化商品分类
+    // 根据columns原始数据序列化商家商品分类
     _serializationECommerceCategory(fid, id) {
       const data = this.categoryColumnsOrigin
       let index1 = 0
       let index2 = 0
       if (fid && id) {
-        index1 = data.findIndex(item => item.value === fid) >= 0 ? data.findIndex(item => item.value === fid) : 0
+        index1 = data.findIndex(item => item.sort_id === fid) >= 0 ? data.findIndex(item => item.sort_id === fid) : 0
         index2 =
-          data[index1].children.findIndex(item => item.value === id) >= 0
-            ? data[index1].children.findIndex(item => item.value === id)
+          data[index1].children.findIndex(item => item.sort_id === id) >= 0
+            ? data[index1].children.findIndex(item => item.sort_id === id)
             : 0
+      } else if (fid) {
+        index1 = data.findIndex(item => item.sort_id === fid) >= 0 ? data.findIndex(item => item.sort_id === fid) : 0
       }
+
       this.categoryColumns = [
         {
           values: data,
@@ -493,9 +536,73 @@ export default {
         },
       ]
     },
+    _readECommerceCommodityDetail(id) {
+      this.readECommerceCommodityDetail(id).then(res => {
+        console.log(res)
+        const keys = Object.keys(this.formData)
+        keys.forEach(item => {
+          this.formData[item] = res[item]
+        })
+        this.formData.pic = [res.pic[0].url]
+        this.pic = res.pic
+        if (res.sort_fid) {
+          this.sort_fid = res.sort_fid
+          this._getECommerceCommodityFirstCategoryList(res.sort_fid, res.sort_id)
+        } else {
+          this._getECommerceCommodityFirstCategoryList(res.sort_id)
+        }
+        this.$nextTick(function() {
+          window.scroll(0, 0)
+        })
+      })
+    },
     // 提交表单
-    _submit() {
-      console.log(this.formData)
+    async _submit() {
+      // 锁
+      if (this.loading) return false
+      // 验证表单
+      const isValid = await this.$refs.observer.validate()
+      if (!isValid) {
+        this.$notify({
+          type: 'warning',
+          message: '请填写完整信息',
+        })
+      } else {
+        console.log(this.$refs.editor)
+        if (!this.$refs.editor.editorHtml) {
+          this.$notify({
+            type: 'warning',
+            message: '请填写完整信息',
+          })
+        } else {
+          // 加锁
+          this.loading = true
+          // 表单完整，进行数据修改并提交
+          let method = 'createECommerceCommodity'
+          const { id } = this.$route.params
+          if (id) {
+            method = 'updateECommerceCommodity'
+            this.formData.goods_id = id
+          }
+          this.formData.des = this.$refs.editor.editorHtml
+          this[method](this.formData)
+            .then(() => {
+              this.$toast.success({
+                message: '操作成功',
+                forbidClick: true,
+                duration: 1500,
+                onClose: () => {
+                  // 解锁
+                  this.loading = false
+                  this.$goBack()
+                },
+              })
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        }
+      }
     },
   },
 }

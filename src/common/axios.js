@@ -27,12 +27,14 @@ axios.interceptors.response.use(
     // console.log(config);
     Toast.clear()
     if (config.data.errorCode !== errorcode.SUCCESS) {
+      // 兼容上传oss图片错误
       if (config.data.error === errorcode.SUCCESS) {
         return config.data.msg
       }
+      // 是否为登录验证过期
       if (config.data.errorCode === errorcode.NOTICKET || config.data.errorCode === errorcode.TIMEOUT) {
         Toast({
-          message: '登录验证失效',
+          message: '请重新登录',
           icon: 'warn-o',
           forbidClick: true,
           duration: 1500,
@@ -42,8 +44,15 @@ axios.interceptors.response.use(
         })
         return false
       }
+      // 是否非法操作
+      if (!config.data.errorCode) {
+        Toast({
+          message: '后台接口未配置，请联系后台管理员',
+          duration: 1500,
+        })
+        return false
+      }
       Notify({ type: 'warning', message: config.data.errorMsg })
-      return false
     }
     return config.data.result
   },
