@@ -233,8 +233,8 @@ export default {
           this.finished = true
         } else {
           this.page += 1
-          this.list.push(...res.lists)
         }
+        this.list.push(...res.lists)
       })
     },
     // 刷新电商商品列表

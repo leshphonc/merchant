@@ -6,7 +6,7 @@ export default {
   component: Index,
   children: [
     {
-      path: '/',
+      path: '',
       component: FreightTemplateList,
     },
     {

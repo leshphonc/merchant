@@ -22,11 +22,25 @@ export default {
       data ? resolve(data) : reject()
     })
   },
+  // 修改套餐商品
+  async updatePackageCommodity(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.updatePackageCommodity(payload)
+      data ? resolve() : reject()
+    })
+  },
   // 删除套餐商品
   async deletePackageCommodity(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.deletePackageCommodity(id)
       data ? resolve() : reject()
+    })
+  },
+  // 读取套餐内包含的服务项目
+  async readServiceOfPackageCommodity(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.readServiceOfPackageCommodity(id)
+      data ? resolve(data) : reject()
     })
   },
   // 读取套餐商品销售记录

@@ -19,9 +19,21 @@ export default {
       meal_id: id,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 修改套餐商品
+  updatePackageCommodity: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=editMeal', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
   // 删除套餐商品
   deletePackageCommodity: id =>
     axios.post('/appapi.php?c=SpaceMerchant&a=delMeal', {
+      meal_id: id,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 读取套餐内包含的服务项目
+  readServiceOfPackageCommodity: id =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=getMealProList', {
       meal_id: id,
       ticket: localStorage.getItem('ticket'),
     }),

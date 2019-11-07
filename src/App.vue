@@ -95,4 +95,8 @@ body {
     margin-top: 4px;
   }
 }
+
+a {
+  color: initial !important;
+}
 </style>

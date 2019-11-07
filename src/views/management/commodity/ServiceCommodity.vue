@@ -203,8 +203,8 @@ export default {
           this.finished = true
         } else {
           this.page += 1
-          this.list.push(...res)
         }
+        this.list.push(...res)
       })
     },
     // 刷新服务商品列表

@@ -8,7 +8,11 @@ module.exports = {
     loaderOptions: {
       less: {
         modifyVars: {
-          // green: '#ffb000',
+          green: '#ffb000',
+          'nav-bar-background-color': '@green',
+          'nav-bar-icon-color': 'white',
+          'nav-bar-text-color': 'white',
+          'nav-bar-title-text-color': 'white',
         },
       },
       postcss: {

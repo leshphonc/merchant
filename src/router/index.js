@@ -13,11 +13,33 @@ const routes = [
     component: Index,
     children: [
       {
-        path: '/',
+        path: '',
         component: Home,
       },
       {
-        path: '/mine',
+        path: 'order',
+        component: () => import('@/views/order'),
+        children: [
+          {
+            path: '',
+            component: () => import('@/views/order/OrderTypeCell'),
+          },
+          {
+            path: 'groupList',
+            component: () => import('@/views/order/GroupList'),
+          },
+          {
+            path: 'groupOrderDetail/:id',
+            component: () => import('@/views/order/GroupOrderDetail'),
+          },
+        ],
+      },
+      {
+        path: 'marketing',
+        component: () => import('@/views/Marketing'),
+      },
+      {
+        path: 'mine',
         component: () => import('@/views/Mine'),
       },
     ],

@@ -1,20 +1,28 @@
 <template>
   <div>
     <router-view></router-view>
-    <van-tabbar :border="false" active-color="#ffb000" class="shadow-bar" route safe-area-inset-bottom v-model="active">
+    <van-tabbar
+      :border="false"
+      active-color="#ffb000"
+      class="shadow-bar"
+      route
+      safe-area-inset-bottom
+      v-model="active"
+      v-show="showTabBar"
+    >
       <van-tabbar-item replace to="/">
         <span>首页</span>
         <img :src="props.active ? icons.home.active : icons.home.unactive" alt slot="icon" slot-scope="props" />
       </van-tabbar-item>
-      <van-tabbar-item>
+      <van-tabbar-item to="/order">
         <span>订单</span>
         <img :src="props.active ? icons.order.active : icons.order.unactive" alt slot="icon" slot-scope="props" />
       </van-tabbar-item>
-      <van-tabbar-item class="add-btn">
+      <van-tabbar-item class="add-btn" to="/commodity">
         <div></div>
         <span>发布商品</span>
       </van-tabbar-item>
-      <van-tabbar-item>
+      <van-tabbar-item to="/marketing">
         <span>营销活动</span>
         <img :src="props.active ? icons.marketing.active : icons.marketing.unactive" alt slot="icon" slot-scope="props" />
       </van-tabbar-item>
@@ -58,7 +66,11 @@ export default {
     }
   },
 
-  computed: {},
+  computed: {
+    showTabBar() {
+      return this.$route.path.split('/').length < 3
+    },
+  },
 
   watch: {},
 

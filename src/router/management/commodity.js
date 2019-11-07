@@ -7,7 +7,7 @@ export default {
   children: [
     {
       // 商品列表
-      path: '/',
+      path: '',
       component: CommodityList,
     },
     {
@@ -34,6 +34,11 @@ export default {
       // 套餐商品编辑
       path: 'packageCommodityCRU/:id?',
       component: () => import('@/views/management/commodity/PackageCommodityCRU'),
+    },
+    {
+      // 套餐商品销售记录
+      path: 'packageCommoditySalesRecord/:id',
+      component: () => import('@/views/management/commodity/PackageCommoditySalesRecord'),
     },
   ],
 }
