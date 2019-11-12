@@ -1,4 +1,4 @@
-import homeAPI from '@/api/home'
+import marketAPI from '@/api/market'
 
 // initial state
 const state = {}
@@ -8,9 +8,10 @@ const getters = {}
 
 // actions
 const actions = {
-  async getHomeInfo() {
+  // 获取订单类别列表
+  async getMarketTypeList() {
     return new Promise(async (resolve, reject) => {
-      const data = await homeAPI.getHomeInfo()
+      const data = await marketAPI.getMarketTypeList()
       data ? resolve(data) : reject()
     })
   },

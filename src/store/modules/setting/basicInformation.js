@@ -1,4 +1,4 @@
-import homeAPI from '@/api/home'
+import basicInformationAPI from '@/api/setting/basicInformation'
 
 // initial state
 const state = {}
@@ -8,10 +8,18 @@ const getters = {}
 
 // actions
 const actions = {
-  async getHomeInfo() {
+  // 读取商户基本信息
+  async readMerchantInfo() {
     return new Promise(async (resolve, reject) => {
-      const data = await homeAPI.getHomeInfo()
+      const data = await basicInformationAPI.readMerchantInfo()
       data ? resolve(data) : reject()
+    })
+  },
+  // 基本信息编辑
+  async updateMerchantInfo(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await basicInformationAPI.updateMerchantInfo(payload)
+      data ? resolve() : reject()
     })
   },
 }

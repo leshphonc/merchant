@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 import actions from './actions'
 import home from './modules/home'
 import order from './modules/order'
+import market from './modules/market'
+import wallet from './modules/wallet'
 import management from './modules/management'
 import setting from './modules/setting'
 
@@ -17,6 +19,8 @@ export default new Vuex.Store({
   modules: {
     home,
     order,
+    market,
+    wallet,
     ...management,
     ...setting,
   },

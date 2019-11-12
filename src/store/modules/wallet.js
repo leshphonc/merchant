@@ -1,4 +1,4 @@
-import homeAPI from '@/api/home'
+import walletAPI from '@/api/wallet'
 
 // initial state
 const state = {}
@@ -8,12 +8,14 @@ const getters = {}
 
 // actions
 const actions = {
-  async getHomeInfo() {
+  // 读取提现微信账户
+  async readWxAccount() {
     return new Promise(async (resolve, reject) => {
-      const data = await homeAPI.getHomeInfo()
+      const data = await walletAPI.readWxAccount()
       data ? resolve(data) : reject()
     })
   },
+  // 充值记录
 }
 
 // mutations

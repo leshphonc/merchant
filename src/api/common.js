@@ -52,4 +52,9 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  // 获取微信配置信息
+  getWxConfig: () =>
+    axios.post('/appapi.php?c=Config&a=wx_config', {
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

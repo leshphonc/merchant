@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import { ManagementGrid, PopularizeGrid } from '@/common/grid'
 import MerchantCard from '@/components/MerchantCard'
 import GridMap from '@/components/GridMap'
@@ -103,28 +103,32 @@ export default {
           },
         ],
       },
+      swipe: [],
     }
   },
 
-  computed: {
-    ...mapState('home', ['commonInfo']),
-    swipe() {
-      return this.commonInfo.wap_MerchantAd
-    },
-  },
+  computed: {},
 
   watch: {},
 
   created() {},
 
   mounted() {
-    this.getHomeInfo()
+    this._getHomeInfo()
   },
 
   destroyed() {},
 
   methods: {
     ...mapActions('home', ['getHomeInfo']),
+    // 读取首页轮播广告
+    _getHomeInfo() {
+      this.getHomeInfo().then(res => {
+        console.log(res)
+        this.swipe = res.wap_MerchantAd
+      })
+    },
+    // 跳转广告页面
     _goAd(url) {
       window.location.href = url
     },

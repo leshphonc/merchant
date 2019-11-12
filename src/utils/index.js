@@ -158,12 +158,12 @@ export default {
   // 公用正则
   matchExp(rule, value) {
     const REGS = {
-      name: '/^[\\u4e00-\\u9fa5A-Za-z()]+$/',
-      number: '/^[0-9.]*$/',
-      account: '/^[A-Za-z0-9]{1,30}$/',
-      password: '/^(\\w){6,16}$/',
-      tel: '/^[1][3-9][0-9]{9}$/',
-      email: '/^([A-Za-z0-9_\\-\\.])+\\@([A-Za-z0-9_\\-\\.])+\\.([A-Za-z]{2,4})$/',
+      name: /^[\\u4e00-\\u9fa5A-Za-z()]+$/,
+      number: /^[0-9.]*$/,
+      account: /^[A-Za-z0-9]{1,30}$/,
+      password: /^(\\w){6,16}$/,
+      tel: /^[1][3-9][0-9]{9}$/,
+      email: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
     }
     return new RegExp(REGS[rule]).test(value)
   },

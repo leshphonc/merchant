@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '@/views/Index'
 import Home from '@/views/Home'
+import Wallet from './wallet'
 import Management from './management'
 import Setting from './setting'
 
@@ -36,7 +37,13 @@ const routes = [
       },
       {
         path: 'marketing',
-        component: () => import('@/views/Marketing'),
+        component: () => import('@/views/market'),
+        children: [
+          {
+            path: '',
+            component: () => import('@/views/market/MarketTypeCell'),
+          },
+        ],
       },
       {
         path: 'mine',
@@ -44,6 +51,7 @@ const routes = [
       },
     ],
   },
+  Wallet,
   ...Management,
   ...Setting,
   {

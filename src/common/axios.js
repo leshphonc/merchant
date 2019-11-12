@@ -8,11 +8,11 @@ import errorcode from '@/common/errorcode'
 axios.interceptors.request.use(
   config => {
     // console.log(config);
-    Toast.loading({
-      message: '加载中...',
-      forbidClick: true,
-      duration: 0,
-    })
+    // Toast.loading({
+    //   message: '加载中...',
+    //   forbidClick: true,
+    //   duration: 0,
+    // })
     // 转为formdata数据格式
     config.data = qs.stringify(config.data)
     return config
@@ -25,7 +25,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   config => {
     // console.log(config);
-    Toast.clear()
+    // Toast.clear()
     if (config.data.errorCode !== errorcode.SUCCESS) {
       // 兼容上传oss图片错误
       if (config.data.error === errorcode.SUCCESS) {

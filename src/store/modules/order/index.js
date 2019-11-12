@@ -1,4 +1,5 @@
-import homeAPI from '@/api/home'
+import orderAPI from '@/api/order'
+import grourActions from './group'
 
 // initial state
 const state = {}
@@ -8,12 +9,14 @@ const getters = {}
 
 // actions
 const actions = {
-  async getHomeInfo() {
+  // 获取订单类别列表
+  async getOrderTypeList() {
     return new Promise(async (resolve, reject) => {
-      const data = await homeAPI.getHomeInfo()
+      const data = await orderAPI.getOrderTypeList()
       data ? resolve(data) : reject()
     })
   },
+  ...grourActions,
 }
 
 // mutations

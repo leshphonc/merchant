@@ -3,7 +3,7 @@
     <div :key="index" v-for="(item, index) in list">
       <div class="white-space"></div>
       <van-cell-group>
-        <van-cell :title="item.name" :value="item.count" is-link to="/order/groupList" />
+        <van-cell :title="item.name" @click="_unEnabled" is-link />
       </van-cell-group>
     </div>
     <div class="tab-bar-holder-sp"></div>
@@ -14,7 +14,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'orderTypeCell',
+  name: 'marketTypeCell',
 
   mixins: [],
 
@@ -25,9 +25,6 @@ export default {
   data() {
     return {
       list: [],
-      map: {
-        团购订单: '/order/groupList',
-      },
     }
   },
 
@@ -38,18 +35,23 @@ export default {
   created() {},
 
   mounted() {
-    this._getOrderTypeList()
+    this._getMarketTypeList()
   },
 
   destroyed() {},
 
   methods: {
-    ...mapActions('order', ['getOrderTypeList']),
-    _getOrderTypeList() {
-      this.getOrderTypeList().then(res => {
+    ...mapActions('market', ['getMarketTypeList']),
+    _getMarketTypeList() {
+      this.getMarketTypeList().then(res => {
         console.log(res)
-        res.push({ name: '到店消费订单', count: '0' })
         this.list = res
+      })
+    },
+    _unEnabled() {
+      this.$toast({
+        message: '手机端暂未开放此功能，请登录电脑端后台进行操作',
+        duration: 1500,
       })
     },
   },

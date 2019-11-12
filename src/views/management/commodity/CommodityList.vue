@@ -1,13 +1,12 @@
 <template>
   <div>
     <van-nav-bar
-      :border="false"
       :right-text="rightText"
-      :title="`商品列表`"
       @click-left="$goBack"
       @click-right="_createCommodity"
       fixed
       left-arrow
+      title="商品列表"
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-tabs :offset-top="offsetTop" sticky v-model="active">

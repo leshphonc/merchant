@@ -216,7 +216,15 @@
     <!-- 弹出层 -->
     <!-- 地区选择 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showAreaPicker">
-      <van-area :area-list="areaData" @cancel="_controlAreaPicker" @confirm="_pickArea" />
+      <van-picker
+        :columns="areaColumns"
+        @cancel="_controlAreaPicker"
+        @change="_changeArea"
+        @confirm="_pickArea"
+        show-toolbar
+        value-key="label"
+      />
+      <!-- <van-area :area-list="areaData" @cancel="_controlAreaPicker" @confirm="_pickArea" /> -->
     </van-popup>
     <!-- 坐标选择 -->
     <coordinate-picker :cancel="_controlCoordinatePicker" :confirm="_pickCoordinate" :show="showCoordinatePicker"></coordinate-picker>
@@ -275,7 +283,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import areaData from '@/assets/js/area'
+// import areaData from '@/assets/js/area'
 import ImgCropper from '@/components/ImgCropper'
 import CoordinatePicker from '@/components/CoordinatePicker'
 import QuillEditor from '@/components/QuillEditor'
@@ -332,7 +340,7 @@ export default {
       pic: [],
       qrcode_backgroup: [],
       // 地区pickerData
-      areaData,
+      areaColumns: [],
       // 店铺业务pickerData
       businessColumns: [
         { label: '标准', value: 'have_service' },
@@ -442,12 +450,22 @@ export default {
       this._readStoreFrontDetail(id)
     } else {
       this._getPlatformStoreFrontCategory()
+      this._getDefaultAddressColumnsForPicker()
     }
   },
 
   destroyed() {},
 
   methods: {
+    ...mapActions([
+      'getAllAddressColumnsForPicker',
+      'getDefaultAddressColumnsForPicker',
+      'getProvince',
+      'getCity',
+      'getArea',
+      'getCircle',
+      'getMarket',
+    ]),
     ...mapActions('storeFront', [
       'createStoreFront',
       'readStoreFrontDetail',
@@ -596,11 +614,50 @@ export default {
           },
         ]
         this._getPlatformStoreFrontCategory(res.cat_fid, res.cat_id)
+        this.getAllAddressColumnsForPicker({
+          province: res.province_id,
+          city: res.city_id,
+          area: res.area_id,
+          circle: res.circle_id,
+          market: res.market_id,
+        }).then(res => {
+          console.log(res)
+        })
         this.$nextTick(function() {
           this.$refs.editor.$refs.quillEditor.quill.blur()
           window.scroll(0, 0)
         })
       })
+    },
+    _getDefaultAddressColumnsForPicker() {
+      this.getDefaultAddressColumnsForPicker({ flag: true }).then(res => {
+        console.log(res)
+        this.areaColumns = res
+      })
+    },
+    async _changeArea(picker, values) {
+      if (!values[0].children) {
+        this.getCity({ id: values[0].value, flag: true }).then(res => {
+          console.log(res)
+          values[0].children = res
+          picker.setColumnValues(1, res)
+          this.getArea({ id: res[0].value, flag: true }).then(res2 => {
+            res.children = res2
+            picker.setColumnValues(2, res2)
+          })
+        })
+      } else {
+        const second = values[0].children[0]
+        picker.setColumnValues(1, values[0].children)
+        if (!second.children) {
+          this.getArea({ id: second.value, flag: true }).then(res2 => {
+            second.children = res2
+            picker.setColumnValues(2, res2)
+          })
+        } else {
+          picker.setColumnValues(2, second.children)
+        }
+      }
     },
     // 提交数据
     async _submit() {

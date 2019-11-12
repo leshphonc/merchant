@@ -44,7 +44,7 @@
       </van-panel>
     </template>
     <div class="white-space"></div>
-    <van-panel title="订单信息">
+    <van-panel class="center right" title="订单信息">
       <van-row>
         <van-col span="6">订单类型：</van-col>
         <van-col span="18">{{ order.order_type }}</van-col>
@@ -61,6 +61,20 @@
         <van-col span="6">付款时间：</van-col>
         <van-col span="18">{{ order.pay_time }}</van-col>
       </van-row>
+      <template v-if="order.store_id !== '0' && order.type === 1 && order.tuan_type !== 2 && passArr.length > 1">
+        <van-row :key="item.group_pass" v-for="item in passArr">
+          <van-col span="16">核销码：{{ item.group_pass }}</van-col>
+          <van-col span="8">
+            <div v-show="item.status === '1'">已验证</div>
+            <van-button @click="_verificationCode" size="small" type="primary" v-show="item.status !== '1'">验证</van-button>
+          </van-col>
+        </van-row>
+        <van-row>
+          <van-col>
+            <van-button @click="_verificationAllCode" size="small" type="primary">全部验证</van-button>
+          </van-col>
+        </van-row>
+      </template>
     </van-panel>
     <template v-if="order.store_id && distribution.adress">
       <div class="white-space"></div>
@@ -93,10 +107,10 @@
         <van-row>
           <van-col span="6">快递单号：</van-col>
           <van-col span="18">
-            <van-field placeholder="请填写快递单号">123</van-field>
+            <van-field placeholder="请填写快递单号" v-model="expressNO"></van-field>
           </van-col>
         </van-row>
-        <div slot="footer" v-if="expressLabel">
+        <div slot="footer" v-if="expressLabel && expressNO">
           <van-button @click="_saveExpressInfo" icon="success" size="small" type="primary">保存</van-button>
         </div>
       </van-panel>
@@ -179,11 +193,19 @@ export default {
       },
       showStoreFrontPicker: false,
       showExpressPicker: false,
-      expressLabel: '',
+      expressID: '',
+      expressNO: '',
+      requireMsg: '',
+      passArr: [],
     }
   },
 
-  computed: {},
+  computed: {
+    expressLabel() {
+      const item = this.express.find(item => item.ids === this.expressID)
+      return item && item.name
+    },
+  },
 
   watch: {},
 
@@ -198,7 +220,15 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('order', ['readGroupOrderDetail', 'ascriptionGroupOrder']),
+    ...mapActions('order', [
+      'readGroupOrderDetail',
+      'ascriptionGroupOrder',
+      'changeGroupOrderExpress',
+      'readGroupOrderWriteOff',
+      'verifySingleGroupCode',
+      'verifyArrayGroupCode',
+      'verifyAllGroupCode',
+    ]),
     // 店铺归属开关
     _controlStoreFrontPicker() {
       this.showStoreFrontPicker = !this.showStoreFrontPicker
@@ -225,12 +255,88 @@ export default {
     // 选择物流公司
     _pickerExpress(data) {
       console.log(data)
-      this.expressLabel = data.name
+      this.expressID = data.ids
       this._controlExpressPicker()
     },
     // 保存快递信息
     _saveExpressInfo() {
-      console.log('保存快递信息')
+      this.requireMsg = ''
+      const { id } = this.$route.params
+      this.changeGroupOrderExpress({
+        order_id: id,
+        store_id: this.order.store_id,
+        express_type: this.expressID,
+        express_id: this.expressNO,
+      }).then(() => {
+        this.$toast.success({
+          message: '操作成功',
+          forbidClick: true,
+          duration: 1500,
+          onClose: () => {
+            // 解锁
+            const { id } = this.$route.params
+            this._readGroupOrderDetail(id)
+          },
+        })
+      })
+    },
+    // 验证团购核销码
+    _verificationCode() {
+      window.wx.scanQRCode({
+        needResult: 1,
+        scanType: ['qrCode', 'barCode'],
+        success(res) {
+          const { id } = this.$route.params
+          if (this.order.now_order.num > 1) {
+            this.verifyArrayGroupCode(id, res.resultStr).then(() => {
+              this.$toast.success({
+                message: '操作成功',
+                forbidClick: true,
+                duration: 1500,
+                onClose: () => {
+                  this._readGroupOrderDetail(id)
+                },
+              })
+            })
+          } else {
+            this.verifySingleGroupCode(id, res.resultStr).then(() => {
+              this.$toast.success({
+                message: '操作成功',
+                forbidClick: true,
+                duration: 1500,
+                onClose: () => {
+                  this._readGroupOrderDetail(id)
+                },
+              })
+            })
+          }
+        },
+        fail() {
+          this.$toast.fail({
+            message: '二维码验证失败',
+            forbidClick: true,
+            duration: 1500,
+          })
+          // login.wxConfigFun().then(res => {
+          //   if (res) {
+          //     this.verificBtn(orderId)
+          //   }
+          // })
+        },
+      })
+    },
+    _verificationAllCode() {
+      const { id } = this.$route.params
+      this.verifyAllGroupCode({ id, store_id: this.order.store_id }).then(() => {
+        this.$toast.success({
+          message: '操作成功',
+          forbidClick: true,
+          duration: 1500,
+          onClose: () => {
+            this._readGroupOrderDetail(id)
+          },
+        })
+      })
     },
     // 获取详情数据
     _readGroupOrderDetail(id) {
@@ -240,6 +346,13 @@ export default {
         this.storeFront = res.storelist
         this.distribution = res.distribution
         this.express = res.express_list
+        this.expressID = this.distribution.express_type
+        this.expressNO = this.distribution.express_id
+        if (res.now_order.pass_array === '1') {
+          this.readGroupOrderWriteOff(id).then(res => {
+            this.passArr = res.pass_array
+          })
+        }
       })
     },
   },

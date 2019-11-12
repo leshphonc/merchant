@@ -195,7 +195,6 @@ export default {
     // 选项2更改
     _changeOption2(value) {
       this.find_type = value
-      this._onRefresh()
     },
     // 进入详情
     _goDetail(id) {

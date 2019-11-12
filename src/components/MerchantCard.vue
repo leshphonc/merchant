@@ -22,8 +22,8 @@
         <div class="info-balance van-ellipsis">99291092019201.12</div>
       </van-col>
       <van-col span="8" style="position: relative;">
-        <i class="iconfont info-icon">&#xe637;</i>
-        <div class="info-wallet">充值 | 提现</div>
+        <i @click="_logout" class="iconfont info-icon">&#xe637;</i>
+        <div @click="_goWallet" class="info-wallet">充值 | 提现</div>
       </van-col>
     </van-row>
   </div>
@@ -53,7 +53,24 @@ export default {
 
   destroyed() {},
 
-  methods: {},
+  methods: {
+    // 退出登录
+    _logout() {
+      this.$router.push('/login')
+      this.$toast.success({
+        message: '退出登录',
+        forbidClick: true,
+        duration: 1000,
+        onClose: () => {
+          window.localStorage.removeItem('ticket')
+        },
+      })
+    },
+    // 充值提现
+    _goWallet() {
+      this.$router.push('/wallet')
+    },
+  },
 }
 </script>
 

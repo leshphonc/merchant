@@ -1,13 +1,6 @@
 import axios from 'axios'
 
 export default {
-  // 订单类别列表
-  getOrderTypeList: () =>
-    axios.get('/appapi.php?c=Merchantapp&a=order_list_all', {
-      params: {
-        ticket: localStorage.getItem('ticket'),
-      },
-    }),
   // 团购订单列表
   getGroupList: ({ page, status, find_type, keyword, group_id }) =>
     axios.get('/appapi.php?c=Merchantapp&a=group_order', {

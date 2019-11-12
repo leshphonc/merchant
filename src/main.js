@@ -10,6 +10,7 @@ import '@/common/validator'
 import '@/assets/iconfont/iconfont.css'
 import moment from 'moment'
 import axios from 'axios'
+console.log(store._actions.getArea)
 
 Vue.config.productionTip = false
 

@@ -7,6 +7,7 @@
   修改内容：
   修改人员：
   修改时间：
+  备注： 这是一个弹出层组件！！！！
   props：
     show<Boolean>：控制popup显示状态
     confirm<Function>：点击确定按钮，用于接收结果 lng, lat, address
