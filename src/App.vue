@@ -96,6 +96,11 @@ body {
   }
 }
 
+// van-nav-bar
+.van-nav-bar--fixed {
+  z-index: 2 !important;
+}
+
 a {
   color: initial !important;
 }

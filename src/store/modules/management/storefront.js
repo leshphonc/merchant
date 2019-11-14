@@ -1,4 +1,4 @@
-import storeFrontAPI from '@/api/management/storeFront'
+import storeFrontAPI from '@/api/management/storefront'
 
 // initial state
 const state = {}
