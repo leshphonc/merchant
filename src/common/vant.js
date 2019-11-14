@@ -18,6 +18,7 @@ import {
   Switch,
   SwitchCell,
   Uploader,
+  ActionSheet,
   Dialog,
   DropdownMenu,
   DropdownItem,
@@ -63,6 +64,7 @@ Vue.use(Search)
 Vue.use(Stepper)
 Vue.use(Switch).use(SwitchCell)
 Vue.use(Uploader)
+Vue.use(ActionSheet)
 Vue.use(Dialog)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)

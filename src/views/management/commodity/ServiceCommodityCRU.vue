@@ -32,25 +32,6 @@
             v-model.trim="formData.old_price"
           ></van-field>
         </ValidationProvider>
-        <van-cell title="收取定金">
-          <van-switch v-model="formData.payment_status"></van-switch>
-        </van-cell>
-        <ValidationProvider
-          name="定金"
-          rules="required|decimal-max2"
-          slim
-          v-if="formData.payment_status"
-          v-slot="{ errors }"
-        >
-          <van-field
-            :error-message="errors[0]"
-            label="定金"
-            placeholder="最多支持2位小数"
-            required
-            type="number"
-            v-model.trim="formData.payment_money"
-          ></van-field>
-        </ValidationProvider>
         <van-cell title="日期多选">
           <van-switch v-model="formData.appoint_date_type"></van-switch>
         </van-cell>
@@ -212,7 +193,7 @@ export default {
         appoint_name: '',
         appoint_content: '',
         old_price: '',
-        payment_status: false,
+        payment_status: '0',
         payment_money: '',
         appoint_date_type: false,
         appoint_date_num: '',
@@ -388,7 +369,6 @@ export default {
         this.formData.appoint_date_type = res.appoint_date_type === '1'
         this.formData.car_no = res.car_no === '1'
         this.formData.car_type = res.car_type === '1'
-        this.formData.payment_status = res.payment_status === '1'
         this.formData.start_time = this.$moment(res.start_time * 1000)
         this.formData.end_time = this.$moment(res.end_time * 1000)
         this.formData.pic = [res.pic]
@@ -434,7 +414,6 @@ export default {
           params.appoint_date_type = this.formData.appoint_date_type ? 1 : 0
           params.car_no = this.formData.car_no ? 1 : 0
           params.car_type = this.formData.car_type ? 1 : 0
-          params.payment_status = this.formData.payment_status ? 1 : 0
           params.start_time = this.$moment(this.formData.start_time).valueOf() / 1000
           params.end_time = this.$moment(this.formData.end_time).valueOf() / 1000
           params.pic = this.formData.pic[0]

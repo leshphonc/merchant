@@ -15,8 +15,7 @@
             v-for="item in list"
           >
             <div slot="tags">
-              <van-tag plain type="danger">标签</van-tag>
-              <van-tag plain type="danger">标签</van-tag>
+              <van-tag plain type="danger">{{ item.freight_type === '1' ? '运费单独计算' : '运费最大值' }}</van-tag>
             </div>
             <div slot="footer">
               <van-button @click="_deleteCommodity(item.store_id, item.goods_id)" size="small" type="danger">删除</van-button>
@@ -220,6 +219,9 @@ export default {
     // 分类编辑开关
     _controlCategoryCRUPopup() {
       this.showCategoryCRUPopup = !this.showCategoryCRUPopup
+      this.$nextTick(() => {
+        this.$refs.observer.reset()
+      })
     },
     // 分类归属开关
     _controlCategoryPicker() {
@@ -380,9 +382,6 @@ export default {
                   is_week: false,
                   fid: '0',
                 }
-                this.$nextTick(() => {
-                  this.$refs.observer.reset()
-                })
               },
             })
           })

@@ -7,7 +7,7 @@
         <ValidationProvider name="限时价" rules="required|decimal-max2" slim v-slot="{ errors }">
           <van-field :error-message="errors[0]" label="限时价" placeholder="0表示无限时价" v-model="formData.seckill_price"></van-field>
         </ValidationProvider>
-        <ValidationProvider name="限时价库存" rules="required|numeric" slim v-slot="{ errors }">
+        <ValidationProvider name="限时价库存" rules="required" slim v-slot="{ errors }">
           <van-field :error-message="errors[0]" label="限时价库存" placeholder="-1表示不限量" v-model="formData.seckill_stock"></van-field>
         </ValidationProvider>
         <ValidationProvider name="限时价类型" rules="required" slim v-slot="{ errors }">
@@ -50,8 +50,8 @@
           ></van-field>
         </ValidationProvider>
       </van-cell-group>
-      <van-cell-group title="用户消费赠送比例">
-        <ValidationProvider name="赠送元宝数量" rules="required|numeric" slim v-slot="{ errors }">
+      <van-cell-group title="用户消费赠送比例" v-if="dhbOpen !== 0 || scoreOpen !== 0">
+        <ValidationProvider name="赠送元宝数量" rules="required|numeric" slim v-if="dhbOpen !== 0" v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             :label-width="resizeWidth"
@@ -62,7 +62,7 @@
             <div slot="right-icon">元宝</div>
           </van-field>
         </ValidationProvider>
-        <ValidationProvider name="赠送金币数量" rules="required|numeric" slim v-slot="{ errors }">
+        <ValidationProvider name="赠送金币数量" rules="required|numeric" slim v-if="scoreOpen !== 0" v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             :label-width="resizeWidth"
@@ -114,15 +114,18 @@
     </ValidationObserver>
     <div class="white-space"></div>
     <!-- 弹出层 -->
+    <!-- 限时价类型 -->
     <van-popup position="bottom" v-model="showTimeTypePicker">
       <van-picker
         :columns="timeTypeColumns"
+        :default-index="timeTypeIndex"
         @cancel="_controlTimeTypePicker"
         @confirm="_pickTimeType"
         show-toolbar
         value-key="label"
       ></van-picker>
     </van-popup>
+    <!-- 开始时间 -->
     <van-popup position="bottom" v-model="showStartTimePicker">
       <van-datetime-picker
         :type="timePickerDateType"
@@ -132,6 +135,7 @@
         show-toolbar
       />
     </van-popup>
+    <!-- 结束时间 -->
     <van-popup position="bottom" v-model="showEndTimePicker">
       <van-datetime-picker
         :type="timePickerDateType"
@@ -141,18 +145,22 @@
         show-toolbar
       />
     </van-popup>
+    <!-- 优惠券 -->
     <van-popup position="bottom" v-model="showCouponPicker">
       <van-picker
         :columns="couponColumns"
+        :default-index="couponIndex"
         @cancel="_controlCouponPicker"
         @confirm="_pickCoupon"
         show-toolbar
         value-key="label"
       ></van-picker>
     </van-popup>
+    <!-- 会员分组 -->
     <van-popup position="bottom" v-model="showMemberGroupPicker">
       <van-picker
         :columns="memberGroupColumns"
+        :default-index="memberIndex"
         @cancel="_controlMemberGroupPicker"
         @confirm="_pickMemberGroup"
         show-toolbar
@@ -207,13 +215,12 @@ export default {
       ],
       couponColumns: [],
       memberGroupColumns: [],
+      dhbOpen: '0',
+      scoreOpen: '0',
     }
   },
 
   computed: {
-    typeLabel() {
-      return ''
-    },
     // 自适应120宽度
     resizeWidth() {
       return (120 / 375) * document.body.clientWidth + 'px'
@@ -265,6 +272,25 @@ export default {
       }
       return timeType
     },
+    // 限时价类型默认数据
+    timeTypeIndex() {
+      const index = this.timeTypeColumns.findIndex(item => item.value === this.formData.seckill_type)
+      return index
+    },
+    // 优惠券默认数据
+    couponIndex() {
+      if (this.curCoupon !== '') {
+        const index = this.couponColumns.findIndex(item => item.value === this.formData.give[this.curCoupon].goods)
+        return index
+      } else {
+        return 0
+      }
+    },
+    // 会员分组默认数据
+    memberIndex() {
+      const index = this.memberGroupColumns.findIndex(item => item.value === this.formData.in_group)
+      return index
+    },
   },
 
   watch: {},
@@ -272,6 +298,8 @@ export default {
   created() {},
 
   mounted() {
+    // 商家信息   用来判断是否开启兑换币
+    this.readMerchantInfo()
     // 优惠券列表
     this._getCouponList()
     // 会员卡分组
@@ -279,12 +307,16 @@ export default {
     // 优惠详情
     const id = this.$route.params.id
     id && this._readECommerceCommodityDetail(id)
+    setTimeout(() => {
+      console.log(this.formData)
+    }, 3000)
   },
 
   destroyed() {},
 
   methods: {
     ...mapActions(['getCouponList']),
+    ...mapActions('basicInformation', ['readMerchantInfo']),
     ...mapActions('commodity', ['updateECommerceCommodityPreferential', 'readECommerceCommodityDetail']),
     ...mapActions('member', ['getMemberGroupList']),
     // 时间类型开关
@@ -318,6 +350,7 @@ export default {
     },
     // 选择开始时间
     _pickStartTime(data) {
+      console.log(data)
       this.formData.seckill_open_time = data
       this._controlStartTimePicker()
     },
@@ -383,6 +416,14 @@ export default {
       }
       this.formData.give.splice(index, 1)
     },
+    // 获取商家信息
+    _readMerchantInfo() {
+      this.readMerchantInfo().then(res => {
+        console.log(res)
+        this.scoreOpen = res.now_merchant.score_open
+        this.dhbOpen = res.now_merchant.dhb_open
+      })
+    },
     // 获取优惠券列表
     _getCouponList() {
       this.getCouponList().then(res => {
@@ -407,8 +448,14 @@ export default {
         keys.forEach(item => {
           this.formData[item] = res[item]
         })
-        console.log(res)
-        console.log(this.formData)
+        if (res.seckill_type === '0') {
+          this.formData.seckill_open_time = new Date(res.seckill_open_time * 1000)
+          this.formData.seckill_close_time = new Date(res.seckill_close_time * 1000)
+        } else {
+          debugger
+          this.formData.seckill_open_time = new Date(res.seckill_open_time * 1000)
+          this.formData.seckill_close_time = new Date(res.seckill_close_time * 1000)
+        }
       })
     },
     async _submit() {

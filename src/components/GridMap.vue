@@ -12,7 +12,7 @@
     size<String>：图标大小px
 -->
 <template>
-  <div>
+  <div class="container">
     <div class="title" v-if="data.title">{{ data.title }}</div>
     <van-grid :border="false" :clickable="true" :icon-size="size">
       <van-grid-item :icon="item.enable" :key="i" :text="item.name" :to="item.path" v-for="(item, i) in data.list" />
@@ -58,7 +58,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.container {
+  background-color: #fff;
+}
+
 .title {
-  font-weight: 600;
+  font-size: 18px;
+  padding: 14px;
 }
 </style>

@@ -4,9 +4,9 @@
 
 <style lang="less">
 body {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei,
-    Helvetica Neue, Helvetica, Arial, sans-serif;
-  background-color: #f5f5f9;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #fafafa;
 }
 
 .nav-bar-holder {
@@ -49,8 +49,33 @@ body {
   }
 }
 
+.filter-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 36px;
+  border-radius: 18px;
+  background-color: #fff;
+  color: @font-gray-c;
+  box-sizing: border-box;
+  font-size: 12px;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 4px 0 rgba(236, 236, 236, 0.5);
+  padding: 0 10px;
+
+  & > i {
+    font-size: 10px;
+    margin-left: 4px;
+  }
+}
+
 .ql-editor {
   height: 400px !important;
+}
+
+a {
+  color: initial !important;
 }
 
 // van-button
@@ -65,6 +90,9 @@ body {
 
 // van-tag
 .van-card {
+  border: 1px solid @gray-light-c;
+  background-color: #fff !important;
+  box-shadow: 0 2px 4px 0 rgba(236, 236, 236, 0.8);
   .van-tag + .van-tag {
     margin-left: 5px;
   }
@@ -101,7 +129,12 @@ body {
   z-index: 2 !important;
 }
 
-a {
-  color: initial !important;
+.van-nav-bar__text:active {
+  background-color: @primary-deep-c !important;
+}
+
+// van-tab-bar
+.van-tabbar-item--active {
+  color: @primary-c !important;
 }
 </style>

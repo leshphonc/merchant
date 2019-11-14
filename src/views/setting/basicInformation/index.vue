@@ -15,8 +15,8 @@
       <van-cell :value="merchant.adress || '请编辑'" @click="_controlAddressPicker" is-link title="详细地址" />
       <van-cell @click="_controlStoreFrontCategoryPicker" is-link title="商户所属分类">
         <div v-if="fidLabel && idLabel">
-          <van-tag plain type="warning">{{ fidLabel }}</van-tag>
-          <van-tag plain type="warning">{{ idLabel }}</van-tag>
+          <van-tag plain type="primary">{{ fidLabel }}</van-tag>
+          <van-tag plain type="primary">{{ idLabel }}</van-tag>
         </div>
         <div v-else>请选择</div>
       </van-cell>
