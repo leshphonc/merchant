@@ -57,4 +57,12 @@ export default {
     axios.post('/appapi.php?c=Config&a=wx_config', {
       ticket: localStorage.getItem('ticket'),
     }),
+  // 商铺列表
+  getStoreList: flag =>
+    axios.get('/appapi.php?c=Merchantapp&a=get_store', {
+      params: {
+        show_all: flag,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
 }

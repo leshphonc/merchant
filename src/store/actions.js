@@ -172,4 +172,11 @@ export default {
       data ? resolve(data) : reject()
     })
   },
+  // 商铺列表
+  getStoreList(context, flag) {
+    return new Promise(async (resolve, reject) => {
+      const data = await common.getStoreList(flag)
+      data ? resolve(data) : reject()
+    })
+  },
 }

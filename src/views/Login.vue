@@ -103,7 +103,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .container {
   position: relative;
   width: 100vw;
@@ -137,7 +137,7 @@ export default {
       color: #ddd;
       border: 1px solid #ddd;
       border-radius: 20px;
-      .van-field__control {
+      /deep/.van-field__control {
         color: #ddd;
       }
     }
