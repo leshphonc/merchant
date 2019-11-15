@@ -29,6 +29,7 @@ module.exports = {
           'gray-background-c': '#fafafa',
           'font-gray-c': '#9e9e9e',
           'red-c': '#ff4646',
+          'green-c': '#77ca35',
         },
       },
       postcss: {

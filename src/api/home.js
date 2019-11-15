@@ -8,4 +8,44 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  // echart收入总数
+  getIncomeEchartData: payload =>
+    axios.get('/appapi.php?c=Merchantapp&a=all_money', {
+      params: {
+        ...payload,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // echart订单总数
+  getOrderEchartData: payload =>
+    axios.get('/appapi.php?c=Merchantapp&a=all_order', {
+      params: {
+        ...payload,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // echart粉丝总数
+  getFansEchartData: payload =>
+    axios.get('/appapi.php?c=Merchantapp&a=all_fans', {
+      params: {
+        ...payload,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // echart访问人数
+  getVisitsPersonEchartData: payload =>
+    axios.get('/appapi.php?c=Merchantapp&a=all_visit', {
+      params: {
+        ...payload,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // echart访问次数
+  getVisitsNumEchartData: payload =>
+    axios.get('/appapi.php?c=Merchantapp&a=all_visit_num', {
+      params: {
+        ...payload,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
 }
