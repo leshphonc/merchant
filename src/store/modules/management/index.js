@@ -1,4 +1,4 @@
-import storeFront from './storeFront'
+import storeFront from './storefront'
 import commodity from './commodity/index'
 import member from './member'
 
