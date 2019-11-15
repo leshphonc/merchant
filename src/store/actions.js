@@ -15,11 +15,11 @@ export default {
     })
   },
   // 省份列表
-  getProvince(context, { flag }) {
+  getProvince(context, { shift }) {
     return new Promise(async (resolve, reject) => {
       const data = await common.getProvince()
       if (data) {
-        if (flag && data.length > 1) {
+        if (shift && data.length > 1) {
           data.shift()
           resolve(data)
         } else {
@@ -31,11 +31,11 @@ export default {
     })
   },
   // 城市列表
-  getCity(context, { id, flag }) {
+  getCity(context, { id, shift }) {
     return new Promise(async (resolve, reject) => {
       const data = await common.getCity(id)
       if (data) {
-        if (flag && data.length > 1) {
+        if (shift && data.length > 1) {
           data.shift()
           resolve(data)
         } else {
@@ -47,11 +47,11 @@ export default {
     })
   },
   // 地区列表
-  getArea(context, { id, flag }) {
+  getArea(context, { id, shift }) {
     return new Promise(async (resolve, reject) => {
       const data = await common.getArea(id)
       if (data) {
-        if (flag && data.length > 1) {
+        if (shift && data.length > 1) {
           data.shift()
           resolve(data)
         } else {
@@ -63,11 +63,11 @@ export default {
     })
   },
   // 商圈列表
-  getCircle(context, { id, flag }) {
+  getCircle(context, { id, shift }) {
     return new Promise(async (resolve, reject) => {
       const data = await common.getCircle(id)
       if (data) {
-        if (flag && data.length > 1) {
+        if (shift && data.length > 1) {
           data.shift()
           resolve(data)
         } else {
@@ -79,11 +79,11 @@ export default {
     })
   },
   // 商盟列表
-  getMarket(context, { id, flag }) {
+  getMarket(context, { id, shift }) {
     return new Promise(async (resolve, reject) => {
       const data = await common.getMarket(id)
       if (data) {
-        if (flag && data.length > 1) {
+        if (shift && data.length > 1) {
           data.shift()
           resolve(data)
         } else {
@@ -95,39 +95,49 @@ export default {
     })
   },
   // 查询详情地址
-  getAllAddressColumnsForPicker({ dispatch }, { province, city, area, circle, market }) {
+  getAllAddressColumnsForPicker({ dispatch }, { province, city, area, circle }) {
     return new Promise(async resolve => {
+      const result = {}
       // 查询所有省份
-      const provinceData = await dispatch('getProvince', { flag: true })
+      const provinceData = await dispatch('getProvince', { shift: true })
       // 找出当前省份
       const provinceItem = provinceData.find(item => item.value === province)
+      const provinceIndex = provinceData.findIndex(item => item.value === province)
       // 查询出省份下的城市
-      const cityData = await dispatch('getCity', { id: province, flag: true })
+      const cityData = await dispatch('getCity', { id: province, shift: true })
       provinceItem.children = cityData
       // 找出当前城市
       const cityItem = cityData.find(item => item.value === city)
+      const cityIndex = cityData.findIndex(item => item.value === city)
+
       // 查询城市下的地区
-      const areaData = await dispatch('getArea', { id: area, flag: true })
+      const areaData = await dispatch('getArea', { id: city, shift: true })
+      const areaIndex = areaData.findIndex(item => item.value === area)
       cityItem.children = areaData
-      // 找出当前地区
-      const areaItem = areaData.find(item => item.value === area)
+      // 地区级联columns
+      result.area = [
+        { values: provinceData, defaultIndex: provinceIndex },
+        { values: cityData, defaultIndex: cityIndex },
+        { values: areaData, defaultIndex: areaIndex },
+      ]
+
       // 查询地区下的商圈
-      const circleData = await dispatch('getCircle', { id: circle, flag: true })
+      const circleData = await dispatch('getCircle', { id: area, shift: true })
       if (!circleData) {
-        resolve(provinceData)
+        resolve(result)
         return false
       }
-      areaItem.children = circleData
-      // 找出当前商圈
-      const circleItem = circleData.find(item => item.value === circle)
+      // 商圈columns
+      result.circle = circleData
       // 查询商圈下的商盟
-      const marketData = await dispatch('getMarket', { id: market, flag: true })
+      const marketData = await dispatch('getMarket', { id: circle, shift: true })
       if (!marketData) {
-        resolve(provinceData)
+        resolve(result)
         return false
       }
-      circleItem.children = marketData
-      resolve(provinceData)
+      // 商盟columns
+      result.market = marketData
+      resolve(result)
     })
   },
   // 查询默认地址级联数据
@@ -135,14 +145,14 @@ export default {
     return new Promise(async resolve => {
       const arr = []
       // 查询所有省份
-      const provinceData = await dispatch('getProvince', { flag: true })
+      const provinceData = await dispatch('getProvince', { shift: true })
       arr.push({ values: provinceData })
       // 查询出省份下的城市
-      const cityData = await dispatch('getCity', { id: provinceData[0].value, flag: true })
+      const cityData = await dispatch('getCity', { id: provinceData[0].value, shift: true })
       provinceData[0].children = cityData
       arr.push({ values: cityData })
       // 查询城市下的地区
-      const areaData = await dispatch('getArea', { id: cityData[0].value, flag: true })
+      const areaData = await dispatch('getArea', { id: cityData[0].value, shift: true })
       cityData[0].children = areaData
       arr.push({ values: areaData })
       resolve(arr)

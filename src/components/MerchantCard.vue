@@ -12,7 +12,24 @@
 -->
 <template>
   <div class="container">
-    <van-row align="center" class="info" justify="center" type="flex">
+    <van-row align="center" type="flex">
+      <van-col offset="1" span="4">
+        <img :src="avatar" alt class="avatar" />
+      </van-col>
+      <van-col span="16">Hi，{{ name }} 欢迎回来！</van-col>
+      <van-col @click="_logout" class="logout" span="3">退出</van-col>
+    </van-row>
+    <div class="main-card">
+      <div>{{ money }}</div>
+      <div>
+        <div>账户余额(元)</div>
+        <div @click="_goWallet">
+          <div>充值</div>
+          <div class="with-draw">提现</div>
+        </div>
+      </div>
+    </div>
+    <!-- <van-row align="center" class="info" justify="center" type="flex">
       <van-col span="7">
         <div class="info-avatar"></div>
       </van-col>
@@ -25,11 +42,13 @@
         <i @click="_logout" class="iconfont info-icon">&#xe637;</i>
         <div @click="_goWallet" class="info-wallet">充值 | 提现</div>
       </van-col>
-    </van-row>
+    </van-row>-->
   </div>
 </template>
 
 <script>
+const merchant_user = localStorage.getItem('merchant_user')
+const merchant_money = sessionStorage.getItem('merchant-balance')
 export default {
   name: 'MerchantCard',
 
@@ -43,7 +62,17 @@ export default {
     return {}
   },
 
-  computed: {},
+  computed: {
+    avatar() {
+      return merchant_user && JSON.parse(merchant_user).avatar
+    },
+    name() {
+      return merchant_user && JSON.parse(merchant_user).name
+    },
+    money() {
+      return merchant_money || 0
+    },
+  },
 
   watch: {},
 
@@ -76,52 +105,56 @@ export default {
 
 <style lang="less" scoped>
 .container {
-  background-image: url('../assets/image/merchant_card_bg.jpg');
-  background-size: cover;
-  height: 120px;
+  background-color: #fff;
+  padding-top: 8px;
+}
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 48px;
+  margin: 0 auto;
+}
 
-  .info {
-    height: 100%;
+.logout {
+  color: @gray-deep-c;
+  font-size: 12px;
+}
 
-    &-avatar {
-      background-color: #fff;
-      width: 60px;
-      height: 60px;
-      border-radius: 30px;
-      margin: 0 auto;
+.main-card {
+  background-color: @primary-c;
+  height: 94px;
+  margin: 6px 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px 0 @primary-deep-c;
+  padding: 10px 20px;
+  box-sizing: border-box;
+
+  & > div:first-child {
+    color: #fff;
+    font-size: 32px;
+  }
+
+  & > div:last-child {
+    color: #fff;
+    font-size: 12px;
+    margin-top: 8px;
+    font-weight: 100;
+
+    div {
+      display: inline-block;
     }
 
-    &-user {
-      font-weight: 600;
-      color: #fff;
-      font-size: 16px;
-    }
+    & > div:last-child {
+      font-size: 14px;
+      float: right;
+      font-weight: 400;
 
-    &-price {
-      color: #fff;
-      margin: 5px 0;
-      font-size: 12px;
-    }
-
-    &-balance {
-      color: #fff;
-      font-weight: 600;
-      font-size: 16px;
-    }
-
-    &-icon {
-      position: absolute;
-      top: -40px;
-      right: 20px;
-      font-size: 20px;
-    }
-
-    &-wallet {
-      position: absolute;
-      bottom: -35px;
-      right: 10px;
-      font-weight: 600;
-      font-size: 16px;
+      .with-draw {
+        background-color: @primary-deep-c;
+        padding: 2px 10px;
+        border-radius: 10px;
+        margin-left: 22px;
+      }
     }
   }
 }

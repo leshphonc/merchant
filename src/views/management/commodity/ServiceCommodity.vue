@@ -190,6 +190,9 @@ export default {
     // 分类编辑开关
     _controlCategoryCRUPopup() {
       this.showCategoryCRUPopup = !this.showCategoryCRUPopup
+      this.$nextTick(() => {
+        this.$refs.observer.reset()
+      })
     },
     // 分类归属开关
     _controlCategoryPicker() {

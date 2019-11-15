@@ -3,15 +3,7 @@
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
-    <van-tabbar
-      :border="false"
-      active-color="#ffb000"
-      class="shadow-bar"
-      route
-      safe-area-inset-bottom
-      v-model="active"
-      v-show="showTabBar"
-    >
+    <van-tabbar :border="false" class="shadow-bar" route safe-area-inset-bottom v-model="active" v-show="showTabBar">
       <van-tabbar-item replace to="/">
         <span>首页</span>
         <img :src="props.active ? icons.home.active : icons.home.unactive" alt slot="icon" slot-scope="props" />
@@ -20,9 +12,11 @@
         <span>订单</span>
         <img :src="props.active ? icons.order.active : icons.order.unactive" alt slot="icon" slot-scope="props" />
       </van-tabbar-item>
-      <van-tabbar-item class="add-btn" to="/commodity">
-        <div></div>
-        <span>发布商品</span>
+      <van-tabbar-item @click="_controlAction" class="add-btn">
+        <div>
+          <i class="iconfont">&#xe605;</i>
+        </div>
+        <span>进入店铺</span>
       </van-tabbar-item>
       <van-tabbar-item to="/marketing">
         <span>营销活动</span>
@@ -33,10 +27,12 @@
         <img :src="props.active ? icons.mine.active : icons.mine.unactive" alt slot="icon" slot-scope="props" />
       </van-tabbar-item>
     </van-tabbar>
+    <van-action-sheet :actions="actions" @select="_onSelect" cancel-text="取消" v-model="show" />
   </div>
 </template>
 
 <script>
+const user = JSON.parse(localStorage.getItem('merchant_user') || '{}')
 export default {
   name: 'index',
 
@@ -65,6 +61,11 @@ export default {
           unactive: require('@/assets/image/mine_gray.png'),
         },
       },
+      actions: [
+        { name: '标准首页', href: window.location.origin + `/wap.php?g=Wap&c=merchant&a=map&mer_id=${user.mer_id}` },
+        { name: '自定义首页', href: window.location.origin + `/wap.php?g=Wap&c=Web_xcx&a=index&mer_id=${user.mer_id}` },
+      ],
+      show: false,
     }
   },
 
@@ -82,7 +83,16 @@ export default {
 
   destroyed() {},
 
-  methods: {},
+  methods: {
+    _controlAction() {
+      this.show = !this.show
+    },
+    _onSelect(item) {
+      console.log(item)
+      window.location.href = item.href
+      this._controlAction()
+    },
+  },
 }
 </script>
 
@@ -93,6 +103,9 @@ export default {
     position: relative;
     background-color: #fff;
     div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       position: absolute;
       top: -28px;
       left: 10px;
@@ -101,6 +114,11 @@ export default {
       border-radius: 100%;
       background: #fff;
       box-shadow: 0 0 5px 2px #ccc;
+      .iconfont {
+        color: #fff;
+        z-index: 1;
+        font-size: 24px;
+      }
       &::before {
         position: absolute;
         top: 28px;
@@ -113,17 +131,17 @@ export default {
       }
       &::after {
         position: absolute;
-        top: 10px;
-        left: 9.5px;
-        width: 10vw;
-        height: 10vw;
-        background-color: #ffb000;
-        content: '+';
+        top: 7.5px;
+        left: 7.9px;
+        width: 11vw;
+        height: 11vw;
+        background-color: @primary-c;
         text-align: center;
         line-height: 10vw;
         color: #fff;
         font-size: 25px;
         border-radius: 10vw;
+        content: '';
       }
     }
     span {
