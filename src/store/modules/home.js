@@ -49,6 +49,12 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  async getVisitsFaceEchartData(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await homeAPI.getVisitsFaceEchartData(payload)
+      data ? resolve(data) : reject()
+    })
+  },
 }
 
 // mutations

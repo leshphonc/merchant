@@ -48,4 +48,12 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  // echart进店人数
+  getVisitsFaceEchartData: payload =>
+    axios.get('/appapi.php?c=Merchantapp&a=all_face_visit', {
+      params: {
+        ...payload,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
 }

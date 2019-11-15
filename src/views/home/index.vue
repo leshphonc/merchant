@@ -57,6 +57,10 @@
       <v-chart :options="polar" autoresize ref="echart"></v-chart>
       <div class="white-space"></div>
     </div>
+    <div class="chart-box">
+      <div class="chart-box-title">门店AI助手</div>
+      <echart-for-AI :storeColumns="storeColumns"></echart-for-AI>
+    </div>
     <div class="white-space"></div>
     <grid-map :data="pdata"></grid-map>
     <div class="tab-bar-holder-sp"></div>
@@ -66,7 +70,6 @@
     <van-popup position="bottom" v-model="showStorePicker">
       <van-picker
         :columns="storeColumns"
-        :default-index="storeIndex"
         @cancel="_controlStorePicker"
         @confirm="_pickStore"
         show-toolbar
@@ -77,7 +80,6 @@
     <van-popup position="bottom" v-model="showTimeTypePicker">
       <van-picker
         :columns="timeTypeColumns"
-        :default-index="timeTypeIndex"
         @cancel="_controlTimeTypePicker"
         @confirm="_pickTimeType"
         show-toolbar
@@ -105,6 +107,7 @@ import { mapActions } from 'vuex'
 import { ManagementGrid, PopularizeGrid } from '@/common/grid'
 import MerchantCard from '@/components/MerchantCard'
 import GridMap from '@/components/GridMap'
+import EchartForAI from './EchartForAI'
 
 export default {
   name: 'home',
@@ -114,6 +117,7 @@ export default {
   components: {
     MerchantCard,
     GridMap,
+    EchartForAI,
   },
 
   props: {},
@@ -282,12 +286,6 @@ export default {
         ],
       }
     },
-    storeIndex() {
-      return 0
-    },
-    timeTypeIndex() {
-      return 0
-    },
     timeIndex() {
       return this.timeColumns.findIndex(item => item === Number(this.$moment(this.timeValue).format('YYYY')))
     },
@@ -388,6 +386,7 @@ export default {
       this._getEchartData(this.curType)
       this._controlTimePicker()
     },
+    // 店铺列表
     _getStoreList() {
       this.getStoreList(1).then(res => {
         console.log(res)
