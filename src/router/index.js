@@ -4,6 +4,7 @@ import Index from '@/views/Index'
 import Home from '@/views/home'
 import Wallet from './wallet'
 import Management from './management'
+import Popularze from './popularize'
 import Setting from './setting'
 
 Vue.use(VueRouter)
@@ -53,6 +54,7 @@ const routes = [
   },
   Wallet,
   ...Management,
+  ...Popularze,
   ...Setting,
   {
     path: '/login',
