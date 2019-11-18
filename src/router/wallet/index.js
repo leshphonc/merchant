@@ -10,6 +10,10 @@ export default {
       component: WalletTypePanel,
     },
     {
+      path: 'addCredit',
+      component: () => import('@/views/wallet/AddCredit'),
+    },
+    {
       path: 'withDraw',
       component: () => import('@/views/wallet/WithDraw'),
     },

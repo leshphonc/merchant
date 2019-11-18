@@ -35,4 +35,16 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  // 创建订单
+  createOrder: money =>
+    axios.post('/appapi.php?c=Merchantapp&a=money_add', {
+      money,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 检查订单
+  checkOrder: payload =>
+    axios.post('/appapi.php?c=MerchantPay&a=check', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

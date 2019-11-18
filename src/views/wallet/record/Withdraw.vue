@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
     <van-list :finished="finished" @load="_onLoad" finished-text="没有更多了" v-model="loading">
       <div :key="item.id" v-for="item in list">
         <van-panel :desc="item.order_id" :status="`¥ ${item.money}`" :title="status[item.status].label">
@@ -12,7 +12,7 @@
         <div class="white-space"></div>
       </div>
     </van-list>
-  </div>
+  </van-pull-refresh>
 </template>
 
 <script>
@@ -32,6 +32,7 @@ export default {
       list: [],
       loading: false,
       finished: false,
+      refreshing: false,
       status: {
         0: {
           label: '审核中',
@@ -67,6 +68,14 @@ export default {
     _onLoad() {
       // 异步更新数据
       this._withdrawRecord()
+    },
+    // 刷新列表
+    _onRefresh() {
+      this.withdrawRecord().then(res => {
+        this.page = 1
+        this.list = res.lists
+        this.refreshing = false
+      })
     },
     _withdrawRecord() {
       this.withdrawRecord(this.page).then(res => {

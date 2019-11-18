@@ -2,21 +2,27 @@
   <div>
     <van-nav-bar @click-left="$goBack" fixed left-arrow title="充值提现"></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <van-tabs v-model="active">
-      <van-tab title="系统余额账户">
-        <div class="white-space"></div>
-        <van-cell-group>
-          <van-cell icon="cash-back-record" is-link title="充值"></van-cell>
-          <van-cell icon="refund-o" is-link title="提现" to="/wallet/withDraw"></van-cell>
-          <van-cell icon="notes-o" is-link title="账户明细" to="/wallet/accountDetail"></van-cell>
-        </van-cell-group>
-      </van-tab>
-      <van-tab title="平安提现账户">内容 2</van-tab>
+    <van-tabs v-if="pingan === '1'" v-model="active">
+      <van-tab title="系统余额账户"></van-tab>
+      <van-tab title="平安提现账户"></van-tab>
     </van-tabs>
+    <div v-show="active === 0">
+      <div class="white-space"></div>
+      <van-cell-group>
+        <van-cell icon="cash-back-record" is-link title="充值" to="/wallet/AddCredit"></van-cell>
+        <van-cell icon="refund-o" is-link title="提现" to="/wallet/withDraw"></van-cell>
+        <van-cell icon="notes-o" is-link title="账户明细" to="/wallet/accountDetail"></van-cell>
+      </van-cell-group>
+    </div>
+    <div v-show="active === 1">
+      <div class="white-space"></div>
+      <div>123</div>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'walletPanel',
 
@@ -29,6 +35,7 @@ export default {
   data() {
     return {
       active: 0,
+      pingan: '0',
     }
   },
 
@@ -42,7 +49,15 @@ export default {
 
   destroyed() {},
 
-  methods: {},
+  methods: {
+    ...mapActions(['getPlatFormInfo']),
+    _getPlatFormInfo() {
+      this.getPlatFormInfo().then(res => {
+        const pingan = res.find(item => item.name === 'pay_pingan_open')
+        this.pingan = pingan ? pingan.value : '0'
+      })
+    },
+  },
 }
 </script>
 

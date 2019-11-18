@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
     <van-list :finished="finished" @load="_onLoad" finished-text="没有更多了" v-model="loading">
       <div :key="item.id" v-for="item in list">
         <van-panel
@@ -20,7 +20,7 @@
         <div class="white-space"></div>
       </div>
     </van-list>
-  </div>
+  </van-pull-refresh>
 </template>
 
 <script>
@@ -39,6 +39,7 @@ export default {
       page: 1,
       list: [],
       loading: false,
+      refreshing: false,
       finished: false,
       status: {
         1: {
@@ -73,6 +74,14 @@ export default {
     _onLoad() {
       // 异步更新数据
       this._incomeAndExpenditureRecord()
+    },
+    // 刷新列表
+    _onRefresh() {
+      this.incomeAndExpenditureRecord().then(res => {
+        this.page = 1
+        this.list = res.lists
+        this.refreshing = false
+      })
     },
     _incomeAndExpenditureRecord() {
       this.incomeAndExpenditureRecord(this.page).then(res => {

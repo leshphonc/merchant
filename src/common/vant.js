@@ -12,7 +12,10 @@ import {
   CheckboxGroup,
   DatetimePicker,
   Field,
+  NumberKeyboard,
   Picker,
+  Radio,
+  RadioGroup,
   Search,
   Stepper,
   Switch,
@@ -59,7 +62,9 @@ Vue.use(Popup)
 Vue.use(Checkbox).use(CheckboxGroup)
 Vue.use(DatetimePicker)
 Vue.use(Field)
+Vue.use(NumberKeyboard)
 Vue.use(Picker)
+Vue.use(Radio).use(RadioGroup)
 Vue.use(Search)
 Vue.use(Stepper)
 Vue.use(Switch).use(SwitchCell)

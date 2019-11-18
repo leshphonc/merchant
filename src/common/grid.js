@@ -54,12 +54,12 @@ const PopularizeGrid = {
       enable: require('../assets/image/tgfy2.png'),
       disable: require('../assets/image/qmfx_gray.png'),
     },
-    // {
-    //   name: '红包推广',
-    //   path: '/popularize/redEnvelope',
-    //   enable: require('../assets/image/hbtg.png'),
-    //   disable: require('../assets/image/hbtg_gray.png'),
-    // },
+    {
+      name: '红包推广',
+      path: '/redEnvelope',
+      enable: require('../assets/image/hbtg.png'),
+      disable: require('../assets/image/hbtg_gray.png'),
+    },
     {
       name: '智能屏推广',
       path: '/popularize/smartScreen',
@@ -140,7 +140,7 @@ const SettingGrid = {
     },
     {
       name: '自提点管理',
-      path: '/setting/selfManagement',
+      path: '/selfMentionPoint',
       enable: require('../assets/image/ztdgl.png'),
       disable: require('../assets/image/ztdgl_gray.png'),
     },

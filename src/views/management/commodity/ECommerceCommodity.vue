@@ -6,8 +6,8 @@
           <van-card
             :key="item.goods_id"
             :num="item.stock_num === '-1' ? '∞' : item.stock_num"
-            :origin-price="item.old_price"
-            :price="item.price"
+            origin-price="200"
+            price="1"
             :tag="item.statusstr"
             :thumb="item.image"
             :title="item.s_name"

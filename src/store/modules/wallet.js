@@ -16,23 +16,37 @@ const actions = {
     })
   },
   // 充值记录
-  async topupRecord(context, page) {
+  async topupRecord(context, page = 1) {
     return new Promise(async (resolve, reject) => {
       const data = await walletAPI.topupRecord(page)
       data ? resolve(data) : reject()
     })
   },
   // 提现记录
-  async withdrawRecord(context, page) {
+  async withdrawRecord(context, page = 1) {
     return new Promise(async (resolve, reject) => {
       const data = await walletAPI.withdrawRecord(page)
       data ? resolve(data) : reject()
     })
   },
   // 收支记录
-  async incomeAndExpenditureRecord(context, page) {
+  async incomeAndExpenditureRecord(context, page = 1) {
     return new Promise(async (resolve, reject) => {
       const data = await walletAPI.incomeAndExpenditureRecord(page)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 创建订单
+  async createOrder(context, money) {
+    return new Promise(async (resolve, reject) => {
+      const data = await walletAPI.createOrder(money)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 检查订单
+  async checkOrder(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await walletAPI.checkOrder(payload)
       data ? resolve(data) : reject()
     })
   },
