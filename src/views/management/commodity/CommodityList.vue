@@ -6,7 +6,7 @@
       @click-right="_createCommodity"
       fixed
       left-arrow
-      title="商品列表"
+      title="商品管理"
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-tabs :offset-top="offsetTop" sticky v-model="active">

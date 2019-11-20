@@ -97,7 +97,7 @@ export default {
     _onRefresh() {
       const { id } = this.$route.params
       this.getRedEnvelopeReceivingRecord({ id, page: 1 }).then(res => {
-        this.page = 1
+        this.page = 2
         this.list = res.lists
         this.refreshing = false
       })

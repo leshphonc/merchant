@@ -89,7 +89,7 @@
     </ValidationObserver>
     <!-- 弹出层 -->
     <!-- 选择包含的服务 -->
-    <van-popup :lazy-render="false" position="top" v-model="showServiceCommodityPicker">
+    <van-popup :lazy-render="false" position="top" safe-area-inset-bottom v-model="showServiceCommodityPicker">
       <van-tabs :lazy-render="false" v-model="active">
         <van-tab title="服务项目">
           <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
@@ -396,7 +396,7 @@ export default {
     async _submit() {
       console.log(this.formData)
       // 锁
-      if (this.loading) return false
+      if (this.loading) return
       // 验证表单
       const isValid = await this.$refs.observer.validate()
       if (!isValid) {

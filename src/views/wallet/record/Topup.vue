@@ -68,7 +68,7 @@ export default {
     // 刷新列表
     _onRefresh() {
       this.topupRecord().then(res => {
-        this.page = 1
+        this.page = 2
         this.list = res.lists
         this.refreshing = false
       })

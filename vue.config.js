@@ -30,6 +30,8 @@ module.exports = {
           'font-gray-c': '#9e9e9e',
           'red-c': '#ff4646',
           'green-c': '#77ca35',
+          'black-c': '#444',
+          'black-light-c': '#333',
         },
       },
       postcss: {

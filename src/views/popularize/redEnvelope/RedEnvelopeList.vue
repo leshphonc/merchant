@@ -105,7 +105,7 @@ export default {
     // 刷新红包列表
     _onRefresh() {
       this.getRedEnvelopeList().then(res => {
-        this.page = 1
+        this.page = 2
         this.list = res.lists
         this.refreshing = false
       })
@@ -113,18 +113,22 @@ export default {
     _publicRedEnvelope(id) {
       if (this.loading) return
       this.loading = true
-      this.publicRedEnvelope(id).then(() => {
-        this.$toast.success({
-          message: '操作成功',
-          forbidClick: true,
-          duration: 1500,
-          onClose: () => {
-            // 解锁
-            this.loading = false
-            this._onRefresh()
-          },
+      this.publicRedEnvelope(id)
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              // 解锁
+              this.loading = false
+              this._onRefresh()
+            },
+          })
         })
-      })
+        .catch(() => {
+          this.loading = false
+        })
     },
     _deleteRedEnvelope(id) {
       if (this.loading) return
@@ -135,19 +139,23 @@ export default {
           beforeClose: (action, done) => {
             if (action === 'confirm') {
               this.loading = true
-              this.deleteRedEnvelope(id).then(() => {
-                this.$toast.success({
-                  message: '操作成功',
-                  forbidClick: true,
-                  duration: 1500,
-                  onClose: () => {
-                    // 解锁
-                    this.loading = false
-                    this._onRefresh()
-                    done()
-                  },
+              this.deleteRedEnvelope(id)
+                .then(() => {
+                  this.$toast.success({
+                    message: '操作成功',
+                    forbidClick: true,
+                    duration: 1500,
+                    onClose: () => {
+                      // 解锁
+                      this.loading = false
+                      this._onRefresh()
+                      done()
+                    },
+                  })
                 })
-              })
+                .catch(() => {
+                  this.loading = false
+                })
             } else {
               done()
             }

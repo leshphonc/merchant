@@ -7,11 +7,11 @@
         <ValidationProvider name="提款人真实姓名" rules="required" slim v-slot="{ errors }">
           <van-field :error-message="errors[0]" label="姓名" placeholder="提款人真实姓名" required v-model.trim="formData.name"></van-field>
         </ValidationProvider>
-        <ValidationProvider name="提款人真实姓名" rules="required|decimal-max2" slim v-slot="{ errors }">
+        <ValidationProvider name="提现金额" rules="required|decimal-max2" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             label="提现金额"
-            placeholder="最低提现1元"
+            placeholder="最低提现3元"
             required
             type="number"
             v-model.trim="formData.money"
@@ -19,14 +19,17 @@
         </ValidationProvider>
         <van-cell :value="paymentLabel" @click="_controlPaymentType" is-link title="提现至"></van-cell>
         <ValidationProvider name="微信账号" rules="required" slim v-if="formData.withdraw_type === '3'" v-slot="{ errors }">
-          <van-cell
+          <van-field
             :error-message="errors[0]"
             :value="wxAccountLabel"
             @click="_controlWxAccount"
+            error-message-align="right"
+            input-align="right"
             is-link
+            label="微信账号"
+            placeholder="请选择微信账号"
             required
-            title="微信账号"
-          ></van-cell>
+          ></van-field>
         </ValidationProvider>
       </van-cell-group>
       <van-cell-group v-if="formData.withdraw_type === '0'">
@@ -158,7 +161,8 @@ export default {
       return index > -1 ? index : 0
     },
     wxAccountLabel() {
-      return '请选择微信账号'
+      const item = this.wxAccountColumns.find(item => item.openid === this.formData.weixin_account)
+      return item ? item.nickname : ''
     },
   },
 
@@ -167,13 +171,13 @@ export default {
   created() {},
 
   mounted() {
-    this._readWxAccount()
+    this._getWxAccount()
   },
 
   destroyed() {},
 
   methods: {
-    ...mapActions('wallet', ['readWxAccount']),
+    ...mapActions('wallet', ['getWxAccount', 'withDraw']),
     // 提现方式开关
     _controlPaymentType() {
       this.showPaymentTypePicker = !this.showPaymentTypePicker
@@ -190,6 +194,7 @@ export default {
     // 微信账号选择
     _pickWxAccount(data) {
       console.log(data)
+      this.formData.weixin_account = data.openid
       this._controlWxAccount()
     },
     // 发票图片选择
@@ -198,17 +203,22 @@ export default {
       console.log(data)
     },
     // 读取微信账号列表
-    _readWxAccount() {
-      this.readWxAccount().then(res => {
-        console.log(res)
-        this.wxList = res.bind_wxlist
-      })
+    _getWxAccount() {
+      this.getWxAccount()
+        .then(res => {
+          console.log(res)
+          this.wxAccountColumns = res.bind_wxlist
+        })
+        .catch(() => {
+          this.$goBack()
+        })
     },
     // 提交数据
     async _submit() {
       // 锁
       if (this.loading) return false
       // 验证表单
+      console.log(this.$refs.observer)
       const isValid = await this.$refs.observer.validate()
       console.log(this.formData)
       // 表单不完整
@@ -218,25 +228,25 @@ export default {
           message: '请填写完整信息',
         })
       } else {
-        // // 加锁
-        // this.loading = true
-        // // 表单完整，进行数据修改并提交
-        // this.a(this.formData)
-        //   .then(() => {
-        //     this.$toast.success({
-        //       message: '操作成功',
-        //       forbidClick: true,
-        //       duration: 1500,
-        //       onClose: () => {
-        //         // 解锁
-        //         this.loading = false
-        //         this.$goBack()
-        //       },
-        //     })
-        //   })
-        //   .catch(() => {
-        //     this.loading = false
-        //   })
+        // 加锁
+        this.loading = true
+        // 表单完整，进行数据修改并提交
+        this.withDraw(this.formData)
+          .then(() => {
+            this.$toast.success({
+              message: '操作成功',
+              forbidClick: true,
+              duration: 1500,
+              onClose: () => {
+                // 解锁
+                this.loading = false
+                this.$goBack()
+              },
+            })
+          })
+          .catch(() => {
+            this.loading = false
+          })
       }
     },
   },

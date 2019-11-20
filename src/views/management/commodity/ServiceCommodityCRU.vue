@@ -129,7 +129,7 @@
       </van-cell-group>
     </ValidationObserver>
     <!-- 弹出层 -->
-    <van-popup position="bottom" v-model="showStartTimePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showStartTimePicker">
       <van-datetime-picker
         :min-date="new Date()"
         :value="formData.start_time"
@@ -386,7 +386,7 @@ export default {
     async _submit() {
       console.log(this.formData)
       // 锁
-      if (this.loading) return false
+      if (this.loading) return
       // 验证表单
       const isValid = await this.$refs.observer.validate()
       if (!isValid) {
@@ -440,8 +440,4 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.van-switch {
-  font-size: 18px !important;
-}
-</style>
+<style lang="less" scoped></style>

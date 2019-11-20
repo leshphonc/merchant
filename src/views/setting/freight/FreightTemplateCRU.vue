@@ -44,7 +44,7 @@
 
     <!-- 弹出层 -->
     <!-- 配送区域 -->
-    <van-popup :style="{ minHeight: '20%' }" position="top" v-model="showAreaPicker">
+    <van-popup :style="{ minHeight: '20%' }" position="top" safe-area-inset-bottom v-model="showAreaPicker">
       <van-checkbox-group class="cache-list" v-model="cache">
         <van-cell-group>
           <van-cell

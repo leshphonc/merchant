@@ -26,7 +26,7 @@
 
     <!-- 弹出层 -->
     <!-- 店铺筛选 -->
-    <van-popup position="bottom" v-model="showStorePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showStorePicker">
       <van-picker
         :columns="storeColumns"
         @cancel="_controlStorePicker"
@@ -36,7 +36,7 @@
       ></van-picker>
     </van-popup>
     <!-- 日期类型 -->
-    <van-popup position="bottom" v-model="showTimeTypePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showTimeTypePicker">
       <van-picker
         :columns="timeTypeColumns"
         @cancel="_controlTimeTypePicker"
@@ -46,10 +46,10 @@
       ></van-picker>
     </van-popup>
     <!-- 日期新增 -->
-    <van-popup position="bottom" v-if="timeTypeValue !== '3'" v-model="showTimePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-if="timeTypeValue !== '3'" v-model="showTimePicker">
       <van-datetime-picker :type="timeType" :value="timeValue" @cancel="_controlTimePicker" @confirm="_pickTime" />
     </van-popup>
-    <van-popup position="bottom" v-if="timeTypeValue === '3'" v-model="showTimePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-if="timeTypeValue === '3'" v-model="showTimePicker">
       <van-picker
         :columns="timeColumns"
         :default-index="timeIndex"

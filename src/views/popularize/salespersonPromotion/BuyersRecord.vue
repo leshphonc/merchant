@@ -20,7 +20,7 @@
     <van-divider>0条记录</van-divider>
     <!-- 弹出层 -->
     <!-- 开始时间 -->
-    <van-popup position="bottom" v-model="showStartTimePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showStartTimePicker">
       <van-datetime-picker
         :max-date="endTimeValue"
         :value="startTimeValue"
@@ -30,7 +30,7 @@
       />
     </van-popup>
     <!-- 结束时间 -->
-    <van-popup position="bottom" v-model="showEndTimePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showEndTimePicker">
       <van-datetime-picker
         :min-date="startTimeValue"
         :value="endTimeValue"

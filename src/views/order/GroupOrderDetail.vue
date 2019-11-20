@@ -137,7 +137,7 @@
       </van-row>
     </van-panel>
     <!-- 弹出层 -->
-    <van-popup position="bottom" v-model="showStoreFrontPicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showStoreFrontPicker">
       <van-picker
         :columns="storeFront"
         @cancel="_controlStoreFrontPicker"
@@ -146,7 +146,7 @@
         value-key="name"
       />
     </van-popup>
-    <van-popup position="bottom" v-model="showExpressPicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showExpressPicker">
       <van-picker
         :columns="express"
         @cancel="_controlExpressPicker"
@@ -197,6 +197,7 @@ export default {
       expressNO: '',
       requireMsg: '',
       passArr: [],
+      loading: false,
     }
   },
 
@@ -239,17 +240,24 @@ export default {
     },
     // 归属店铺选择
     _pickerStoreFront(data) {
+      if (this.loading) return
+      this.loading = true
       const { id } = this.$route.params
-      this.ascriptionGroupOrder({ order_id: id, store_id: data.store_id }).then(() => {
-        this.$toast.success({
-          message: '操作成功',
-          forbidClick: true,
-          duration: 1500,
-          onClose: () => {
-            this.__readGroupOrderDetail(id)
-          },
+      this.ascriptionGroupOrder({ order_id: id, store_id: data.store_id })
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              this.loading = false
+              this._readGroupOrderDetail(id)
+            },
+          })
         })
-      })
+        .catch(() => {
+          this.loading = false
+        })
       this._controlStoreFrontPicker()
     },
     // 选择物流公司
@@ -260,6 +268,8 @@ export default {
     },
     // 保存快递信息
     _saveExpressInfo() {
+      if (this.loading) return
+      this.loading = true
       this.requireMsg = ''
       const { id } = this.$route.params
       this.changeGroupOrderExpress({
@@ -267,48 +277,65 @@ export default {
         store_id: this.order.store_id,
         express_type: this.expressID,
         express_id: this.expressNO,
-      }).then(() => {
-        this.$toast.success({
-          message: '操作成功',
-          forbidClick: true,
-          duration: 1500,
-          onClose: () => {
-            // 解锁
-            const { id } = this.$route.params
-            this._readGroupOrderDetail(id)
-          },
-        })
       })
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              // 解锁
+              this.loading = false
+              const { id } = this.$route.params
+              this._readGroupOrderDetail(id)
+            },
+          })
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
     // 验证团购核销码
     _verificationCode() {
+      if (this.loading) return
+      this.loading = true
       window.wx.scanQRCode({
         needResult: 1,
         scanType: ['qrCode', 'barCode'],
         success(res) {
           const { id } = this.$route.params
           if (this.order.now_order.num > 1) {
-            this.verifyArrayGroupCode(id, res.resultStr).then(() => {
-              this.$toast.success({
-                message: '操作成功',
-                forbidClick: true,
-                duration: 1500,
-                onClose: () => {
-                  this._readGroupOrderDetail(id)
-                },
+            this.verifyArrayGroupCode(id, res.resultStr)
+              .then(() => {
+                this.$toast.success({
+                  message: '操作成功',
+                  forbidClick: true,
+                  duration: 1500,
+                  onClose: () => {
+                    this.loading = false
+                    this._readGroupOrderDetail(id)
+                  },
+                })
               })
-            })
+              .catch(() => {
+                this.loading = false
+              })
           } else {
-            this.verifySingleGroupCode(id, res.resultStr).then(() => {
-              this.$toast.success({
-                message: '操作成功',
-                forbidClick: true,
-                duration: 1500,
-                onClose: () => {
-                  this._readGroupOrderDetail(id)
-                },
+            this.verifySingleGroupCode(id, res.resultStr)
+              .then(() => {
+                this.$toast.success({
+                  message: '操作成功',
+                  forbidClick: true,
+                  duration: 1500,
+                  onClose: () => {
+                    this.loading = false
+                    this._readGroupOrderDetail(id)
+                  },
+                })
               })
-            })
+              .catch(() => {
+                this.loading = false
+              })
           }
         },
         fail() {
@@ -326,17 +353,24 @@ export default {
       })
     },
     _verificationAllCode() {
+      if (this.loading) return
+      this.loading = true
       const { id } = this.$route.params
-      this.verifyAllGroupCode({ id, store_id: this.order.store_id }).then(() => {
-        this.$toast.success({
-          message: '操作成功',
-          forbidClick: true,
-          duration: 1500,
-          onClose: () => {
-            this._readGroupOrderDetail(id)
-          },
+      this.verifyAllGroupCode({ id, store_id: this.order.store_id })
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              this.loading = false
+              this._readGroupOrderDetail(id)
+            },
+          })
         })
-      })
+        .catch(() => {
+          this.loading = false
+        })
     },
     // 获取详情数据
     _readGroupOrderDetail(id) {

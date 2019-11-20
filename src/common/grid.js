@@ -14,7 +14,7 @@ const ManagementGrid = {
     },
     {
       name: '店员管理',
-      path: '/shopAssistant',
+      path: '/staff',
       enable: require('../assets/image/dygl2.png'),
       disable: require('../assets/image/dygl_gray.png'),
     },

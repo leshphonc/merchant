@@ -82,7 +82,7 @@
       <van-tabbar-item icon="apps-o">服务</van-tabbar-item>
       <van-tabbar-item icon="label-o">分类</van-tabbar-item>
     </van-tabbar>
-    <van-popup class="category-cru-popup" position="bottom" v-model="showCategoryCRUPopup">
+    <van-popup class="category-cru-popup" position="bottom" safe-area-inset-bottom v-model="showCategoryCRUPopup">
       <ValidationObserver @submit.prevent="_submit" ref="observer" tag="form" v-slot="{ invalid }">
         <van-cell-group>
           <ValidationProvider name="分类名称" rules="required" slim v-slot="{ errors }">
@@ -110,7 +110,7 @@
         </div>
       </ValidationObserver>
     </van-popup>
-    <van-popup position="bottom" v-model="showCategoryPicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showCategoryPicker">
       <van-picker :columns="firstCategoryListAddNull" @change="_changeCategory" value-key="cat_name" />
     </van-popup>
   </div>
@@ -213,7 +213,7 @@ export default {
     // 刷新服务商品列表
     _onRefresh() {
       this.getServiceCommodityList().then(res => {
-        this.page = 1
+        this.page = 2
         this.list = res
         this.refreshing = false
       })
@@ -309,7 +309,7 @@ export default {
     // 提交表单
     async _submit() {
       // 锁
-      if (this.loading) return false
+      if (this.loading) return
       // 验证表单
       const isValid = await this.$refs.observer.validate()
       // 表单不完整
@@ -377,9 +377,5 @@ export default {
     width: 50%;
     margin: 0;
   }
-}
-
-.van-switch {
-  font-size: 18px !important;
 }
 </style>

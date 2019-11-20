@@ -85,6 +85,7 @@ a {
 
 // van-switch
 .van-switch {
+  font-size: 18px !important;
   vertical-align: middle;
 }
 

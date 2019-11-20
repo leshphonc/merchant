@@ -63,8 +63,7 @@ export default {
       console.log('没有code，不是app')
       this.getWxConfig().then(res => {
         console.log(res)
-        // const url = encodeURIComponent(window.location.href)
-        // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`
+        this.$getWXCode(res.appId)
       })
     }
   },
@@ -72,7 +71,7 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions(['getMerchantDetail', 'getWxConfig']),
+    ...mapActions(['getMerchantDetail', 'getWxConfig', 'getPayInfo']),
     ...mapActions('wallet', ['createOrder', 'checkOrder']),
     _changeMoney() {
       this.$nextTick(() => {
@@ -81,6 +80,8 @@ export default {
       })
     },
     async _submit() {
+      // 检查锁
+      if (this.loading) return
       if (this.money) {
         console.log('充值')
         // 创建订单获 -> 取订单id, type
@@ -89,6 +90,7 @@ export default {
           const { order_id, type } = res
           // 判断是否app充值
           if (this._isApp) {
+            // app充值
             const info = await this.getMerchantDetail(userInfo.mer_id)
             const json = {
               action: 'WxPay',
@@ -100,16 +102,39 @@ export default {
             }
             window._invokeAndroid(json)
           } else {
+            // 加锁
+            this.loading = true
+            // 微信环境充值
             const code = Utils.getUrlParam('code')
             console.log(code)
             console.log('不是app')
-            this.checkOrder({
+            const { openid } = await this.checkOrder({
               id: order_id,
               type,
               code,
-            }).then(res => {
-              console.log(res)
             })
+            const config = await this.getPayInfo({
+              order_id,
+              order_type: type,
+              pay_type: 'weixin',
+              openId: openid,
+            })
+            this.$WXPay(config)
+              .then(() => {
+                this.$toast.success({
+                  message: '充值成功',
+                  forbidClick: true,
+                  duration: 1500,
+                  onClose: () => {
+                    // 解锁
+                    this.loading = false
+                    this.$router.replace('/wallet')
+                  },
+                })
+              })
+              .catch(() => {
+                console.log('支付失败')
+              })
           }
         })
       } else {

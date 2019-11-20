@@ -559,7 +559,7 @@ export default {
     // 提交表单
     async _submit() {
       // 锁
-      if (this.loading) return false
+      if (this.loading) return
       // 验证表单
       const isValid = await this.$refs.observer.validate()
       if (!isValid) {

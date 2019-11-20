@@ -115,7 +115,7 @@
     <div class="white-space"></div>
     <!-- 弹出层 -->
     <!-- 限时价类型 -->
-    <van-popup position="bottom" v-model="showTimeTypePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showTimeTypePicker">
       <van-picker
         :columns="timeTypeColumns"
         :default-index="timeTypeIndex"
@@ -126,7 +126,7 @@
       ></van-picker>
     </van-popup>
     <!-- 开始时间 -->
-    <van-popup position="bottom" v-model="showStartTimePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showStartTimePicker">
       <van-datetime-picker
         :type="timePickerDateType"
         :value="formData.seckill_open_time"
@@ -136,7 +136,7 @@
       />
     </van-popup>
     <!-- 结束时间 -->
-    <van-popup position="bottom" v-model="showEndTimePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showEndTimePicker">
       <van-datetime-picker
         :type="timePickerDateType"
         :value="formData.seckill_close_time"
@@ -146,7 +146,7 @@
       />
     </van-popup>
     <!-- 优惠券 -->
-    <van-popup position="bottom" v-model="showCouponPicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showCouponPicker">
       <van-picker
         :columns="couponColumns"
         :default-index="couponIndex"
@@ -157,7 +157,7 @@
       ></van-picker>
     </van-popup>
     <!-- 会员分组 -->
-    <van-popup position="bottom" v-model="showMemberGroupPicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showMemberGroupPicker">
       <van-picker
         :columns="memberGroupColumns"
         :default-index="memberIndex"
@@ -461,7 +461,7 @@ export default {
     async _submit() {
       console.log(this.formData)
       // 锁
-      if (this.loading) return false
+      if (this.loading) return
       // 验证表单
       const isValid = await this.$refs.observer.validate()
       if (!isValid) {
