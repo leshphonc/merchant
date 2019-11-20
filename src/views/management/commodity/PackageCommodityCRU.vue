@@ -56,8 +56,11 @@
       </van-cell>
       <!-- 选择出的服务列表 -->
       <van-cell-group :border="false" :key="item.appoint_id" v-for="(item, index) in formData.project_data">
-        <van-cell>
-          <van-icon @click="_deletePro(item.appoint_id, index)" class="delete-icon" name="close" slot="icon" />
+        <van-cell center>
+          <span class="delete-icon" slot="icon">
+            <van-icon @click="_deletePro(item.appoint_id, index)" name="close" />
+            <img :src="item.img" alt />
+          </span>
           <div slot="title">
             {{ item.name }}
             <van-tag type="warning">服务</van-tag>
@@ -77,8 +80,11 @@
       </van-cell-group>
       <!-- 选择出的商品列表 -->
       <van-cell-group :key="item.appoint_id" v-for="(item, index) in eCommerce_data">
-        <van-cell>
-          <van-icon @click="_deleteProE(item.appoint_id, index)" class="delete-icon" name="close" slot="icon" />
+        <van-cell center>
+          <span class="delete-icon" slot="icon">
+            <van-icon @click="_deleteProE(item.appoint_id, index)" class="delete-icon" name="close" slot="icon" />
+            <img :src="item.img" alt />
+          </span>
           <div slot="title">
             {{ item.name }}
             <van-tag type="danger">商品</van-tag>
@@ -113,7 +119,7 @@
                 <van-cell :key="index" @click="_toggleE(index, item.disabled)" clickable v-for="(item, index) in listE">
                   <van-checkbox :disabled="item.disabled" :name="item" ref="checkboxesE" slot="right-icon"></van-checkbox>
                   <div slot="title">
-                    <img :src="item.image" alt />
+                    <img :src="item.list_pic" alt />
                     {{ item.name }}
                   </div>
                 </van-cell>
@@ -309,7 +315,7 @@ export default {
                 name: item.name,
                 day_num: 0,
                 meal_num: '',
-                img: item.image,
+                img: item.list_pic,
                 type: 1,
               })
             }
@@ -477,7 +483,13 @@ img {
 
 .delete-icon {
   line-height: inherit;
-  margin-right: 4px;
   color: red;
+
+  & > img {
+    width: 30px;
+    height: 30px;
+    vertical-align: -9px;
+    margin: 0 10px;
+  }
 }
 </style>

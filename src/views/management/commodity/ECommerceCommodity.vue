@@ -7,7 +7,7 @@
             :key="item.goods_id"
             :num="item.stock_num === '-1' ? '∞' : item.stock_num"
             :tag="item.statusstr"
-            :thumb="item.image"
+            :thumb="item.list_pic"
             :title="item.s_name"
             lazy-load
             origin-price="200"
