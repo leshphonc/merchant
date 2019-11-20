@@ -14,7 +14,7 @@ const ManagementGrid = {
     },
     {
       name: '店员管理',
-      path: '/shopAssistant',
+      path: '/staff',
       enable: require('../assets/image/dygl2.png'),
       disable: require('../assets/image/dygl_gray.png'),
     },
@@ -54,12 +54,12 @@ const PopularizeGrid = {
       enable: require('../assets/image/tgfy2.png'),
       disable: require('../assets/image/qmfx_gray.png'),
     },
-    // {
-    //   name: '红包推广',
-    //   path: '/popularize/redEnvelope',
-    //   enable: require('../assets/image/hbtg.png'),
-    //   disable: require('../assets/image/hbtg_gray.png'),
-    // },
+    {
+      name: '红包推广',
+      path: '/redEnvelope',
+      enable: require('../assets/image/hbtg.png'),
+      disable: require('../assets/image/hbtg_gray.png'),
+    },
     {
       name: '智能屏推广',
       path: '/popularize/smartScreen',
@@ -74,7 +74,7 @@ const PopularizeGrid = {
     },
     {
       name: '店员推广',
-      path: '/popularize/shopAssistant',
+      path: '/salespersonPromotion',
       enable: require('../assets/image/dytg2.png'),
       disable: require('../assets/image/dytg_gray.png'),
     },
@@ -116,7 +116,7 @@ const SettingGrid = {
   list: [
     {
       name: '基本信息',
-      path: '/setting/basicInformation',
+      path: '/basicInformation',
       enable: require('../assets/image/jbxx.png'),
       disable: require('../assets/image/jbxx_gray.png'),
     },
@@ -140,7 +140,7 @@ const SettingGrid = {
     },
     {
       name: '自提点管理',
-      path: '/setting/selfManagement',
+      path: '/selfMentionPoint',
       enable: require('../assets/image/ztdgl.png'),
       disable: require('../assets/image/ztdgl_gray.png'),
     },

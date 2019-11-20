@@ -176,7 +176,7 @@ export default {
     _onRefresh() {
       this.getGroupList({ page: 1, status: this.status, find_type: this.find_type, keyword: this.keyword }).then(
         res => {
-          this.page = 1
+          this.page = 2
           this.list = res.order_list
           this.refreshing = false
         }

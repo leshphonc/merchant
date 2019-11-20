@@ -78,7 +78,7 @@ export default {
     // 刷新套餐列表
     _onRefresh() {
       this.getPackageCommodityList().then(res => {
-        this.page = 1
+        this.page = 2
         this.list = res
         this.refreshing = false
       })

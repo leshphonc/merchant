@@ -26,7 +26,7 @@
 
     <!-- 弹出层 -->
     <!-- 店铺筛选 -->
-    <van-popup position="bottom" v-model="showStorePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showStorePicker">
       <van-picker
         :columns="storeColumns"
         @cancel="_controlStorePicker"
@@ -36,7 +36,7 @@
       ></van-picker>
     </van-popup>
     <!-- 日期类型 -->
-    <van-popup position="bottom" v-model="showTimeTypePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showTimeTypePicker">
       <van-picker
         :columns="timeTypeColumns"
         @cancel="_controlTimeTypePicker"
@@ -46,10 +46,10 @@
       ></van-picker>
     </van-popup>
     <!-- 日期新增 -->
-    <van-popup position="bottom" v-if="timeTypeValue !== '3'" v-model="showTimePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-if="timeTypeValue !== '3'" v-model="showTimePicker">
       <van-datetime-picker :type="timeType" :value="timeValue" @cancel="_controlTimePicker" @confirm="_pickTime" />
     </van-popup>
-    <van-popup position="bottom" v-if="timeTypeValue === '3'" v-model="showTimePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-if="timeTypeValue === '3'" v-model="showTimePicker">
       <van-picker
         :columns="timeColumns"
         :default-index="timeIndex"
@@ -223,6 +223,9 @@ export default {
 
   mounted() {
     this._getVisitsFaceEchartData()
+    for (let i = 0; i < 20; i++) {
+      this.timeColumns.push(2010 + i)
+    }
   },
 
   destroyed() {},
@@ -246,7 +249,7 @@ export default {
       console.log(data)
       this.storeLabel = data.label
       this.storeValue = data.value
-      this._getEchartData(this.curType)
+      this._getVisitsFaceEchartData()
       this._controlStorePicker()
     },
     // 时间类型选择
@@ -254,24 +257,25 @@ export default {
       console.log(data)
       this.timeTypeLabel = data.label
       this.timeTypeValue = data.value
-      this._getEchartData(this.curType)
+      this._getVisitsFaceEchartData()
       this._controlTimeTypePicker()
     },
     // 时间选择
     _pickTime(data) {
       this.timeValue = data
-      this._getEchartData(this.curType)
+      this._getVisitsFaceEchartData()
       this._controlTimePicker()
     },
     // 年份选择
     _pickYear(data) {
       this.timeValue = new Date().setYear(data)
-      this._getEchartData(this.curType)
+      this._getVisitsFaceEchartData()
       this._controlTimePicker()
     },
     // 获取进店人数
     _getVisitsFaceEchartData() {
-      this.getVisitsFaceEchartData().then(res => {
+      const obj = { store_id: this.storeValue, date_type: this.timeTypeValue, date: this.timeLabel }
+      this.getVisitsFaceEchartData(obj).then(res => {
         console.log(res)
         this.echartData = res
       })

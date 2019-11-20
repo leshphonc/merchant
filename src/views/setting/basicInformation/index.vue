@@ -523,10 +523,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.van-switch {
-  font-size: 18px !important;
-}
-
 .van-tag + .van-tag {
   margin-left: 4px;
 }

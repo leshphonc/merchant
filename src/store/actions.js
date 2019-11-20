@@ -120,6 +120,10 @@ export default {
         { values: cityData, defaultIndex: cityIndex },
         { values: areaData, defaultIndex: areaIndex },
       ]
+      if (!circle) {
+        resolve(result)
+        return false
+      }
 
       // 查询地区下的商圈
       const circleData = await dispatch('getCircle', { id: area, shift: true })
@@ -176,6 +180,20 @@ export default {
   getStoreList(context, flag) {
     return new Promise(async (resolve, reject) => {
       const data = await common.getStoreList(flag)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取平台配置信息
+  getPlatFormInfo() {
+    return new Promise(async (resolve, reject) => {
+      const data = await common.getPlatFormInfo()
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取用户UID
+  getMerchantDetail(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await common.getMerchantDetail(id)
       data ? resolve(data) : reject()
     })
   },

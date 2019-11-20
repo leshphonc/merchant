@@ -748,7 +748,7 @@ export default {
     // 提交数据
     async _submit() {
       // 锁
-      if (this.loading) return false
+      if (this.loading) return
       // 验证表单
       const isValid = await this.$refs.observer.validate()
       console.log(this.formData)
@@ -816,9 +816,5 @@ export default {
 .submit {
   margin: 10px 0;
   width: 100%;
-}
-
-.van-switch {
-  font-size: 20px !important;
 }
 </style>
