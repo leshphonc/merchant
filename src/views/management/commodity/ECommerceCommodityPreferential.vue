@@ -333,7 +333,7 @@ export default {
     },
     // 优惠券开关
     _controlCouponPicker(index) {
-      this.curCoupon = index
+      if (typeof index === 'number') this.curCoupon = index
       this.showCouponPicker = !this.showCouponPicker
     },
     // 会员卡分组开关
@@ -361,6 +361,7 @@ export default {
     },
     // 选择优惠券
     _pickCoupon(data) {
+      console.log(this.curCoupon)
       // 将选择的优惠券加入已选择的列表中
       this.selectedCoupon = [...new Set([...this.selectedCoupon, data.value])]
       // 判断此次选择的picker是否有值
@@ -472,12 +473,13 @@ export default {
       } else {
         // 加锁
         this.loading = true
-        this.formData.goods_id = this.$route.params.id
-        this.formData.store_id = 0
-        this.formData.seckill_open_time = this.startTimeLabel
-        this.formData.seckill_close_time = this.endTimeLabel
+        const params = JSON.parse(JSON.stringify(this.formData))
+        params.goods_id = this.$route.params.id
+        params.store_id = 0
+        params.seckill_open_time = this.startTimeLabel
+        params.seckill_close_time = this.endTimeLabel
         // 表单完整，进行数据修改并提交
-        this.updateECommerceCommodityPreferential(this.formData)
+        this.updateECommerceCommodityPreferential(params)
           .then(() => {
             this.$toast.success({
               message: '操作成功',

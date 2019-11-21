@@ -19,58 +19,64 @@
       <div class="white-space"></div>
     </van-sticky>
     <van-loading type="spinner" v-show="!list.length"></van-loading>
-    <div :key="item.staff_id" v-for="item in list">
-      <van-panel>
-        <div slot="header">
-          <van-row>
-            <van-col span="12">
-              <img :src="item.avatar ? item.avatar : require('@/assets/image/staffAvatar.png')" alt />
-              <div style="display: inline-block">
-                <span class="name">{{ item.name }}</span>
-                <div class="tel">
-                  <a :href="'tel:' + item.tel" v-if="item.tel">
-                    {{ item.tel }}
-                    <van-icon color="#1989fa" name="phone-o" />
-                  </a>
+    <div>
+      <div :key="item.staff_id" class="bottom-space" v-for="item in list">
+        <van-panel>
+          <div slot="header">
+            <van-row>
+              <van-col span="12">
+                <img :src="item.avatar ? item.avatar : require('@/assets/image/staffAvatar.png')" alt />
+                <div style="display: inline-block">
+                  <span class="name">{{ item.name }}</span>
+                  <div class="tel">
+                    <a :href="'tel:' + item.tel" v-if="item.tel">
+                      {{ item.tel }}
+                      <van-icon color="#1989fa" name="phone-o" />
+                    </a>
+                  </div>
                 </div>
+              </van-col>
+              <van-col class="store" span="12">{{ item.storename }}</van-col>
+            </van-row>
+          </div>
+          <div slot="footer">
+            <div>
+              <div style="display: flex;">
+                <div style="flex: 1;">账号：{{ item.username }}</div>
+                <div style="flex: 1;">销售报酬：{{ item.sale_money || 0 }} 元</div>
               </div>
-            </van-col>
-            <van-col class="store" span="12">{{ item.storename }}</van-col>
-          </van-row>
-        </div>
-        <div slot="footer">
-          <div>
-            <div style="display: flex;">
-              <div style="flex: 1;">账号：{{ item.username }}</div>
-              <div style="flex: 1;">销售报酬：{{ item.sale_money || 0 }} 元</div>
+              <div class="white-space"></div>
+              <div>最后登录：{{ item.last_time !== '0' ? $moment(item.last_time * 1000).format('YYYY-MM-DD HH:mm') : '暂无记录' }}</div>
             </div>
             <div class="white-space"></div>
-            <div>最后登录：{{ item.last_time !== '0' ? $moment(item.last_time * 1000).format('YYYY-MM-DD HH:mm') : '暂无记录' }}</div>
+            <div style="text-align: right;" v-if="item.name !== '门店AI助手-小由' && status === '1'">
+              <van-button
+                @click="_controlPermissionPicker(item.store_id, item.mer_id, item.staff_id)"
+                size="small"
+                type="primary"
+              >权限</van-button>
+              <van-button @click="_controlStorePicker(item.staff_id, item.store_id)" size="small" type="primary">调岗</van-button>
+              <van-button :to="`/staff/staffWorkRecord/${item.staff_id}`" size="small" type="primary">工作记录</van-button>
+              <van-button @click="_staffStatusChange(item.staff_id)" size="small" type="danger">禁用</van-button>
+            </div>
+            <div style="text-align: right;">
+              <van-button
+                @click="_staffStatusChange(item.staff_id)"
+                size="small"
+                type="primary"
+                v-show="status === '2'"
+              >启用</van-button>
+            </div>
+            <i
+              @click="() => $router.push(`/staff/staffCRU/${item.staff_id}/${item.store_id}`)"
+              class="iconfont"
+            >&#xe634;</i>
           </div>
-          <div class="white-space"></div>
-          <div style="text-align: right;" v-if="item.name !== '门店AI助手-小由' && status === '1'">
-            <van-button
-              @click="_controlPermissionPicker(item.store_id, item.mer_id, item.staff_id)"
-              size="small"
-              type="primary"
-            >权限</van-button>
-            <van-button @click="_controlStorePicker(item.staff_id, item.store_id)" size="small" type="primary">调岗</van-button>
-            <van-button :to="`/staff/staffWorkRecord/${item.staff_id}`" size="small" type="primary">工作记录</van-button>
-            <van-button @click="_staffStatusChange(item.staff_id)" size="small" type="danger">禁用</van-button>
-          </div>
-          <div style="text-align: right;">
-            <van-button
-              @click="_staffStatusChange(item.staff_id)"
-              size="small"
-              type="primary"
-              v-show="status === '2'"
-            >启用</van-button>
-          </div>
-          <i @click="() => $router.push(`/staff/staffCRU/${item.staff_id}/${item.store_id}`)" class="iconfont">&#xe634;</i>
-        </div>
-      </van-panel>
-      <div class="white-space"></div>
+        </van-panel>
+        <div class="white-space"></div>
+      </div>
     </div>
+    <van-button @click="_staffLogin" class="staff-login" type="primary">店员登录</van-button>
     <!-- 弹出层 -->
     <!-- 店员权限 -->
     <van-popup class="permission-popup" position="bottom" safe-area-inset-bottom v-model="showPermissionPicker">
@@ -336,6 +342,10 @@ export default {
         default:
       }
     },
+    // 店员登录
+    _staffLogin() {
+      window.location.href = window.location.origin + '/packapp/storestaff/login.html?back=index'
+    },
     // 获取店铺列表
     _getStoreList() {
       this.getStoreList().then(res => {
@@ -458,5 +468,15 @@ img {
   top: 10px;
   right: 10px;
   color: @black-c;
+}
+
+.bottom-space:last-child {
+  margin-bottom: 48px;
+}
+
+.staff-login {
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
 }
 </style>

@@ -89,7 +89,7 @@
           <ValidationProvider name="折扣率" rules="required|between:0, 10|decimal-max1" slim v-slot="{ errors }">
             <van-field
               :error-message="errors[0]"
-              @click-right-icon="$toast('0或10代表无折扣，8.5代表85折')"
+              @click-right-icon="$toast('10代表无折扣，8.5代表85折')"
               label="折扣率"
               placeholder="0 ～ 10 之间的数字，支持小数"
               required
