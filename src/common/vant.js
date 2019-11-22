@@ -51,6 +51,8 @@ import {
   TabbarItem,
   Area,
   Card,
+  CouponCell,
+  CouponList,
 } from 'vant'
 
 Vue.use(Button)
@@ -93,3 +95,5 @@ Vue.use(Tab).use(Tabs)
 Vue.use(Tabbar).use(TabbarItem)
 Vue.use(Area)
 Vue.use(Card)
+Vue.use(CouponCell)
+Vue.use(CouponList)

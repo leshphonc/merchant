@@ -1,16 +1,105 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" fixed left-arrow title="领券会员"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" @click-right="_scanCodeWriteOff" fixed left-arrow right-text="扫码核销" title="领券会员"></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <div class="white-space"></div>
-    <van-tabs :offset-top="offsetTop" sticky type="card">
-      <van-tab title="领卡会员"></van-tab>
-      <van-tab title="会员卡分组"></van-tab>
-    </van-tabs>
+    <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
+      <van-list :finished="finished" @load="_onLoad" finished-text="没有更多了" v-model="loading">
+        <van-card
+          :key="item.coupon_id"
+          :num="item.num"
+          :tag="category[item.cate_name]"
+          :thumb="item.img"
+          :title="item.name"
+          v-for="item in list"
+        >
+          <div slot="tags">
+            <van-tag plain type="danger">{{ item.cate_id }}</van-tag>
+          </div>
+          <div slot="bottom">{{ _getPlatform(item.platform) }}</div>
+          <div slot="price">满{{ item.order_money }} 减{{ item.discount }}</div>
+          <div slot="footer">
+            <div class="white-space"></div>
+            <div>有效期：{{ $moment(item.start_time * 1000).format('YYYY.MM.DD') }} - {{ $moment(item.end_time * 1000).format('YYYY.MM.DD') }}</div>
+            <div class="white-space"></div>
+            <van-button
+              @click="_changeCouponStatus(item.coupon_id, '1')"
+              size="small"
+              type="primary"
+              v-if="item.status === '0'"
+            >启用</van-button>
+            <van-button
+              @click="_changeCouponStatus(item.coupon_id, '0')"
+              size="small"
+              type="danger"
+              v-if="item.status === '1'"
+            >禁用</van-button>
+            <van-button size="small" v-if="item.status === '2'">超过期限</van-button>
+            <van-button size="small" v-if="item.status === '3'">领完了</van-button>
+            <van-button @click="_controlCouponList(item.coupon_id)" size="small">已领取{{ item.had_pull }}张</van-button>
+          </div>
+        </van-card>
+      </van-list>
+    </van-pull-refresh>
+    <!-- 弹出层 -->
+    <van-popup :style="{ minHeight: '20%' }" position="bottom" safe-area-inset-bottom v-model="showCouponList">
+      <van-pull-refresh @refresh="_onRefresh2" v-model="refreshing2">
+        <van-list
+          :finished="finished2"
+          :immediate-check="false"
+          @load="_onLoad2"
+          finished-text="没有更多了"
+          v-model="loading"
+        >
+          <van-panel
+            :class="item.is_use === '1' ? '' : 'isUsed'"
+            :icon="item.avatar"
+            :key="item.id"
+            :status="item.is_use === '1' ? '已使用' : '未使用'"
+            :title="item.name"
+            v-for="item in list2"
+          >
+            <div>
+              <div class="white-space"></div>
+              <div>
+                {{ item.nickname }}
+                <a :href="'tel:' + item.phone" v-if="item.phone">
+                  - {{ item.phone }}
+                  <van-icon color="#1989fa" name="phone-o" />
+                </a>
+              </div>
+              <div class="white-space"></div>
+              <div>领取数量：{{ item.num }}</div>
+              <div class="white-space"></div>
+            </div>
+            <div slot="footer">
+              <div>领取时间：{{ $moment(item.receive_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
+              <van-button @click="_controlWriteOff(item.id)" size="small" type="primary" v-if="item.is_use === '0'">核销</van-button>
+              <van-button disabled size="small" v-else>已核销</van-button>
+            </div>
+          </van-panel>
+        </van-list>
+      </van-pull-refresh>
+      <van-row>
+        <van-col span="24">
+          <van-button @click="_controlCouponList(0)">关闭</van-button>
+        </van-col>
+      </van-row>
+    </van-popup>
+    <!-- 核销码 -->
+    <van-dialog
+      @confirm="_writeOffCoupon"
+      confirm-button-text="确认核销"
+      show-cancel-button
+      title="核销"
+      v-model="showWriteOff"
+    >
+      <van-field input-align="center" placeholder="请输入核销码进行核销" type="number" v-model="code"></van-field>
+    </van-dialog>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'collarCouponMemberList',
 
@@ -21,7 +110,24 @@ export default {
   props: {},
 
   data() {
-    return {}
+    return {
+      page: 1,
+      list: [],
+      refreshing: false,
+      finished: false,
+      page2: 1,
+      list2: [],
+      refreshing2: false,
+      finished2: false,
+      loading: false,
+      category: {},
+      platform: {},
+      showCouponList: false,
+      showWriteOff: false,
+      lastCoupon: 0,
+      lastCouponItem: '',
+      code: '',
+    }
   },
 
   computed: {
@@ -32,14 +138,211 @@ export default {
 
   watch: {},
 
-  created() {},
+  created() {
+    window['_writeOffCoupon'] = this._writeOffCoupon
+  },
 
   mounted() {},
 
   destroyed() {},
 
-  methods: {},
+  methods: {
+    ...mapActions('member', ['getCouponList', 'changeCouponStatus', 'getCouponReceivedList', 'writeOffCoupon']),
+    // 优惠券列表开关
+    _controlCouponList(id) {
+      if (id) {
+        this.lastCoupon = id
+        this.getCouponReceivedList({ coupon_id: id, page: 1 }).then(res => {
+          this.page2 = 2
+          this.list2 = res.lists
+          this.refreshing2 = false
+          this.showCouponList = !this.showCouponList
+        })
+      } else {
+        this.showCouponList = !this.showCouponList
+      }
+    },
+    // 核销码开关
+    _controlWriteOff(id) {
+      this.lastCouponItem = id
+      this.showWriteOff = !this.showWriteOff
+    },
+    // 刷新列表
+    _onRefresh() {
+      this.getCouponList().then(res => {
+        this.page = 2
+        this.list = res.lists
+        this.category = res.category
+        this.platform = res.platform
+        this.refreshing = false
+      })
+    },
+    // 加载更多
+    _onLoad() {
+      this.getCouponList(this.page).then(res => {
+        this.loading = false
+        if (res.lists.length < 10) {
+          this.finished = true
+        } else {
+          this.page += 1
+        }
+        this.list.push(...res.lists)
+        this.category = res.category
+        this.platform = res.platform
+      })
+    },
+    // 刷新列表
+    _onRefresh2() {
+      this.getCouponReceivedList({ coupon_id: this.lastCoupon, page: 1 }).then(res => {
+        this.page2 = 2
+        this.list2 = res.lists
+        this.refreshing2 = false
+      })
+    },
+    // 加载更多
+    _onLoad2() {
+      this.getCouponReceivedList({ coupon_id: this.lastCoupon, page: this.page2 }).then(res => {
+        this.loading = false
+        if (res.lists.length < 10) {
+          this.finished2 = true
+        } else {
+          this.page2 += 1
+        }
+        this.list2.push(...res.lists)
+      })
+    },
+    // 获得平台名称
+    _getPlatform(data) {
+      if (data) {
+        return data
+          .map(item => {
+            return this.platform[item]
+          })
+          .join()
+      }
+    },
+    // 修改优惠券状态
+    _changeCouponStatus(id, status) {
+      if (this.loading) return
+      this.loading = true
+      this.changeCouponStatus({ coupon_id: id, status })
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              // 解锁
+              this.loading = false
+              this._onRefresh()
+            },
+          })
+        })
+        .catch(() => {
+          this.loading = false
+        })
+    },
+    // 输入核销码进行核销
+    _writeOffCoupon(code) {
+      this.writeOffCoupon(code || `${this.lastCouponItem}d${this.code}`)
+        .then(() => {
+          this.code = ''
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              this._onRefresh2()
+            },
+          })
+        })
+        .catch(() => {
+          this.code = ''
+        })
+    },
+    // 扫码核销
+    _scanCodeWriteOff() {
+      if (this._isApp) {
+        const json = { callback: '_writeOffCoupon', action: 'ScanQRCode' }
+        this.$invokeAndroid(json)
+      } else {
+        this.$scanQRCode().then(code => {
+          if (code) {
+            this._writeOffCoupon(code)
+          } else {
+            this.$toast.success({
+              message: '核销码错误，核销失败',
+              forbidClick: true,
+              duration: 1500,
+            })
+          }
+        })
+      }
+    },
+  },
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.van-popup {
+  box-sizing: border-box;
+  padding-bottom: 44px;
+  background-color: @gray-background-c;
+
+  .van-panel + .van-panel {
+    margin-top: 6px;
+  }
+
+  .van-cell__left-icon,
+  .van-cell__right-icon {
+    height: auto;
+    .van-icon__image {
+      width: 4rem;
+      height: 4rem;
+    }
+  }
+
+  .isUsed {
+    .van-panel__header-value {
+      color: @green-c;
+    }
+  }
+
+  .van-panel__content {
+    padding: 2px 16px;
+    font-size: 14px;
+    color: @black-c;
+
+    a {
+      color: @black-c !important;
+    }
+
+    .van-icon {
+      vertical-align: -2px;
+    }
+  }
+
+  .van-panel__footer {
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      & > div:first-child {
+        font-size: 12px;
+        color: @font-gray-c;
+      }
+    }
+  }
+  .van-row {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    .van-col {
+      .van-button {
+        width: 100%;
+      }
+    }
+  }
+}
+</style>

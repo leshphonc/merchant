@@ -1,6 +1,40 @@
 <template>
   <router-view />
 </template>
+<script>
+import { mapActions } from 'vuex'
+export default {
+  name: 'appMain',
+
+  mixins: [],
+
+  components: {},
+
+  props: {},
+
+  data() {
+    return {}
+  },
+
+  computed: {},
+
+  watch: {},
+
+  created() {
+    this.getWxConfig().then(config => {
+      this.$wxConfig(config)
+    })
+  },
+
+  mounted() {},
+
+  destroyed() {},
+
+  methods: {
+    ...mapActions(['getWxConfig']),
+  },
+}
+</script>
 
 <style lang="less">
 body {

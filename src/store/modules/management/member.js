@@ -57,8 +57,8 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
-  // 获取所有会员分组列表
-  async getMemberGroupList(context, page) {
+  // 获取会员分组列表
+  async getMemberGroupList(context, page = 1) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.getMemberGroupList(page)
       data ? resolve(data) : reject()
@@ -82,6 +82,34 @@ const actions = {
   async updateMemberGroup(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.updateMemberGroup(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 获取优惠券列表
+  async getCouponList(context, page = 1) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getCouponList(page)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 优惠券状态变更
+  async changeCouponStatus(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.changeCouponStatus(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 获取优惠券已领列表
+  async getCouponReceivedList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getCouponReceivedList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 优惠券核销
+  async writeOffCoupon(context, code) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.writeOffCoupon(code)
       data ? resolve() : reject()
     })
   },

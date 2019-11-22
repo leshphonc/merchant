@@ -95,4 +95,34 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 获取优惠券列表
+  getCouponList: page =>
+    axios.get('/appapi.php?c=Merchantapp&a=card_new_coupon', {
+      params: {
+        page,
+        size: 10,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // 优惠券状态变更
+  changeCouponStatus: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=edit_coupon', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取优惠券已领列表
+  getCouponReceivedList: payload =>
+    axios.get('/appapi.php?c=Merchantapp&a=card_new_coupon_handpull', {
+      params: {
+        ...payload,
+        size: 10,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // 优惠券核销
+  writeOffCoupon: code =>
+    axios.post('/appapi.php?c=Merchantapp&a=use_couponcode', {
+      code,
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

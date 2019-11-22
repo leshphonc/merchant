@@ -119,7 +119,7 @@ export default {
               pay_type: 'weixin',
               openId: openid,
             })
-            this.$WXPay(config)
+            this.$wxPay(config)
               .then(() => {
                 this.$toast.success({
                   message: '充值成功',
