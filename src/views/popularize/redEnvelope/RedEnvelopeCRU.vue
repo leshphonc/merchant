@@ -56,7 +56,7 @@
             v-model.trim="formData.desc"
           />
         </ValidationProvider>
-        <area-picker :callbackDefault="_callbackDefatul" :data="defaultArea" :pickArea="_pickArea" title="活动地区"></area-picker>
+        <area-picker :data="defaultArea" :pickArea="_pickArea" title="活动地区"></area-picker>
         <ValidationProvider name="分享链接" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -249,7 +249,6 @@ export default {
         is_open: '1',
       },
       pic: [],
-      area: [],
       defaultArea: null,
       showAreaPicker: false,
       showEnvelopeTypePicker: false,
@@ -266,13 +265,6 @@ export default {
     // 页面类型
     type() {
       return this.$route.params.id ? '编辑' : '创建'
-    },
-    // 地区非空验证
-    areaLabel() {
-      if (this.area.length) {
-        return this.area[0].label + ' / ' + this.area[1].label + ' / ' + this.area[2].label
-      }
-      return ''
     },
     // 红包类型非空验证
     envelopeTypeLabel() {
@@ -370,10 +362,6 @@ export default {
       this.formData.city_id = data[1].value
       this.formData.area_id = data[2].value
       console.log(data)
-    },
-    // 地区默认数据
-    _callbackDefatul(data) {
-      this.area = data
     },
     // 默认数据读取
     _readRedEnvelopeDetail(id) {

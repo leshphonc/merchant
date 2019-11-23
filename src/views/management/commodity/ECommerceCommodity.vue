@@ -227,6 +227,14 @@ export default {
     _controlCategoryPicker() {
       this.showCategoryPicker = !this.showCategoryPicker
     },
+    // 刷新电商商品列表
+    _onRefresh() {
+      this.getECommerceCommodityList().then(res => {
+        this.page = 2
+        this.list = res.lists
+        this.refreshing = false
+      })
+    },
     // 异步更新电商商品数据
     _onLoad() {
       this.getECommerceCommodityList(this.page).then(res => {
@@ -237,14 +245,6 @@ export default {
           this.page += 1
         }
         this.list.push(...res.lists)
-      })
-    },
-    // 刷新电商商品列表
-    _onRefresh() {
-      this.getECommerceCommodityList().then(res => {
-        this.page = 2
-        this.list = res.lists
-        this.refreshing = false
       })
     },
     // 删除电商产品

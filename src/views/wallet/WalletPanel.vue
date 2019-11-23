@@ -9,7 +9,7 @@
     <div v-show="active === 0">
       <div class="white-space"></div>
       <van-cell-group>
-        <van-cell icon="cash-back-record" is-link title="充值" to="/wallet/AddCredit"></van-cell>
+        <van-cell icon="cash-back-record" is-link title="充值" to="/wallet/addCredit"></van-cell>
         <van-cell icon="refund-o" is-link title="提现" to="/wallet/withDraw"></van-cell>
         <van-cell icon="notes-o" is-link title="账户明细" to="/wallet/accountDetail"></van-cell>
       </van-cell-group>

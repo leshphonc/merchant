@@ -32,7 +32,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import Utils from '@/utils'
 export default {
   name: 'addCredit',
 
@@ -58,9 +57,11 @@ export default {
   created() {},
 
   mounted() {
-    const code = Utils.getUrlParam('code')
-    if (!code && !this._isApp) {
-      console.log('没有code，不是app')
+    const session_code = sessionStorage.getItem('merchant_wx_code')
+    const { code } = this.$route.query
+    if (!session_code && code) sessionStorage.setItem('merchant_wx_code', session_code)
+    if (!this._isApp && !session_code && !code) {
+      console.log('缓存没有code，url没有code，不是app')
       this.getWxConfig().then(res => {
         console.log(res)
         this.$getWXCode(res.appId)
@@ -105,7 +106,7 @@ export default {
             // 加锁
             this.loading = true
             // 微信环境充值
-            const code = Utils.getUrlParam('code')
+            const code = sessionStorage.getItem('merchant_wx_code')
             console.log(code)
             console.log('不是app')
             const { openid } = await this.checkOrder({
@@ -128,7 +129,7 @@ export default {
                   onClose: () => {
                     // 解锁
                     this.loading = false
-                    this.$router.replace('/wallet')
+                    this.$goBack()
                   },
                 })
               })

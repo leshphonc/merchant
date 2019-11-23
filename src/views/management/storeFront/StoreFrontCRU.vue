@@ -20,42 +20,13 @@
             v-model.trim="formData.phone"
           />
         </ValidationProvider>
-        <ValidationProvider name="店铺所在地" rules="required" slim v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            :value="areaLabel"
-            @click="_controlAreaPicker"
-            error-message-align="right"
-            input-align="right"
-            is-link
-            label="店铺所在地"
-            placeholder="选择地址"
-            readonly
-            required
-          ></van-field>
-        </ValidationProvider>
-        <van-field
-          :value="circleLabel"
-          @click="_controlCirclePicker"
-          error-message-align="right"
-          input-align="right"
-          is-link
-          label="所处商圈"
-          placeholder="选择商圈"
-          readonly
-          v-show="areaLabel"
-        ></van-field>
-        <van-field
-          :value="marketLabel"
-          @click="_controlMarketPicker"
-          error-message-align="right"
-          input-align="right"
-          is-link
-          label="所处商盟"
-          placeholder="选择商盟"
-          readonly
-          v-show="circleLabel"
-        ></van-field>
+        <area-picker
+          :data="defaultArea"
+          :pickArea="_pickArea"
+          :pickCircle="_pickCircle"
+          :pickMarket="_pickMarket"
+          title="店铺所在地"
+        ></area-picker>
         <ValidationProvider name="详细地址" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -210,40 +181,6 @@
     </ValidationObserver>
 
     <!-- 弹出层 -->
-    <!-- 地区选择 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showAreaPicker">
-      <van-picker
-        :columns="areaColumns"
-        @cancel="_controlAreaPicker"
-        @change="_changeArea"
-        @confirm="_pickArea"
-        show-toolbar
-        value-key="label"
-      />
-      <!-- <van-area :area-list="areaData" @cancel="_controlAreaPicker" @confirm="_pickArea" /> -->
-    </van-popup>
-    <!-- 商圈选择 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showCirclePicker">
-      <van-picker
-        :columns="circleColumns"
-        :default-index="circleIndex"
-        @cancel="_controlCirclePicker"
-        @confirm="_pickCircle"
-        show-toolbar
-        value-key="label"
-      />
-    </van-popup>
-    <!-- 商盟选择 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showMarketPicker">
-      <van-picker
-        :columns="marketColumns"
-        :default-index="marketIndex"
-        @cancel="_controlMarketPicker"
-        @confirm="_pickMarket"
-        show-toolbar
-        value-key="label"
-      />
-    </van-popup>
     <!-- 坐标选择 -->
     <coordinate-picker :cancel="_controlCoordinatePicker" :confirm="_pickCoordinate" :show="showCoordinatePicker"></coordinate-picker>
     <!-- 店铺业务 -->
@@ -302,6 +239,7 @@
 <script>
 import { mapActions } from 'vuex'
 // import areaData from '@/assets/js/area'
+import AreaPicker from '@/components/AreaPicker'
 import ImgCropper from '@/components/ImgCropper'
 import CoordinatePicker from '@/components/CoordinatePicker'
 import QuillEditor from '@/components/QuillEditor'
@@ -312,6 +250,7 @@ export default {
   mixins: [],
 
   components: {
+    AreaPicker,
     ImgCropper,
     CoordinatePicker,
     QuillEditor,
@@ -357,12 +296,6 @@ export default {
       shop_logo: [],
       pic: [],
       qrcode_backgroup: [],
-      // 地区pickerData
-      areaColumns: [],
-      // 商圈pickerData
-      circleColumns: [],
-      // 商盟pcikerData
-      marketColumns: [],
       // 店铺业务pickerData
       businessColumns: [
         { label: '标准', value: 'have_service' },
@@ -378,9 +311,6 @@ export default {
       // 用于picker的店铺分类数据
       storeFrontCategory: [],
       // 控制开关
-      showAreaPicker: false,
-      showCirclePicker: false,
-      showMarketPicker: false,
       showCoordinatePicker: false,
       showBusinessPicker: false,
       showStartTimePicker: false,
@@ -389,10 +319,9 @@ export default {
       showDisCount: false,
       // 锁
       loading: false,
-      // 地址选择后的数据，用于遍历出地址的label
-      area: [],
       // 后续需要后台更改的字段
       businessValue: 'have_service',
+      defaultArea: null,
     }
   },
 
@@ -400,31 +329,6 @@ export default {
     // 页面类型
     type() {
       return this.$route.params.id ? '编辑' : '创建'
-    },
-    // 店铺所在地非空验证
-    areaLabel() {
-      if (this.area.length) {
-        return this.area[0].label + ' / ' + this.area[1].label + ' / ' + this.area[2].label
-      }
-      return ''
-    },
-    // 商圈非空验证
-    circleLabel() {
-      const item = this.circleColumns.find(item => item.value === this.formData.circle_id)
-      return item && item.label
-    },
-    circleIndex() {
-      const index = this.circleColumns.findIndex(item => item.value === this.formData.circle_id)
-      return index
-    },
-    // 商盟非空验证
-    marketLabel() {
-      const item = this.marketColumns.find(item => item.value === this.formData.market_id)
-      return item && item.label
-    },
-    marketIndex() {
-      const index = this.marketColumns.findIndex(item => item.value === this.formData.market_id)
-      return index
     },
     // 店铺地址非空验证
     coordinateLabel() {
@@ -460,7 +364,7 @@ export default {
     // 优惠类型非空验证
     disCountLabel() {
       const item = this.disCountColumns.find(item => item.value === this.formData.discount_type)
-      return item.label
+      return item && item.label
     },
     // 店铺业务默认数据
     storeBussinessIndex() {
@@ -484,40 +388,18 @@ export default {
       this._readStoreFrontDetail(id)
     } else {
       this._getPlatformStoreFrontCategory()
-      this._getDefaultAddressColumnsForPicker()
     }
   },
 
   destroyed() {},
 
   methods: {
-    ...mapActions([
-      'getAllAddressColumnsForPicker',
-      'getDefaultAddressColumnsForPicker',
-      'getProvince',
-      'getCity',
-      'getArea',
-      'getCircle',
-      'getMarket',
-    ]),
     ...mapActions('storeFront', [
       'createStoreFront',
       'readStoreFrontDetail',
       'updateStoreFront',
       'getPlatformStoreFrontCategory',
     ]),
-    // 地区选择开关
-    _controlAreaPicker() {
-      this.showAreaPicker = !this.showAreaPicker
-    },
-    // 商圈选择开关
-    _controlCirclePicker() {
-      this.showCirclePicker = !this.showCirclePicker
-    },
-    // 商盟选择开关
-    _controlMarketPicker() {
-      this.showMarketPicker = !this.showMarketPicker
-    },
     // 坐标拾取
     _controlCoordinatePicker() {
       this.showCoordinatePicker = !this.showCoordinatePicker
@@ -554,35 +436,17 @@ export default {
     // 地区选择
     _pickArea(data) {
       console.log(data)
-      this.area = data
       this.formData.province_id = data[0].value
       this.formData.city_id = data[1].value
       this.formData.area_id = data[2].value
-      this.circleColumns = []
-      this.formData.circle_id = ''
-      this.getCircle({ id: data[2].value, shift: true }).then(res => {
-        console.log(res)
-        this.circleColumns = res
-      })
-      this._controlAreaPicker()
     },
     // 商圈选择
     _pickCircle(data) {
-      console.log(data)
       this.formData.circle_id = data.value
-      this.marketColumns = []
-      this.formData.market_id = ''
-      this.getMarket({ id: data.value, shift: true }).then(res => {
-        console.log(res)
-        this.marketColumns = res
-      })
-      this._controlCirclePicker()
     },
     // 商盟选择
     _pickMarket(data) {
-      console.log(data)
       this.formData.market_id = data.value
-      this._controlMarketPicker()
     },
     // 坐标选择
     _pickCoordinate(lng, lat, address) {
@@ -690,60 +554,18 @@ export default {
         ]
         // 获取平台分类数据
         this._getPlatformStoreFrontCategory(res.cat_fid, res.cat_id)
-        // 根据默认数据读取店铺地址商圈商盟等数据
-        this.getAllAddressColumnsForPicker({
-          province: res.province_id,
-          city: res.city_id,
-          area: res.area_id,
-          circle: res.circle_id,
-          market: res.market_id,
-        }).then(res => {
-          this.areaColumns = res.area
-          this.circleColumns = res.circle
-          this.marketColumns = res.market
-          console.log(res)
-          this.area = [
-            res.area[0].values[res.area[0].defaultIndex],
-            res.area[1].values[res.area[1].defaultIndex],
-            res.area[2].values[res.area[2].defaultIndex],
-          ]
-        })
+        this.defaultArea = {
+          province_id: res.province_id,
+          city_id: res.city_id,
+          area_id: res.area_id,
+          circle_id: res.circle_id,
+          market_id: res.market_id,
+        }
         this.$nextTick(function() {
           this.$refs.editor.$refs.quillEditor.quill.blur()
           window.scroll(0, 0)
         })
       })
-    },
-    // 没有地区数据，默认级联
-    _getDefaultAddressColumnsForPicker() {
-      this.getDefaultAddressColumnsForPicker({ shift: true }).then(res => {
-        console.log(res)
-        this.areaColumns = res
-      })
-    },
-    async _changeArea(picker, values) {
-      if (!values[0].children) {
-        this.getCity({ id: values[0].value, shift: true }).then(res => {
-          console.log(res)
-          values[0].children = res
-          picker.setColumnValues(1, res)
-          this.getArea({ id: res[0].value, shift: true }).then(res2 => {
-            res.children = res2
-            picker.setColumnValues(2, res2)
-          })
-        })
-      } else {
-        const second = values[0].children[0]
-        picker.setColumnValues(1, values[0].children)
-        if (!second.children) {
-          this.getArea({ id: second.value, shift: true }).then(res2 => {
-            second.children = res2
-            picker.setColumnValues(2, res2)
-          })
-        } else {
-          picker.setColumnValues(2, second.children)
-        }
-      }
     },
     // 提交数据
     async _submit() {

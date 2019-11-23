@@ -6,19 +6,24 @@ Vue.prototype._isApp =
   navigator.userAgent.toLowerCase().indexOf('android_chengshang_app') !== -1 ||
   navigator.userAgent.toLowerCase().indexOf('ios_chengshang_app') !== -1
 
+// 判断是否为微信环境
+Vue.prototype._isWx = navigator.userAgent.toLowerCase().match(/MicroMessenger/i) == 'micromessenger'
+
 // app接口调用
 Vue.prototype.$invokeAndroid = json => {
   if (navigator.userAgent.toLowerCase().indexOf('android_chengshang_app') !== -1) {
     window.android.invokeMethods(JSON.stringify(json))
   } else if (navigator.userAgent.toLowerCase().indexOf('ios_chengshang_app') !== -1) {
-    window.location.href = 'ios:' + JSON.stringify(json)
+    window.location.replace('ios:' + JSON.stringify(json))
   }
 }
 
 // 获取微信code
 Vue.prototype.$getWXCode = appId => {
   const url = encodeURIComponent(window.location.href)
-  window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${url}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`
+  window.location.replace(
+    `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${url}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`
+  )
 }
 
 // 微信config注入

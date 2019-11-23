@@ -12,7 +12,7 @@
         <span>订单</span>
         <img :src="props.active ? icons.order.active : icons.order.unactive" alt slot="icon" slot-scope="props" />
       </van-tabbar-item>
-      <van-tabbar-item @click="_controlAction" class="add-btn">
+      <van-tabbar-item @click="_goStoreFrontPage" class="add-btn">
         <div>
           <i class="iconfont">&#xe605;</i>
         </div>
@@ -27,11 +27,11 @@
         <img :src="props.active ? icons.mine.active : icons.mine.unactive" alt slot="icon" slot-scope="props" />
       </van-tabbar-item>
     </van-tabbar>
-    <van-action-sheet :actions="actions" @select="_onSelect" cancel-text="取消" v-model="show" />
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 const user = JSON.parse(localStorage.getItem('merchant_user') || '{}')
 export default {
   name: 'index',
@@ -61,11 +61,6 @@ export default {
           unactive: require('@/assets/image/mine_gray.png'),
         },
       },
-      actions: [
-        { name: '标准首页', href: window.location.origin + `/wap.php?g=Wap&c=merchant&a=map&mer_id=${user.mer_id}` },
-        { name: '自定义首页', href: window.location.origin + `/wap.php?g=Wap&c=Web_xcx&a=index&mer_id=${user.mer_id}` },
-      ],
-      show: false,
     }
   },
 
@@ -84,13 +79,18 @@ export default {
   destroyed() {},
 
   methods: {
-    _controlAction() {
-      this.show = !this.show
-    },
-    _onSelect(item) {
-      console.log(item)
-      window.location.href = item.href
-      this._controlAction()
+    ...mapActions(['getMerchantDetail']),
+    _goStoreFrontPage() {
+      this.getMerchantDetail(user.mer_id).then(res => {
+        console.log(res)
+        const { uid } = res
+        if (uid) {
+          window.location.href =
+            window.location.origin + `/wap.php?g=Wap&c=merchant&a=map&mer_id=${user.mer_id}&uid=${uid}`
+        } else {
+          window.location.href = window.location.origin + `/wap.php?g=Wap&c=merchant&a=map&mer_id=${user.mer_id}`
+        }
+      })
     },
   },
 }

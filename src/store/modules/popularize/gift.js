@@ -1,4 +1,4 @@
-import salespersonPromotionAPI from '@/api/popularize/salespersonPromotion'
+import giftAPI from '@/api/popularize/gift'
 
 // initial state
 const state = {}
@@ -8,11 +8,18 @@ const getters = {}
 
 // actions
 const actions = {
-  // 获取扫码记录
-  async getScanCodeRecord() {
+  // 获取礼品列表
+  async getGiftList(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await salespersonPromotionAPI.getScanCodeRecord()
+      const data = await giftAPI.getGiftList(payload)
       data ? resolve(data) : reject()
+    })
+  },
+  // 删除礼品
+  async deleteGift(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await giftAPI.deleteGift(id)
+      data ? resolve() : reject()
     })
   },
 }

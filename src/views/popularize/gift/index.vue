@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'salespersonPromotionIndex',
+  name: 'giftIndex',
 
   mixins: [],
 

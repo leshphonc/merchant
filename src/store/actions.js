@@ -95,7 +95,7 @@ export default {
     })
   },
   // 查询详情地址
-  getAllAddressColumnsForPicker({ dispatch }, { province, city, area, circle }) {
+  getAllAddressColumnsForPicker({ dispatch }, { province, city, area, circle, market }) {
     return new Promise(async resolve => {
       const result = {}
       // 查询所有省份
@@ -133,6 +133,11 @@ export default {
       }
       // 商圈columns
       result.circle = circleData
+
+      if (!market) {
+        resolve(result)
+        return false
+      }
       // 查询商圈下的商盟
       const marketData = await dispatch('getMarket', { id: circle, shift: true })
       if (!marketData) {

@@ -1,4 +1,5 @@
-import salespersonPromotion from './salespersonPromotion'
+import staffPromotion from './staffPromotion'
 import redEnvelope from './redEnvelope'
+import gift from './gift'
 
-export default [salespersonPromotion, redEnvelope]
+export default [staffPromotion, redEnvelope, gift]

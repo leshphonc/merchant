@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'walletIndex',
+  name: 'staffPromotionIndex',
 
   mixins: [],
 
@@ -22,9 +22,7 @@ export default {
 
   created() {},
 
-  mounted() {
-    console.log(this.$route.query)
-  },
+  mounted() {},
 
   destroyed() {},
 

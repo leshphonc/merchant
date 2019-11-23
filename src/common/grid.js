@@ -38,7 +38,7 @@ const PopularizeGrid = {
     },
     {
       name: '礼品管理',
-      path: '/popularize/giftManagement',
+      path: '/gift',
       enable: require('../assets/image/lpgl2.png'),
       disable: require('../assets/image/lpgl_gray.png'),
     },
@@ -74,7 +74,7 @@ const PopularizeGrid = {
     },
     {
       name: '店员推广',
-      path: '/salespersonPromotion',
+      path: '/staffPromotion',
       enable: require('../assets/image/dytg2.png'),
       disable: require('../assets/image/dytg_gray.png'),
     },

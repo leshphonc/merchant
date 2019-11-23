@@ -1,7 +1,9 @@
-import salespersonPromotion from './salespersonPromotion'
+import staffPromotion from './staffPromotion'
 import redEnvelope from './redEnvelope'
+import gift from './gift'
 
 export default {
-  salespersonPromotion,
+  staffPromotion,
   redEnvelope,
+  gift,
 }
