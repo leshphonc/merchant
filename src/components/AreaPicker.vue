@@ -18,7 +18,7 @@
 -->
 <template>
   <div>
-    <ValidationProvider :name="title" :rules="field ? 'required' : null" slim v-slot="{ errors }">
+    <ValidationProvider :name="field" :rules="field ? 'required' : null" slim v-slot="{ errors }">
       <van-field
         :error-message="errors[0]"
         :label="title"

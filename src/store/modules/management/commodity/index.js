@@ -1,11 +1,12 @@
 import eCommerceActions from './eCommerce'
+import reserveActions from './reserve'
 import takeAwayActions from './takeAway'
 import serviceActions from './service'
 import packageActions from './package'
 
 // initial state
 const state = {
-  navText: ['创建', '创建', '创建', '创建'],
+  navText: ['创建', '创建', '创建', '创建', '创建'],
 }
 
 // getters
@@ -14,6 +15,7 @@ const getters = {}
 // actions
 const actions = {
   ...eCommerceActions,
+  ...reserveActions,
   ...takeAwayActions,
   ...serviceActions,
   ...packageActions,
@@ -28,7 +30,7 @@ const mutations = {
     })
   },
   resetRightText(state) {
-    state.navText = ['创建', '创建', '创建', '创建']
+    state.navText = ['创建', '创建', '创建', '创建', '创建']
   },
   changeRightText(state, { index, text }) {
     const arr = state.navText

@@ -17,7 +17,7 @@
 -->
 <template>
   <div>
-    <ValidationProvider :name="startLabel" rules="required" slim v-slot="{ errors }">
+    <ValidationProvider :name="startField" rules="required" slim v-slot="{ errors }">
       <van-field
         :error-message="errors[0]"
         :label="startLabel"
@@ -31,7 +31,7 @@
         required
       ></van-field>
     </ValidationProvider>
-    <ValidationProvider :name="endLabel" rules="required" slim v-slot="{ errors }">
+    <ValidationProvider :name="endField" rules="required" slim v-slot="{ errors }">
       <van-field
         :error-message="errors[0]"
         :label="endLabel"
@@ -82,13 +82,10 @@ export default {
       type: String,
       required: true,
     },
-    endLabel: {
-      type: String,
-    },
-    data: {
-      type: Object,
-      required: true,
-    },
+    startField: String,
+    endLabel: String,
+    endField: String,
+    data: Array,
     type: {
       type: String,
       default: 'date',
@@ -97,9 +94,7 @@ export default {
       type: Function,
       required: true,
     },
-    pickEndTime: {
-      type: Function,
-    },
+    pickEndTime: Function,
   },
 
   data() {
@@ -118,7 +113,7 @@ export default {
     },
     // 结束时间非空验证
     endTimeLabel() {
-      return this.$moment(this.startTime).format('YYYY-MM-DD')
+      return this.$moment(this.endTime).format('YYYY-MM-DD')
     },
   },
 
