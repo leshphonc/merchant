@@ -13,7 +13,9 @@
       <van-tab title="电商">
         <e-commerce-commodity></e-commerce-commodity>
       </van-tab>
-      <van-tab title="外卖">内容 2</van-tab>
+      <van-tab title="外卖">
+        <take-away-commodity></take-away-commodity>
+      </van-tab>
       <van-tab title="服务">
         <service-commodity></service-commodity>
       </van-tab>
@@ -27,6 +29,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import ECommerceCommodity from './ECommerceCommodity'
+import TakeAwayCommodity from './TakeAwayCommodity'
 import ServiceCommodity from './ServiceCommodity'
 import PackageCommodity from './PackageCommodity'
 
@@ -37,6 +40,7 @@ export default {
 
   components: {
     ECommerceCommodity,
+    TakeAwayCommodity,
     ServiceCommodity,
     PackageCommodity,
   },

@@ -35,11 +35,11 @@
     <!-- 弹出层 -->
     <!-- 手机号 -->
     <van-dialog :before-close="_editPhone" show-cancel-button title="联系电话" v-model="showPhoneDialog">
-      <van-field maxlength="11" placeholder="请输入手机号" type="number" v-model="info.phone"></van-field>
+      <van-field maxlength="11" placeholder="请填写手机号" type="number" v-model="info.phone"></van-field>
     </van-dialog>
     <!-- email -->
     <van-dialog :before-close="_editEmail" show-cancel-button title="邮箱地址" v-model="showEmailDialog">
-      <van-field placeholder="请输入email地址" v-model="info.email"></van-field>
+      <van-field placeholder="请填写email地址" v-model="info.email"></van-field>
     </van-dialog>
     <!-- 超时时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showTimeOutPicker">
@@ -56,7 +56,7 @@
     <coordinate-picker :cancel="_controlCoordinatePicker" :confirm="_pickCoordinate" :show="showCoordinatePicker"></coordinate-picker>
     <!-- 详细地址 -->
     <van-dialog :before-close="_editAddress" show-cancel-button title="商户详细地址" v-model="showAddressDialog">
-      <van-field autosize placeholder="请输入商户详细地址" type="textarea" v-model="info.address"></van-field>
+      <van-field autosize placeholder="请填写商户详细地址" type="textarea" v-model="info.address"></van-field>
     </van-dialog>
     <!-- 店铺分类 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showStoreFrontCategory">
@@ -71,7 +71,7 @@
     </van-popup>
     <!-- 商户描述 -->
     <van-dialog :before-close="_editDesc" show-cancel-button title="商户描述" v-model="showDescDialog">
-      <van-field autosize placeholder="请输入商户描述信息" type="textarea" v-model="info.txt_info"></van-field>
+      <van-field autosize placeholder="请填写商户描述信息" type="textarea" v-model="info.txt_info"></van-field>
     </van-dialog>
     <!-- 商户详情 -->
     <van-popup :lazy-render="false" position="bottom" safe-area-inset-bottom v-model="showDetailEditor">

@@ -7,7 +7,7 @@
         <ValidationProvider name="店铺名称" rules="required" slim v-slot="{ errors }">
           <van-field :error-message="errors[0]" label="店铺名称" placeholder="店铺名称" required v-model.trim="formData.name" />
         </ValidationProvider>
-        <van-cell placeholder="请输入用户名" title="是否设置成主店">
+        <van-cell placeholder="请填写用户名" title="是否设置成主店">
           <van-switch slot="default" v-model="formData.ismain"></van-switch>
         </van-cell>
         <ValidationProvider name="联系电话" rules="required|phone" slim v-slot="{ errors }">
@@ -25,6 +25,7 @@
           :pickArea="_pickArea"
           :pickCircle="_pickCircle"
           :pickMarket="_pickMarket"
+          field="店铺所在地"
           title="店铺所在地"
         ></area-picker>
         <ValidationProvider name="详细地址" rules="required" slim v-slot="{ errors }">
@@ -554,13 +555,7 @@ export default {
         ]
         // 获取平台分类数据
         this._getPlatformStoreFrontCategory(res.cat_fid, res.cat_id)
-        this.defaultArea = {
-          province_id: res.province_id,
-          city_id: res.city_id,
-          area_id: res.area_id,
-          circle_id: res.circle_id,
-          market_id: res.market_id,
-        }
+        this.defaultArea = [res.province_id, res.city_id, res.area_id, res.circle_id, res.market_id]
         this.$nextTick(function() {
           this.$refs.editor.$refs.quillEditor.quill.blur()
           window.scroll(0, 0)

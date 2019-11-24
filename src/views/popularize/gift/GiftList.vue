@@ -10,7 +10,7 @@
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-sticky :offset-top="offsetTop">
-      <van-search @clear="_clear" @search="_search" placeholder="请输入搜索关键词" shape="round" v-model="keyword" />
+      <van-search @clear="_clear" @search="_search" placeholder="请填写搜索关键词" shape="round" v-model="keyword" />
     </van-sticky>
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
       <van-list :finished="finished" @load="_onLoad" finished-text="没有更多了" v-model="loading">
@@ -28,7 +28,7 @@
           </div>
           <div slot="footer">
             <van-button @click="_deleteGift(item.gift_id)" size="small" type="danger">删除</van-button>
-            <van-button :to="`/commodity/eCommerceCommodityPreferential/${item.goods_id}`" size="small">商品订单</van-button>
+            <van-button :to="`/gift/giftOrderList/${item.gift_id}`" size="small">商品订单</van-button>
             <van-button :to="`/gift/giftCRU/${item.gift_id}`" size="small">编辑</van-button>
           </div>
         </van-card>

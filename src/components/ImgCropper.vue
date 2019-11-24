@@ -7,6 +7,7 @@
   修改内容：
   修改人员：
   修改时间：
+  备注： 需要包在ValidationObserver内使用
   props：
     title<String>：cell展示的名称
     confirm<Function>：用于接收裁剪结果 格式为[{ url: http://abc.jpg }]

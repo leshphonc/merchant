@@ -3,7 +3,7 @@
     <van-nav-bar @click-left="$goBack" fixed left-arrow title="团购订单"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-sticky :offset-top="offsetTop">
-      <van-search @search="_onSearch" placeholder="请输入搜索关键词" v-model="keyword" />
+      <van-search @search="_onSearch" placeholder="请填写搜索关键词" v-model="keyword" />
       <van-dropdown-menu>
         <van-dropdown-item :options="option1" @change="_changeOption1" v-model="status" />
         <van-dropdown-item :options="option2" @change="_changeOption2" v-model="find_type" />

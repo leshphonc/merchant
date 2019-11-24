@@ -20,7 +20,7 @@
         label="¥"
         label-align="center"
         label-class="label-width"
-        placeholder="请输入充值金额"
+        placeholder="请填写充值金额"
         readonly
       ></van-field>
     </van-cell-group>

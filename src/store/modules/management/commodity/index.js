@@ -1,4 +1,5 @@
 import eCommerceActions from './eCommerce'
+import takeAwayActions from './takeAway'
 import serviceActions from './service'
 import packageActions from './package'
 
@@ -13,6 +14,7 @@ const getters = {}
 // actions
 const actions = {
   ...eCommerceActions,
+  ...takeAwayActions,
   ...serviceActions,
   ...packageActions,
 }

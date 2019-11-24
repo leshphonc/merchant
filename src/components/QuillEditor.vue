@@ -8,7 +8,8 @@
   修改人员：
   修改时间：
   props：
-    context：需要渲染的富文本
+    context<String>：需要渲染的富文本
+    changeHtml<Function>：向父组件返回html
   
   使用方法：推荐将此组件ref设为editor，需要在渲染数据时调用下面方法用于取消focus状态，并且滚动到顶部
   this.$nextTick(function() {
@@ -16,12 +17,11 @@
     window.scroll(0, 0)
   })
 
-  在form表单提交时需要校验this.$refs.editor.editorHtml是否为空
-  并且替换formData内数据
+  在form表单提交时需要手动校验this.$refs.editor.editorHtml是否为空
 -->
 <template>
   <div>
-    <quill-editor ref="quillEditor" v-model.trim="editorHtml"></quill-editor>
+    <quill-editor @change="changeHtml" ref="quillEditor" v-model.trim="editorHtml"></quill-editor>
     <van-popup class="upload-popup" position="bottom" safe-area-inset-bottom v-model="showPopup">
       <vue-cropper :img="img" :outputSize="0.3" autoCrop centerBox class="cropper" ref="cropper"></vue-cropper>
       <van-row>
@@ -53,6 +53,10 @@ export default {
 
   props: {
     context: String,
+    changeHtml: {
+      type: Function,
+      required: true,
+    },
   },
 
   data() {

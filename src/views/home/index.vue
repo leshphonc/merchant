@@ -14,7 +14,7 @@
       <div class="wing-blank">
         <van-row :gutter="8" justify="center" type="flex">
           <van-col :key="index" @click="_changeType('row1', index)" style="flex: 1;" v-for="(item, index) in row1">
-            <div :class="`type-box ${curType === item.type ? 'active' : ''}`">
+            <div :class="{ active: curType === item.type }" class="type-box">
               <div>{{ item.num }}</div>
               <div>{{ item.label }}</div>
             </div>
@@ -23,7 +23,7 @@
         <div class="white-space"></div>
         <van-row :gutter="8" justify="center" type="flex">
           <van-col :key="index" @click="_changeType('row2', index)" style="flex: 1;" v-for="(item, index) in row2">
-            <div :class="`type-box ${curType === item.type ? 'active' : ''}`">
+            <div :class="{ active: curType === item.type }" class="type-box">
               <div>{{ item.num }}</div>
               <div>{{ item.label }}</div>
             </div>

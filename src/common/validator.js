@@ -16,7 +16,7 @@ extend('phone', {
   validate: value => {
     return new RegExp(/^[1][3-9][0-9]{9}$/).test(value)
   },
-  message: '请输入正确的电话号码',
+  message: '请填写正确的电话号码',
 })
 
 extend('decimal-max1', {

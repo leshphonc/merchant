@@ -7,15 +7,18 @@
   修改内容：
   修改人员：
   修改时间：
-  备注：  暂不支持验证可选
+  备注：  需要包在ValidationObserver内使用
   props：
-    title<String>：cellTitle，验证名称
-    data<Object>：默认展示数据
-    pickArea<Function>：返回选中的数据到父组件
+    title<String>：cellTitle
+    field<String>: 验证名称
+    data<Array>：默认展示数据
+    pickArea<Function>：返回选中的地区数据到父组件
+    pickCircle<Function>：返回选中的商圈数据到父组件
+    pickMarket<Function>：返回选中的商盟数据到父组件
 -->
 <template>
   <div>
-    <ValidationProvider :name="title" rules="required" slim v-slot="{ errors }">
+    <ValidationProvider :name="title" :rules="field ? 'required' : null" slim v-slot="{ errors }">
       <van-field
         :error-message="errors[0]"
         :label="title"
@@ -102,8 +105,11 @@ export default {
       type: String,
       required: true,
     },
+    field: {
+      type: String,
+    },
     data: {
-      type: Object,
+      type: Array,
       default: null,
     },
     pickArea: {
@@ -263,11 +269,11 @@ export default {
     _getAllAddressColumnsForPicker() {
       console.log(this.data)
       this.getAllAddressColumnsForPicker({
-        province: this.data.province_id,
-        city: this.data.city_id,
-        area: this.data.area_id,
-        circle: this.data.circle_id,
-        market: this.data.market_id,
+        province: this.data[0],
+        city: this.data[1],
+        area: this.data[2],
+        circle: this.data[3],
+        market: this.data[4],
       }).then(res => {
         this.areaColumns = res.area
         this.area = [
@@ -276,12 +282,12 @@ export default {
           res.area[2].values[res.area[2].defaultIndex],
         ]
         this.market_id = res.market_id
-        if (this.data.circle_id) {
-          this.circle_id = this.data.circle_id
+        if (this.data[3]) {
+          this.circle_id = this.data[3]
           this.circleColumns = res.circle
         }
-        if (this.data.market_id) {
-          this.market_id = this.data.market_id
+        if (this.data[4]) {
+          this.market_id = this.data[4]
           this.marketColumns = res.market
         }
       })

@@ -51,7 +51,7 @@
           v-model="loading"
         >
           <van-panel
-            :class="item.is_use === '1' ? '' : 'isUsed'"
+            :class="{ isUsed: item.is_use !== '1' }"
             :icon="item.avatar"
             :key="item.id"
             :status="item.is_use === '1' ? '已使用' : '未使用'"
@@ -93,13 +93,14 @@
       title="核销"
       v-model="showWriteOff"
     >
-      <van-field input-align="center" placeholder="请输入核销码进行核销" type="number" v-model="code"></van-field>
+      <van-field input-align="center" placeholder="请填写核销码进行核销" type="number" v-model="code"></van-field>
     </van-dialog>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import Utils from '@/utils'
 export default {
   name: 'collarCouponMemberList',
 
@@ -242,6 +243,27 @@ export default {
           this.loading = false
         })
     },
+    // 扫码核销
+    _scanCodeWriteOff() {
+      if (this._isApp) {
+        const json = { callback: '_writeOffCoupon', action: 'ScanQRCode' }
+        this.$invokeAndroid(json)
+      } else {
+        this.$scanQRCode()
+          .then(code => {
+            // 接口返回值是一个完整url，所以使用utils取出code进行核销
+            const _code = Utils.getUrlParam('code', code)
+            this._writeOffCoupon(_code)
+          })
+          .catch(() => {
+            this.$toast.success({
+              message: '核销码错误，核销失败',
+              forbidClick: true,
+              duration: 1500,
+            })
+          })
+      }
+    },
     // 输入核销码进行核销
     _writeOffCoupon(code) {
       this.writeOffCoupon(code || `${this.lastCouponItem}d${this.code}`)
@@ -259,25 +281,6 @@ export default {
         .catch(() => {
           this.code = ''
         })
-    },
-    // 扫码核销
-    _scanCodeWriteOff() {
-      if (this._isApp) {
-        const json = { callback: '_writeOffCoupon', action: 'ScanQRCode' }
-        this.$invokeAndroid(json)
-      } else {
-        this.$scanQRCode().then(code => {
-          if (code) {
-            this._writeOffCoupon(code)
-          } else {
-            this.$toast.success({
-              message: '核销码错误，核销失败',
-              forbidClick: true,
-              duration: 1500,
-            })
-          }
-        })
-      }
     },
   },
 }

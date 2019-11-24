@@ -95,11 +95,17 @@
     </ValidationObserver>
     <!-- 弹出层 -->
     <!-- 选择包含的服务 -->
-    <van-popup :lazy-render="false" position="top" safe-area-inset-bottom v-model="showServiceCommodityPicker">
-      <van-tabs :lazy-render="false" v-model="active">
+    <van-popup position="top" safe-area-inset-bottom v-model="showServiceCommodityPicker">
+      <van-tabs v-model="active">
         <van-tab title="服务项目">
-          <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
-            <van-checkbox-group class="cache-list" v-model="cache">
+          <van-list
+            :finished="finished"
+            :finished-text="finishText"
+            @load="_onLoad"
+            class="cache-list"
+            v-model="loading"
+          >
+            <van-checkbox-group v-model="cache">
               <van-cell-group>
                 <van-cell :key="index" @click="_toggle(index, item.disabled)" clickable v-for="(item, index) in list">
                   <van-checkbox :disabled="item.disabled" :name="item" ref="checkboxes" slot="right-icon"></van-checkbox>
@@ -113,8 +119,14 @@
           </van-list>
         </van-tab>
         <van-tab title="电商商品">
-          <van-list :finished="finishedE" :finished-text="finishTextE" @load="_onLoadE" v-model="loading">
-            <van-checkbox-group class="cache-list" v-model="cacheE">
+          <van-list
+            :finished="finishedE"
+            :finished-text="finishTextE"
+            @load="_onLoadE"
+            class="cache-list"
+            v-model="loading"
+          >
+            <van-checkbox-group v-model="cacheE">
               <van-cell-group>
                 <van-cell :key="index" @click="_toggleE(index, item.disabled)" clickable v-for="(item, index) in listE">
                   <van-checkbox :disabled="item.disabled" :name="item" ref="checkboxesE" slot="right-icon"></van-checkbox>

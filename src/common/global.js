@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import Utils from '@/utils'
 
 // 判断是否为app环境
 Vue.prototype._isApp =
@@ -97,10 +96,8 @@ Vue.prototype.$scanQRCode = () => {
       scanType: ['qrCode', 'barCode'], // 可以指定扫二维码还是一维码，默认二者都有
       success(res) {
         const result = res.resultStr // 当needResult 为 1 时，扫码返回的结果
-        // 接口返回值是一个完整url，所以使用utils取出code进行核销
-        const code = Utils.getUrlParam('code', result)
-        if (code) {
-          resolve(code)
+        if (result) {
+          resolve(result)
         } else {
           reject()
         }

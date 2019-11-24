@@ -56,7 +56,7 @@
             v-model.trim="formData.desc"
           />
         </ValidationProvider>
-        <area-picker :data="defaultArea" :pickArea="_pickArea" title="活动地区"></area-picker>
+        <area-picker :data="defaultArea" :pickArea="_pickArea" field="活动地区" title="活动地区"></area-picker>
         <ValidationProvider name="分享链接" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -374,11 +374,7 @@ export default {
         this.pic = [{ url: res.pic }]
         this.formData.start_time = new Date(res.start_time * 1000)
         this.formData.end_time = new Date(res.end_time * 1000)
-        this.defaultArea = {
-          province_id: res.province_id,
-          city_id: res.city_id,
-          area_id: res.area_id,
-        }
+        this.defaultArea = [res.province_id, res.city_id, res.area_id]
       })
     },
     async _submit() {

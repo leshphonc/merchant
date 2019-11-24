@@ -14,5 +14,10 @@ export default {
       path: 'giftCRU/:id?',
       component: () => import('@/views/popularize/gift/GiftCRU'),
     },
+    {
+      // 礼品订单列表
+      path: 'giftOrderList/:id',
+      component: () => import('@/views/popularize/gift/GiftOrderList'),
+    },
   ],
 }

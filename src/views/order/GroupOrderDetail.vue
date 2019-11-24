@@ -66,7 +66,7 @@
           <van-col span="16">核销码：{{ item.group_pass }}</van-col>
           <van-col span="8">
             <div v-show="item.status === '1'">已验证</div>
-            <van-button @click="_verificationCode" size="small" type="primary" v-show="item.status !== '1'">验证</van-button>
+            <van-button @click="_scanCodeWriteOff" size="small" type="primary" v-show="item.status !== '1'">验证</van-button>
           </van-col>
         </van-row>
         <van-row>
@@ -210,7 +210,9 @@ export default {
 
   watch: {},
 
-  created() {},
+  created() {
+    window['_verificationCode'] = this._verificationCode
+  },
 
   mounted() {
     const { id } = this.$route.params
@@ -296,61 +298,49 @@ export default {
         })
     },
     // 验证团购核销码
-    _verificationCode() {
-      if (this.loading) return
-      this.loading = true
-      window.wx.scanQRCode({
-        needResult: 1,
-        scanType: ['qrCode', 'barCode'],
-        success(res) {
-          const { id } = this.$route.params
-          if (this.order.now_order.num > 1) {
-            this.verifyArrayGroupCode(id, res.resultStr)
-              .then(() => {
-                this.$toast.success({
-                  message: '操作成功',
-                  forbidClick: true,
-                  duration: 1500,
-                  onClose: () => {
-                    this.loading = false
-                    this._readGroupOrderDetail(id)
-                  },
-                })
-              })
-              .catch(() => {
-                this.loading = false
-              })
-          } else {
-            this.verifySingleGroupCode(id, res.resultStr)
-              .then(() => {
-                this.$toast.success({
-                  message: '操作成功',
-                  forbidClick: true,
-                  duration: 1500,
-                  onClose: () => {
-                    this.loading = false
-                    this._readGroupOrderDetail(id)
-                  },
-                })
-              })
-              .catch(() => {
-                this.loading = false
-              })
-          }
-        },
-        fail() {
-          this.$toast.fail({
-            message: '二维码验证失败',
+    _scanCodeWriteOff() {
+      if (this._isApp) {
+        const json = { callback: '_verificationCode', action: 'ScanQRCode' }
+        this.$invokeAndroid(json)
+      } else {
+        this.$scanQRCode()
+          .then(code => {
+            this._verificationCode(code)
+          })
+          .catch(() => {
+            this.$toast.success({
+              message: '核销码错误，核销失败',
+              forbidClick: true,
+              duration: 1500,
+            })
+          })
+      }
+    },
+    _verificationCode(code) {
+      const { id } = this.$route.params
+      if (this.order.now_order.num > 1) {
+        this.verifyArrayGroupCode(id, code).then(() => {
+          this.$toast.success({
+            message: '操作成功',
             forbidClick: true,
             duration: 1500,
+            onClose: () => {
+              this._readGroupOrderDetail(id)
+            },
           })
-          // login.wxConfigFun().then(res => {
-          //   if (res) {
-          //     this.verificBtn(orderId)
-          //   }
-          // })
-        },
-      })
+        })
+      } else {
+        this.verifySingleGroupCode(id, code).then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              this._readGroupOrderDetail(id)
+            },
+          })
+        })
+      }
     },
     _verificationAllCode() {
       if (this.loading) return
