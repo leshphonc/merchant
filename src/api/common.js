@@ -76,4 +76,11 @@ export default {
       mer_id: id,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 获取商家配置的别名
+  getAlias: () =>
+    axios.get('/appapi.php?c=Merchantapp&a=get_config_alias', {
+      params: {
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
 }

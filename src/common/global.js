@@ -8,6 +8,14 @@ Vue.prototype._isApp =
 // 判断是否为微信环境
 Vue.prototype._isWx = navigator.userAgent.toLowerCase().match(/MicroMessenger/i) == 'micromessenger'
 
+// 读取session
+Vue.prototype.$getGlobal = key => {
+  const str = localStorage.getItem('merchant_global')
+  let result = ''
+  str && (result = JSON.parse(str)[key])
+  return result || ''
+}
+
 // app接口调用
 Vue.prototype.$invokeAndroid = json => {
   if (navigator.userAgent.toLowerCase().indexOf('android_chengshang_app') !== -1) {

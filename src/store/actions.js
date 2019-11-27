@@ -202,4 +202,11 @@ export default {
       data ? resolve(data) : reject()
     })
   },
+  // 获取商家配置的别名
+  getAlias() {
+    return new Promise(async (resolve, reject) => {
+      const data = await common.getAlias()
+      data ? resolve(data) : reject()
+    })
+  },
 }

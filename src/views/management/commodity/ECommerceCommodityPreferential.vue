@@ -50,27 +50,39 @@
           ></van-field>
         </ValidationProvider>
       </van-cell-group>
-      <van-cell-group title="用户消费赠送比例" v-if="dhbOpen !== 0 || scoreOpen !== 0">
-        <ValidationProvider name="赠送元宝数量" rules="required|numeric" slim v-if="dhbOpen !== 0" v-slot="{ errors }">
+      <van-cell-group title="用户消费赠送比例" v-if="$getGlobal('dhb_open') !== 0 || $getGlobal('score_open') !== 0">
+        <ValidationProvider
+          :name="`赠送${$getGlobal('score_alias')}数量`"
+          rules="required|numeric"
+          slim
+          v-if="$getGlobal('dhb_open') !== 0"
+          v-slot="{ errors }"
+        >
           <van-field
             :error-message="errors[0]"
             :label-width="resizeWidth"
+            :placeholder="`赠送${$getGlobal('score_alias')}数量`"
             label="每消费1元赠送"
-            placeholder="赠送元宝数量"
             v-model="formData.dhb_get_num"
           >
-            <div slot="right-icon">元宝</div>
+            <div slot="right-icon">{{ $getGlobal('score_alias') }}</div>
           </van-field>
         </ValidationProvider>
-        <ValidationProvider name="赠送金币数量" rules="required|numeric" slim v-if="scoreOpen !== 0" v-slot="{ errors }">
+        <ValidationProvider
+          :name="`赠送${$getGlobal('dhb_alias')}数量`"
+          rules="required|numeric"
+          slim
+          v-if="$getGlobal('score_open') !== 0"
+          v-slot="{ errors }"
+        >
           <van-field
             :error-message="errors[0]"
             :label-width="resizeWidth"
+            :placeholder="`赠送${$getGlobal('dhb_alias')}数量`"
             label="每消费1元赠送"
-            placeholder="赠送金币数量"
             v-model="formData.score_get_num"
           >
-            <div slot="right-icon">金币</div>
+            <div slot="right-icon">{{ $getGlobal('dhb_alias') }}</div>
           </van-field>
         </ValidationProvider>
       </van-cell-group>
@@ -307,9 +319,6 @@ export default {
     // 优惠详情
     const id = this.$route.params.id
     id && this._readECommerceCommodityDetail(id)
-    setTimeout(() => {
-      console.log(this.formData)
-    }, 3000)
   },
 
   destroyed() {},

@@ -19,7 +19,7 @@
         </div>
         <div slot="price">已预定：{{ item.appoint_sum }}</div>
         <div slot="footer">
-          <van-button :to="`/commodity/eCommerceCommodityPreferential/${item.appoint_id}`" size="small">优惠</van-button>
+          <van-button :to="`/commodity/reserveCommodityPreferential/${item.appoint_id}`" size="small">优惠</van-button>
           <van-button :to="`/commodity/reserveCommodityCRU/${item.appoint_id}`" size="small" v-if="!item.type">编辑</van-button>
         </div>
       </van-card>
