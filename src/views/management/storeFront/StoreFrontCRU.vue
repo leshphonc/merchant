@@ -177,7 +177,7 @@
           />
         </ValidationProvider>
         <van-cell required title="店铺详情"></van-cell>
-        <quill-editor :context="formData.context" ref="editor"></quill-editor>
+        <quill-editor :changeHtml="_changeHtml" :context="formData.context" ref="editor"></quill-editor>
       </van-cell-group>
     </ValidationObserver>
 
@@ -498,6 +498,9 @@ export default {
       this.formData.discount_type = data.value
       this._controlDisCountPicker()
     },
+    _changeHtml(data) {
+      this.formData.context = data.html
+    },
     // 获取平台店铺分类
     _getPlatformStoreFrontCategory(fid, id) {
       this.getPlatformStoreFrontCategory().then(res => {
@@ -587,7 +590,6 @@ export default {
           // 表单完整，进行数据修改并提交
           const params = JSON.parse(JSON.stringify(this.formData))
           params.ismain ? (params.ismain = '1') : (params.ismain = '0')
-          params.context = this.$refs.editor.editorHtml
           params.pic = params.pic.map(item => {
             if (item.url) return item.url
             return item

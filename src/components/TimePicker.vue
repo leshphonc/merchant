@@ -47,23 +47,59 @@
     </ValidationProvider>
     <!-- 弹出层 -->
     <!-- 开始时间 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showStartTimePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-if="type !== 'time'" v-model="showStartTimePicker">
       <van-datetime-picker
         :max-date="endTime"
         :type="type"
+        :value="startTime"
         @cancel="_controlStartTimePicker"
         @confirm="_pickStartTime"
-        v-model="startTime"
+      />
+    </van-popup>
+    <van-popup
+      :close-on-click-overlay="false"
+      position="bottom"
+      safe-area-inset-bottom
+      v-else
+      v-model="showStartTimePicker"
+    >
+      <van-datetime-picker
+        :max-hour="maxHour"
+        :max-minute="maxMinute"
+        :type="type"
+        :value="startTime"
+        @cancel="_controlStartTimePicker"
+        @change="_changeStartTime"
+        @confirm="_controlStartTimePicker"
+        cancel-button-text="关闭"
       />
     </van-popup>
     <!-- 结束时间 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showEndTimePicker">
+    <van-popup position="bottom" safe-area-inset-bottom v-if="type !== 'time'" v-model="showEndTimePicker">
       <van-datetime-picker
         :min-date="startTime"
         :type="type"
+        :value="endTime"
         @cancel="_controlEndTimePicker"
         @confirm="_pickEndTime"
-        v-model="endTime"
+      />
+    </van-popup>
+    <van-popup
+      :close-on-click-overlay="false"
+      position="bottom"
+      safe-area-inset-bottom
+      v-else
+      v-model="showEndTimePicker"
+    >
+      <van-datetime-picker
+        :min-hour="minHour"
+        :min-minute="minMinute"
+        :type="type"
+        :value="endTime"
+        @cancel="_controlEndTimePicker"
+        @change="_changeEndTime"
+        @confirm="_controlEndTimePicker"
+        cancel-button-text="关闭"
       />
     </van-popup>
   </div>
@@ -83,7 +119,10 @@ export default {
       required: true,
     },
     startField: String,
-    endLabel: String,
+    endLabel: {
+      type: String,
+      required: true,
+    },
     endField: String,
     data: Array,
     type: {
@@ -94,13 +133,18 @@ export default {
       type: Function,
       required: true,
     },
-    pickEndTime: Function,
+    pickEndTime: {
+      type: Function,
+      required: true,
+    },
   },
 
   data() {
     return {
       showStartTimePicker: false,
       showEndTimePicker: false,
+      showStartTimeLabel: false,
+      showEndTimeLabel: false,
       startTime: new Date(this.$moment().subtract(30, 'days')),
       endTime: new Date(),
     }
@@ -109,17 +153,54 @@ export default {
   computed: {
     // 开始时间非空验证
     startTimeLabel() {
-      return this.$moment(this.startTime).format('YYYY-MM-DD')
+      if (this.showStartTimeLabel) {
+        if (this.type !== 'time') {
+          return this.$moment(this.startTime).format('YYYY-MM-DD')
+        }
+        return this.startTime
+      } else {
+        return ''
+      }
     },
     // 结束时间非空验证
     endTimeLabel() {
-      return this.$moment(this.endTime).format('YYYY-MM-DD')
+      if (this.showEndTimeLabel) {
+        if (this.type !== 'time') {
+          return this.$moment(this.endTime).format('YYYY-MM-DD')
+        }
+        return this.endTime
+      } else {
+        return ''
+      }
+    },
+    minHour() {
+      return this.type === 'time' ? Number(this.startTime.split(':')[0]) : ''
+    },
+    minMinute() {
+      if (this.startTime.split(':')[0] === this.endTime.split(':')[0]) {
+        return this.type === 'time' ? Number(this.startTime.split(':')[1]) : ''
+      }
+      return 0
+    },
+    maxHour() {
+      return this.type === 'time' ? Number(this.endTime.split(':')[0]) : ''
+    },
+    maxMinute() {
+      if (this.startTime.split(':')[0] === this.endTime.split(':')[0]) {
+        return this.type === 'time' ? Number(this.endTime.split(':')[1]) : ''
+      }
+      return 59
     },
   },
 
   watch: {},
 
-  created() {},
+  created() {
+    if (this.type === 'time') {
+      this.startTime = '7:00'
+      this.endTime = '20:59'
+    }
+  },
 
   mounted() {},
 
@@ -132,11 +213,25 @@ export default {
     _controlEndTimePicker() {
       this.showEndTimePicker = !this.showEndTimePicker
     },
+    _changeStartTime(picker) {
+      this.showStartTimeLabel = true
+      this.startTime = picker.getValues().join(':')
+      this.pickStartTime(picker.getValues().join(':'))
+    },
+    _changeEndTime(picker) {
+      this.showEndTimeLabel = true
+      this.endTime = picker.getValues().join(':')
+      this.pickEndTime(picker.getValues().join(':'))
+    },
     _pickStartTime(data) {
+      this.startTime = data
+      this.showStartTimeLabel = true
       this.pickStartTime(data)
       this._controlStartTimePicker()
     },
     _pickEndTime(data) {
+      this.endTime = data
+      this.showEndTimeLabel = true
       this.pickEndTime(data)
       this._controlEndTimePicker()
     },

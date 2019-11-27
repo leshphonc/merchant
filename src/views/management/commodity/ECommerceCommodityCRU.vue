@@ -140,7 +140,7 @@
         />
         <img-cropper :confirm="_pickPic" :list="pic" field="商品图片" title="商品图片"></img-cropper>
         <van-cell required title="店铺详情"></van-cell>
-        <quill-editor :context="formData.des" ref="editor"></quill-editor>
+        <quill-editor :changeHtml="_changeHtml" :context="formData.des" ref="editor"></quill-editor>
       </van-cell-group>
     </ValidationObserver>
     <!-- 弹出层 -->
@@ -467,6 +467,9 @@ export default {
     _pickPic(data) {
       this.formData.pic = data.map(item => item.url)
     },
+    _changeHtml(data) {
+      this.formData.des = data.html
+    },
     // 读取商品分类
     _getECommerceCommodityFirstCategoryList(fid, id) {
       this.getECommerceCommodityFirstCategoryList().then(res => {
@@ -584,7 +587,6 @@ export default {
             method = 'updateECommerceCommodity'
             this.formData.goods_id = id
           }
-          this.formData.des = this.$refs.editor.editorHtml
           this[method](this.formData)
             .then(() => {
               this.$toast.success({

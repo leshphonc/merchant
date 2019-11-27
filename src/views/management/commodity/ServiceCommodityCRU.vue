@@ -125,7 +125,7 @@
         </ValidationProvider>
         <img-cropper :confirm="_pickPic" :list="pic" field="服务项目图片" title="服务项目图片"></img-cropper>
         <van-cell required title="服务项目详情"></van-cell>
-        <quill-editor :context="formData.appoint_pic_content" ref="editor"></quill-editor>
+        <quill-editor :changeHtml="_changeHtml" :context="formData.appoint_pic_content" ref="editor"></quill-editor>
       </van-cell-group>
     </ValidationObserver>
     <!-- 弹出层 -->
@@ -327,6 +327,9 @@ export default {
     _changeCategory(picker, values) {
       picker.setColumnValues(1, values[0].children)
     },
+    _changeHtml(data) {
+      this.formData.appoint_pic_content = data.html
+    },
     // 读取服务商品分类
     _getServiceCommodityCategoryList(fid, id) {
       this.getServiceCommodityCategoryList().then(res => {
@@ -410,7 +413,6 @@ export default {
           if (id) {
             params.appoint_id = id
           }
-          params.appoint_pic_content = this.$refs.editor.editorHtml
           params.appoint_date_type = this.formData.appoint_date_type ? 1 : 0
           params.car_no = this.formData.car_no ? 1 : 0
           params.car_type = this.formData.car_type ? 1 : 0

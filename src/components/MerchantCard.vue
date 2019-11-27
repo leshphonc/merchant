@@ -16,7 +16,7 @@
       <van-col offset="1" span="4">
         <img :src="avatar" alt class="avatar" />
       </van-col>
-      <van-col span="16">Hi，{{ name }} 欢迎回来！</van-col>
+      <van-col class="hi" span="16">Hi，{{ name }} 欢迎回来！</van-col>
       <van-col @click="_logout" class="logout" span="3">退出</van-col>
     </van-row>
     <div class="main-card">
@@ -113,6 +113,10 @@ export default {
   height: 48px;
   border-radius: 48px;
   margin: 0 auto;
+}
+
+.hi {
+  font-size: 14px;
 }
 
 .logout {

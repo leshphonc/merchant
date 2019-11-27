@@ -44,4 +44,11 @@ export default {
       meal_id: id,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 获取平台预定分类
+  getPlatformReserveCommodityCategoryList: () =>
+    axios.get('/appapi.php?c=Merchantapp&a=get_all_appoint_category', {
+      params: {
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
 }

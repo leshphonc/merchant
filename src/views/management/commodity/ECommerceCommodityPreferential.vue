@@ -164,7 +164,7 @@
         @cancel="_controlMemberGroupPicker"
         @confirm="_pickMemberGroup"
         show-toolbar
-        value-key="label"
+        value-key="name"
       ></van-picker>
     </van-popup>
   </div>
@@ -434,7 +434,7 @@ export default {
     // 获取会员分组
     _getMemberGroupList() {
       this.getMemberGroupList().then(res => {
-        this.memberGroupColumns = res
+        this.memberGroupColumns = res.lists
       })
     },
     // 优惠券名称

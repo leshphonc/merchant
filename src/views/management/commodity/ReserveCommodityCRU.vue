@@ -51,10 +51,11 @@
             v-model.trim="formData.payment_money"
           ></van-field>
         </ValidationProvider>
-        <ValidationProvider name="全价类型" rules="required|decimal-max2" slim v-slot="{ errors }">
+        <ValidationProvider name="全价类型" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             :value="priceTypeLabel"
+            @click="_controlPriceTypePicker"
             error-message-align="right"
             input-align="right"
             is-link
@@ -130,10 +131,142 @@
           startField="预约开始时间"
           startLabel="预约开始时间"
         ></time-picker>
+        <ValidationProvider name="服务类型" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            :value="serviceTypeLabel"
+            @click="_controlServiceTypePicker"
+            error-message-align="right"
+            input-align="right"
+            is-link
+            label="服务类型"
+            placeholder="请选择"
+            readonly
+            required
+          ></van-field>
+        </ValidationProvider>
+        <ValidationProvider name="预定所属分类" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            :value="categoryLabel"
+            @click="_controlCategoryPicker"
+            error-message-align="right"
+            input-align="right"
+            is-link
+            label="预定所属分类"
+            placeholder="请选择"
+            readonly
+            required
+          ></van-field>
+        </ValidationProvider>
+        <img-cropper :confirm="_pickPic" :count="5" :list="pic" field="预定图片" title="预定图片"></img-cropper>
+        <van-field
+          @click-left-icon="$toast('开启后，用户预约时可自行选择服务店铺')"
+          input-align="right"
+          label="开启服务店铺"
+          left-icon="question-o"
+        >
+          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.is_store" />
+        </van-field>
+        <ValidationProvider name="服务店铺" rules="required" slim v-if="formData.is_store === '1'" v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            :value="formData.store.length ? '1' : ''"
+            @click="_controlStorePopup"
+            error-message-align="right"
+            input-align="right"
+            is-link
+            label="选择服务店铺"
+            placeholder="请选择"
+            readonly
+            required
+          >
+            <div slot="input" v-if="formData.store.length">
+              <div :key="item" v-for="item in formData.store">
+                <van-tag type="primary">{{ _storeLabel(item) }}</van-tag>
+              </div>
+            </div>
+          </van-field>
+        </ValidationProvider>
+        <time-picker
+          :pickEndTime="_pickCloseTime"
+          :pickStartTime="_pickOpenTime"
+          endField="营业结束时间"
+          endLabel="营业结束时间"
+          startField="营业开始时间"
+          startLabel="营业开始时间"
+          type="time"
+        ></time-picker>
+        <van-field
+          @click-left-icon="$toast('为了方便用户能查到以前的订单，预约无法删除！')"
+          input-align="right"
+          label="预约状态"
+          left-icon="question-o"
+        >
+          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.appoint_status" />
+        </van-field>
+        <van-cell required title="预定详情"></van-cell>
+        <quill-editor :changeHtml="_changeHtml" :context="formData.appoint_pic_content" ref="editor"></quill-editor>
       </van-cell-group>
-      <img-cropper :confirm="_pickPic" :list="pic" field="预定图片" title="预定图片"></img-cropper>
     </ValidationObserver>
     <!-- 弹出层 -->
+    <!-- 全价 -->
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showPriceTypePicker">
+      <van-picker
+        :columns="priceTypeColumns"
+        :default-index="priceTypeIndex"
+        @cancel="_controlPriceTypePicker"
+        @confirm="_pickPriceType"
+        show-toolbar
+        value-key="label"
+      ></van-picker>
+    </van-popup>
+    <!-- 服务类型 -->
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showServiceTypePicker">
+      <van-picker
+        :columns="serviceTypeColumns"
+        :default-index="serviceTypeIndex"
+        @cancel="_controlServiceTypePicker"
+        @confirm="_pickServiceType"
+        show-toolbar
+        value-key="label"
+      ></van-picker>
+    </van-popup>
+    <!-- 预定所属分类 -->
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showCategoryPicker">
+      <van-picker
+        :columns="categoryColumns"
+        @cancel="_controlCategoryPicker"
+        @change="_changeCategory"
+        @confirm="_pickCategory"
+        show-toolbar
+        value-key="label"
+      />
+    </van-popup>
+    <!-- 选择服务店铺 -->
+    <van-popup position="top" safe-area-inset-bottom v-model="showStorePopup">
+      <van-checkbox-group class="cache-list" v-model="cache">
+        <van-cell-group>
+          <van-cell
+            :key="index"
+            :title="item.label"
+            @click="_toggle(index)"
+            clickable
+            v-for="(item, index) in storeList"
+          >
+            <van-checkbox :name="item" ref="checkboxes" slot="right-icon"></van-checkbox>
+          </van-cell>
+        </van-cell-group>
+      </van-checkbox-group>
+      <van-row>
+        <van-col span="12">
+          <van-button @click="_controlStorePopup">取消</van-button>
+        </van-col>
+        <van-col span="12">
+          <van-button @click="_pickStore" type="primary">确定</van-button>
+        </van-col>
+      </van-row>
+    </van-popup>
   </div>
 </template>
 
@@ -172,11 +305,18 @@ export default {
         start_time: '',
         end_time: '',
         appoint_type: '',
+        cat_fid: '',
+        cat_id: '',
         pic: '',
-        is_store: '',
+        is_store: '0',
+        store: [],
         office_start_time: '',
         office_stop_time: '',
+        appoint_status: '0',
+        appoint_pic_content: '',
       },
+      cache: [],
+      storeList: [],
       pic: [],
       priceTypeColumns: [
         {
@@ -198,6 +338,12 @@ export default {
           value: '1',
         },
       ],
+      categoryColumnsOrigin: [],
+      categoryColumns: [],
+      showPriceTypePicker: false,
+      showServiceTypePicker: false,
+      showCategoryPicker: false,
+      showStorePopup: false,
       loading: false,
     }
   },
@@ -208,7 +354,32 @@ export default {
       return this.$route.params.id ? '编辑' : '创建'
     },
     priceTypeLabel() {
-      return ''
+      const item = this.priceTypeColumns.find(item => item.value === this.formData.is_appoint_price)
+      return item && item.label
+    },
+    priceTypeIndex() {
+      const index = this.priceTypeColumns.findIndex(item => item.value === this.formData.is_appoint_price)
+      return index
+    },
+    serviceTypeLabel() {
+      const item = this.serviceTypeColumns.find(item => item.value === this.formData.appoint_type)
+      return item && item.label
+    },
+    serviceTypeIndex() {
+      const index = this.serviceTypeColumns.findIndex(item => item.value === this.formData.appoint_type)
+      return index
+    },
+    categoryLabel() {
+      let resultStr = ''
+      const item = this.categoryColumnsOrigin.find(item => item.value === this.formData.cat_fid)
+      if (item) {
+        resultStr = item.label
+        if (item.children) {
+          const { label } = item.children.find(item => item.value === this.formData.cat_id)
+          resultStr += ' / ' + label
+        }
+      }
+      return resultStr
     },
   },
 
@@ -217,6 +388,8 @@ export default {
   created() {},
 
   mounted() {
+    this._getStoreList()
+    this._getPlatformReserveCommodityCategoryList()
     const { id } = this.$route.params
     if (id) {
       this._readReserveCommodityDetail(id)
@@ -226,7 +399,57 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('commodity', []),
+    ...mapActions(['getStoreList']),
+    ...mapActions('commodity', ['getPlatformReserveCommodityCategoryList']),
+    _controlPriceTypePicker() {
+      this.showPriceTypePicker = !this.showPriceTypePicker
+    },
+    _controlServiceTypePicker() {
+      this.showServiceTypePicker = !this.showServiceTypePicker
+    },
+    _controlCategoryPicker() {
+      this.showCategoryPicker = !this.showCategoryPicker
+    },
+    // 店铺选择开关
+    _controlStorePopup() {
+      this.showStorePopup = !this.showStorePopup
+    },
+    _pickPriceType(data) {
+      this.formData.is_appoint_price = data.value
+      this._controlPriceTypePicker()
+      console.log(data)
+    },
+    _pickServiceType(data) {
+      this.formData.appoint_type = data.value
+      this._controlServiceTypePicker()
+      console.log(data)
+    },
+    _pickStore() {
+      const arr = []
+      this.cache.forEach(item => {
+        arr.push(item.value)
+      })
+      this.formData.store = arr
+      this._controlStorePopup()
+    },
+    _changeCategory(picker, values) {
+      console.log(values)
+      if (values[0].children) {
+        picker.setColumnValues(1, values[0].children)
+      } else {
+        picker.setColumnValues(1, [])
+      }
+    },
+    _pickCategory(data) {
+      this.formData.cat_fid = data[0].value
+      if (data[1]) {
+        this.formData.cat_id = data[1].value
+      } else {
+        this.formData.cat_id = ''
+      }
+      this._controlCategoryPicker()
+      console.log(data)
+    },
     _pickStartTime(data) {
       this.formData.start_time = this.$moment(data).format('YYYY-MM-DD')
       console.log(data)
@@ -235,8 +458,59 @@ export default {
       this.formData.end_time = this.$moment(data).format('YYYY-MM-DD')
       console.log(data)
     },
+    _pickOpenTime(data) {
+      this.formData.office_start_time = data
+    },
+    _pickCloseTime(data) {
+      this.formData.office_stop_time = data
+    },
     _pickPic(data) {
       console.log(data)
+    },
+    _changeHtml(data) {
+      this.formData.appoint_pic_content = data.html
+    },
+    // checkbox选中状态切换
+    _toggle(index, flag) {
+      // 判断是否选可选
+      !flag && this.$refs.checkboxes[index].toggle()
+    },
+    _storeLabel(id) {
+      const item = this.storeList.find(item => item.value === id)
+      return item && `${item.label} - ${item.adress}`
+    },
+    _getPlatformReserveCommodityCategoryList(fid, id) {
+      this.getPlatformReserveCommodityCategoryList().then(res => {
+        this.categoryColumnsOrigin = res
+        this._serializationCategory(fid, id)
+      })
+    },
+    _serializationCategory(fid, id) {
+      const data = this.categoryColumnsOrigin
+      let index1 = 0
+      let index2 = 0
+      if (fid && id) {
+        index1 = data.findIndex(item => item.value === fid) >= 0 ? data.findIndex(item => item.value === fid) : 0
+        index2 =
+          data[index1].children.findIndex(item => item.value === id) >= 0
+            ? data[index1].children.findIndex(item => item.value === id)
+            : 0
+      }
+      this.categoryColumns = [
+        {
+          values: data,
+          defaultIndex: index1,
+        },
+        {
+          values: data[index1].children,
+          defaultIndex: index2,
+        },
+      ]
+    },
+    _getStoreList() {
+      this.getStoreList().then(res => {
+        this.storeList = res.store_list
+      })
     },
     // 提交表单
     async _submit() {

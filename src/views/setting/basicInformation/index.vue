@@ -75,7 +75,7 @@
     </van-dialog>
     <!-- 商户详情 -->
     <van-popup :lazy-render="false" position="bottom" safe-area-inset-bottom v-model="showDetailEditor">
-      <quill-editor :context="info.content" ref="editor"></quill-editor>
+      <quill-editor :changeHtml="_changeHtml" :context="info.content" ref="editor"></quill-editor>
       <van-row>
         <van-col span="12">
           <van-button @click="showDetailEditor = false">取消</van-button>
@@ -327,6 +327,9 @@ export default {
         })
       })
     },
+    _changeHtml(data) {
+      this.info.content = data.html
+    },
     // 获取平台店铺分类
     _getPlatformStoreFrontCategory(fid, id) {
       this.getPlatformStoreFrontCategory().then(res => {
@@ -488,7 +491,7 @@ export default {
     // 修改商户详情
     _editDetail() {
       this.updateMerchantInfo({
-        content: this.$refs.editor.editorHtml,
+        content: this.info.content,
       }).then(() => {
         this.$toast.success({
           message: '操作成功',
