@@ -2,30 +2,30 @@ import commodityAPI from '@/api/management/commodity/index'
 
 export default {
   // 读取电商商品列表
-  async getECommerceCommodityList(context, page = 1) {
+  async getECommerceList(context, page = 1) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getECommerceCommodityList(page)
+      const data = await commodityAPI.getECommerceList(page)
       data ? resolve(data) : reject()
     })
   },
   // 删除电商商品
-  async deleteECommerceCommodity(context, payload) {
+  async deleteECommerce(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.deleteECommerceCommodity(payload)
+      const data = await commodityAPI.deleteECommerce(payload)
       data ? resolve() : reject()
     })
   },
   // 读取电商商品1级分类
-  async getECommerceCommodityFirstCategoryList() {
+  async getECommerceFirstCategoryList() {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getECommerceCommodityFirstCategoryList()
+      const data = await commodityAPI.getECommerceFirstCategoryList()
       data ? resolve(data) : reject()
     })
   },
   // 读取电商商品2级分类
-  async getECommerceCommoditySecondCategoryList(context, sort_id) {
+  async getECommerceSecondCategoryList(context, sort_id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getECommerceCommoditySecondCategoryList(sort_id)
+      const data = await commodityAPI.getECommerceSecondCategoryList(sort_id)
       data ? resolve(data) : reject()
     })
   },
@@ -37,44 +37,44 @@ export default {
     })
   },
   // 创建电商分类
-  async createECommerceCommodityCategory(context, payload) {
+  async createECommerceCategory(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.createECommerceCommodityCategory(payload)
+      const data = await commodityAPI.createECommerceCategory(payload)
       data ? resolve() : reject()
     })
   },
   // 删除电商分类
-  async deleteECommerceCommodityCategory(context, payload) {
+  async deleteECommerceCategory(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.deleteECommerceCommodityCategory(payload)
+      const data = await commodityAPI.deleteECommerceCategory(payload)
       data ? resolve() : reject()
     })
   },
   // 创建电商商品
-  async createECommerceCommodity(context, payload) {
+  async createECommerce(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.createECommerceCommodity(payload)
+      const data = await commodityAPI.createECommerce(payload)
       data ? resolve() : reject()
     })
   },
   // 查询电商商品详情
-  async readECommerceCommodityDetail(context, id) {
+  async readECommerceDetail(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readECommerceCommodityDetail(id)
+      const data = await commodityAPI.readECommerceDetail(id)
       data ? resolve(data) : reject()
     })
   },
   // 修改电商商品
-  async updateECommerceCommodity(context, payload) {
+  async updateECommerce(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.updateECommerceCommodity(payload)
+      const data = await commodityAPI.updateECommerce(payload)
       data ? resolve() : reject()
     })
   },
   // 修改电商商品优惠
-  async updateECommerceCommodityPreferential(context, payload) {
+  async updateECommercePreferential(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.updateECommerceCommodityPreferential(payload)
+      const data = await commodityAPI.updateECommercePreferential(payload)
       data ? resolve() : reject()
     })
   },

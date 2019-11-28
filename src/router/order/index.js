@@ -7,12 +7,16 @@ export default {
       component: () => import('@/views/order/OrderTypeCell'),
     },
     {
-      path: 'groupList/:id?',
+      path: 'groupBuyList/:id?',
       component: () => import('@/views/order/GroupBuyList'),
     },
     {
-      path: 'groupOrderDetail/:id',
+      path: 'groupBuyOrderDetail/:id',
       component: () => import('@/views/order/GroupBuyOrderDetail'),
+    },
+    {
+      path: 'reserveList/:id?',
+      component: () => import('@/views/order/ReserveList'),
     },
   ],
 }

@@ -162,7 +162,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'groupOrderDetail',
+  name: 'groupBuyOrderDetail',
 
   mixins: [],
 
@@ -216,7 +216,7 @@ export default {
 
   mounted() {
     const { id } = this.$route.params
-    this._readGroupOrderDetail(id)
+    this._readGroupBuyOrderDetail(id)
     window.scrollTo(0, 0)
   },
 
@@ -224,13 +224,13 @@ export default {
 
   methods: {
     ...mapActions('order', [
-      'readGroupOrderDetail',
-      'ascriptionGroupOrder',
-      'changeGroupOrderExpress',
-      'readGroupOrderWriteOff',
-      'verifySingleGroupCode',
-      'verifyArrayGroupCode',
-      'verifyAllGroupCode',
+      'readGroupBuyOrderDetail',
+      'ascriptionGroupBuyOrder',
+      'changeGroupBuyOrderExpress',
+      'readGroupBuyOrderWriteOff',
+      'verifySingleGroupBuyCode',
+      'verifyArrayGroupBuyCode',
+      'verifyAllGroupBuyCode',
     ]),
     // 店铺归属开关
     _controlStoreFrontPicker() {
@@ -245,7 +245,7 @@ export default {
       if (this.loading) return
       this.loading = true
       const { id } = this.$route.params
-      this.ascriptionGroupOrder({ order_id: id, store_id: data.store_id })
+      this.ascriptionGroupBuyOrder({ order_id: id, store_id: data.store_id })
         .then(() => {
           this.$toast.success({
             message: '操作成功',
@@ -253,7 +253,7 @@ export default {
             duration: 1500,
             onClose: () => {
               this.loading = false
-              this._readGroupOrderDetail(id)
+              this._readGroupBuyOrderDetail(id)
             },
           })
         })
@@ -274,7 +274,7 @@ export default {
       this.loading = true
       this.requireMsg = ''
       const { id } = this.$route.params
-      this.changeGroupOrderExpress({
+      this.changeGroupBuyOrderExpress({
         order_id: id,
         store_id: this.order.store_id,
         express_type: this.expressID,
@@ -289,7 +289,7 @@ export default {
               // 解锁
               this.loading = false
               const { id } = this.$route.params
-              this._readGroupOrderDetail(id)
+              this._readGroupBuyOrderDetail(id)
             },
           })
         })
@@ -319,24 +319,24 @@ export default {
     _verificationCode(code) {
       const { id } = this.$route.params
       if (this.order.now_order.num > 1) {
-        this.verifyArrayGroupCode(id, code).then(() => {
+        this.verifyArrayGroupBuyCode(id, code).then(() => {
           this.$toast.success({
             message: '操作成功',
             forbidClick: true,
             duration: 1500,
             onClose: () => {
-              this._readGroupOrderDetail(id)
+              this._readGroupBuyOrderDetail(id)
             },
           })
         })
       } else {
-        this.verifySingleGroupCode(id, code).then(() => {
+        this.verifySingleGroupBuyCode(id, code).then(() => {
           this.$toast.success({
             message: '操作成功',
             forbidClick: true,
             duration: 1500,
             onClose: () => {
-              this._readGroupOrderDetail(id)
+              this._readGroupBuyOrderDetail(id)
             },
           })
         })
@@ -346,7 +346,7 @@ export default {
       if (this.loading) return
       this.loading = true
       const { id } = this.$route.params
-      this.verifyAllGroupCode({ id, store_id: this.order.store_id })
+      this.verifyAllGroupBuyCode({ id, store_id: this.order.store_id })
         .then(() => {
           this.$toast.success({
             message: '操作成功',
@@ -354,7 +354,7 @@ export default {
             duration: 1500,
             onClose: () => {
               this.loading = false
-              this._readGroupOrderDetail(id)
+              this._readGroupBuyOrderDetail(id)
             },
           })
         })
@@ -363,8 +363,8 @@ export default {
         })
     },
     // 获取详情数据
-    _readGroupOrderDetail(id) {
-      this.readGroupOrderDetail(id).then(res => {
+    _readGroupBuyOrderDetail(id) {
+      this.readGroupBuyOrderDetail(id).then(res => {
         this.order = res.now_order
         this.user = res.user
         this.storeFront = res.storelist
@@ -373,7 +373,7 @@ export default {
         this.expressID = this.distribution.express_type
         this.expressNO = this.distribution.express_id
         if (res.now_order.pass_array === '1') {
-          this.readGroupOrderWriteOff(id).then(res => {
+          this.readGroupBuyOrderWriteOff(id).then(res => {
             this.passArr = res.pass_array
           })
         }

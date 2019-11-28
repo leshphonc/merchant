@@ -128,7 +128,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
-  name: 'groupBuyCommodityPreferential',
+  name: 'groupBuyPreferential',
 
   mixins: [],
 
@@ -200,12 +200,12 @@ export default {
     // 优惠券列表
     this._getCouponList()
     // 获取团购商品套餐列表
-    this._getGroupBuyCommodityPackageList()
+    this._getGroupBuyPackageList()
     // 获取会员分组
     this._getMemberGroupList()
     // 优惠详情
     const id = this.$route.params.id
-    id && this._readGroupBuyCommodityDetail(id)
+    id && this._readGroupBuyDetail(id)
   },
 
   destroyed() {},
@@ -213,9 +213,9 @@ export default {
   methods: {
     ...mapActions(['getCouponList']),
     ...mapActions('commodity', [
-      'getGroupBuyCommodityPackageList',
-      'readGroupBuyCommodityDetail',
-      'updateGroupBuyCommodityPreferential',
+      'getGroupBuyPackageList',
+      'readGroupBuyDetail',
+      'updateGroupBuyPreferential',
     ]),
     ...mapActions('member', ['getMemberGroupList']),
     _controlGroupBuyPackagePicker() {
@@ -310,13 +310,13 @@ export default {
       })
     },
     // 获取团购商品套餐列表
-    _getGroupBuyCommodityPackageList() {
-      this.getGroupBuyCommodityPackageList().then(res => {
+    _getGroupBuyPackageList() {
+      this.getGroupBuyPackageList().then(res => {
         this.groupBuyPackageColumns = res
       })
     },
-    _readGroupBuyCommodityDetail(id) {
-      this.readGroupBuyCommodityDetail(id).then(res => {
+    _readGroupBuyDetail(id) {
+      this.readGroupBuyDetail(id).then(res => {
         console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
@@ -346,7 +346,7 @@ export default {
           }
         })
         params.give = give
-        this.updateGroupBuyCommodityPreferential(params)
+        this.updateGroupBuyPreferential(params)
           .then(() => {
             this.$toast.success({
               message: '操作成功',

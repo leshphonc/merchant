@@ -2,44 +2,44 @@ import commodityAPI from '@/api/management/commodity/index'
 
 export default {
   // 读取预定商品列表
-  getReserveCommodityList(context, page = 1) {
+  getReserveList(context, page = 1) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getReserveCommodityList(page)
+      const data = await commodityAPI.getReserveList(page)
       data ? resolve(data) : reject()
     })
   },
   // 创建预定商品
-  createReserveCommodity(context, payload) {
+  createReserve(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.createReserveCommodity(payload)
+      const data = await commodityAPI.createReserve(payload)
       data ? resolve() : reject()
     })
   },
   // 修改预定商品
-  updateReserveCommodity(context, payload) {
+  updateReserve(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.updateReserveCommodity(payload)
+      const data = await commodityAPI.updateReserve(payload)
       data ? resolve() : reject()
     })
   },
   // 修改预定商品优惠
-  updateReserveCommodityPreferential(context, payload) {
+  updateReservePreferential(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.updateReserveCommodityPreferential(payload)
+      const data = await commodityAPI.updateReservePreferential(payload)
       data ? resolve() : reject()
     })
   },
   // 查询预定商品详情
-  readReserveCommodityDetail(context, id) {
+  readReserveDetail(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readReserveCommodityDetail(id)
+      const data = await commodityAPI.readReserveDetail(id)
       data ? resolve(data) : reject()
     })
   },
   // 获取平台预定商品分类
-  getPlatformReserveCommodityCategoryList() {
+  getPlatformReserveCategoryList() {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getPlatformReserveCommodityCategoryList()
+      const data = await commodityAPI.getPlatformReserveCategoryList()
       data ? resolve(data) : reject()
     })
   },

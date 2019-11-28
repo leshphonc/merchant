@@ -102,7 +102,7 @@ import { mapActions } from 'vuex'
 import ImgCropper from '@/components/ImgCropper'
 
 export default {
-  name: 'eCommerceCommodityPreferential',
+  name: 'eCommercePreferential',
 
   mixins: [],
 
@@ -146,18 +146,18 @@ export default {
     this.readMerchantInfo()
     // 优惠详情
     const id = this.$route.params.id
-    id && this._readReserveCommodityDetail(id)
+    id && this._readReserveDetail(id)
   },
 
   destroyed() {},
 
   methods: {
     ...mapActions('basicInformation', ['readMerchantInfo']),
-    ...mapActions('commodity', ['updateReserveCommodityPreferential', 'readReserveCommodityDetail']),
+    ...mapActions('commodity', ['updateReservePreferential', 'readReserveDetail']),
 
     // 页面默认数据
-    _readReserveCommodityDetail(id) {
-      this.readReserveCommodityDetail(id).then(res => {
+    _readReserveDetail(id) {
+      this.readReserveDetail(id).then(res => {
         console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
@@ -219,7 +219,7 @@ export default {
         })
         console.log(params)
         // 表单完整，进行数据修改并提交
-        this.updateReserveCommodityPreferential(params)
+        this.updateReservePreferential(params)
           .then(() => {
             this.$toast.success({
               message: '操作成功',

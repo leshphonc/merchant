@@ -27,7 +27,7 @@ module.exports = {
           'gray-c': '#dfdfdf',
           'gray-deep-c': '#888',
           'gray-background-c': '#fafafa',
-          'font-gray-c': '#9e9e9e',
+          'font-gray-c': '#666666',
           'red-c': '#ff4646',
           'green-c': '#77ca35',
           'black-c': '#444',

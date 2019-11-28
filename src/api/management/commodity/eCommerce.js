@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default {
   // 读取电商商品列表
-  getECommerceCommodityList: page =>
+  getECommerceList: page =>
     axios.get('/appapi.php?c=SpaceMerchant&a=spro', {
       params: {
         page,
@@ -12,21 +12,21 @@ export default {
       },
     }),
   // 删除电商商品
-  deleteECommerceCommodity: ({ store_id, goods_id }) =>
+  deleteECommerce: ({ store_id, goods_id }) =>
     axios.post('/appapi.php?c=SpaceMerchant&a=goods_del', {
       store_id,
       goods_id,
       ticket: localStorage.getItem('ticket'),
     }),
   // 读取电商商品1级分类
-  getECommerceCommodityFirstCategoryList: () =>
+  getECommerceFirstCategoryList: () =>
     axios.get('/appapi.php?c=SpaceMerchant&a=getShopCate', {
       params: {
         ticket: localStorage.getItem('ticket'),
       },
     }),
   // 读取电商商品2级分类
-  getECommerceCommoditySecondCategoryList: sort_id =>
+  getECommerceSecondCategoryList: sort_id =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getShopTwoCate', {
       sort_id,
       ticket: localStorage.getItem('ticket'),
@@ -39,7 +39,7 @@ export default {
       },
     }),
   // 创建电商分类
-  createECommerceCommodityCategory: ({ name, sort, is_week, week, discount, fid }) => {
+  createECommerceCategory: ({ name, sort, is_week, week, discount, fid }) => {
     let method = 'addEditShopCate'
     if (fid !== '0') {
       method = 'addEditShopTwo'
@@ -55,7 +55,7 @@ export default {
     })
   },
   // 删除电商分类
-  deleteECommerceCommodityCategory: ({ sort_id, type }) => {
+  deleteECommerceCategory: ({ sort_id, type }) => {
     let method = 'delShopCate'
     if (type !== 1) {
       method = 'delShopTwo'
@@ -66,13 +66,13 @@ export default {
     })
   },
   // 创建电商商品
-  createECommerceCommodity: payload =>
+  createECommerce: payload =>
     axios.post(`/appapi.php?c=SpaceMerchant&a=goods_add`, {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
   // 查询电商商品详情
-  readECommerceCommodityDetail: id =>
+  readECommerceDetail: id =>
     axios.get(`/appapi.php?c=SpaceMerchant&a=goods_detail`, {
       params: {
         goods_id: id,
@@ -80,13 +80,13 @@ export default {
       },
     }),
   // 修改电商商品
-  updateECommerceCommodity: payload =>
+  updateECommerce: payload =>
     axios.post(`/appapi.php?c=SpaceMerchant&a=goods_edit`, {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
   // 修改电商商品优惠
-  updateECommerceCommodityPreferential: payload =>
+  updateECommercePreferential: payload =>
     axios.post(`/appapi.php?c=SpaceMerchant&a=goods_discount`, {
       ...payload,
       ticket: localStorage.getItem('ticket'),

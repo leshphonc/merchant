@@ -11,22 +11,22 @@
     <div class="nav-bar-holder"></div>
     <van-tabs :offset-top="offsetTop" sticky v-model="active">
       <van-tab title="电商">
-        <e-commerce-commodity></e-commerce-commodity>
+        <e-commerce></e-commerce>
       </van-tab>
       <van-tab title="预定">
-        <reserve-commodity></reserve-commodity>
+        <reserve></reserve>
       </van-tab>
       <van-tab title="团购">
-        <group-buy-commodity></group-buy-commodity>
+        <group-buy></group-buy>
       </van-tab>
       <!-- <van-tab title="外卖"> -->
       <!-- <take-away-commodity></take-away-commodity> -->
       <!-- </van-tab> -->
       <van-tab title="服务">
-        <service-commodity></service-commodity>
+        <service></service>
       </van-tab>
       <van-tab title="套餐">
-        <package-commodity></package-commodity>
+        <package></package>
       </van-tab>
     </van-tabs>
   </div>
@@ -34,12 +34,12 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import ECommerceCommodity from './ECommerceCommodity'
-import ReserveCommodity from './ReserveCommodity'
-import GroupBuyCommodity from './GroupBuyCommodity'
-// import TakeAwayCommodity from './TakeAwayCommodity'
-import ServiceCommodity from './ServiceCommodity'
-import PackageCommodity from './PackageCommodity'
+import ECommerce from './ECommerce'
+import Reserve from './Reserve'
+import GroupBuy from './GroupBuy'
+// import TakeAway from './TakeAway'
+import Service from './Service'
+import Package from './Package'
 
 export default {
   name: 'commodityList',
@@ -47,12 +47,12 @@ export default {
   mixins: [],
 
   components: {
-    ECommerceCommodity,
-    ReserveCommodity,
-    GroupBuyCommodity,
-    // TakeAwayCommodity,
-    ServiceCommodity,
-    PackageCommodity,
+    ECommerce,
+    Reserve,
+    GroupBuy,
+    // TakeAway,
+    Service,
+    Package,
   },
 
   props: {},
@@ -94,19 +94,19 @@ export default {
       if (this.rightText === '创建') {
         switch (this.active) {
           case 0:
-            this.$router.push('/commodity/eCommerceCommodityCRU')
+            this.$router.push('/commodity/eCommerceCRU')
             break
           case 1:
-            this.$router.push('/commodity/reserveCommodityCRU')
+            this.$router.push('/commodity/reserveCRU')
             break
           case 2:
-            this.$router.push('/commodity/groupBuyCommodityCRU')
+            this.$router.push('/commodity/groupBuyCRU')
             break
           case 3:
-            this.$router.push('/commodity/serviceCommodityCRU')
+            this.$router.push('/commodity/serviceCRU')
             break
           case 4:
-            this.$router.push('/commodity/packageCommodityCRU')
+            this.$router.push('/commodity/packageCRU')
             break
           default:
             break

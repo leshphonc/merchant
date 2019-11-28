@@ -2,36 +2,36 @@ import axios from 'axios'
 
 export default {
   // 读取服务商品列表
-  getServiceCommodityList: page =>
+  getServiceList: page =>
     axios.post('/appapi.php?c=SpaceMerchant&a=selProList', {
       page,
       ticket: localStorage.getItem('ticket'),
     }),
   // 创建服务商品
-  createServiceCommodity: payload =>
+  createService: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=editAndAddPro', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
   // 查询服务商品
-  readServiceCommodityDetail: id =>
+  readServiceDetail: id =>
     axios.post('/appapi.php?c=SpaceMerchant&a=selPro', {
       app_id: id,
       ticket: localStorage.getItem('ticket'),
     }),
   // 删除服务商品
-  deleteServiceCommodity: id =>
+  deleteService: id =>
     axios.post('/appapi.php?c=SpaceMerchant&a=delPro', {
       app_id: id,
       ticket: localStorage.getItem('ticket'),
     }),
   // 读取服务商品分类列表
-  getServiceCommodityCategoryList: () =>
+  getServiceCategoryList: () =>
     axios.post('/appapi.php?c=SpaceMerchant&a=selCateList', {
       ticket: localStorage.getItem('ticket'),
     }),
   // 创建服务商品分类
-  createServiceCommodityCategory: ({ cat_name, cat_fid }) => {
+  createServiceCategory: ({ cat_name, cat_fid }) => {
     let method = 'addEditAppCate'
     if (cat_fid !== '0') {
       method = 'addTwoCate'
@@ -47,7 +47,7 @@ export default {
     })
   },
   // 删除服务商品分类
-  deleteServiceCommodityCategory: ({ cat_id, type }) => {
+  deleteServiceCategory: ({ cat_id, type }) => {
     let method = 'delAppCate'
     if (type !== 1) {
       method = 'delTwoCate'
@@ -58,7 +58,7 @@ export default {
     })
   },
   // 读取服务项目销售记录
-  readServiceCommoditySalesRecord: id =>
+  readServiceSalesRecord: id =>
     axios.post('/appapi.php?c=SpaceMerchant&a=.........', {
       app_id: id,
       ticket: localStorage.getItem('ticket'),

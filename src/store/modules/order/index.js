@@ -1,5 +1,6 @@
-import orderAPI from '@/api/order'
-import grourActions from './group'
+import orderAPI from '@/api/order/index'
+import grourBuyActions from './groupBuy'
+import reserveActions from './reserve'
 
 // initial state
 const state = {}
@@ -16,7 +17,8 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
-  ...grourActions,
+  ...grourBuyActions,
+  ...reserveActions,
 }
 
 // mutations

@@ -267,10 +267,10 @@ export default {
   mounted() {
     const { id } = this.$route.params
     if (id) {
-      this._readServiceCommodityDetail(id)
+      this._readServiceDetail(id)
     } else {
       // 读取服务项目分类
-      this._getServiceCommodityCategoryList()
+      this._getServiceCategoryList()
     }
   },
 
@@ -278,9 +278,9 @@ export default {
 
   methods: {
     ...mapActions('commodity', [
-      'getServiceCommodityCategoryList',
-      'createServiceCommodity',
-      'readServiceCommodityDetail',
+      'getServiceCategoryList',
+      'createService',
+      'readServiceDetail',
     ]),
     // 预约开始时间开关
     _controlStartTimePicker() {
@@ -331,8 +331,8 @@ export default {
       this.formData.appoint_pic_content = data.html
     },
     // 读取服务商品分类
-    _getServiceCommodityCategoryList(fid, id) {
-      this.getServiceCommodityCategoryList().then(res => {
+    _getServiceCategoryList(fid, id) {
+      this.getServiceCategoryList().then(res => {
         this.categoryColumnsOrigin = res
         this._serializationECommerceCategory(fid, id)
       })
@@ -363,8 +363,8 @@ export default {
       ]
     },
     // 查询服务商品详情
-    _readServiceCommodityDetail(id) {
-      this.readServiceCommodityDetail(id).then(res => {
+    _readServiceDetail(id) {
+      this.readServiceDetail(id).then(res => {
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res[item]
@@ -380,7 +380,7 @@ export default {
             url: res.pic,
           },
         ]
-        this._getServiceCommodityCategoryList(res.cat_fid, res.cat_id)
+        this._getServiceCategoryList(res.cat_fid, res.cat_id)
         this.$nextTick(function() {
           window.scroll(0, 0)
         })
@@ -419,7 +419,7 @@ export default {
           params.start_time = this.$moment(this.formData.start_time).valueOf() / 1000
           params.end_time = this.$moment(this.formData.end_time).valueOf() / 1000
           params.pic = this.formData.pic[0]
-          this.createServiceCommodity(params)
+          this.createService(params)
             .then(() => {
               this.$toast.success({
                 message: '操作成功',

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" fixed left-arrow title="服务项目销售记录"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" fixed left-arrow title="套餐销售记录"></van-nav-bar>
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'serviceCommoditySalesRecord',
+  name: 'packageSalesRecord',
 
   mixins: [],
 
@@ -28,15 +28,15 @@ export default {
 
   mounted() {
     const { id } = this.$route.params
-    this._readServiceCommoditySalesRecord(id)
+    this._readPackageSalesRecord(id)
   },
 
   destroyed() {},
 
   methods: {
-    ...mapActions('commodity', ['readServiceCommoditySalesRecord']),
-    _readServiceCommoditySalesRecord(id) {
-      this.readServiceCommoditySalesRecord(id).then(res => {
+    ...mapActions('commodity', ['readPackageSalesRecord']),
+    _readPackageSalesRecord(id) {
+      this.readPackageSalesRecord(id).then(res => {
         console.log(res)
       })
     },

@@ -12,53 +12,53 @@ export default {
     },
     {
       // 电商商品编辑
-      path: 'eCommerceCommodityCRU/:id?',
-      component: () => import('@/views/management/commodity/ECommerceCommodityCRU'),
+      path: 'eCommerceCRU/:id?',
+      component: () => import('@/views/management/commodity/ECommerceCRU'),
     },
     {
       // 电商商品优惠编辑
-      path: 'eCommerceCommodityPreferential/:id',
-      component: () => import('@/views/management/commodity/ECommerceCommodityPreferential'),
+      path: 'eCommercePreferential/:id',
+      component: () => import('@/views/management/commodity/ECommercePreferential'),
     },
     {
       // 团购商品编辑
-      path: 'groupBuyCommodityCRU/:id?',
-      component: () => import('@/views/management/commodity/GroupBuyCommodityCRU'),
+      path: 'groupBuyCRU/:id?',
+      component: () => import('@/views/management/commodity/GroupBuyCRU'),
     },
     {
       // 团购商品优惠编辑
-      path: 'groupBuyCommodityPreferential/:id',
-      component: () => import('@/views/management/commodity/GroupBuyCommodityPreferential'),
+      path: 'groupBuyPreferential/:id',
+      component: () => import('@/views/management/commodity/GroupBuyPreferential'),
     },
     {
       // 预定商品编辑
-      path: 'reserveCommodityCRU/:id?',
-      component: () => import('@/views/management/commodity/ReserveCommodityCRU'),
+      path: 'reserveCRU/:id?',
+      component: () => import('@/views/management/commodity/ReserveCRU'),
     },
     {
       // 预定商品优惠编辑
-      path: 'reserveCommodityPreferential/:id',
-      component: () => import('@/views/management/commodity/ReserveCommodityPreferential'),
+      path: 'reservePreferential/:id',
+      component: () => import('@/views/management/commodity/ReservePreferential'),
     },
     {
       // 服务商品编辑
-      path: 'serviceCommodityCRU/:id?',
-      component: () => import('@/views/management/commodity/ServiceCommodityCRU'),
+      path: 'serviceCRU/:id?',
+      component: () => import('@/views/management/commodity/ServiceCRU'),
     },
     {
       // 服务商品销售记录
-      path: 'serviceCommoditySalesRecord/:id',
-      component: () => import('@/views/management/commodity/ServiceCommoditySalesRecord'),
+      path: 'serviceSalesRecord/:id',
+      component: () => import('@/views/management/commodity/ServiceSalesRecord'),
     },
     {
       // 套餐商品编辑
-      path: 'packageCommodityCRU/:id?',
-      component: () => import('@/views/management/commodity/PackageCommodityCRU'),
+      path: 'packageCRU/:id?',
+      component: () => import('@/views/management/commodity/PackageCRU'),
     },
     {
       // 套餐商品销售记录
-      path: 'packageCommoditySalesRecord/:id',
-      component: () => import('@/views/management/commodity/PackageCommoditySalesRecord'),
+      path: 'packageSalesRecord/:id',
+      component: () => import('@/views/management/commodity/PackageSalesRecord'),
     },
   ],
 }

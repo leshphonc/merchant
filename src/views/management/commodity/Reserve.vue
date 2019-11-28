@@ -19,8 +19,8 @@
         </div>
         <div slot="price">已预定：{{ item.appoint_sum }}</div>
         <div slot="footer">
-          <van-button :to="`/commodity/reserveCommodityPreferential/${item.appoint_id}`" size="small">优惠</van-button>
-          <van-button :to="`/commodity/reserveCommodityCRU/${item.appoint_id}`" size="small" v-if="!item.type">编辑</van-button>
+          <van-button :to="`/commodity/reservePreferential/${item.appoint_id}`" size="small">优惠</van-button>
+          <van-button :to="`/commodity/reserveCRU/${item.appoint_id}`" size="small" v-if="!item.type">编辑</van-button>
         </div>
       </van-card>
     </van-list>
@@ -30,7 +30,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
-  name: 'reserveCommodity',
+  name: 'reserve',
 
   mixins: [],
 
@@ -63,10 +63,10 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('commodity', ['getReserveCommodityList', 'deleteReserveCommodity']),
+    ...mapActions('commodity', ['getReserveList', 'deleteReserve']),
     // 异步更新电商商品数据
     _onLoad() {
-      this.getReserveCommodityList(this.page).then(res => {
+      this.getReserveList(this.page).then(res => {
         this.loading = false
         if (res.lists.length < 10) {
           this.finished = true
@@ -78,7 +78,7 @@ export default {
     },
     // 刷新套餐列表
     _onRefresh() {
-      this.getReserveCommodityList().then(res => {
+      this.getReserveList().then(res => {
         this.page = 2
         this.list = res.lists
         this.refreshing = false
@@ -92,7 +92,7 @@ export default {
           message: '删除后无法恢复，是否继续',
           beforeClose: (action, done) => {
             if (action === 'confirm') {
-              this.deleteReserveCommodity(id)
+              this.deleteReserve(id)
                 .then(() => {
                   this.$toast.success({
                     message: '删除成功',

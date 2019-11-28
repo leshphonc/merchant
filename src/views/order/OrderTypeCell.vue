@@ -3,7 +3,7 @@
     <div :key="index" v-for="(item, index) in list">
       <div class="white-space"></div>
       <van-cell-group>
-        <van-cell :title="item.name" :value="item.count" is-link to="/order/groupList" />
+        <van-cell :title="item.name" :to="item.url" :value="item.count" is-link />
       </van-cell-group>
     </div>
     <div class="tab-bar-holder-sp"></div>
@@ -26,7 +26,7 @@ export default {
     return {
       list: [],
       map: {
-        团购订单: '/order/groupList',
+        团购订单: '/order/groupBuyList',
       },
     }
   },
@@ -49,6 +49,18 @@ export default {
       this.getOrderTypeList().then(res => {
         console.log(res)
         res.push({ name: '到店消费订单', count: '0' })
+        res.forEach(item => {
+          switch (item.name) {
+            case '团购订单':
+              item.url = '/order/groupBuyList'
+              break
+            case '预定订单':
+              item.url = '/order/reserveList'
+              break
+            default:
+              item.url = '404'
+          }
+        })
         this.list = res
       })
     },

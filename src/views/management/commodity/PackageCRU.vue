@@ -95,7 +95,7 @@
     </ValidationObserver>
     <!-- 弹出层 -->
     <!-- 选择包含的服务 -->
-    <van-popup position="top" safe-area-inset-bottom v-model="showServiceCommodityPicker">
+    <van-popup position="top" safe-area-inset-bottom v-model="showServicePicker">
       <van-tabs v-model="active">
         <van-tab title="服务项目">
           <van-list
@@ -157,7 +157,7 @@ import { mapActions } from 'vuex'
 import ImgCropper from '@/components/ImgCropper'
 
 export default {
-  name: 'packageCommodityCRU',
+  name: 'packageCRU',
 
   mixins: [],
 
@@ -181,7 +181,7 @@ export default {
       loading: false,
       pic: [],
       active: 0,
-      showServiceCommodityPicker: false,
+      showServicePicker: false,
       eCommerce_data: [],
       // 服务项目数据
       list: [],
@@ -216,7 +216,7 @@ export default {
   mounted() {
     const { id } = this.$route.params
     if (id) {
-      this._readPackageCommodityDetail(id)
+      this._readPackageDetail(id)
     }
   },
 
@@ -224,16 +224,16 @@ export default {
 
   methods: {
     ...mapActions('commodity', [
-      'getServiceCommodityList',
-      'getECommerceCommodityList',
-      'createPackageCommodity',
-      'updatePackageCommodity',
-      'readPackageCommodityDetail',
-      'readServiceOfPackageCommodity',
+      'getServiceList',
+      'getECommerceList',
+      'createPackage',
+      'updatePackage',
+      'readPackageDetail',
+      'readServiceOfPackage',
     ]),
     // 服务商品选择开关
     _controlCommodityPicker() {
-      this.showServiceCommodityPicker = !this.showServiceCommodityPicker
+      this.showServicePicker = !this.showServicePicker
     },
     // checkbox选中状态切换
     _toggle(index, flag) {
@@ -248,7 +248,7 @@ export default {
     },
     // 更新服务项目商品数据
     _onLoad() {
-      this.getServiceCommodityList(this.page).then(res => {
+      this.getServiceList(this.page).then(res => {
         this.loading = false
         if (res.length < 10) {
           this.finished = true
@@ -274,7 +274,7 @@ export default {
     },
     // 更新电商商品数据
     _onLoadE() {
-      this.getECommerceCommodityList(this.pageE).then(res => {
+      this.getECommerceList(this.pageE).then(res => {
         this.loading = false
         if (res.lists.length < 10) {
           this.finishedE = true
@@ -379,8 +379,8 @@ export default {
       })
     },
     // 读取套餐详情
-    _readPackageCommodityDetail(id) {
-      this.readPackageCommodityDetail(id).then(res => {
+    _readPackageDetail(id) {
+      this.readPackageDetail(id).then(res => {
         console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
@@ -388,7 +388,7 @@ export default {
         })
         this.formData.name = res[0].meal_name
         this.pic = [{ url: res[0].pic }]
-        this.readServiceOfPackageCommodity(id).then(res2 => {
+        this.readServiceOfPackage(id).then(res2 => {
           console.log(res2)
           const service = []
           const eCommerce = []
@@ -433,11 +433,11 @@ export default {
         // 加锁
         this.loading = true
         // 表单完整，进行数据修改并提交
-        let method = 'createPackageCommodity'
+        let method = 'createPackage'
         const { id } = this.$route.params
         const params = JSON.parse(JSON.stringify(this.formData))
         if (id) {
-          method = 'updatePackageCommodity'
+          method = 'updatePackage'
           params.meal_id = id
         }
         // 姚欢要求。。。编辑不要带id

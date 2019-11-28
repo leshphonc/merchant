@@ -317,7 +317,7 @@ import ImgCropper from '@/components/ImgCropper'
 import QuillEditor from '@/components/QuillEditor'
 
 export default {
-  name: 'groupBuyCommodityCRU',
+  name: 'groupBuyCRU',
 
   mixins: [],
 
@@ -465,10 +465,10 @@ export default {
     // 是否为编辑
     const { id } = this.$route.params
     if (id) {
-      this._readGroupBuyCommodityDetail(id)
+      this._readGroupBuyDetail(id)
     } else {
       // 电商分类
-      this._getPlatformGroupBuyCommodityCategoryList()
+      this._getPlatformGroupBuyCategoryList()
     }
   },
 
@@ -477,10 +477,10 @@ export default {
   methods: {
     ...mapActions(['getStoreList']),
     ...mapActions('commodity', [
-      'getPlatformGroupBuyCommodityCategoryList',
-      'createGroupBuyCommodity',
-      'readGroupBuyCommodityDetail',
-      'updateGroupBuyCommodity',
+      'getPlatformGroupBuyCategoryList',
+      'createGroupBuy',
+      'readGroupBuyDetail',
+      'updateGroupBuy',
     ]),
     // 团购类型开关
     _controlGroupBuyTypePicker() {
@@ -588,8 +588,8 @@ export default {
       this.formData.content = data.html
     },
     // 平台团购分类
-    _getPlatformGroupBuyCommodityCategoryList(fid, id) {
-      this.getPlatformGroupBuyCommodityCategoryList().then(res => {
+    _getPlatformGroupBuyCategoryList(fid, id) {
+      this.getPlatformGroupBuyCategoryList().then(res => {
         this.categoryColumnsOrigin = res
         this._serializationCategory(fid, id)
       })
@@ -620,8 +620,8 @@ export default {
       ]
     },
     // 编辑时获取详情
-    _readGroupBuyCommodityDetail(id) {
-      this.readGroupBuyCommodityDetail(id).then(res => {
+    _readGroupBuyDetail(id) {
+      this.readGroupBuyDetail(id).then(res => {
         console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
@@ -641,7 +641,7 @@ export default {
         })
         this.cache = cache
         // 设置化分类
-        this._getPlatformGroupBuyCommodityCategoryList(res.cat_fid, res.cat_id)
+        this._getPlatformGroupBuyCategoryList(res.cat_fid, res.cat_id)
         this.$nextTick(function() {
           this.$refs.editor.$refs.quillEditor.quill.blur()
           window.scroll(0, 0)
@@ -668,11 +668,11 @@ export default {
           // 加锁
           this.loading = true
           // 表单完整，进行数据修改并提交
-          let method = 'createGroupBuyCommodity'
+          let method = 'createGroupBuy'
           const { id } = this.$route.params
           const params = JSON.parse(JSON.stringify(this.formData))
           if (id) {
-            method = 'updateGroupBuyCommodity'
+            method = 'updateGroupBuy'
             params.group_id = id
           }
           params.s_name = params.name

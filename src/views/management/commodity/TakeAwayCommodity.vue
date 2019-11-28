@@ -18,8 +18,8 @@
         </div>
         <div slot="footer">
           <van-button @click="_deleteCommodity(item.meal_id)" size="small" type="danger">删除</van-button>
-          <van-button :to="`/commodity/takeAwayCommoditySalesRecord/${item.meal_id}`" size="small">销售记录</van-button>
-          <van-button :to="`/commodity/takeAwayCommodityCRU/${item.meal_id}`" size="small" v-if="!item.type">编辑</van-button>
+          <van-button :to="`/commodity/takeAwaySalesRecord/${item.meal_id}`" size="small">销售记录</van-button>
+          <van-button :to="`/commodity/takeAwayCRU/${item.meal_id}`" size="small" v-if="!item.type">编辑</van-button>
         </div>
       </van-card>
     </van-list>
@@ -29,7 +29,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
-  name: 'takeAwayCommodity',
+  name: 'takeAway',
 
   mixins: [],
 
@@ -62,10 +62,10 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('commodity', ['getTakeAwayCommodityList', 'deleteTakeAwayCommodity']),
+    ...mapActions('commodity', ['getTakeAwayList', 'deleteTakeAway']),
     // 异步更新数据
     _onLoad() {
-      this.getTakeAwayCommodityList(this.page).then(res => {
+      this.getTakeAwayList(this.page).then(res => {
         this.loading = false
         if (res.length < 10) {
           this.finished = true
@@ -77,7 +77,7 @@ export default {
     },
     // 刷新列表
     _onRefresh() {
-      this.getTakeAwayCommodityList().then(res => {
+      this.getTakeAwayList().then(res => {
         this.page = 2
         this.list = res
         this.refreshing = false
@@ -91,7 +91,7 @@ export default {
           message: '删除后无法恢复，是否继续',
           beforeClose: (action, done) => {
             if (action === 'confirm') {
-              this.deleteTakeAwayCommodity(id)
+              this.deleteTakeAway(id)
                 .then(() => {
                   this.$toast.success({
                     message: '删除成功',

@@ -1,4 +1,4 @@
-import orderAPI from '@/api/order'
+import orderAPI from '@/api/order/index'
 
 export default {
   // 获取团购订单列表
@@ -9,51 +9,51 @@ export default {
     })
   },
   // 查询团购订单详情
-  async readGroupOrderDetail(context, id) {
+  async readGroupBuyOrderDetail(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await orderAPI.readGroupOrderDetail(id)
+      const data = await orderAPI.readGroupBuyOrderDetail(id)
       data ? resolve(data) : reject()
     })
   },
   // 将团购订单归属于店铺
-  async ascriptionGroupOrder(context, payload) {
+  async ascriptionGroupBuyOrder(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await orderAPI.ascriptionGroupOrder(payload)
+      const data = await orderAPI.ascriptionGroupBuyOrder(payload)
       data ? resolve() : reject()
     })
   },
   // 修改团购订单快递单号信息
-  async changeGroupOrderExpress(context, payload) {
+  async changeGroupBuyOrderExpress(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await orderAPI.changeGroupOrderExpress(payload)
+      const data = await orderAPI.changeGroupBuyOrderExpress(payload)
       data ? resolve() : reject()
     })
   },
   // 查询团购订单核销码列表
-  async readGroupOrderWriteOff(context, id) {
+  async readGroupBuyOrderWriteOff(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await orderAPI.readGroupOrderWriteOff(id)
+      const data = await orderAPI.readGroupBuyOrderWriteOff(id)
       data ? resolve(data) : reject()
     })
   },
   // 团购单个核销
-  async verifySingleGroupCode(context, payload) {
+  async verifySingleGroupBuyCode(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await orderAPI.verifySingleGroupCode(payload)
+      const data = await orderAPI.verifySingleGroupBuyCode(payload)
       data ? resolve() : reject()
     })
   },
   // 团购多个核销
-  async verifyArrayGroupCode(context, payload) {
+  async verifyArrayGroupBuyCode(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await orderAPI.verifyArrayGroupCode(payload)
+      const data = await orderAPI.verifyArrayGroupBuyCode(payload)
       data ? resolve() : reject()
     })
   },
   // 团购全部核销
-  async verifyAllGroupCode(context, payload) {
+  async verifyAllGroupBuyCode(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await orderAPI.verifyAllGroupCode(payload)
+      const data = await orderAPI.verifyAllGroupBuyCode(payload)
       data ? resolve() : reject()
     })
   },

@@ -2,26 +2,26 @@ import axios from 'axios'
 
 export default {
   // 读取预定商品列表
-  getReserveCommodityList: page =>
+  getReserveList: page =>
     axios.post('/appapi.php?c=Merchantapp&a=apro', {
       page,
       size: 10,
       ticket: localStorage.getItem('ticket'),
     }),
   // 创建预定商品
-  createReserveCommodity: payload =>
+  createReserve: payload =>
     axios.post('/appapi.php?c=Merchantapp&a=add_appoint', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
   // 修改预定商品
-  updateReserveCommodity: payload =>
+  updateReserve: payload =>
     axios.post('/appapi.php?c=Merchantapp&a=edit_appoint', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
   // 查询预定商品详情
-  readReserveCommodityDetail: id =>
+  readReserveDetail: id =>
     axios.get('/appapi.php?c=Merchantapp&a=get_appoint', {
       params: {
         appoint_id: id,
@@ -29,13 +29,13 @@ export default {
       },
     }),
   // 修改预定商品优惠
-  updateReserveCommodityPreferential: payload =>
+  updateReservePreferential: payload =>
     axios.post('/appapi.php?c=Merchantapp&a=appoint_other', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
   // 获取平台预定商品分类
-  getPlatformReserveCommodityCategoryList: () =>
+  getPlatformReserveCategoryList: () =>
     axios.get('/appapi.php?c=Merchantapp&a=get_all_appoint_category', {
       params: {
         ticket: localStorage.getItem('ticket'),

@@ -2,58 +2,58 @@ import commodityAPI from '@/api/management/commodity/index'
 
 export default {
   // 读取服务商品列表
-  async getServiceCommodityList(context, page = 1) {
+  async getServiceList(context, page = 1) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getServiceCommodityList(page)
+      const data = await commodityAPI.getServiceList(page)
       data ? resolve(data) : reject()
     })
   },
   // 创建服务商品
-  async createServiceCommodity(context, payload) {
+  async createService(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.createServiceCommodity(payload)
+      const data = await commodityAPI.createService(payload)
       data ? resolve() : reject()
     })
   },
   // 查询服务商品详情
-  async readServiceCommodityDetail(context, id) {
+  async readServiceDetail(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readServiceCommodityDetail(id)
+      const data = await commodityAPI.readServiceDetail(id)
       data ? resolve(data) : reject()
     })
   },
   // 删除服务商品
-  async deleteServiceCommodity(context, id) {
+  async deleteService(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.deleteServiceCommodity(id)
+      const data = await commodityAPI.deleteService(id)
       data ? resolve() : reject()
     })
   },
   // 读取服务商品分类
-  getServiceCommodityCategoryList() {
+  getServiceCategoryList() {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getServiceCommodityCategoryList()
+      const data = await commodityAPI.getServiceCategoryList()
       data ? resolve(data) : reject()
     })
   },
   // 创建服务商品分类
-  createServiceCommodityCategory(context, payload) {
+  createServiceCategory(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.createServiceCommodityCategory(payload)
+      const data = await commodityAPI.createServiceCategory(payload)
       data ? resolve() : reject()
     })
   },
   // 删除服务商品分类
-  deleteServiceCommodityCategory(context, id) {
+  deleteServiceCategory(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.deleteServiceCommodityCategory(id)
+      const data = await commodityAPI.deleteServiceCategory(id)
       data ? resolve() : reject()
     })
   },
   // 读取服务项目销售记录
-  readServiceCommoditySalesRecord(context, id) {
+  readServiceSalesRecord(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readServiceCommoditySalesRecord(id)
+      const data = await commodityAPI.readServiceSalesRecord(id)
       data ? resolve(data) : reject()
     })
   },

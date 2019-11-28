@@ -18,9 +18,9 @@
               <van-tag plain type="danger">{{ item.status === '1' ? '开启状态' : '关闭状态' }}</van-tag>
             </div>
             <div slot="footer">
-              <van-button :to="`/order/groupList/${item.group_id}`" size="small">订单列表</van-button>
-              <van-button :to="`/commodity/groupBuyCommodityPreferential/${item.group_id}`" size="small">优惠</van-button>
-              <van-button :to="`/commodity/groupBuyCommodityCRU/${item.group_id}`" size="small">编辑</van-button>
+              <van-button :to="`/order/groupBuyList/${item.group_id}`" size="small">订单列表</van-button>
+              <van-button :to="`/commodity/groupBuyPreferential/${item.group_id}`" size="small">优惠</van-button>
+              <van-button :to="`/commodity/groupBuyCRU/${item.group_id}`" size="small">编辑</van-button>
             </div>
           </van-card>
         </van-list>
@@ -85,7 +85,7 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 export default {
-  name: 'groupBuyCommodity',
+  name: 'groupBuy',
 
   mixins: [],
 
@@ -127,7 +127,7 @@ export default {
 
   mounted() {
     // 获取团购商品套餐列表
-    this._getGroupBuyCommodityPackageList()
+    this._getGroupBuyPackageList()
   },
 
   destroyed() {},
@@ -135,11 +135,11 @@ export default {
   methods: {
     ...mapMutations('commodity', ['changeRightText']),
     ...mapActions('commodity', [
-      'getGroupBuyCommodityList',
-      'deleteGroupBuyCommodity',
-      'getGroupBuyCommodityPackageList',
-      'createGroupBuyCommodityPackage',
-      'deleteGroupBuyCommodityCategory',
+      'getGroupBuyList',
+      'deleteGroupBuy',
+      'getGroupBuyPackageList',
+      'createGroupBuyPackage',
+      'deleteGroupBuyCategory',
     ]),
     // 团购套餐编辑开关
     _controlPackageCRUPopup() {
@@ -150,7 +150,7 @@ export default {
     },
     // 刷新团购商品列表
     _onRefresh() {
-      this.getGroupBuyCommodityList().then(res => {
+      this.getGroupBuyList().then(res => {
         this.page = 2
         this.list = res.lists
         this.refreshing = false
@@ -158,7 +158,7 @@ export default {
     },
     // 异步更新团购商品数据
     _onLoad() {
-      this.getGroupBuyCommodityList(this.page).then(res => {
+      this.getGroupBuyList(this.page).then(res => {
         this.loading = false
         if (res.lists.length < 10) {
           this.finished = true
@@ -176,7 +176,7 @@ export default {
           message: '删除后无法恢复，是否继续',
           beforeClose: (action, done) => {
             if (action === 'confirm') {
-              this.deleteGroupBuyCommodity({ store_id, group_id })
+              this.deleteGroupBuy({ store_id, group_id })
                 .then(() => {
                   this.$toast.success({
                     message: '删除成功',
@@ -208,13 +208,13 @@ export default {
           message: '删除后无法恢复，是否继续',
           beforeClose: (action, done) => {
             if (action === 'confirm') {
-              // this.deleteGroupBuyCommodityCategory({ sort_id: id, type })
+              // this.deleteGroupBuyCategory({ sort_id: id, type })
               //   .then(() => {
               //     this.$toast.success({
               //       message: '删除成功',
               //       duration: 800,
               //       onClose: () => {
-              //         this._getGroupBuyCommodityPackageList()
+              //         this._getGroupBuyPackageList()
               //       },
               //     })
               //     done()
@@ -241,8 +241,8 @@ export default {
       })
     },
     // 获取团购商品套餐列表
-    _getGroupBuyCommodityPackageList() {
-      this.getGroupBuyCommodityPackageList().then(res => {
+    _getGroupBuyPackageList() {
+      this.getGroupBuyPackageList().then(res => {
         res.splice(0, 1)
         this.groupBuyPackageList = res
       })
@@ -278,7 +278,7 @@ export default {
       } else {
         // 加锁
         this.loading = true
-        this.createGroupBuyCommodityPackage(this.formData)
+        this.createGroupBuyPackage(this.formData)
           .then(() => {
             this.$toast.success({
               message: '操作成功',
@@ -287,7 +287,7 @@ export default {
               onClose: () => {
                 // 解锁
                 this.loading = false
-                this._getGroupBuyCommodityPackageList()
+                this._getGroupBuyPackageList()
                 this._controlPackageCRUPopup()
                 this.formData = {
                   title: '',

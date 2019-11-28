@@ -310,7 +310,7 @@ import ImgCropper from '@/components/ImgCropper'
 import QuillEditor from '@/components/QuillEditor'
 
 export default {
-  name: 'reserveCommodityCRU',
+  name: 'reserveCRU',
 
   mixins: [],
 
@@ -425,10 +425,10 @@ export default {
 
   mounted() {
     this._getStoreList()
-    this._getPlatformReserveCommodityCategoryList()
+    this._getPlatformReserveCategoryList()
     const { id } = this.$route.params
     if (id) {
-      this._readReserveCommodityDetail(id)
+      this._readReserveDetail(id)
     }
   },
 
@@ -437,10 +437,10 @@ export default {
   methods: {
     ...mapActions(['getStoreList']),
     ...mapActions('commodity', [
-      'getPlatformReserveCommodityCategoryList',
-      'createReserveCommodity',
-      'readReserveCommodityDetail',
-      'updateReserveCommodity',
+      'getPlatformReserveCategoryList',
+      'createReserve',
+      'readReserveDetail',
+      'updateReserve',
     ]),
     _controlPriceTypePicker() {
       this.showPriceTypePicker = !this.showPriceTypePicker
@@ -525,8 +525,8 @@ export default {
       const item = this.storeList.find(item => item.value === id)
       return item && `${item.label} - ${item.adress}`
     },
-    _getPlatformReserveCommodityCategoryList(fid, id) {
-      this.getPlatformReserveCommodityCategoryList().then(res => {
+    _getPlatformReserveCategoryList(fid, id) {
+      this.getPlatformReserveCategoryList().then(res => {
         this.categoryColumnsOrigin = res
         this._serializationCategory(fid, id)
       })
@@ -574,8 +574,8 @@ export default {
       this.customList.splice(index, 1)
     },
     // 编辑时获取详情数据
-    _readReserveCommodityDetail(id) {
-      this.readReserveCommodityDetail(id).then(res => {
+    _readReserveDetail(id) {
+      this.readReserveDetail(id).then(res => {
         console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
@@ -618,11 +618,11 @@ export default {
         // 加锁
         this.loading = true
         // 表单完整，进行数据修改并提交
-        let method = 'createReserveCommodity'
+        let method = 'createReserve'
         const { id } = this.$route.params
         const params = JSON.parse(JSON.stringify(this.formData))
         if (id) {
-          method = 'updateReserveCommodity'
+          method = 'updateReserve'
           params.appoint_id = id
         }
         this.customList.forEach(item => {

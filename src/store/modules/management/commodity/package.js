@@ -2,51 +2,51 @@ import commodityAPI from '@/api/management/commodity/index'
 
 export default {
   // 读取套餐商品列表
-  getPackageCommodityList(context, page = 1) {
+  getPackageList(context, page = 1) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getPackageCommodityList(page)
+      const data = await commodityAPI.getPackageList(page)
       data ? resolve(data) : reject()
     })
   },
   // 创建套餐商品
-  createPackageCommodity(context, payload) {
+  createPackage(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.createPackageCommodity(payload)
+      const data = await commodityAPI.createPackage(payload)
       data ? resolve() : reject()
     })
   },
   // 查询套餐商品详情
-  readPackageCommodityDetail(context, id) {
+  readPackageDetail(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readPackageCommodityDetail(id)
+      const data = await commodityAPI.readPackageDetail(id)
       data ? resolve(data) : reject()
     })
   },
   // 修改套餐商品
-  updatePackageCommodity(context, payload) {
+  updatePackage(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.updatePackageCommodity(payload)
+      const data = await commodityAPI.updatePackage(payload)
       data ? resolve() : reject()
     })
   },
   // 删除套餐商品
-  deletePackageCommodity(context, id) {
+  deletePackage(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.deletePackageCommodity(id)
+      const data = await commodityAPI.deletePackage(id)
       data ? resolve() : reject()
     })
   },
   // 读取套餐内包含的服务项目
-  readServiceOfPackageCommodity(context, id) {
+  readServiceOfPackage(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readServiceOfPackageCommodity(id)
+      const data = await commodityAPI.readServiceOfPackage(id)
       data ? resolve(data) : reject()
     })
   },
   // 读取套餐商品销售记录
-  readPackageCommoditySalesRecord(context, id) {
+  readPackageSalesRecord(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readPackageCommoditySalesRecord(id)
+      const data = await commodityAPI.readPackageSalesRecord(id)
       data ? resolve(data) : reject()
     })
   },

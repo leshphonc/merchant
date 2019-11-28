@@ -185,7 +185,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'eCommerceCommodityPreferential',
+  name: 'eCommercePreferential',
 
   mixins: [],
 
@@ -317,7 +317,7 @@ export default {
     this._getMemberGroupList()
     // 优惠详情
     const id = this.$route.params.id
-    id && this._readECommerceCommodityDetail(id)
+    id && this._readECommerceDetail(id)
   },
 
   destroyed() {},
@@ -325,7 +325,7 @@ export default {
   methods: {
     ...mapActions(['getCouponList']),
     ...mapActions('basicInformation', ['readMerchantInfo']),
-    ...mapActions('commodity', ['updateECommerceCommodityPreferential', 'readECommerceCommodityDetail']),
+    ...mapActions('commodity', ['updateECommercePreferential', 'readECommerceDetail']),
     ...mapActions('member', ['getMemberGroupList']),
     // 时间类型开关
     _controlTimeTypePicker() {
@@ -451,8 +451,8 @@ export default {
       return item ? item.label : ''
     },
     // 页面默认数据
-    _readECommerceCommodityDetail(id) {
-      this.readECommerceCommodityDetail(id).then(res => {
+    _readECommerceDetail(id) {
+      this.readECommerceDetail(id).then(res => {
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res[item]
@@ -487,7 +487,7 @@ export default {
         params.seckill_open_time = this.startTimeLabel
         params.seckill_close_time = this.endTimeLabel
         // 表单完整，进行数据修改并提交
-        this.updateECommerceCommodityPreferential(params)
+        this.updateECommercePreferential(params)
           .then(() => {
             this.$toast.success({
               message: '操作成功',

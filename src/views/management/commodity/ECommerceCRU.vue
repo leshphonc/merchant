@@ -221,7 +221,7 @@ import ImgCropper from '@/components/ImgCropper'
 import QuillEditor from '@/components/QuillEditor'
 
 export default {
-  name: 'eCommerceCommodityCRU',
+  name: 'eCommerceCRU',
 
   mixins: [],
 
@@ -364,14 +364,14 @@ export default {
     // 运费模版
     this._getFreightTemPlateList()
     // 平台电商分类
-    this._getPlatformECommerceCommodityCategoryList()
+    this._getPlatformECommerceCategoryList()
     // 是否为编辑店铺
     const { id } = this.$route.params
     if (id) {
-      this._readECommerceCommodityDetail(id)
+      this._readECommerceDetail(id)
     } else {
       // 电商分类
-      this._getECommerceCommodityFirstCategoryList()
+      this._getECommerceFirstCategoryList()
     }
   },
 
@@ -379,11 +379,11 @@ export default {
 
   methods: {
     ...mapActions('commodity', [
-      'getECommerceCommodityFirstCategoryList',
+      'getECommerceFirstCategoryList',
       'getPlatformEcommerceCommodityCategoryList',
-      'createECommerceCommodity',
-      'updateECommerceCommodity',
-      'readECommerceCommodityDetail',
+      'createECommerce',
+      'updateECommerce',
+      'readECommerceDetail',
     ]),
     ...mapActions('freight', ['getFreightTemPlateList']),
     // 商品状态开关
@@ -472,14 +472,14 @@ export default {
       this.formData.des = data.html
     },
     // 读取商品分类
-    _getECommerceCommodityFirstCategoryList(fid, id) {
-      this.getECommerceCommodityFirstCategoryList().then(res => {
+    _getECommerceFirstCategoryList(fid, id) {
+      this.getECommerceFirstCategoryList().then(res => {
         this.categoryColumnsOrigin = res
         this._serializationECommerceCategory(fid, id)
       })
     },
     // 读取平台平台商城 商品分类
-    _getPlatformECommerceCommodityCategoryList(fid, id) {
+    _getPlatformECommerceCategoryList(fid, id) {
       this.getPlatformEcommerceCommodityCategoryList().then(res => {
         this.platFormCategoryColumnsOrigin = res
         this._serializationPlatformECommerceCategory(fid, id)
@@ -540,8 +540,8 @@ export default {
         },
       ]
     },
-    _readECommerceCommodityDetail(id) {
-      this.readECommerceCommodityDetail(id).then(res => {
+    _readECommerceDetail(id) {
+      this.readECommerceDetail(id).then(res => {
         console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
@@ -551,9 +551,9 @@ export default {
         this.pic = res.pic
         if (res.sort_fid) {
           this.sort_fid = res.sort_fid
-          this._getECommerceCommodityFirstCategoryList(res.sort_fid, res.sort_id)
+          this._getECommerceFirstCategoryList(res.sort_fid, res.sort_id)
         } else {
-          this._getECommerceCommodityFirstCategoryList(res.sort_id)
+          this._getECommerceFirstCategoryList(res.sort_id)
         }
         this.$nextTick(function() {
           window.scroll(0, 0)
@@ -582,10 +582,10 @@ export default {
           // 加锁
           this.loading = true
           // 表单完整，进行数据修改并提交
-          let method = 'createECommerceCommodity'
+          let method = 'createECommerce'
           const { id } = this.$route.params
           if (id) {
-            method = 'updateECommerceCommodity'
+            method = 'updateECommerce'
             this.formData.goods_id = id
           }
           this[method](this.formData)

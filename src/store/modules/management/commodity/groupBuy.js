@@ -2,72 +2,72 @@ import commodityAPI from '@/api/management/commodity/index'
 
 export default {
   // 读取团购商品列表
-  async getGroupBuyCommodityList(context, page = 1) {
+  async getGroupBuyList(context, page = 1) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getGroupBuyCommodityList(page)
+      const data = await commodityAPI.getGroupBuyList(page)
       data ? resolve(data) : reject()
     })
   },
   // 删除团购商品
-  async deleteGroupBuyCommodity(context, payload) {
+  async deleteGroupBuy(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.deleteGroupBuyCommodity(payload)
+      const data = await commodityAPI.deleteGroupBuy(payload)
       data ? resolve() : reject()
     })
   },
   // 读取团购商品套餐列表
-  async getGroupBuyCommodityPackageList() {
+  async getGroupBuyPackageList() {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getGroupBuyCommodityPackageList()
+      const data = await commodityAPI.getGroupBuyPackageList()
       data ? resolve(data) : reject()
     })
   },
   // 读取平台团购商品分类
-  async getPlatformGroupBuyCommodityCategoryList() {
+  async getPlatformGroupBuyCategoryList() {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getPlatformGroupBuyCommodityCategoryList()
+      const data = await commodityAPI.getPlatformGroupBuyCategoryList()
       data ? resolve(data) : reject()
     })
   },
   // 创建团购商品套餐
-  async createGroupBuyCommodityPackage(context, payload) {
+  async createGroupBuyPackage(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.createGroupBuyCommodityPackage(payload)
+      const data = await commodityAPI.createGroupBuyPackage(payload)
       data ? resolve() : reject()
     })
   },
   // 删除团购分类
-  async deleteGroupBuyCommodityCategory(context, payload) {
+  async deleteGroupBuyCategory(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.deleteGroupBuyCommodityCategory(payload)
+      const data = await commodityAPI.deleteGroupBuyCategory(payload)
       data ? resolve() : reject()
     })
   },
   // 创建团购商品
-  async createGroupBuyCommodity(context, payload) {
+  async createGroupBuy(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.createGroupBuyCommodity(payload)
+      const data = await commodityAPI.createGroupBuy(payload)
       data ? resolve() : reject()
     })
   },
   // 查询团购商品详情
-  async readGroupBuyCommodityDetail(context, id) {
+  async readGroupBuyDetail(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readGroupBuyCommodityDetail(id)
+      const data = await commodityAPI.readGroupBuyDetail(id)
       data ? resolve(data) : reject()
     })
   },
   // 修改团购商品
-  async updateGroupBuyCommodity(context, payload) {
+  async updateGroupBuy(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.updateGroupBuyCommodity(payload)
+      const data = await commodityAPI.updateGroupBuy(payload)
       data ? resolve() : reject()
     })
   },
   // 修改团购商品优惠
-  async updateGroupBuyCommodityPreferential(context, payload) {
+  async updateGroupBuyPreferential(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.updateGroupBuyCommodityPreferential(payload)
+      const data = await commodityAPI.updateGroupBuyPreferential(payload)
       data ? resolve() : reject()
     })
   },
