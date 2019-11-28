@@ -27,6 +27,7 @@
             :label-width="resizeWidth"
             :placeholder="`赠送${$getGlobal('score_alias')}数量`"
             label="每消费1元赠送"
+            required
             v-model="formData.dhb_get_num"
           >
             <div slot="right-icon">{{ $getGlobal('score_alias') }}</div>
@@ -44,6 +45,7 @@
             :label-width="resizeWidth"
             :placeholder="`赠送${$getGlobal('dhb_alias')}数量`"
             label="每消费1元赠送"
+            required
             v-model="formData.score_get_num"
           >
             <div slot="right-icon">{{ $getGlobal('dhb_alias') }}</div>
@@ -56,24 +58,57 @@
             :label-width="resizeWidth"
             label="环境专区名称"
             placeholder="请填写环境专区名称"
+            required
             v-model="formData.envo_area_name"
           ></van-field>
         </ValidationProvider>
       </van-cell-group>
+      <van-cell-group :key="index" v-for="(item, index) in envList">
+        <div slot="title">
+          {{ `环境${index + 1}` }}
+          <van-button @click="_deleteEnvironment(index)" size="small" type="danger" v-show="envList.length > 1">删除</van-button>
+        </div>
+        <ValidationProvider name="环境名称" rules="required" slim v-slot="{ errors }">
+          <van-field label="环境名称" placeholder="请填写环境名称" required v-model="item.envo_name"></van-field>
+        </ValidationProvider>
+        <ValidationProvider name="每屏数量" rules="required" slim v-slot="{ errors }">
+          <van-field label="每屏数量" placeholder="请填写每屏数量" required v-model="item.envo_screen_num"></van-field>
+        </ValidationProvider>
+        <img-cropper
+          :confirm="_pickEnvBeforeImg"
+          :index="index"
+          :list="envBeforeImg[index]"
+          field="选中前图标"
+          title="选中前图标"
+        ></img-cropper>
+        <img-cropper :confirm="_pickEnvAfterImg" :index="index" :list="envAfterImg[index]" field="选中后图标" title="选中后图标"></img-cropper>
+        <img-cropper
+          :confirm="_pickEnvServingImg"
+          :index="index"
+          :list="envServingImg[index]"
+          field="服务中图标"
+          title="服务中图标"
+        ></img-cropper>
+      </van-cell-group>
+      <van-button @click="_addEnvironment" class="add-btn" icon="plus" v-show="envList.length < 3">新增环境</van-button>
     </ValidationObserver>
+
     <div class="white-space"></div>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import ImgCropper from '@/components/ImgCropper'
 
 export default {
   name: 'eCommerceCommodityPreferential',
 
   mixins: [],
 
-  components: {},
+  components: {
+    ImgCropper,
+  },
 
   props: {},
 
@@ -83,8 +118,14 @@ export default {
         is_select_car_model: '0',
         is_select_car_license: '0',
         is_select_workerstaff: '0',
+        dhb_get_num: '',
+        score_get_num: '',
         envo_area_name: '',
       },
+      envList: [],
+      envBeforeImg: [],
+      envAfterImg: [],
+      envServingImg: [],
     }
   },
 
@@ -104,23 +145,55 @@ export default {
     this.readMerchantInfo()
     // 优惠详情
     const id = this.$route.params.id
-    id && this._readECommerceCommodityDetail(id)
+    id && this._readReserveCommodityDetail(id)
   },
 
   destroyed() {},
 
   methods: {
     ...mapActions('basicInformation', ['readMerchantInfo']),
-    ...mapActions('commodity', ['updateECommerceCommodityPreferential', 'readECommerceCommodityDetail']),
+    ...mapActions('commodity', ['updateReserveCommodityPreferential', 'readReserveCommodityDetail']),
 
     // 页面默认数据
-    _readECommerceCommodityDetail(id) {
-      this.readECommerceCommodityDetail(id).then(res => {
+    _readReserveCommodityDetail(id) {
+      this.readReserveCommodityDetail(id).then(res => {
+        console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
-          this.formData[item] = res[item]
+          this.formData[item] = res.appoint_list[item]
+        })
+        this.envList = res.envo_info_list
+        res.envo_info_list.forEach(item => {
+          item.envo_before_select_pic && this.envBeforeImg.push([{ url: item.envo_before_select_pic }])
+          item.envo_after_select_pic && this.envAfterImg.push([{ url: item.envo_after_select_pic }])
+          item.envo_serving_pic && this.envServingImg.push([{ url: item.envo_serving_pic }])
         })
       })
+    },
+    _addEnvironment() {
+      this.envList.push({
+        envo_name: '',
+        envo_screen_num: '',
+        envo_before_select_pic: '',
+        envo_after_select_pic: '',
+        envo_serving_pic: '',
+      })
+    },
+    _deleteEnvironment(index) {
+      this.envList.splice(index, 1)
+      this.envBeforeImg.splice(index, 1)
+      this.envAfterImg.splice(index, 1)
+      this.envServingImg.splice(index, 1)
+    },
+    _pickEnvBeforeImg(data, index) {
+      this.envList[index].envo_before_select_pic = data[0].url
+    },
+    _pickEnvAfterImg(data, index) {
+      console.log(this.envBeforeImg)
+      this.envList[index].envo_after_select_pic = data[0].url
+    },
+    _pickEnvServingImg(data, index) {
+      this.envList[index].envo_serving_pic = data[0].url
     },
     async _submit() {
       console.log(this.formData)
@@ -137,12 +210,15 @@ export default {
         // 加锁
         this.loading = true
         const params = JSON.parse(JSON.stringify(this.formData))
-        params.goods_id = this.$route.params.id
-        params.store_id = 0
-        params.seckill_open_time = this.startTimeLabel
-        params.seckill_close_time = this.endTimeLabel
+        params.appoint_id = this.$route.params.id
+        this.envList.forEach(item => {
+          for (let key in item) {
+            params[key] ? params[key].push(item[key]) : (params[key] = [item[key]])
+          }
+        })
+        console.log(params)
         // 表单完整，进行数据修改并提交
-        this.updateECommerceCommodityPreferential(params)
+        this.updateReserveCommodityPreferential(params)
           .then(() => {
             this.$toast.success({
               message: '操作成功',
@@ -165,7 +241,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.van-button {
+.add-btn {
   width: 100%;
 }
 </style>

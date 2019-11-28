@@ -10,41 +10,31 @@ export default {
     }),
   // 创建预定商品
   createReserveCommodity: payload =>
-    axios.post('/appapi.php?c=SpaceMerchant&a=addMeal', {
+    axios.post('/appapi.php?c=Merchantapp&a=add_appoint', {
       ...payload,
-      ticket: localStorage.getItem('ticket'),
-    }),
-  // 查询预定商品
-  readReserveCommodityDetail: id =>
-    axios.post('/appapi.php?c=SpaceMerchant&a=getMealList', {
-      meal_id: id,
       ticket: localStorage.getItem('ticket'),
     }),
   // 修改预定商品
   updateReserveCommodity: payload =>
-    axios.post('/appapi.php?c=SpaceMerchant&a=editMeal', {
+    axios.post('/appapi.php?c=Merchantapp&a=edit_appoint', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 删除预定商品
-  deleteReserveCommodity: id =>
-    axios.post('/appapi.php?c=SpaceMerchant&a=delMeal', {
-      meal_id: id,
+  // 查询预定商品详情
+  readReserveCommodityDetail: id =>
+    axios.get('/appapi.php?c=Merchantapp&a=get_appoint', {
+      params: {
+        appoint_id: id,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // 修改预定商品优惠
+  updateReserveCommodityPreferential: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=appoint_other', {
+      ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 读取预定内包含的服务项目
-  readServiceOfReserveCommodity: id =>
-    axios.post('/appapi.php?c=SpaceMerchant&a=getMealProList', {
-      meal_id: id,
-      ticket: localStorage.getItem('ticket'),
-    }),
-  // 读取预定商品销售记录
-  readReserveCommoditySalesRecord: id =>
-    axios.post('/appapi.php?c=SpaceMerchant&a=.........', {
-      meal_id: id,
-      ticket: localStorage.getItem('ticket'),
-    }),
-  // 获取平台预定分类
+  // 获取平台预定商品分类
   getPlatformReserveCommodityCategoryList: () =>
     axios.get('/appapi.php?c=Merchantapp&a=get_all_appoint_category', {
       params: {

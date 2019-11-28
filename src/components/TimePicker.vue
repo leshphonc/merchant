@@ -70,7 +70,7 @@
         :value="startTime"
         @cancel="_controlStartTimePicker"
         @change="_changeStartTime"
-        @confirm="_controlStartTimePicker"
+        @confirm="_pickStartTime"
         cancel-button-text="关闭"
       />
     </van-popup>
@@ -98,7 +98,7 @@
         :value="endTime"
         @cancel="_controlEndTimePicker"
         @change="_changeEndTime"
-        @confirm="_controlEndTimePicker"
+        @confirm="_pickEndTime"
         cancel-button-text="关闭"
       />
     </van-popup>
@@ -193,7 +193,30 @@ export default {
     },
   },
 
-  watch: {},
+  watch: {
+    data() {
+      console.log(this.data)
+      if (this.data && (this.data[0] !== '' && this.data[0] !== '0') && (this.data[1] !== '' && this.data[1] !== '0')) {
+        if (this.type === 'time') {
+          this.startTime = this.data[0]
+          this.endTime = this.data[1]
+        } else {
+          if (isNaN(this.data[0] - 0)) {
+            this.startTime = new Date(this.$moment(this.data[0]))
+          } else {
+            this.startTime = new Date(this.$moment(this.data[0] * 1000))
+          }
+          if (isNaN(this.data[1] - 0)) {
+            this.endTime = new Date(this.$moment(this.data[1]))
+          } else {
+            this.endTime = new Date(this.$moment(this.data[1] * 1000))
+          }
+        }
+        this.showStartTimeLabel = true
+        this.showEndTimeLabel = true
+      }
+    },
+  },
 
   created() {
     if (this.type === 'time') {
@@ -202,7 +225,9 @@ export default {
     }
   },
 
-  mounted() {},
+  mounted() {
+    console.log(this.$moment('2019-02-02'))
+  },
 
   destroyed() {},
 

@@ -468,6 +468,7 @@ export default {
       this.formData.pic = data.map(item => item.url)
     },
     _changeHtml(data) {
+      console.log(data)
       this.formData.des = data.html
     },
     // 读取商品分类

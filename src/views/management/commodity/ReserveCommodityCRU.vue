@@ -16,9 +16,14 @@
         <ValidationProvider name="简介" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
+            autosize
             label="简介"
+            maxlength="50"
             placeholder="请填写预定服务简介"
             required
+            rows="2"
+            show-word-limit
+            type="textarea"
             v-model.trim="formData.appoint_content"
           ></van-field>
         </ValidationProvider>
@@ -104,7 +109,9 @@
         <ValidationProvider name="项目耗时" rules="required|numeric" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
+            @click-left-icon="$toast('项目所需要的时间')"
             label="项目耗时"
+            left-icon="question-o"
             placeholder="单位：分钟"
             required
             type="number"
@@ -124,6 +131,7 @@
           ></van-field>
         </ValidationProvider>
         <time-picker
+          :data="[formData.start_time, formData.end_time]"
           :pickEndTime="_pickEndTime"
           :pickStartTime="_pickStartTime"
           endField="预约结束时间"
@@ -159,7 +167,7 @@
             required
           ></van-field>
         </ValidationProvider>
-        <img-cropper :confirm="_pickPic" :count="5" :list="pic" field="预定图片" title="预定图片"></img-cropper>
+        <img-cropper :confirm="_pickPic" :count="5" :delete="_deletePic" :list="picList" field="预定图片" title="预定图片"></img-cropper>
         <van-field
           @click-left-icon="$toast('开启后，用户预约时可自行选择服务店铺')"
           input-align="right"
@@ -189,6 +197,7 @@
           </van-field>
         </ValidationProvider>
         <time-picker
+          :data="[formData.office_start_time, formData.office_stop_time]"
           :pickEndTime="_pickCloseTime"
           :pickStartTime="_pickOpenTime"
           endField="营业结束时间"
@@ -202,12 +211,36 @@
           input-align="right"
           label="预约状态"
           left-icon="question-o"
+          v-if="$route.params.id"
         >
           <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.appoint_status" />
         </van-field>
         <van-cell required title="预定详情"></van-cell>
         <quill-editor :changeHtml="_changeHtml" :context="formData.appoint_pic_content" ref="editor"></quill-editor>
       </van-cell-group>
+      <van-cell-group title="商品规格"></van-cell-group>
+      <van-cell-group :key="index" v-for="(item, index) in customList">
+        <div slot="title">
+          {{ `规格属性${index + 1}` }}
+          <van-button @click="_deleteCustom(index)" size="small" type="danger">删除</van-button>
+        </div>
+        <ValidationProvider name="规格名称" rules="required" slim v-slot="{ errors }">
+          <van-field label="规格名称" placeholder="请填写规格名称" required v-model="item.custom_name"></van-field>
+        </ValidationProvider>
+        <ValidationProvider name="规格定金" rules="required|decimal-max2" slim v-slot="{ errors }">
+          <van-field label="规格定金" placeholder="最多支持2位小数" required v-model="item.custom_payment_price"></van-field>
+        </ValidationProvider>
+        <ValidationProvider name="规格全价" rules="required|decimal-max2" slim v-slot="{ errors }">
+          <van-field label="规格全价" placeholder="最多支持2位小数" required v-model="item.custom_price"></van-field>
+        </ValidationProvider>
+        <ValidationProvider name="规格描述" rules="required" slim v-slot="{ errors }">
+          <van-field label="规格描述" placeholder="请填写规格描述" required v-model="item.custom_content"></van-field>
+        </ValidationProvider>
+        <ValidationProvider name="平均用时" rules="required|numeric" slim v-slot="{ errors }">
+          <van-field label="平均用时" placeholder="单位：分钟" required v-model="item.custom_use_time"></van-field>
+        </ValidationProvider>
+      </van-cell-group>
+      <van-button @click="_addCustom" class="add-btn" icon="plus" v-show="customList">新增规格</van-button>
     </ValidationObserver>
     <!-- 弹出层 -->
     <!-- 全价 -->
@@ -274,6 +307,7 @@
 import { mapActions } from 'vuex'
 import TimePicker from '@/components/TimePicker'
 import ImgCropper from '@/components/ImgCropper'
+import QuillEditor from '@/components/QuillEditor'
 
 export default {
   name: 'reserveCommodityCRU',
@@ -283,6 +317,7 @@ export default {
   components: {
     ImgCropper,
     TimePicker,
+    QuillEditor,
   },
 
   props: {},
@@ -301,13 +336,13 @@ export default {
         appoint_date_num: '',
         expend_time: '',
         time_gap: '',
-        sort: '',
+        sort: '0',
         start_time: '',
         end_time: '',
         appoint_type: '',
         cat_fid: '',
         cat_id: '',
-        pic: '',
+        pic: [],
         is_store: '0',
         store: [],
         office_start_time: '',
@@ -317,7 +352,7 @@ export default {
       },
       cache: [],
       storeList: [],
-      pic: [],
+      picList: [],
       priceTypeColumns: [
         {
           label: '面议',
@@ -345,6 +380,7 @@ export default {
       showCategoryPicker: false,
       showStorePopup: false,
       loading: false,
+      customList: [],
     }
   },
 
@@ -400,7 +436,12 @@ export default {
 
   methods: {
     ...mapActions(['getStoreList']),
-    ...mapActions('commodity', ['getPlatformReserveCommodityCategoryList']),
+    ...mapActions('commodity', [
+      'getPlatformReserveCommodityCategoryList',
+      'createReserveCommodity',
+      'readReserveCommodityDetail',
+      'updateReserveCommodity',
+    ]),
     _controlPriceTypePicker() {
       this.showPriceTypePicker = !this.showPriceTypePicker
     },
@@ -465,7 +506,12 @@ export default {
       this.formData.office_stop_time = data
     },
     _pickPic(data) {
+      this.formData.pic.push(data[0].url)
       console.log(data)
+    },
+    _deletePic(data) {
+      const index = this.formData.pic.findIndex(item => item === data.url)
+      index > -1 && this.formData.pic.splice(index, 1)
     },
     _changeHtml(data) {
       this.formData.appoint_pic_content = data.html
@@ -512,6 +558,50 @@ export default {
         this.storeList = res.store_list
       })
     },
+    // 添加自定义规格
+    _addCustom() {
+      this.customList.push({
+        custom_id: '',
+        custom_name: '',
+        custom_payment_price: '',
+        custom_price: '',
+        custom_content: '',
+        custom_use_time: '',
+      })
+    },
+    // 删除自定义规格
+    _deleteCustom(index) {
+      this.customList.splice(index, 1)
+    },
+    // 编辑时获取详情数据
+    _readReserveCommodityDetail(id) {
+      this.readReserveCommodityDetail(id).then(res => {
+        console.log(res)
+        const keys = Object.keys(this.formData)
+        keys.forEach(item => {
+          this.formData[item] = res.appoint_list[item]
+        })
+        this.formData.store = res.store_arr
+        this.formData.pic = res.appoint_list.pic.split(';')
+        this.formData.office_start_time = res.office_time.open
+        this.formData.office_stop_time = res.office_time.close
+        this.customList = res.product_list.map(item => {
+          const obj = {}
+          obj.custom_id = item.id
+          obj.custom_name = item.name
+          obj.custom_payment_price = item.payment_price
+          obj.custom_price = item.price
+          obj.custom_content = item.content
+          obj.custom_use_time = item.use_time
+          return obj
+        })
+        this.picList = res.appoint_list.pic.split(';').map(item => ({ url: item }))
+        this.$nextTick(function() {
+          this.$refs.editor.$refs.quillEditor.quill.blur()
+          window.scroll(0, 0)
+        })
+      })
+    },
     // 提交表单
     async _submit() {
       console.log(this.formData)
@@ -535,6 +625,12 @@ export default {
           method = 'updateReserveCommodity'
           params.appoint_id = id
         }
+        this.customList.forEach(item => {
+          for (let key in item) {
+            params[key] ? params[key].push(item[key]) : (params[key] = [item[key]])
+          }
+        })
+        console.log(params)
         this[method](params)
           .then(() => {
             this.$toast.success({
@@ -589,5 +685,8 @@ img {
     vertical-align: -9px;
     margin: 0 10px;
   }
+}
+.add-btn {
+  width: 100%;
 }
 </style>

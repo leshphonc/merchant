@@ -15,13 +15,6 @@ export default {
       data ? resolve() : reject()
     })
   },
-  // 查询预定商品详情
-  readReserveCommodityDetail(context, id) {
-    return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readReserveCommodityDetail(id)
-      data ? resolve(data) : reject()
-    })
-  },
   // 修改预定商品
   updateReserveCommodity(context, payload) {
     return new Promise(async (resolve, reject) => {
@@ -29,29 +22,21 @@ export default {
       data ? resolve() : reject()
     })
   },
-  // 删除预定商品
-  deleteReserveCommodity(context, id) {
+  // 修改预定商品优惠
+  updateReserveCommodityPreferential(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.deleteReserveCommodity(id)
+      const data = await commodityAPI.updateReserveCommodityPreferential(payload)
       data ? resolve() : reject()
     })
   },
-  // 读取预定内包含的服务项目
-  readServiceOfReserveCommodity(context, id) {
+  // 查询预定商品详情
+  readReserveCommodityDetail(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readServiceOfReserveCommodity(id)
+      const data = await commodityAPI.readReserveCommodityDetail(id)
       data ? resolve(data) : reject()
     })
   },
-  // 读取预定商品销售记录
-  readReserveCommoditySalesRecord(context, id) {
-    return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readReserveCommoditySalesRecord(id)
-      data ? resolve(data) : reject()
-    })
-  },
-
-  // 获取平台预定分类
+  // 获取平台预定商品分类
   getPlatformReserveCommodityCategoryList() {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.getPlatformReserveCommodityCategoryList()

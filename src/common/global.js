@@ -8,7 +8,7 @@ Vue.prototype._isApp =
 // 判断是否为微信环境
 Vue.prototype._isWx = navigator.userAgent.toLowerCase().match(/MicroMessenger/i) == 'micromessenger'
 
-// 读取session
+// 读取商户全局变量配置
 Vue.prototype.$getGlobal = key => {
   const str = localStorage.getItem('merchant_global')
   let result = ''

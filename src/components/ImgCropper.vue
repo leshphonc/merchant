@@ -16,6 +16,11 @@
     ratio<Array>：默认截图框宽高比
     fixedRatio<Boolean>：截图框比例可更改
     field<String>：传入字段名，判断是否开始验证
+    delete<Function>：如果需要裁剪多张图片，删除图片时将会触发此回调，用于删除外层提交用的数据
+    index<Number>：可存入外面传入的index，用于父组件数据处理，如果传入，则放入confirm第二个参数返回
+    
+    示例：
+    <img-cropper :confirm="_pickPic" :list="pic" field="商品图片" title="商品图片"></img-cropper>
 -->
 <template>
   <div>
@@ -27,7 +32,13 @@
         class="upload-field"
         v-model="validate"
       >
-        <van-uploader :before-read="_beforeRead" :max-count="count" slot="input" v-model="picList" />
+        <van-uploader
+          :before-read="_beforeRead"
+          :max-count="count"
+          @delete="_deletePic"
+          slot="input"
+          v-model="picList"
+        />
       </van-field>
     </ValidationProvider>
     <van-popup class="upload-popup" position="bottom" safe-area-inset-bottom v-model="showPopup">
@@ -98,9 +109,11 @@ export default {
       default: true,
     },
     // 是否开始验证
-    field: {
-      type: String,
-    },
+    field: String,
+    // 删除回调
+    delete: Function,
+    // 外层index
+    index: Number,
   },
 
   data() {
@@ -122,13 +135,17 @@ export default {
 
   watch: {
     list() {
+      console.log(this.list)
       this.picList = this.list
     },
   },
 
   created() {},
 
-  mounted() {},
+  mounted() {
+    console.log(this.list)
+    this.picList = this.list
+  },
 
   destroyed() {},
 
@@ -149,7 +166,7 @@ export default {
           })
           .then(res => {
             this.picList.push({ url: res })
-            this.confirm(this.picList)
+            this.confirm(this.picList, this.index)
             this._cancel()
           })
           .catch(e => {
@@ -159,6 +176,9 @@ export default {
     },
     _cancel() {
       this.showPopup = false
+    },
+    _deletePic(data) {
+      this.delete(data)
     },
   },
 }
