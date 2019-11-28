@@ -15,6 +15,34 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 创建自提点
+  async createSelfMentionPoint(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await selfMentionPointAPI.createSelfMentionPoint(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 修改自提点
+  async updateSelfMentionPoint(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await selfMentionPointAPI.updateSelfMentionPoint(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 查询自提点详情
+  async readSelfMentionPointDetail(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await selfMentionPointAPI.readSelfMentionPointDetail(id)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 删除自提点详情
+  async delSelfMentionPoint(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await selfMentionPointAPI.delSelfMentionPoint(id)
+      data ? resolve(data) : reject()
+    })
+  },
 }
 
 // mutations
