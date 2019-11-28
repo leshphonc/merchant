@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '@/views/Index'
 import Home from '@/views/home'
+import Order from './order'
 import Wallet from './wallet'
 import Management from './management'
 import Popularze from './popularize'
@@ -18,24 +19,7 @@ const routes = [
         path: '',
         component: Home,
       },
-      {
-        path: 'order',
-        component: () => import('@/views/order'),
-        children: [
-          {
-            path: '',
-            component: () => import('@/views/order/OrderTypeCell'),
-          },
-          {
-            path: 'groupList/:id?',
-            component: () => import('@/views/order/GroupList'),
-          },
-          {
-            path: 'groupOrderDetail/:id',
-            component: () => import('@/views/order/GroupOrderDetail'),
-          },
-        ],
-      },
+      Order,
       {
         path: 'marketing',
         component: () => import('@/views/market'),
