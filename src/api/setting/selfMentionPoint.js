@@ -2,11 +2,9 @@ import axios from 'axios'
 
 export default {
   // 查询自提点列表
-  getSelfMentionPointList: page =>
+  getSelfMentionPointList: () =>
     axios.get('/appapi.php?c=Merchantapp&a=pick_lists', {
       params: {
-        page,
-        size: 8,
         ticket: localStorage.getItem('ticket'),
       },
     }),

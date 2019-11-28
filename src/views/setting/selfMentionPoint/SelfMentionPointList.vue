@@ -9,29 +9,15 @@
       title="自提点管理"
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
-      <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
-        <van-cell-group>
-          <van-swipe-cell :key="item.value" v-for="item in list">
-            <van-panel
-              :desc="item.area_info.province"
-              :status="item.phone"
-              :title="item.name"
-              class="self-mention-point"
-              is-link
-            >
-              <div slot="default" style="text-align: right;padding: 5px 15px 10px 5px;">
-                <van-button :to="`/selfMentionPoint/selfMentionPointCRU/${item.pick_addr_id}`" size="small">编辑</van-button>
-                <van-button @click="_del(item.pick_addr_id)" class="sel_button" size="small">删除</van-button>
-              </div>
-            </van-panel>
-            <template slot="right">
-              <van-button square text="删除" type="danger" />
-            </template>
-          </van-swipe-cell>
-        </van-cell-group>
-      </van-list>
-    </van-pull-refresh>
+    <div :key="index" v-for="(item, index) in list">
+      <van-panel :desc="item.area_info.province" :status="item.phone" :title="item.name">
+        <div>
+          <van-button :to="`/selfMentionPoint/selfMentionPointCRU/${item.pick_addr_id}`" size="small">编辑</van-button>
+          <van-button @click="_del(item.pick_addr_id)" class="sel_button" size="small">删除</van-button>
+        </div>
+      </van-panel>
+      <div class="white-space"></div>
+    </div>
   </div>
 </template>
 
@@ -51,51 +37,31 @@ export default {
       list: [],
       error: false,
       loading: false,
-      finished: false,
-      refreshing: false,
-      page: 1,
     }
   },
 
-  computed: {
-    finishText() {
-      return this.list.length ? '没有更多了' : ''
-    },
-  },
+  computed: {},
 
   watch: {},
 
   created() {},
 
-  mounted() {},
+  mounted() {
+    this._getSelfMentionPointList()
+  },
 
   destroyed() {},
 
   methods: {
     ...mapActions('selfMentionPoint', ['getSelfMentionPointList', 'delSelfMentionPoint']),
     _getSelfMentionPointList() {
-      console.log(this.page)
-      this.getSelfMentionPointList(this.page).then(res => {
-        this.loading = false
-        if (res.length < 10) {
-          this.finished = true
-        } else {
-          this.page += 1
-        }
-        this.list.push(...res)
-      })
-    },
-    _onRefresh() {
-      this.getSelfMentionPointList(1).then(res => {
-        this.page = 2
+      this.getSelfMentionPointList().then(res => {
         this.list = res
-        this.refreshing = false
       })
-    },
-    _onLoad() {
-      this._getSelfMentionPointList()
     },
     _del(id) {
+      if (this.loading) return
+      this.loading = true
       this.delSelfMentionPoint(id)
         .then(() => {
           this.$toast.success({
@@ -126,5 +92,9 @@ export default {
 }
 .sel_button {
   margin-left: 4vw;
+}
+
+.van-panel__content {
+  text-align: right;
 }
 </style>
