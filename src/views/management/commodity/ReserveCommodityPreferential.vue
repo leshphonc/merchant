@@ -17,7 +17,7 @@
       <van-cell-group title="用户消费赠送比例" v-if="$getGlobal('dhb_open') !== 0 || $getGlobal('score_open') !== 0">
         <ValidationProvider
           :name="`赠送${$getGlobal('score_alias')}数量`"
-          rules="required|numeric"
+          rules="numeric"
           slim
           v-if="$getGlobal('dhb_open') !== 0"
           v-slot="{ errors }"
@@ -27,7 +27,7 @@
             :label-width="resizeWidth"
             :placeholder="`赠送${$getGlobal('score_alias')}数量`"
             label="每消费1元赠送"
-            required
+            type="number"
             v-model="formData.dhb_get_num"
           >
             <div slot="right-icon">{{ $getGlobal('score_alias') }}</div>
@@ -35,7 +35,7 @@
         </ValidationProvider>
         <ValidationProvider
           :name="`赠送${$getGlobal('dhb_alias')}数量`"
-          rules="required|numeric"
+          rules="numeric"
           slim
           v-if="$getGlobal('score_open') !== 0"
           v-slot="{ errors }"
@@ -45,7 +45,7 @@
             :label-width="resizeWidth"
             :placeholder="`赠送${$getGlobal('dhb_alias')}数量`"
             label="每消费1元赠送"
-            required
+            type="number"
             v-model="formData.score_get_num"
           >
             <div slot="right-icon">{{ $getGlobal('dhb_alias') }}</div>
@@ -126,6 +126,7 @@ export default {
       envBeforeImg: [],
       envAfterImg: [],
       envServingImg: [],
+      loading: false,
     }
   },
 

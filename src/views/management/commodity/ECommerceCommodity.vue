@@ -5,13 +5,13 @@
         <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
           <van-card
             :key="item.goods_id"
-            :num="item.stock_num === '-1' ? '∞' : item.stock_num"
+            :num="item.stock_num === '-1' ? '∞' : item.stock_num - item.sell_count"
+            :origin-price="item.old_price"
+            :price="item.price"
             :tag="item.statusstr"
             :thumb="item.list_pic"
             :title="item.s_name"
             lazy-load
-            origin-price="200"
-            price="1"
             v-for="item in list"
           >
             <div slot="tags">
@@ -86,17 +86,6 @@
           <van-cell v-if="formData.is_week">
             <van-checkbox :key="item.label" shape="square" v-for="item in week" v-model="item.value">{{ item.label }}</van-checkbox>
           </van-cell>
-          <ValidationProvider name="折扣率" rules="required|between:0, 10|decimal-max1" slim v-slot="{ errors }">
-            <van-field
-              :error-message="errors[0]"
-              @click-right-icon="$toast('10代表无折扣，8.5代表85折')"
-              label="折扣率"
-              placeholder="0 ～ 10 之间的数字，支持小数"
-              required
-              right-icon="question-o"
-              v-model="formData.discount"
-            ></van-field>
-          </ValidationProvider>
         </van-cell-group>
         <div class="white-space-lg"></div>
         <div class="wing-blank-lg">
@@ -127,7 +116,6 @@ export default {
       formData: {
         name: '',
         sort: 1,
-        discount: '',
         week: '',
         is_week: false,
         fid: '0',
@@ -377,7 +365,6 @@ export default {
                 this.formData = {
                   name: '',
                   sort: 1,
-                  discount: '',
                   week: '',
                   is_week: false,
                   fid: '0',

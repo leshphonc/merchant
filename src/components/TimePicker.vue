@@ -11,9 +11,20 @@
   props：
     startTimeLabel<String>：开始时间label
     endTimeLabel<String>：结束时间label
-    data<Object>：默认时间
+    data<Object>：默认时间 只接受 2000-01-01 或者 10位时间戳
     pickStartTime<Function>：返回选中的开始时间到父组件
     pickEndTime<Function>：返回选中的结束时间到父组件
+
+    示例：
+    <time-picker
+          :data="[formData.start_time, formData.end_time]"
+          :pickEndTime="_pickEndTime"
+          :pickStartTime="_pickStartTime"
+          endField="预约结束时间"
+          endLabel="预约结束时间"
+          startField="预约开始时间"
+          startLabel="预约开始时间"
+        ></time-picker>
 -->
 <template>
   <div>
@@ -195,20 +206,25 @@ export default {
 
   watch: {
     data() {
-      console.log(this.data)
+      // 判断是否为有效数据，如不是则按默认数据展示
       if (this.data && (this.data[0] !== '' && this.data[0] !== '0') && (this.data[1] !== '' && this.data[1] !== '0')) {
+        // 有效数据，且类型为time，则直接赋值
         if (this.type === 'time') {
           this.startTime = this.data[0]
           this.endTime = this.data[1]
         } else {
           if (isNaN(this.data[0] - 0)) {
+            // 2000-01-01类型处理
             this.startTime = new Date(this.$moment(this.data[0]))
           } else {
+            // 10位时间戳类型处理
             this.startTime = new Date(this.$moment(this.data[0] * 1000))
           }
           if (isNaN(this.data[1] - 0)) {
+            // 2000-01-01类型处理
             this.endTime = new Date(this.$moment(this.data[1]))
           } else {
+            // 10位时间戳类型处理
             this.endTime = new Date(this.$moment(this.data[1] * 1000))
           }
         }
@@ -225,9 +241,7 @@ export default {
     }
   },
 
-  mounted() {
-    console.log(this.$moment('2019-02-02'))
-  },
+  mounted() {},
 
   destroyed() {},
 

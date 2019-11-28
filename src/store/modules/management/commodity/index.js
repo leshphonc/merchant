@@ -1,5 +1,6 @@
 import eCommerceActions from './eCommerce'
 import reserveActions from './reserve'
+import groupBuyActions from './groupBuy'
 import takeAwayActions from './takeAway'
 import serviceActions from './service'
 import packageActions from './package'
@@ -16,6 +17,7 @@ const getters = {}
 const actions = {
   ...eCommerceActions,
   ...reserveActions,
+  ...groupBuyActions,
   ...takeAwayActions,
   ...serviceActions,
   ...packageActions,

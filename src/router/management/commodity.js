@@ -21,6 +21,16 @@ export default {
       component: () => import('@/views/management/commodity/ECommerceCommodityPreferential'),
     },
     {
+      // 团购商品编辑
+      path: 'groupBuyCommodityCRU/:id?',
+      component: () => import('@/views/management/commodity/GroupBuyCommodityCRU'),
+    },
+    {
+      // 团购商品优惠编辑
+      path: 'groupBuyCommodityPreferential/:id',
+      component: () => import('@/views/management/commodity/GroupBuyCommodityPreferential'),
+    },
+    {
       // 预定商品编辑
       path: 'reserveCommodityCRU/:id?',
       component: () => import('@/views/management/commodity/ReserveCommodityCRU'),

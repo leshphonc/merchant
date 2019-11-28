@@ -27,7 +27,7 @@ const routes = [
             component: () => import('@/views/order/OrderTypeCell'),
           },
           {
-            path: 'groupList',
+            path: 'groupList/:id?',
             component: () => import('@/views/order/GroupList'),
           },
           {

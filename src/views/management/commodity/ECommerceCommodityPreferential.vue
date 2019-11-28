@@ -53,7 +53,7 @@
       <van-cell-group title="用户消费赠送比例" v-if="$getGlobal('dhb_open') !== 0 || $getGlobal('score_open') !== 0">
         <ValidationProvider
           :name="`赠送${$getGlobal('score_alias')}数量`"
-          rules="required|numeric"
+          rules="numeric"
           slim
           v-if="$getGlobal('dhb_open') !== 0"
           v-slot="{ errors }"
@@ -63,6 +63,7 @@
             :label-width="resizeWidth"
             :placeholder="`赠送${$getGlobal('score_alias')}数量`"
             label="每消费1元赠送"
+            type="number"
             v-model="formData.dhb_get_num"
           >
             <div slot="right-icon">{{ $getGlobal('score_alias') }}</div>
@@ -70,7 +71,7 @@
         </ValidationProvider>
         <ValidationProvider
           :name="`赠送${$getGlobal('dhb_alias')}数量`"
-          rules="required|numeric"
+          rules="numeric"
           slim
           v-if="$getGlobal('score_open') !== 0"
           v-slot="{ errors }"
@@ -80,6 +81,7 @@
             :label-width="resizeWidth"
             :placeholder="`赠送${$getGlobal('dhb_alias')}数量`"
             label="每消费1元赠送"
+            type="number"
             v-model="formData.score_get_num"
           >
             <div slot="right-icon">{{ $getGlobal('dhb_alias') }}</div>
@@ -110,18 +112,15 @@
         </div>
       </van-cell-group>
       <van-cell-group title="活动适用">
-        <ValidationProvider name="会员分组" rules="required" slim v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            :value="memberGroupLabel"
-            @click="_controlMemberGroupPicker"
-            input-align="right"
-            is-link
-            label="会员分组"
-            placeholder="请选择"
-            readonly
-          ></van-field>
-        </ValidationProvider>
+        <van-field
+          :value="memberGroupLabel"
+          @click="_controlMemberGroupPicker"
+          input-align="right"
+          is-link
+          label="会员分组"
+          placeholder="请选择"
+          readonly
+        ></van-field>
       </van-cell-group>
     </ValidationObserver>
     <div class="white-space"></div>
@@ -270,8 +269,8 @@ export default {
     },
     // 会员分组非空验证
     memberGroupLabel() {
-      const item = this.memberGroupColumns.find(item => item.value === this.formData.in_group)
-      return item && item.label
+      const item = this.memberGroupColumns.find(item => item.id === this.formData.in_group)
+      return item && item.name
     },
     // 目前时间类型
     timePickerDateType() {
@@ -396,7 +395,7 @@ export default {
     },
     // 选择会员分组
     _pickMemberGroup(data) {
-      this.formData.in_group = data.value
+      this.formData.in_group = data.id
       this._controlMemberGroupPicker()
     },
     // 添加优惠券

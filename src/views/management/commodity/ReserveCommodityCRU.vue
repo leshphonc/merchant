@@ -3,6 +3,15 @@
     <van-nav-bar :title="`${type}预定`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
+      <van-field
+        @click-left-icon="$toast('为了方便用户能查到以前的订单，预约无法删除！')"
+        input-align="right"
+        label="预约状态"
+        left-icon="question-o"
+        v-if="$route.params.id"
+      >
+        <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.appoint_status" />
+      </van-field>
       <van-cell-group>
         <ValidationProvider name="预定名称" rules="required" slim v-slot="{ errors }">
           <van-field
@@ -206,15 +215,6 @@
           startLabel="营业开始时间"
           type="time"
         ></time-picker>
-        <van-field
-          @click-left-icon="$toast('为了方便用户能查到以前的订单，预约无法删除！')"
-          input-align="right"
-          label="预约状态"
-          left-icon="question-o"
-          v-if="$route.params.id"
-        >
-          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.appoint_status" />
-        </van-field>
         <van-cell required title="预定详情"></van-cell>
         <quill-editor :changeHtml="_changeHtml" :context="formData.appoint_pic_content" ref="editor"></quill-editor>
       </van-cell-group>

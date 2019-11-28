@@ -16,7 +16,9 @@
       <van-tab title="预定">
         <reserve-commodity></reserve-commodity>
       </van-tab>
-      <van-tab title="团购"></van-tab>
+      <van-tab title="团购">
+        <group-buy-commodity></group-buy-commodity>
+      </van-tab>
       <!-- <van-tab title="外卖"> -->
       <!-- <take-away-commodity></take-away-commodity> -->
       <!-- </van-tab> -->
@@ -34,6 +36,7 @@
 import { mapState, mapMutations } from 'vuex'
 import ECommerceCommodity from './ECommerceCommodity'
 import ReserveCommodity from './ReserveCommodity'
+import GroupBuyCommodity from './GroupBuyCommodity'
 // import TakeAwayCommodity from './TakeAwayCommodity'
 import ServiceCommodity from './ServiceCommodity'
 import PackageCommodity from './PackageCommodity'
@@ -46,6 +49,7 @@ export default {
   components: {
     ECommerceCommodity,
     ReserveCommodity,
+    GroupBuyCommodity,
     // TakeAwayCommodity,
     ServiceCommodity,
     PackageCommodity,
@@ -96,7 +100,7 @@ export default {
             this.$router.push('/commodity/reserveCommodityCRU')
             break
           case 2:
-            this.$router.push('/commodity/eCommerceCommodityCRU')
+            this.$router.push('/commodity/groupBuyCommodityCRU')
             break
           case 3:
             this.$router.push('/commodity/serviceCommodityCRU')
