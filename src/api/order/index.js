@@ -1,6 +1,10 @@
 import axios from 'axios'
 import reserveAPI from './reserve'
-import groupBuy from './groupBuy'
+import takeAwayAPI from './takeAway'
+import groupBuyAPI from './groupBuy'
+import serviceAPI from './service'
+import packageAPI from './package'
+import eCommerceAPI from './eCommerce'
 
 export default {
   getOrderTypeList: () =>
@@ -9,6 +13,17 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  //  获取外卖订单状态列表
+  getOrderStatusList: () =>
+    axios.get('/appapi.php?c=Merchantapp&a=shop_status_list', {
+      params: {
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
   ...reserveAPI,
-  ...groupBuy,
+  ...takeAwayAPI,
+  ...groupBuyAPI,
+  ...serviceAPI,
+  ...packageAPI,
+  ...eCommerceAPI,
 }

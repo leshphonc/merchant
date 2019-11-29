@@ -2,9 +2,9 @@ import orderAPI from '@/api/order/index'
 
 export default {
   // 获取团购订单列表
-  async getGroupList(context, payload) {
+  async getGroupBuyList(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await orderAPI.getGroupList(payload)
+      const data = await orderAPI.getGroupBuyList(payload)
       data ? resolve(data) : reject()
     })
   },

@@ -95,6 +95,9 @@ export default {
 }
 
 .van-panel__content {
+  padding: 10px 16px;
+  font-size: 13px;
+  color: @font-gray-c;
   text-align: right;
 }
 </style>

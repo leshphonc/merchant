@@ -57,6 +57,21 @@ export default {
             case '预定订单':
               item.url = '/order/reserveList'
               break
+            case '零售订单':
+              item.url = '/order/takeAwayList'
+              break
+            case '外卖订单':
+              item.url = '/order/takeAwayList'
+              break
+            case '服务订单':
+              item.url = '/order/serviceList'
+              break
+            case '套餐订单':
+              item.url = '/order/packageList'
+              break
+            case '电商订单':
+              item.url = '/order/eCommerceList'
+              break
             default:
               item.url = '404'
           }

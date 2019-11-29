@@ -9,7 +9,7 @@
         <van-dropdown-item :options="option2" @change="_changeOption2" v-model="find_type" />
       </van-dropdown-menu>
       <div class="white-space"></div>
-      <TimePickerBox :pickEndTime="_pickEndTime" :pickStartTime="_pickStartTime"></TimePickerBox>
+      <time-picker-box :pickEndTime="_pickEndTime" :pickStartTime="_pickStartTime"></time-picker-box>
       <div class="white-space"></div>
     </van-sticky>
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
@@ -19,19 +19,23 @@
             :desc="item.appoint_date"
             :status="item.appoint_type === '1' ? '上门服务' : '到店服务'"
             :title="item.appoint_name"
+            @click="_goDetail(item.order_id)"
           >
             <van-row>
               <van-col span="6">预定人：</van-col>
               <van-col span="18">{{ item.nickname }}</van-col>
             </van-row>
+            <div class="white-space"></div>
             <van-row>
               <van-col span="6">预定项目：</van-col>
               <van-col span="18">{{ item.appoint_name }}</van-col>
             </van-row>
+            <div class="white-space"></div>
             <van-row>
               <van-col span="6">服务地址：</van-col>
               <van-col span="18">{{ item.store_adress }}</van-col>
             </van-row>
+            <div class="white-space"></div>
             <van-row>
               <van-col span="6">订单总价：</van-col>
               <van-col span="18">
@@ -39,14 +43,17 @@
                 {{ item.service_status > 0 ? '（已支付）' : '（未支付）' }}
               </van-col>
             </van-row>
+            <div class="white-space"></div>
             <van-row>
               <van-col span="6">服务地址：</van-col>
               <van-col span="18">{{ item.store_adress }}</van-col>
             </van-row>
+            <div class="white-space"></div>
             <van-row>
               <van-col span="6">下单时间：</van-col>
               <van-col span="18">{{ item.order_time }}</van-col>
             </van-row>
+            <div class="white-space"></div>
             <van-row>
               <van-col span="6">服务状态：</van-col>
               <van-col span="18">{{ _serviceStatus(item) }}</van-col>
@@ -193,6 +200,7 @@ export default {
     // 选项2更改
     _changeOption2(value) {
       this.find_type = value
+      this._onRefresh()
     },
     _pickStartTime(data) {
       this.stime = this.$moment(data).format('YYYY-MM-DD')
@@ -207,7 +215,7 @@ export default {
     // 进入详情
     _goDetail(id) {
       console.log(id)
-      this.$router.push(`/order/groupBuyOrderDetail/${id}`)
+      this.$router.push(`/order/reserveOrderDetail/${id}`)
     },
     _serviceStatus(item) {
       if (item.paid === '0') {
@@ -245,6 +253,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.van-panel__content {
+  padding: 10px 16px;
+  font-size: 13px;
+  color: @font-gray-c;
+}
 /deep/.van-sticky {
   background-color: @gray-background-c;
 }
