@@ -1,15 +1,17 @@
 <template>
   <div>
-    <van-nav-bar
-      :right-text="active === 1 ? '创建分组' : ''"
-      @click-left="$goBack"
-      @click-right="() => $router.push('/member/memberGroupCRU')"
-      fixed
-      left-arrow
-      title="领卡会员"
-    ></van-nav-bar>
+    <van-nav-bar :right-text="rightText" @click-left="$goBack" @click-right="_clickRight" fixed left-arrow title="领卡会员"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-tabs :offset-top="offsetTop" sticky v-model="active">
+      <van-tab title="会员卡信息">
+        <van-cell-group title="商家会员卡">
+          <van-cell is-link title="基础信息" to="/member/basicMemberCard"></van-cell>
+          <van-cell is-link title="余额管理"></van-cell>
+        </van-cell-group>
+        <van-cell-group title="微信会员卡">
+          <van-cell is-link title="基础信息"></van-cell>
+        </van-cell-group>
+      </van-tab>
       <van-tab title="领卡会员">
         <van-pull-refresh @refresh="_onRefresh1" v-model="refreshing1">
           <van-list :finished="finished1" @load="_onLoad1" finished-text="没有更多了" v-model="loading">
@@ -33,6 +35,7 @@
               </div>
               <div class="footer" slot="footer">
                 <span>领卡时间：{{ $moment(item.add_time * 1000).format('YYYY-MM-DD HH:mm') }}</span>
+                <van-button :to="`/member/memberCardAddCreditRecord/${item.id}`" size="small" type="primary">充值记录</van-button>
               </div>
             </van-card>
           </van-list>
@@ -93,6 +96,20 @@ export default {
     offsetTop() {
       return (46 / 375) * document.body.clientWidth
     },
+    rightText() {
+      let text = ''
+      switch (this.active) {
+        case 0:
+          break
+        case 1:
+          text = '创建会员'
+          break
+        case 2:
+          text = '创建分组'
+          break
+      }
+      return text
+    },
   },
 
   watch: {},
@@ -147,6 +164,18 @@ export default {
     },
     _createGroup() {
       console.log(1)
+    },
+    _clickRight() {
+      switch (this.active) {
+        case 1:
+          this.$router.push('/member/memberCardCRU')
+          break
+        case 2:
+          this.$router.push('/member/memberGroupCRU')
+          break
+        default:
+          break
+      }
     },
   },
 }

@@ -26,9 +26,24 @@ export default {
       component: () => import('@/views/management/member/BindingFansList'),
     },
     {
+      // 商家基础会员卡信息
+      path: 'basicMemberCard',
+      component: () => import('@/views/management/member/BasicMemberCard'),
+    },
+    {
       // 领卡会员列表
       path: 'collarCardMemberList',
       component: () => import('@/views/management/member/CollarCardMemberList'),
+    },
+    {
+      // 领卡会员编辑
+      path: 'memberCardCRU/:id?',
+      component: () => import('@/views/management/member/MemberCardCRU'),
+    },
+    {
+      // 领卡会员充值记录
+      path: 'memberCardAddCreditRecord/:id',
+      component: () => import('@/views/management/member/MemberCardAddCreditRecord'),
     },
     {
       // 会员分组编辑

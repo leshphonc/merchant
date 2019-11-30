@@ -62,6 +62,19 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  // 创建领卡会员
+  createMemberCard: payload =>
+    axios.post('/appapi.php?c=MemberCard&a=addMember', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 查询会员卡充值记录
+  getMemberCardAddCreditRecord: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=rechargeList', {
+      ...payload,
+      size: 10,
+      ticket: localStorage.getItem('ticket'),
+    }),
   // 会员分组列表
   getMemberGroupList: page => {
     let obj = {}

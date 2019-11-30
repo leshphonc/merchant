@@ -57,6 +57,13 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 创建领卡会员
+  async createMemberCard(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.createMemberCard(payload)
+      data ? resolve() : reject()
+    })
+  },
   // 获取会员分组列表
   async getMemberGroupList(context, page = 1) {
     return new Promise(async (resolve, reject) => {
@@ -69,6 +76,13 @@ const actions = {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.createMemberGroup(payload)
       data ? resolve() : reject()
+    })
+  },
+  // 查询会员卡充值记录
+  async getMemberCardAddCreditRecord(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getMemberCardAddCreditRecord(payload)
+      data ? resolve(data) : reject()
     })
   },
   // 查询会员卡分组
