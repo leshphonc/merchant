@@ -5,6 +5,7 @@ import reserveActions from './reserve'
 import serviceActions from './service'
 import packageActions from './package'
 import eCommerceActions from './eCommerce'
+import arrivalActions from './arrival'
 
 // initial state
 const state = {}
@@ -34,6 +35,7 @@ const actions = {
   ...serviceActions,
   ...packageActions,
   ...eCommerceActions,
+  ...arrivalActions,
 }
 
 // mutations

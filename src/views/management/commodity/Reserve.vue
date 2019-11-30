@@ -1,30 +1,36 @@
 <template>
-  <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
-    <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
-      <van-card
-        :key="item.appoint_id"
-        :tag="item.appoint_type === '1' ? '上门' : '到店'"
-        :thumb="item.pic"
-        :title="item.appoint_name"
-        lazy-load
-        v-for="item in list"
-      >
-        <div slot="tags">
-          <van-tag plain type="success" v-if="item.check_status === '1'">审核通过</van-tag>
-          <van-tag plain type="danger" v-else>待审核</van-tag>
-          <van-tag plain type="success" v-if="item.appoint_status === '1'">开启</van-tag>
-          <van-tag plain type="danger" v-else>关闭</van-tag>
-          <van-tag plain type="danger" v-if="item.payment_status === '1'">定金: {{ item.payment_money }}元</van-tag>
-          <van-tag plain type="success" v-else>不收定金</van-tag>
-        </div>
-        <div slot="price">已预定：{{ item.appoint_sum }}</div>
-        <div slot="footer">
-          <van-button :to="`/commodity/reservePreferential/${item.appoint_id}`" size="small">优惠</van-button>
-          <van-button :to="`/commodity/reserveCRU/${item.appoint_id}`" size="small" v-if="!item.type">编辑</van-button>
-        </div>
-      </van-card>
-    </van-list>
-  </van-pull-refresh>
+  <div>
+    <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
+      <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
+        <van-card
+          :key="item.appoint_id"
+          :tag="item.appoint_type === '1' ? '上门' : '到店'"
+          :thumb="item.pic"
+          :title="item.appoint_name"
+          lazy-load
+          v-for="item in list"
+        >
+          <div slot="tags">
+            <van-tag plain type="success" v-if="item.check_status === '1'">审核通过</van-tag>
+            <van-tag plain type="danger" v-else>待审核</van-tag>
+            <van-tag plain type="success" v-if="item.appoint_status === '1'">开启</van-tag>
+            <van-tag plain type="danger" v-else>关闭</van-tag>
+            <van-tag plain type="danger" v-if="item.payment_status === '1'">定金: {{ item.payment_money }}元</van-tag>
+            <van-tag plain type="success" v-else>不收定金</van-tag>
+          </div>
+          <div slot="price">已预定：{{ item.appoint_sum }}</div>
+          <div slot="footer" v-if="$route.fullPath === '/commodity'">
+            <van-button :to="`/commodity/reservePreferential/${item.appoint_id}`" size="small">优惠</van-button>
+            <van-button :to="`/commodity/reserveCRU/${item.appoint_id}`" size="small" v-if="!item.type">编辑</van-button>
+          </div>
+          <div slot="footer" v-else>
+            <van-button :to="`/reward/reserveReward/${item.appoint_id}`" size="small" type="primary">佣金分销设置</van-button>
+          </div>
+        </van-card>
+      </van-list>
+    </van-pull-refresh>
+    <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'">点击右上角创建商品</van-divider>
+  </div>
 </template>
 
 <script>

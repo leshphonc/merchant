@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 export default {
   name: 'walletPanel',
 
@@ -45,19 +44,13 @@ export default {
 
   created() {},
 
-  mounted() {},
+  mounted() {
+    this.pingan = this.$getGlobal('pingan')
+  },
 
   destroyed() {},
 
-  methods: {
-    ...mapActions(['getPlatFormInfo']),
-    _getPlatFormInfo() {
-      this.getPlatFormInfo().then(res => {
-        const pingan = res.find(item => item.name === 'pay_pingan_open')
-        this.pingan = pingan ? pingan.value : '0'
-      })
-    },
-  },
+  methods: {},
 }
 </script>
 

@@ -1,29 +1,35 @@
 <template>
-  <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
-    <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
-      <van-card
-        :key="item.meal_id"
-        :num="item.total_num"
-        :price="item.price"
-        :thumb="item.pic"
-        :title="item.meal_name"
-        lazy-load
-        v-for="item in list"
-      >
-        <div slot="tags">
-          <van-tag plain type="danger">每人限购：{{ item.person_num }}</van-tag>
-        </div>
-        <div slot="bottom">
-          <div>创建时间：{{ $moment(item.create_time * 1000).format('YYYY-MM-DD') }}</div>
-        </div>
-        <div slot="footer">
-          <van-button @click="_deleteCommodity(item.meal_id)" size="small" type="danger">删除</van-button>
-          <van-button :to="`/commodity/packageSalesRecord/${item.meal_id}`" size="small">销售记录</van-button>
-          <van-button :to="`/commodity/packageCRU/${item.meal_id}`" size="small" v-if="!item.type">编辑</van-button>
-        </div>
-      </van-card>
-    </van-list>
-  </van-pull-refresh>
+  <div>
+    <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
+      <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
+        <van-card
+          :key="item.meal_id"
+          :num="item.total_num"
+          :price="item.price"
+          :thumb="item.pic"
+          :title="item.meal_name"
+          lazy-load
+          v-for="item in list"
+        >
+          <div slot="tags">
+            <van-tag plain type="danger">每人限购：{{ item.person_num }}</van-tag>
+          </div>
+          <div slot="bottom">
+            <div>创建时间：{{ $moment(item.create_time * 1000).format('YYYY-MM-DD') }}</div>
+          </div>
+          <div slot="footer" v-if="$route.fullPath === '/commodity'">
+            <van-button @click="_deleteCommodity(item.meal_id)" size="small" type="danger">删除</van-button>
+            <van-button :to="`/commodity/packageSalesRecord/${item.meal_id}`" size="small">销售记录</van-button>
+            <van-button :to="`/commodity/packageCRU/${item.meal_id}`" size="small" v-if="!item.type">编辑</van-button>
+          </div>
+          <div slot="footer" v-else>
+            <van-button :to="`/reward/packageReward/${item.meal_id}`" size="small" type="primary">佣金分销设置</van-button>
+          </div>
+        </van-card>
+      </van-list>
+    </van-pull-refresh>
+    <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'">点击右上角创建服务</van-divider>
+  </div>
 </template>
 
 <script>

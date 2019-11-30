@@ -17,15 +17,18 @@
             <div slot="tags">
               <van-tag plain type="danger">{{ item.status === '1' ? '开启状态' : '关闭状态' }}</van-tag>
             </div>
-            <div slot="footer">
+            <div slot="footer" v-if="$route.fullPath === '/commodity'">
               <van-button :to="`/order/groupBuyList/${item.group_id}`" size="small">订单列表</van-button>
               <van-button :to="`/commodity/groupBuyPreferential/${item.group_id}`" size="small">优惠</van-button>
               <van-button :to="`/commodity/groupBuyCRU/${item.group_id}`" size="small">编辑</van-button>
             </div>
+            <div slot="footer" v-else>
+              <van-button :to="`/reward/groupBuyReward/${item.group_id}`" size="small" type="primary">佣金分销设置</van-button>
+            </div>
           </van-card>
         </van-list>
       </van-pull-refresh>
-      <van-divider :hairline="false" v-show="!loading && !list.length">点击右上角创建商品</van-divider>
+      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'">点击右上角创建商品</van-divider>
     </div>
     <div v-if="active === 1">
       <van-sticky :offset-top="offsetTop">
@@ -44,8 +47,8 @@
         {{ item.label }}
       </van-cell>
     </div>
-    <div class="tab-bar-holder-sp"></div>
-    <van-tabbar @change="_changeTab" fixed v-model="active">
+    <div class="tab-bar-holder-sp" v-if="$route.fullPath === '/commodity'"></div>
+    <van-tabbar @change="_changeTab" fixed v-if="$route.fullPath === '/commodity'" v-model="active">
       <van-tabbar-item icon="apps-o">商品</van-tabbar-item>
       <van-tabbar-item icon="label-o">团购套餐</van-tabbar-item>
     </van-tabbar>

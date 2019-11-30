@@ -33,15 +33,18 @@
               <div>预约结束: {{ $moment(item.start_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
               <div class="white-space"></div>
             </div>
-            <div slot="footer">
+            <div slot="footer" v-if="$route.fullPath === '/commodity'">
               <van-button @click="_deleteCommodity(item.appoint_id)" size="small" type="danger">删除</van-button>
               <van-button :to="`/commodity/serviceSalesRecord/${item.appoint_id}`" size="small">销售记录</van-button>
               <van-button :to="`/commodity/ServiceCRU/${item.appoint_id}`" size="small">编辑</van-button>
             </div>
+            <div slot="footer" v-else>
+              <van-button :to="`/reward/serviceReward/${item.appoint_id}`" size="small" type="primary">佣金分销设置</van-button>
+            </div>
           </van-card>
         </van-list>
       </van-pull-refresh>
-      <van-divider :hairline="false" v-show="!loading && !list.length">点击右上角创建服务</van-divider>
+      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'">点击右上角创建服务</van-divider>
     </div>
     <div v-if="active === 1">
       <van-sticky :offset-top="offsetTop">
@@ -77,8 +80,8 @@
         </van-collapse-item>
       </van-collapse>
     </div>
-    <div class="tab-bar-holder-sp"></div>
-    <van-tabbar @change="_changeTab" fixed v-model="active">
+    <div class="tab-bar-holder-sp" v-if="$route.fullPath === '/commodity'"></div>
+    <van-tabbar @change="_changeTab" fixed v-if="$route.fullPath === '/commodity'" v-model="active">
       <van-tabbar-item icon="apps-o">服务</van-tabbar-item>
       <van-tabbar-item icon="label-o">分类</van-tabbar-item>
     </van-tabbar>

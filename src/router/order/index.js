@@ -6,6 +6,7 @@ export default {
       path: '',
       component: () => import('@/views/order/OrderTypeCell'),
     },
+    // 团购
     {
       path: 'groupBuyList/:id?',
       component: () => import('@/views/order/GroupBuyList'),
@@ -14,6 +15,7 @@ export default {
       path: 'groupBuyOrderDetail/:id',
       component: () => import('@/views/order/GroupBuyOrderDetail'),
     },
+    // 预定
     {
       path: 'reserveList/:id?',
       component: () => import('@/views/order/ReserveList'),
@@ -22,6 +24,7 @@ export default {
       path: 'reserveOrderDetail/:id',
       component: () => import('@/views/order/ReserveOrderDetail'),
     },
+    // 外卖
     {
       path: 'takeAwayList/:id?',
       component: () => import('@/views/order/TakeAwayList'),
@@ -30,6 +33,7 @@ export default {
       path: 'takeAwayOrderDetail/:id',
       component: () => import('@/views/order/TakeAwayOrderDetail'),
     },
+    // 服务
     {
       path: 'serviceList/:id?',
       component: () => import('@/views/order/ServiceList'),
@@ -38,6 +42,7 @@ export default {
       path: 'serviceOrderDetail/:id',
       component: () => import('@/views/order/ServiceOrderDetail'),
     },
+    // 套餐
     {
       path: 'packageList/:id?',
       component: () => import('@/views/order/PackageList'),
@@ -46,6 +51,7 @@ export default {
       path: 'packageOrderDetail/:id',
       component: () => import('@/views/order/PackageOrderDetail'),
     },
+    // 电商
     {
       path: 'eCommerceList/:id?',
       component: () => import('@/views/order/ECommerceList'),
@@ -53,6 +59,15 @@ export default {
     {
       path: 'eCommerceOrderDetail/:id',
       component: () => import('@/views/order/ECommerceOrderDetail'),
+    },
+    // 到店消费
+    {
+      path: 'arrivalList/:id?',
+      component: () => import('@/views/order/ArrivalList'),
+    },
+    {
+      path: 'arrivalOrderDetail/:id',
+      component: () => import('@/views/order/ArrivalOrderDetail'),
     },
   ],
 }

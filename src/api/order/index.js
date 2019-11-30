@@ -5,6 +5,7 @@ import groupBuyAPI from './groupBuy'
 import serviceAPI from './service'
 import packageAPI from './package'
 import eCommerceAPI from './eCommerce'
+import arrivalAPI from './arrival'
 
 export default {
   getOrderTypeList: () =>
@@ -26,4 +27,5 @@ export default {
   ...serviceAPI,
   ...packageAPI,
   ...eCommerceAPI,
+  ...arrivalAPI,
 }

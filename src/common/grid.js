@@ -50,7 +50,7 @@ const PopularizeGrid = {
     },
     {
       name: '全民分销',
-      path: '4',
+      path: '/reward',
       enable: require('../assets/image/tgfy2.png'),
       disable: require('../assets/image/qmfx_gray.png'),
     },

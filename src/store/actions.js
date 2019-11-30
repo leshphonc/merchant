@@ -209,4 +209,11 @@ export default {
       data ? resolve(data) : reject()
     })
   },
+  // 获取商家分佣层级
+  getUserLevel() {
+    return new Promise(async (resolve, reject) => {
+      const data = await common.getUserLevel()
+      data ? resolve(data) : reject()
+    })
+  },
 }

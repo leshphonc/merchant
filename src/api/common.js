@@ -83,4 +83,11 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  // 获取商家分佣层级
+  getUserLevel: () =>
+    axios.get('/appapi.php?c=SpaceMerchant&a=user_level', {
+      params: {
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
 }

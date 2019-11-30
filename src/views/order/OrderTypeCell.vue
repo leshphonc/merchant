@@ -72,6 +72,9 @@ export default {
             case '电商订单':
               item.url = '/order/eCommerceList'
               break
+            case '到店消费订单':
+              item.url = '/order/arrivalList'
+              break
             default:
               item.url = '404'
           }
