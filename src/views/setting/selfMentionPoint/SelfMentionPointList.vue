@@ -23,6 +23,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { Dialog } from 'vant'
 export default {
   name: 'selfMentionPointList',
 
@@ -62,19 +63,30 @@ export default {
     _del(id) {
       if (this.loading) return
       this.loading = true
-      this.delSelfMentionPoint(id)
+      Dialog.confirm({
+        title: '提示',
+        message: '确认要删除该自提点地址？',
+      })
         .then(() => {
-          this.$toast.success({
-            message: '操作成功',
-            forbidClick: true,
-            duration: 1500,
-            onClose: () => {
-              // 解锁
+          this.delSelfMentionPoint(id)
+            .then(() => {
+              this.$toast.success({
+                message: '操作成功',
+                forbidClick: true,
+                duration: 1500,
+                onClose: () => {
+                  // 解锁
+                  this.loading = false
+                  this._getSelfMentionPointList()
+                },
+              })
+            })
+            .catch(() => {
               this.loading = false
-            },
-          })
+            })
         })
         .catch(() => {
+          // 解锁
           this.loading = false
         })
     },
