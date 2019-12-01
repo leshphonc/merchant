@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="_scanCodeWriteOff" fixed left-arrow right-text="扫码核销" title="领券会员"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" @click-right="showActions = true" fixed left-arrow right-text="操作" title="优惠券列表"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
       <van-list :finished="finished" @load="_onLoad" finished-text="没有更多了" v-model="loading">
@@ -36,12 +36,19 @@
             <van-button size="small" v-if="item.status === '2'">超过期限</van-button>
             <van-button size="small" v-if="item.status === '3'">领完了</van-button>
             <van-button @click="_controlCouponList(item.coupon_id)" size="small">已领取{{ item.had_pull }}张</van-button>
+            <van-button :to="`/member/memberCouponCRU/${item.coupon_id}`" size="small" type="primary">编辑</van-button>
           </div>
         </van-card>
       </van-list>
     </van-pull-refresh>
     <!-- 弹出层 -->
-    <van-popup :style="{ minHeight: '20%' }" position="bottom" safe-area-inset-bottom v-model="showCouponList">
+    <!-- 核销码列表 -->
+    <van-popup
+      :style="{ minHeight: '20%', paddingBottom: 44 }"
+      position="bottom"
+      safe-area-inset-bottom
+      v-model="showCouponList"
+    >
       <van-pull-refresh @refresh="_onRefresh2" v-model="refreshing2">
         <van-list
           :finished="finished2"
@@ -85,7 +92,7 @@
         </van-col>
       </van-row>
     </van-popup>
-    <!-- 核销码 -->
+    <!-- 核销码确认核销 -->
     <van-dialog
       @confirm="_writeOffCoupon"
       confirm-button-text="确认核销"
@@ -95,6 +102,7 @@
     >
       <van-field input-align="center" placeholder="请填写核销码进行核销" type="number" v-model="code"></van-field>
     </van-dialog>
+    <van-action-sheet :actions="actions" @select="_selectActions" v-model="showActions" />
   </div>
 </template>
 
@@ -125,6 +133,8 @@ export default {
       platform: {},
       showCouponList: false,
       showWriteOff: false,
+      showActions: false,
+      actions: [{ name: '创建优惠券' }, { name: '派发优惠券' }, { name: '扫码核销优惠券' }],
       lastCoupon: 0,
       lastCouponItem: '',
       code: '',
@@ -282,6 +292,22 @@ export default {
           this.code = ''
         })
     },
+    // 右上角操作
+    _selectActions(item, index) {
+      switch (index) {
+        case 0:
+          this.$router.push('/member/memberCouponCRU')
+          break
+        case 1:
+          break
+        case 2:
+          this._scanCodeWriteOff()
+          break
+        default:
+          break
+      }
+      this.showActions = false
+    },
   },
 }
 </script>
@@ -289,7 +315,6 @@ export default {
 <style lang="less" scoped>
 .van-popup {
   box-sizing: border-box;
-  padding-bottom: 44px;
   background-color: @gray-background-c;
 
   .van-panel + .van-panel {

@@ -53,6 +53,29 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  // 获取商家基础会员卡信息
+  getBasicMemberCard: () =>
+    axios.post('/appapi.php?c=MemberCard&a=showMemberCard', {
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 修改商家基础会员卡信息
+  updateBasicMemberCard: payload =>
+    axios.post('/appapi.php?c=MemberCard&a=editMerberCard', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 修改商家基础会员卡余额信息
+  updateBasicMemberCardBalance: payload =>
+    axios.post('/appapi.php?c=MemberCard&a=editMerberCardOther', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 修改商家基础会员卡微信配置
+  updateBasicMemberCardInWX: payload =>
+    axios.post('/appapi.php?c=MemberCard&a=editMerberCardWx', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
   // 获取领卡会员列表
   getCollarCardMemberList: page =>
     axios.get('/appapi.php?c=Merchantapp&a=card_user_list', {
@@ -117,6 +140,26 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+
+  // 创建优惠券
+  createCoupon: payload =>
+    axios.post('/appapi.php?c=Coupon&a=addCoupon', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 编辑优惠券
+  updateCoupon: payload =>
+    axios.post('/appapi.php?c=Coupon&a=couponEdit', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取优惠券详情
+  getCouponDetail: id =>
+    axios.post('/appapi.php?c=Coupon&a=couponDetail', {
+      coupon_id: id,
+      ticket: localStorage.getItem('ticket'),
+    }),
+
   // 优惠券状态变更
   changeCouponStatus: payload =>
     axios.post('/appapi.php?c=Merchantapp&a=edit_coupon', {
@@ -136,6 +179,28 @@ export default {
   writeOffCoupon: code =>
     axios.post('/appapi.php?c=Merchantapp&a=use_couponcode', {
       code,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取优惠券使用类别列表
+  getCouponCategory: () =>
+    axios.post('/appapi.php?c=Coupon&a=getCategoryList', {
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取优惠券使用类别二级分类
+  getCouponSecondCategory: type =>
+    axios.post('/appapi.php?c=Coupon&a=getCateByCategory', {
+      order_type: type,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取优惠券使用类别三级分类
+  getCouponThirdCategory: payload =>
+    axios.post('/appapi.php?c=Coupon&a=getGoodsCate', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取优惠券颜色列表
+  getCouponColorList: () =>
+    axios.post('/appapi.php?c=Coupon&a=getColorList', {
       ticket: localStorage.getItem('ticket'),
     }),
 }

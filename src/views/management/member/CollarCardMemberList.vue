@@ -6,10 +6,10 @@
       <van-tab title="会员卡信息">
         <van-cell-group title="商家会员卡">
           <van-cell is-link title="基础信息" to="/member/basicMemberCard"></van-cell>
-          <van-cell is-link title="余额管理"></van-cell>
+          <van-cell is-link title="余额管理" to="/member/basicMemberCardBalance"></van-cell>
         </van-cell-group>
         <van-cell-group title="微信会员卡">
-          <van-cell is-link title="基础信息"></van-cell>
+          <van-cell is-link title="基础信息" to="/member/basicMemberCardInWX"></van-cell>
         </van-cell-group>
       </van-tab>
       <van-tab title="领卡会员">
@@ -195,9 +195,9 @@ export default {
 
 .footer {
   margin-top: 8px;
-  & > div:first-child {
-    text-align: left;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .van-panel + .van-panel {
