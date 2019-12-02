@@ -1,20 +1,34 @@
 <template>
   <div class="container">
     <div class="group">
-      <div class="title">Welcome</div>
-      <van-field :border="false" class="input" label="账号" label-align="center" label-width="80" v-model="account"></van-field>
+      <div class="title">
+        <div class="img-box">
+          <img :src="logo" alt />
+        </div>
+        <div>管理中心</div>
+      </div>
       <van-field
         :border="false"
         class="input"
-        label="密码"
         label-align="center"
         label-width="80"
+        left-icon="user-o"
+        placeholder="请输入账号"
+        v-model="account"
+      ></van-field>
+      <van-field
+        :border="false"
+        class="input"
+        label-align="center"
+        label-width="80"
+        left-icon="closed-eye"
+        placeholder="请输入密码"
         type="password"
         v-model="pwd"
       ></van-field>
-      <van-button @click="_login" class="button" type="info">登录</van-button>
+      <van-button @click="_login" class="button" round type="primary">登录</van-button>
     </div>
-    <img class="blur" src="@/assets/image/login_bg.jpeg" />
+    <!-- <img class="blur" src="@/assets/image/login_bg.jpeg" /> -->
   </div>
 </template>
 
@@ -33,6 +47,7 @@ export default {
     return {
       account: '',
       pwd: '',
+      logo: '',
     }
   },
 
@@ -43,6 +58,14 @@ export default {
   created() {},
 
   mounted() {
+    console.log(process.env.VUE_APP_ENV)
+    let logo = ''
+    if (process.env.VUE_APP_ENV === 'czg') {
+      logo = require('@/assets/image/logo.jpg')
+    } else {
+      logo = require('@/assets/image/xyzg_logo.png')
+    }
+    this.logo = logo
     const ticket = localStorage.getItem('ticket')
     if (ticket) {
       this.$router.push('/')
@@ -124,37 +147,58 @@ export default {
     position: absolute;
     width: 108vw;
     height: 108vh;
-    filter: blur(10px);
+    // filter: blur(10px);
     z-index: -10;
     top: -15px;
     left: -15px;
   }
 
   .group {
-    margin-top: 100px;
+    margin-top: 60px;
     text-align: center;
     .title {
       text-align: center;
-      font-size: 30px;
-      color: #fff;
-      margin-bottom: 40px;
+      font-size: 20px;
+      color: rgb(102, 102, 102);
+      margin-bottom: 60px;
+      .img-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 28vw;
+        box-shadow: 0 0 8px 1px #ccc;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        width: 31vw;
+        height: 31vw;
+        margin: 0 auto 15px;
+        img {
+          width: 27vw;
+          height: 27vw;
+          border-radius: 27vw;
+        }
+      }
     }
 
     .input {
       width: 300px;
       margin: 10px auto;
       background: transparent;
-      color: #ddd;
-      border: 1px solid #ddd;
-      border-radius: 20px;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 20px;
+      padding-left: 20px;
+      /deep/.van-field__left-icon {
+        color: @font-gray-c;
+      }
       /deep/.van-field__control {
-        color: #ddd;
+        color: @font-gray-c;
+        padding-left: 20px;
       }
     }
 
     .button {
       width: 280px;
-      margin-top: 180px;
+      margin-top: 70px;
     }
   }
 }

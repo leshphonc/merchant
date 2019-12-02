@@ -28,8 +28,10 @@ export default {
 
   mounted() {
     const setting = localStorage.getItem('merchant_global')
+    const ticket = localStorage.getItem('ticket')
     // 注入变量到vue全局
-    !setting &&
+    ticket &&
+      !setting &&
       this.getAlias().then(async res => {
         // 最后要注入的对象
         const obj = {}

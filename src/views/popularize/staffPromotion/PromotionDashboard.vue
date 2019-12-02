@@ -2,26 +2,28 @@
   <div>
     <van-nav-bar @click-left="$goBack" fixed left-arrow title="店员推广统计"></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <van-dropdown-menu>
-      <van-dropdown-item :options="storeColumns" @change="_changeOption" v-model="store" />
-    </van-dropdown-menu>
-    <div class="white-space"></div>
-    <time-picker-box :pickEndTime="_pickEndTime" :pickStartTime="_pickStartTime"></time-picker-box>
-    <div class="white-space"></div>
-    <van-grid :column-num="5">
-      <van-grid-item :text="`扫码总人数: ${this.scan} 人`" icon="photo-o" />
-      <van-grid-item :text="`绑粉总人数: ${this.fans} 人`" icon="photo-o" />
-      <van-grid-item :text="`购买总人数: ${this.sale} 人`" icon="photo-o" />
-      <van-grid-item :text="`销售佣金: ${this.saleMoney} 元`" icon="photo-o" />
-      <van-grid-item :text="`推广佣金: ${this.spreadMoney} 元`" icon="photo-o" />
-    </van-grid>
+    <van-sticky :offset-top="offsetTop">
+      <van-dropdown-menu>
+        <van-dropdown-item :options="storeColumns" @change="_changeOption" v-model="store" />
+      </van-dropdown-menu>
+      <div class="white-space"></div>
+      <time-picker-box :pickEndTime="_pickEndTime" :pickStartTime="_pickStartTime"></time-picker-box>
+      <div class="white-space"></div>
+      <van-grid :column-num="5">
+        <van-grid-item :text="`扫码总人数: ${scan} 人`" icon="photo-o" />
+        <van-grid-item :text="`绑粉总人数: ${fans} 人`" icon="photo-o" />
+        <van-grid-item :text="`购买总人数: ${sale} 人`" icon="photo-o" />
+        <van-grid-item :text="`销售佣金: ${saleMoney} 元`" icon="photo-o" />
+        <van-grid-item :text="`推广佣金: ${spreadMoney} 元`" icon="photo-o" />
+      </van-grid>
+    </van-sticky>
     <van-cell
       :key="index"
       :label="`推广佣金: ${item.spread_money} 元  销售佣金: ${item.sale_money} 元`"
       :title="item.name"
-      :to="`/staffPromotion/promotionDetail/${item.id}`"
+      :to="`/staffPromotion/promotionDetail/${item.id}/${stime}/${etime}`"
       is-link
-      v-for="(item, index) in this.list"
+      v-for="(item, index) in list"
     ></van-cell>
   </div>
 </template>
@@ -107,8 +109,8 @@ export default {
     _onRefresh() {
       this.getPromotionStatistics({
         store_id: this.store,
-        stime: this.stime,
-        etime: this.etime,
+        starttime: this.stime,
+        endtime: this.etime,
       }).then(res => {
         this.saleMoney = res.sale_money
         this.spreadMoney = res.spread_money
@@ -119,8 +121,8 @@ export default {
       })
       this.getPromotionStatisticsStaffList({
         store_id: this.store,
-        stime: this.stime,
-        etime: this.etime,
+        starttime: this.stime,
+        endtime: this.etime,
       }).then(res => {
         res.forEach(item => {
           item.sale_money = item.sale_money == null ? 0.0 : item.sale_money
@@ -134,4 +136,8 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+/deep/.van-sticky {
+  background-color: @gray-background-c;
+}
+</style>

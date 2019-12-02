@@ -47,8 +47,6 @@
 </template>
 
 <script>
-const merchant_user = localStorage.getItem('merchant_user')
-const merchant_money = sessionStorage.getItem('merchant-balance')
 export default {
   name: 'MerchantCard',
 
@@ -59,18 +57,21 @@ export default {
   props: {},
 
   data() {
-    return {}
+    return {
+      merchant_user: '',
+      merchant_money: '',
+    }
   },
 
   computed: {
     avatar() {
-      return merchant_user && JSON.parse(merchant_user).avatar
+      return this.merchant_user && JSON.parse(this.merchant_user).avatar
     },
     name() {
-      return merchant_user && JSON.parse(merchant_user).name
+      return this.merchant_user && JSON.parse(this.merchant_user).name
     },
     money() {
-      return merchant_money || 0
+      return this.merchant_money || 0
     },
   },
 
@@ -78,7 +79,10 @@ export default {
 
   created() {},
 
-  mounted() {},
+  mounted() {
+    this.merchant_user = localStorage.getItem('merchant_user')
+    this.merchant_money = sessionStorage.getItem('merchant-balance')
+  },
 
   destroyed() {},
 
@@ -86,15 +90,13 @@ export default {
     // 退出登录
     _logout() {
       this.$router.push('/login')
+      localStorage.removeItem('ticket')
+      localStorage.removeItem('merchant_global')
+      localStorage.removeItem('merchant_user')
       this.$toast.success({
         message: '退出登录',
         forbidClick: true,
         duration: 1000,
-        onClose: () => {
-          localStorage.removeItem('ticket')
-          localStorage.removeItem('merchant_global')
-          localStorage.removeItem('merchant_user')
-        },
       })
     },
     // 充值提现

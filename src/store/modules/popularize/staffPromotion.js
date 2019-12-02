@@ -8,24 +8,38 @@ const getters = {}
 
 // actions
 const actions = {
-  // 获取扫码记录
-  async getScanCodeRecord() {
+  // 推广统计数据
+  async getPromotionStatistics(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await staffPromotionAPI.getScanCodeRecord()
+      const data = await staffPromotionAPI.getPromotionStatistics(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 推广统计员工列表
+  async getPromotionStatisticsStaffList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await staffPromotionAPI.getPromotionStatisticsStaffList(payload)
       data ? resolve(data) : reject()
     })
   },
   // 获取扫码记录
-  async getPromotionStatistics() {
+  async getScanCodeRecord(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await staffPromotionAPI.getPromotionStatistics()
+      const data = await staffPromotionAPI.getScanCodeRecord(payload)
       data ? resolve(data) : reject()
     })
   },
-  // 获取扫码记录
-  async getPromotionStatisticsStaffList() {
+  // 获取绑粉记录
+  async getBindingFansRecord(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await staffPromotionAPI.getPromotionStatisticsStaffList()
+      const data = await staffPromotionAPI.getBindingFansRecord(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取购买记录
+  async getBuyersRecord(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await staffPromotionAPI.getBuyersRecord(payload)
       data ? resolve(data) : reject()
     })
   },
