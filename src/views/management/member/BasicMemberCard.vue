@@ -192,7 +192,6 @@ export default {
 
   mounted() {
     this.getBasicMemberCard().then(res => {
-      console.log(res)
       const keys = Object.keys(this.formData)
       keys.forEach(item => {
         this.formData[item] = res.card[item]
@@ -220,7 +219,6 @@ export default {
       })
     }
     this.defaultBgList = defaultBgList
-    console.log(defaultBgList)
   },
 
   destroyed() {},

@@ -61,9 +61,7 @@ export default {
     const { code } = this.$route.query
     if (!session_code && code) sessionStorage.setItem('merchant_wx_code', session_code)
     if (!this._isApp && !session_code && !code) {
-      console.log('缓存没有code，url没有code，不是app')
       this.getWxConfig().then(res => {
-        console.log(res)
         this.$getWXCode(res.appId)
       })
     }
@@ -76,7 +74,6 @@ export default {
     ...mapActions('wallet', ['createOrder', 'checkOrder']),
     _changeMoney() {
       this.$nextTick(() => {
-        console.log(this.money)
         this.errorMessage = this.money ? '' : '充值金额必填'
       })
     },
@@ -84,7 +81,6 @@ export default {
       // 检查锁
       if (this.loading) return
       if (this.money) {
-        console.log('充值')
         // 创建订单获 -> 取订单id, type
         this.createOrder(this.money).then(async res => {
           const userInfo = JSON.parse(localStorage.getItem('merchant_user'))
@@ -107,8 +103,6 @@ export default {
             this.loading = true
             // 微信环境充值
             const code = sessionStorage.getItem('merchant_wx_code')
-            console.log(code)
-            console.log('不是app')
             const { openid } = await this.checkOrder({
               id: order_id,
               type,
@@ -134,7 +128,7 @@ export default {
                 })
               })
               .catch(() => {
-                console.log('支付失败')
+                this.loading = false
               })
           }
         })

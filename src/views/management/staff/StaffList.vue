@@ -257,13 +257,11 @@ export default {
       if (staff_id && store_id) {
         this.lastStaff = staff_id
         const index = this.storeColumns.findIndex(item => item.value === store_id)
-        console.log(this.$refs.storePicker)
         this.$refs.storePicker.setIndexes([index])
       }
     },
     // 店员调岗
     _pickStore(data) {
-      console.log(data)
       this.staffTransfer({
         store_id: data.value,
         staff_id: this.lastStaff,
@@ -315,7 +313,6 @@ export default {
       const index = this.permission.indexOf(id)
       if (index > -1) {
         this.permission.splice(index, 1)
-        console.log(this.permission)
       } else {
         this.permission.push(id)
       }
@@ -349,7 +346,6 @@ export default {
     // 获取店铺列表
     _getStoreList() {
       this.getStoreList().then(res => {
-        console.log(res)
         this.storeColumns = res.store_list
       })
     },
@@ -365,7 +361,6 @@ export default {
     _submit() {
       if (this.loading) return
       this.loading = true
-      console.log(this.permission)
       this.updateStaffPermission({
         staff_id: this.lastStaff,
         menu_id: JSON.stringify(

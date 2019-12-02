@@ -284,7 +284,7 @@ export default {
           },
         })
         .catch(err => {
-          console.log(err)
+          this.loading = false
         })
     },
     // 读取订单详情
@@ -302,7 +302,6 @@ export default {
     _getTakeAwaySelfMentionPoinList() {
       const { id } = this.$route.params
       this.getTakeAwaySelfMentionPoinList(id).then(res => {
-        console.log(res)
         this.selfMentionPointColumns = res.pick_list
       })
     },
@@ -367,9 +366,7 @@ export default {
             }
           },
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
     // 发货
     _deliverGoods() {
@@ -404,7 +401,6 @@ export default {
         .catch(() => {
           this.loading = false
         })
-      console.log('发货')
     },
     // 确认消费
     _confirmConsumption() {
@@ -460,8 +456,8 @@ export default {
               }
             },
           })
-          .catch(err => {
-            console.log(err)
+          .catch(() => {
+            this.loading = false
           })
       }
     },

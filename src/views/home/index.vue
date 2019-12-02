@@ -360,7 +360,6 @@ export default {
     },
     // 店铺选择
     _pickStore(data) {
-      console.log(data)
       this.storeLabel = data.label
       this.storeValue = data.value
       this._getEchartData(this.curType)
@@ -368,7 +367,6 @@ export default {
     },
     // 时间类型选择
     _pickTimeType(data) {
-      console.log(data)
       this.timeTypeLabel = data.label
       this.timeTypeValue = data.value
       this._getEchartData(this.curType)
@@ -389,14 +387,12 @@ export default {
     // 店铺列表
     _getStoreList() {
       this.getStoreList(1).then(res => {
-        console.log(res)
         this.storeColumns = res.store_list
       })
     },
     // 读取首页轮播广告
     _getHomeInfo() {
       this.getHomeInfo().then(res => {
-        console.log(res)
         this.swipe = res.wap_MerchantAd
         sessionStorage.setItem('merchant-balance', res.allmoney)
       })

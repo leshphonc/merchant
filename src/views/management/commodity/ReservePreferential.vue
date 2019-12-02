@@ -158,7 +158,6 @@ export default {
     // 页面默认数据
     _readReserveDetail(id) {
       this.readReserveDetail(id).then(res => {
-        console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res.appoint_list[item]
@@ -190,14 +189,12 @@ export default {
       this.envList[index].envo_before_select_pic = data[0].url
     },
     _pickEnvAfterImg(data, index) {
-      console.log(this.envBeforeImg)
       this.envList[index].envo_after_select_pic = data[0].url
     },
     _pickEnvServingImg(data, index) {
       this.envList[index].envo_serving_pic = data[0].url
     },
     async _submit() {
-      console.log(this.formData)
       // 锁
       if (this.loading) return
       // 验证表单
@@ -217,7 +214,6 @@ export default {
             params[key] ? params[key].push(item[key]) : (params[key] = [item[key]])
           }
         })
-        console.log(params)
         // 表单完整，进行数据修改并提交
         this.updateReservePreferential(params)
           .then(() => {

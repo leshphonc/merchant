@@ -184,7 +184,6 @@ export default {
     },
     // 进入详情
     _goDetail(id) {
-      console.log(id)
       this.$router.push(`/order/serviceOrderDetail/${id}`)
     },
   },

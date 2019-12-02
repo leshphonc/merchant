@@ -50,7 +50,6 @@ export default {
     ...mapActions('order', ['getServiceOrderDetail']),
     _getServiceOrderDetail(id) {
       this.getServiceOrderDetail(id).then(res => {
-        console.log(res)
         this.detail = res
       })
     },

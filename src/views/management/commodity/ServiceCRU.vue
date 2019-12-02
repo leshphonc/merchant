@@ -228,7 +228,6 @@ export default {
     },
     // 预约开始时间非空验证
     startTimeLabel() {
-      console.log(this.formData.start_time)
       return this.formData.start_time && this.$moment(this.formData.start_time).format('YYYY-MM-DD HH:mm')
     },
     // 预约结束时间非空验证
@@ -277,11 +276,7 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('commodity', [
-      'getServiceCategoryList',
-      'createService',
-      'readServiceDetail',
-    ]),
+    ...mapActions('commodity', ['getServiceCategoryList', 'createService', 'readServiceDetail']),
     // 预约开始时间开关
     _controlStartTimePicker() {
       this.showStartTimePicker = !this.showStartTimePicker
@@ -387,7 +382,6 @@ export default {
       })
     },
     async _submit() {
-      console.log(this.formData)
       // 锁
       if (this.loading) return
       // 验证表单
@@ -398,7 +392,6 @@ export default {
           message: '请填写完整信息',
         })
       } else {
-        console.log(this.$refs.editor)
         if (!this.$refs.editor.editorHtml) {
           this.$notify({
             type: 'warning',

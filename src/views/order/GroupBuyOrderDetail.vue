@@ -264,7 +264,6 @@ export default {
     },
     // 选择物流公司
     _pickerExpress(data) {
-      console.log(data)
       this.expressID = data.ids
       this._controlExpressPicker()
     },

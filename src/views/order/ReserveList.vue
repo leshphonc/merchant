@@ -205,16 +205,13 @@ export default {
     _pickStartTime(data) {
       this.stime = this.$moment(data).format('YYYY-MM-DD')
       this._onRefresh()
-      console.log(data)
     },
     _pickEndTime(data) {
       this.etime = this.$moment(data).format('YYYY-MM-DD')
       this._onRefresh()
-      console.log(data)
     },
     // 进入详情
     _goDetail(id) {
-      console.log(id)
       this.$router.push(`/order/reserveOrderDetail/${id}`)
     },
     _serviceStatus(item) {

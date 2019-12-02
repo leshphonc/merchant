@@ -58,7 +58,6 @@ export default {
   created() {},
 
   mounted() {
-    console.log(process.env.VUE_APP_ENV)
     let logo = ''
     if (process.env.VUE_APP_ENV === 'czg') {
       logo = require('@/assets/image/logo.jpg')
@@ -82,8 +81,6 @@ export default {
   methods: {
     ...mapActions(['login', 'getWxConfig']),
     _login() {
-      console.log(this.account)
-      console.log(this.pwd)
       this.login({ account: this.account, pwd: this.pwd }).then(() => {
         this.$toast({
           icon: 'success',

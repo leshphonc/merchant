@@ -350,7 +350,6 @@ export default {
     },
     // 选择时间类型
     _pickTimeType(data) {
-      console.log(data)
       this.formData.seckill_type = data.value
       this.formData.seckill_open_time = ''
       this.formData.seckill_close_time = ''
@@ -358,7 +357,6 @@ export default {
     },
     // 选择开始时间
     _pickStartTime(data) {
-      console.log(data)
       this.formData.seckill_open_time = data
       this._controlStartTimePicker()
     },
@@ -369,7 +367,6 @@ export default {
     },
     // 选择优惠券
     _pickCoupon(data) {
-      console.log(this.curCoupon)
       // 将选择的优惠券加入已选择的列表中
       this.selectedCoupon = [...new Set([...this.selectedCoupon, data.value])]
       // 判断此次选择的picker是否有值
@@ -407,9 +404,7 @@ export default {
     },
     // 移除优惠券
     _deleteCoupon(item, index) {
-      console.log(item)
       const selIndex = this.selectedCoupon.indexOf(item.goods)
-      console.log(selIndex)
       if (selIndex > -1) {
         this.selectedCoupon.splice(selIndex, 1)
         // 循环优惠券列表，将已选择的优惠券置为灰色，未选择的置为可选
@@ -428,7 +423,6 @@ export default {
     // 获取商家信息
     _readMerchantInfo() {
       this.readMerchantInfo().then(res => {
-        console.log(res)
         this.scoreOpen = res.now_merchant.score_open
         this.dhbOpen = res.now_merchant.dhb_open
       })
@@ -468,7 +462,6 @@ export default {
       })
     },
     async _submit() {
-      console.log(this.formData)
       // 锁
       if (this.loading) return
       // 验证表单

@@ -88,7 +88,6 @@ export default {
     _uploadImg(state) {
       if (state) {
         this.$refs.file.click()
-        console.log(state)
         //button is clicked
       }
     },
@@ -118,9 +117,7 @@ export default {
             )
             this._cancel()
           })
-          .catch(e => {
-            console.log(e)
-          })
+          .catch(() => {})
       })
     },
     _cancel() {

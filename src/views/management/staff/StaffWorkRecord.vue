@@ -146,7 +146,6 @@ export default {
       this.endTimeLabel = data
     },
     _changeRecord(data) {
-      console.log(data)
       switch (data) {
         case 0:
           this._staffArrivalRecord()
@@ -166,7 +165,6 @@ export default {
     // 获取店铺列表
     _getStoreList() {
       this.getStoreList(1).then(res => {
-        console.log(res)
         this.storeColumns = res.store_list
       })
     },
@@ -181,7 +179,6 @@ export default {
         end_time: this.endTimeLabel,
       }).then(res => {
         this.list = res.list
-        console.log(res)
       })
     },
     // 获取开单记录
@@ -195,7 +192,6 @@ export default {
         end_time: this.endTimeLabel,
       }).then(res => {
         this.list = res.lists
-        console.log(res)
       })
     },
     // 获取销售记录
@@ -209,7 +205,6 @@ export default {
         end_time: this.endTimeLabel,
       }).then(res => {
         this.list = res.lists
-        console.log(res)
       })
     },
   },

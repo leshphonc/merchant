@@ -58,9 +58,7 @@ export default {
 
   created() {},
 
-  mounted() {
-    console.log(this.$route)
-  },
+  mounted() {},
 
   destroyed() {},
 

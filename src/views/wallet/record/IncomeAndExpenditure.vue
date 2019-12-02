@@ -173,7 +173,6 @@ export default {
     // 明细分类
     _getCategory() {
       this.getCategory().then(res => {
-        console.log(res)
         res.forEach(item => {
           item.text = item.label
         })
@@ -186,7 +185,6 @@ export default {
         res.store_list.forEach(item => {
           item.text = item.label
         })
-        console.log(res)
         this.option2 = res.store_list
       })
     },

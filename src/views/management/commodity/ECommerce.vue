@@ -264,9 +264,7 @@ export default {
             }
           },
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
     // 删除分类
     _deleteCategory(id, type) {
@@ -297,13 +295,10 @@ export default {
             }
           },
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
     // 更改vuex中的变量，判断当前分类是不是管理状态
     _changeTab(tabIndex) {
-      console.log(tabIndex)
       this.changeRightText({
         index: 0,
         text: tabIndex ? '管理' : '创建',
@@ -317,7 +312,6 @@ export default {
     },
     // 分类归属变更
     _changeCategory(picker, item) {
-      console.log(item)
       this.formData.fid = item.sort_id
       this.categoryLabel = item.sort_name
     },

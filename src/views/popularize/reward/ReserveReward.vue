@@ -102,7 +102,6 @@ export default {
         return obj
       })
       this.formData.spread = spread
-      console.log(spread)
     })
     const { id } = this.$route.params
     await this.readReserveDetail(id).then(res => {

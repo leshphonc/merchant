@@ -171,7 +171,6 @@ export default {
       this._onRefresh()
     },
     _changeOption2(data) {
-      console.log(data)
       this.pay_type = data
       this._onRefresh()
     },
@@ -182,12 +181,10 @@ export default {
     _pickStartTime(data) {
       this.stime = this.$moment(data).format('YYYY-MM-DD')
       this._onRefresh()
-      console.log(data)
     },
     _pickEndTime(data) {
       this.etime = this.$moment(data).format('YYYY-MM-DD')
       this._onRefresh()
-      console.log(data)
     },
     // 外卖订单状态列表
     _getOrderStatusList() {

@@ -427,7 +427,6 @@ export default {
     },
     // 生成店铺业务第二行数据
     _changeStoreFrontCategory(picker, values) {
-      console.log(values)
       if (values[0].children) {
         picker.setColumnValues(1, values[0].children)
       } else {
@@ -436,7 +435,6 @@ export default {
     },
     // 地区选择
     _pickArea(data) {
-      console.log(data)
       this.formData.province_id = data[0].value
       this.formData.city_id = data[1].value
       this.formData.area_id = data[2].value
@@ -450,10 +448,9 @@ export default {
       this.formData.market_id = data.value
     },
     // 坐标选择
-    _pickCoordinate(lng, lat, address) {
+    _pickCoordinate(lng, lat) {
       this.formData.long = lng
       this.formData.lat = lat
-      console.log(address)
       this._controlCoordinatePicker()
     },
     // 店铺业务选择
@@ -534,7 +531,6 @@ export default {
     // 获取店铺默认数据
     _readStoreFrontDetail(id) {
       this.readStoreFrontDetail(id).then(res => {
-        console.log(res)
         const keys = Object.keys(this.formData)
         // 默认数据塞入
         keys.forEach(item => {
@@ -571,7 +567,6 @@ export default {
       if (this.loading) return
       // 验证表单
       const isValid = await this.$refs.observer.validate()
-      console.log(this.formData)
       // 表单不完整
       if (!isValid) {
         this.$notify({

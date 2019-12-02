@@ -7,7 +7,6 @@ import errorcode from '@/common/errorcode'
 // axios全局请求拦截
 axios.interceptors.request.use(
   config => {
-    // console.log(config);
     // Toast.loading({
     //   message: '加载中...',
     //   forbidClick: true,
@@ -18,13 +17,11 @@ axios.interceptors.request.use(
     return config
   },
   error => {
-    console.log(error)
     Toast.fail(error.message)
   }
 )
 axios.interceptors.response.use(
   config => {
-    // console.log(config);
     // Toast.clear()
     if (config.data.errorCode !== errorcode.SUCCESS) {
       // 兼容上传oss图片错误
@@ -57,7 +54,6 @@ axios.interceptors.response.use(
     return config.data.result
   },
   error => {
-    console.log(error)
     Toast.fail(error.message)
   }
 )

@@ -251,7 +251,6 @@ export default {
     },
     // 店铺选择
     _pickStore(data) {
-      console.log(data)
       this.storeLabel = data.label
       this.storeValue = data.value
       this._getVisitsFaceEchartData()
@@ -259,7 +258,6 @@ export default {
     },
     // 时间类型选择
     _pickTimeType(data) {
-      console.log(data)
       this.timeTypeLabel = data.label
       this.timeTypeValue = data.value
       this._getVisitsFaceEchartData()
@@ -281,7 +279,6 @@ export default {
     _getVisitsFaceEchartData() {
       const obj = { store_id: this.storeValue, date_type: this.timeTypeValue, date: this.timeLabel }
       this.getVisitsFaceEchartData(obj).then(res => {
-        console.log(res)
         this.echartData = res
       })
     },

@@ -98,7 +98,6 @@ export default {
     const { id } = this.$route.params
     id &&
       this.getMeetGreetingDetail(id).then(res => {
-        console.log(res)
         this.formData.title = res.title
         this.formData.context = res.context
         this.formData.start_time = this.$moment(res.start_time * 1000).format('YYYY-MM-DD HH:mm')
@@ -113,7 +112,6 @@ export default {
   methods: {
     ...mapActions('smartScreen', ['createMeetGreeting', 'getMeetGreetingDetail', 'updateMeetGreeting']),
     _pickStartTime(data) {
-      console.log(data)
       this.formData.start_time = this.$moment(data).format('YYYY-MM-DD HH:mm')
     },
     _pickEndTime(data) {

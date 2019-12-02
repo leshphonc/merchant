@@ -36,9 +36,7 @@ export default {
   methods: {
     ...mapActions('commodity', ['readPackageSalesRecord']),
     _readPackageSalesRecord(id) {
-      this.readPackageSalesRecord(id).then(res => {
-        console.log(res)
-      })
+      this.readPackageSalesRecord(id).then(() => {})
     },
   },
 }

@@ -468,7 +468,6 @@ export default {
       this.formData.pic = data.map(item => item.url)
     },
     _changeHtml(data) {
-      console.log(data)
       this.formData.des = data.html
     },
     // 读取商品分类
@@ -542,7 +541,6 @@ export default {
     },
     _readECommerceDetail(id) {
       this.readECommerceDetail(id).then(res => {
-        console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res[item]
@@ -572,7 +570,6 @@ export default {
           message: '请填写完整信息',
         })
       } else {
-        console.log(this.$refs.editor)
         if (!this.$refs.editor.editorHtml) {
           this.$notify({
             type: 'warning',

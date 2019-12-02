@@ -230,7 +230,6 @@ export default {
       })
     },
     _recordOnLoad() {
-      console.log(111)
       this.getUserConsumingRecord({
         uid: this.lastUid,
         page: this.recordPage,

@@ -198,13 +198,10 @@ export default {
             }
           },
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
     // 删除团购套餐
     _deletePackage(id) {
-      console.log(id)
       this.$dialog
         .confirm({
           title: '删除',
@@ -231,13 +228,10 @@ export default {
             }
           },
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
     // 更改vuex中的变量，判断当前团购套餐是不是管理状态
     _changeTab(tabIndex) {
-      console.log(tabIndex)
       this.changeRightText({
         index: 2,
         text: tabIndex ? '管理' : '创建',

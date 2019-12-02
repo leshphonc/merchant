@@ -112,7 +112,6 @@ export default {
       this.$nextTick(() => {
         this._onRefresh()
       })
-      console.log(data)
     },
     _onLoad() {
       // 异步更新数据

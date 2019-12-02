@@ -261,7 +261,6 @@ export default {
           wx_text: item.text,
         }
       })
-      console.log(this.formData)
       this.imageText = imageText
       this.serviceList = res.card.wx_param.business_service
       this.colorList = res.color_list
@@ -278,9 +277,7 @@ export default {
     _pickColor(name) {
       this.formData.wx_color = name
     },
-    _pickPic(data) {
-      console.log(data)
-    },
+    _pickPic() {},
     _addImageText() {
       this.imageText.push({ wx_image_url: [], wx_text: '' })
     },
@@ -311,7 +308,6 @@ export default {
           params.wx_text.push(item.wx_text)
         })
         params.wx_business_service = this.serviceList
-        console.log(params)
         this.updateBasicMemberCardInWX(params)
           .then(() => {
             this.$toast.success({

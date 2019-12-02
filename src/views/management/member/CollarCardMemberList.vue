@@ -162,9 +162,6 @@ export default {
         this.list2.push(...res.lists)
       })
     },
-    _createGroup() {
-      console.log(1)
-    },
     _clickRight() {
       switch (this.active) {
         case 1:

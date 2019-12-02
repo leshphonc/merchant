@@ -135,7 +135,6 @@ export default {
 
   watch: {
     list() {
-      console.log(this.list)
       this.picList = this.list
     },
   },
@@ -143,7 +142,6 @@ export default {
   created() {},
 
   mounted() {
-    console.log(this.list)
     this.picList = this.list
   },
 
@@ -169,9 +167,7 @@ export default {
             this.confirm(this.picList, this.index)
             this._cancel()
           })
-          .catch(e => {
-            console.log(e)
-          })
+          .catch(() => {})
       })
     },
     _cancel() {

@@ -44,7 +44,6 @@ export default {
     ...mapActions('market', ['getMarketTypeList']),
     _getMarketTypeList() {
       this.getMarketTypeList().then(res => {
-        console.log(res)
         this.list = res
       })
     },

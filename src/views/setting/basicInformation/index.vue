@@ -156,20 +156,17 @@ export default {
     // 父级分类Label
     fidLabel() {
       const item = this.storeFrontCategoryOrigin.find(item => item.value === this.merchant.cat_fid)
-      console.log(item)
       return item && item.label
     },
     // 父级分类Label
     idLabel() {
       const item = this.storeFrontCategoryOrigin.find(item => item.value === this.merchant.cat_fid)
-      console.log(item)
       const item2 = item.children.find(item => item.value === this.merchant.cat_id)
       return item2 && item2.label
     },
     // 默认选中的超时类型
     timeOutIndex() {
       const index = this.timeOutColumns.findIndex(item => item.value === this.merchant.group_express_outtime)
-      console.log(index)
       return index > -1 ? index : 0
     },
   },
@@ -241,7 +238,6 @@ export default {
           },
         })
       })
-      console.log(address)
     },
     // 超时时间选中
     _pickTimeOut(data) {
@@ -284,7 +280,6 @@ export default {
       })
     },
     _pickLogo(data) {
-      console.log(data)
       this.updateMerchantInfo({
         service_ico: data[0].url,
       }).then(() => {
@@ -299,7 +294,6 @@ export default {
       })
     },
     _pickPicture(data) {
-      console.log(data)
       this.updateMerchantInfo({
         pic_info: data[0].url,
       }).then(() => {
@@ -362,7 +356,6 @@ export default {
     },
     // 生成店铺业务第二行数据
     _changeStoreFrontCategory(picker, values) {
-      console.log(values)
       if (values[0].children) {
         picker.setColumnValues(1, values[0].children)
       } else {
@@ -372,7 +365,6 @@ export default {
     // 读取商户信息
     _readMerchantInfo() {
       this.readMerchantInfo().then(res => {
-        console.log(res)
         this.merchant = res.now_merchant
         this.wx = res.bind_wxlist
         this.info.phone = res.now_merchant.phone
@@ -380,7 +372,6 @@ export default {
         this.info.is_offline = res.now_merchant.is_offline === '1'
         this.info.txt_info = res.now_merchant.txt_info
         this.info.content = res.now_merchant.content
-        console.log(res.now_merchant.content)
         this._getPlatformStoreFrontCategory(res.now_merchant.cat_fid, res.now_merchant.cat_id)
       })
     },

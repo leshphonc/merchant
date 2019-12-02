@@ -243,7 +243,6 @@ export default {
     // checkboxE选中状态切换
     _toggleE(index, flag) {
       // 判断是否选可选
-      console.log(this.$refs.checkboxesE)
       !flag && this.$refs.checkboxesE[index].toggle()
     },
     // 更新服务项目商品数据
@@ -319,7 +318,6 @@ export default {
       })
       this.cacheE.forEach(item => {
         this.listE.find(item2 => {
-          console.log(item2)
           if (item2.goods_id === item.goods_id) {
             if (!item2.disabled) {
               this.eCommerce_data.push({
@@ -349,7 +347,6 @@ export default {
 
       // 将不是灰色且选中的 变为 未选中
       this.$nextTick(() => {
-        console.log(this.$refs.checkboxes)
         this.$refs.checkboxes.forEach(item => {
           if (!item.disabled && item.checked) {
             item.toggle()
@@ -370,7 +367,6 @@ export default {
 
       // 将不是灰色且选中的 变为 未选中
       this.$nextTick(() => {
-        console.log(this.$refs.checkboxesE)
         this.$refs.checkboxesE.forEach(item => {
           if (!item.disabled && item.checked) {
             item.toggle()
@@ -381,7 +377,6 @@ export default {
     // 读取套餐详情
     _readPackageDetail(id) {
       this.readPackageDetail(id).then(res => {
-        console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res[0][item]
@@ -389,7 +384,6 @@ export default {
         this.formData.name = res[0].meal_name
         this.pic = [{ url: res[0].pic }]
         this.readServiceOfPackage(id).then(res2 => {
-          console.log(res2)
           const service = []
           const eCommerce = []
           res2.forEach(item => {
@@ -412,7 +406,6 @@ export default {
     },
     // 提交表单
     async _submit() {
-      console.log(this.formData)
       // 锁
       if (this.loading) return
       // 验证表单

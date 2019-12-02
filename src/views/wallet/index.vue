@@ -22,9 +22,7 @@ export default {
 
   created() {},
 
-  mounted() {
-    console.log(this.$route.query)
-  },
+  mounted() {},
 
   destroyed() {},
 

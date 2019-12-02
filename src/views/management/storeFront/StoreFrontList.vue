@@ -151,7 +151,6 @@ export default {
       if (this.loading) return
       // 验证表单
       const isValid = await this.$refs.observer.validate()
-      console.log(this.formData)
       // 表单不完整
       if (!isValid) {
         this.$notify({

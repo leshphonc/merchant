@@ -182,7 +182,6 @@ export default {
     // 会员分组非空验证
     memberGroupLabel() {
       const item = this.memberGroupColumns.find(item => item.id === this.formData.in_group)
-      console.log(item)
       return item && item.name
     },
     // 会员分组默认数据
@@ -248,9 +247,7 @@ export default {
     },
     // 移除优惠券
     _deleteCoupon(item, index) {
-      console.log(item)
       const selIndex = this.selectedCoupon.indexOf(item.goods)
-      console.log(selIndex)
       if (selIndex > -1) {
         this.selectedCoupon.splice(selIndex, 1)
         // 循环优惠券列表，将已选择的优惠券置为灰色，未选择的置为可选
@@ -268,7 +265,6 @@ export default {
     },
     // 选择优惠券
     _pickCoupon(data) {
-      console.log(this.curCoupon)
       // 将选择的优惠券加入已选择的列表中
       this.selectedCoupon = [...new Set([...this.selectedCoupon, data.value])]
       // 判断此次选择的picker是否有值
@@ -317,7 +313,6 @@ export default {
     },
     _readGroupBuyDetail(id) {
       this.readGroupBuyDetail(id).then(res => {
-        console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res[item]

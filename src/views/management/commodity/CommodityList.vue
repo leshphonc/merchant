@@ -71,7 +71,6 @@ export default {
     },
     // 根据当前tab的index获得rightText
     rightText() {
-      console.log(this.navText)
       return this.navText[this.active]
     },
   },

@@ -232,7 +232,6 @@ export default {
       })
     },
     _behaviorOnLoad() {
-      console.log(111)
       this.getBindingFansBehaviorList({
         uid: this.lastUid,
         page: this.behaviorPage,

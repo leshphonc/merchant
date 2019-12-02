@@ -187,7 +187,6 @@ export default {
       // 锁
       if (this.loading) return false
       // 验证表单
-      console.log(this.formData)
       const isValid = await this.$refs.observer.validate()
       if (!isValid) {
         this.$notify({

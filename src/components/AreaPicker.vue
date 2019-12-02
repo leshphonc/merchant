@@ -207,7 +207,6 @@ export default {
     async _changeArea(picker, values) {
       if (!values[0].children) {
         this.getCity({ id: values[0].value, shift: true }).then(res => {
-          console.log(res)
           values[0].children = res
           picker.setColumnValues(1, res)
           this.getArea({ id: res[0].value, shift: true }).then(res2 => {
@@ -261,13 +260,11 @@ export default {
     // 没有地区数据，默认级联
     _getDefaultAddressColumnsForPicker() {
       this.getDefaultAddressColumnsForPicker({ shift: true }).then(res => {
-        console.log(res)
         this.areaColumns = res
       })
     },
     // 根据默认级联数据
     _getAllAddressColumnsForPicker() {
-      console.log(this.data)
       this.getAllAddressColumnsForPicker({
         province: this.data[0],
         city: this.data[1],

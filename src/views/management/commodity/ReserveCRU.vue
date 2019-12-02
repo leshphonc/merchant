@@ -458,12 +458,10 @@ export default {
     _pickPriceType(data) {
       this.formData.is_appoint_price = data.value
       this._controlPriceTypePicker()
-      console.log(data)
     },
     _pickServiceType(data) {
       this.formData.appoint_type = data.value
       this._controlServiceTypePicker()
-      console.log(data)
     },
     _pickStore() {
       const arr = []
@@ -474,7 +472,6 @@ export default {
       this._controlStorePopup()
     },
     _changeCategory(picker, values) {
-      console.log(values)
       if (values[0].children) {
         picker.setColumnValues(1, values[0].children)
       } else {
@@ -489,15 +486,12 @@ export default {
         this.formData.cat_id = ''
       }
       this._controlCategoryPicker()
-      console.log(data)
     },
     _pickStartTime(data) {
       this.formData.start_time = this.$moment(data).format('YYYY-MM-DD')
-      console.log(data)
     },
     _pickEndTime(data) {
       this.formData.end_time = this.$moment(data).format('YYYY-MM-DD')
-      console.log(data)
     },
     _pickOpenTime(data) {
       this.formData.office_start_time = data
@@ -507,7 +501,6 @@ export default {
     },
     _pickPic(data) {
       this.formData.pic.push(data[0].url)
-      console.log(data)
     },
     _deletePic(data) {
       const index = this.formData.pic.findIndex(item => item === data.url)
@@ -576,7 +569,6 @@ export default {
     // 编辑时获取详情数据
     _readReserveDetail(id) {
       this.readReserveDetail(id).then(res => {
-        console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res.appoint_list[item]
@@ -604,7 +596,6 @@ export default {
     },
     // 提交表单
     async _submit() {
-      console.log(this.formData)
       // 锁
       if (this.loading) return
       // 验证表单
@@ -630,7 +621,6 @@ export default {
             params[key] ? params[key].push(item[key]) : (params[key] = [item[key]])
           }
         })
-        console.log(params)
         this[method](params)
           .then(() => {
             this.$toast.success({

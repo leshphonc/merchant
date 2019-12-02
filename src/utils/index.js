@@ -67,7 +67,6 @@ export default {
         this.compressionAndUploadImg(item.file)
           .then(res => {
             arr.splice(index, 1, { url: res })
-            console.log(arr)
           })
           .catch(e => Toast.fail(e))
       }
@@ -78,7 +77,6 @@ export default {
   compressionAndUploadImg(blob) {
     return new Promise((resolve, reject) => {
       /* eslint no-new: 0 */
-      console.log(blob)
       new Compressor(blob, {
         quality: 0.1,
         success: result => {

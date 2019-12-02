@@ -47,7 +47,6 @@ export default {
     ...mapActions('order', ['getOrderTypeList']),
     _getOrderTypeList() {
       this.getOrderTypeList().then(res => {
-        console.log(res)
         res.push({ name: '到店消费订单', count: '0' })
         res.forEach(item => {
           switch (item.name) {

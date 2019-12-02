@@ -48,7 +48,6 @@ export default {
     ...mapActions('order', ['getPackageOrderDetail']),
     _getPackageOrderDetail(id) {
       this.getPackageOrderDetail(id).then(res => {
-        console.log(res)
         this.detail = res
       })
     },

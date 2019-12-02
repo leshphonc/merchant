@@ -36,9 +36,7 @@ export default {
   methods: {
     ...mapActions('commodity', ['readServiceSalesRecord']),
     _readServiceSalesRecord(id) {
-      this.readServiceSalesRecord(id).then(res => {
-        console.log(res)
-      })
+      this.readServiceSalesRecord(id).then(() => {})
     },
   },
 }

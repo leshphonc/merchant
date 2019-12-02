@@ -86,7 +86,6 @@ export default {
   computed: {
     // 经纬度非空验证
     coordinateLabel() {
-      console.log(this.formData.long)
       if (!this.formData.long || !this.formData.lat) return ''
       return this.formData.long + ', ' + this.formData.lat
     },
@@ -117,18 +116,14 @@ export default {
     ]),
     // 地区选择
     _pickArea(data) {
-      console.log(123)
-      console.log(data)
       this.formData.province_id = data[0].value
       this.formData.city_id = data[1].value
       this.formData.area_id = data[2].value
     },
     // 坐标选择
-    _pickCoordinate(lng, lat, address) {
+    _pickCoordinate(lng, lat) {
       this.formData.long = lng
       this.formData.lat = lat
-      console.log(2332)
-      console.log(address)
       this._controlCoordinatePicker()
     },
     // 坐标拾取
@@ -137,7 +132,6 @@ export default {
     },
     async _submit() {
       // 验证表单
-      console.log(this.formData)
       const isValid = await this.$refs.observer.validate()
       if (!isValid) {
         this.$notify({

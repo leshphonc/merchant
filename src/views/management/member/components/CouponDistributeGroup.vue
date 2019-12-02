@@ -77,13 +77,11 @@ export default {
     },
     _getCouponGroupList() {
       this.getCoupoonGroupList().then(res => {
-        console.log(res)
         this.groupList = res
       })
     },
     _getMemberGroup() {
       this.getCouponInMemberGroup(this.group.join()).then(res => {
-        console.log(res)
         this.couponList = res
         this._controlCouponPicker()
       })

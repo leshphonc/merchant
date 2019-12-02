@@ -82,7 +82,6 @@ export default {
     ...mapActions(['getMerchantDetail']),
     _goStoreFrontPage() {
       this.getMerchantDetail(user.mer_id).then(res => {
-        console.log(res)
         const { uid } = res
         if (uid) {
           window.location.href =

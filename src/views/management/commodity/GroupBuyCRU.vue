@@ -521,7 +521,6 @@ export default {
     },
     // 有效期
     _pickValidity(data) {
-      console.log(data)
       this.formData.deadline_time = this.$moment(data).format('YYYY-MM-DD HH:mm')
       this._controlValidityPicker()
     },
@@ -538,7 +537,6 @@ export default {
     },
     // 减少方式选择
     _pickReduceType(data) {
-      console.log(data)
       this.formData.stock_reduce_method = data.value
       this._controlReduceTypePicker()
     },
@@ -569,7 +567,6 @@ export default {
     // 选择店铺
     _pickStore() {
       const arr = []
-      console.log(this.cache)
       this.cache.forEach(item => {
         arr.push(item.value)
       })
@@ -578,7 +575,6 @@ export default {
     },
     _pickPic(data) {
       this.formData.pic.push(data[0].url)
-      console.log(data)
     },
     _deletePic(data) {
       const index = this.formData.pic.findIndex(item => item === data.url)
@@ -622,7 +618,6 @@ export default {
     // 编辑时获取详情
     _readGroupBuyDetail(id) {
       this.readGroupBuyDetail(id).then(res => {
-        console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res[item]
@@ -676,7 +671,6 @@ export default {
             params.group_id = id
           }
           params.s_name = params.name
-          console.log(params)
           this[method](params)
             .then(() => {
               this.$toast.success({

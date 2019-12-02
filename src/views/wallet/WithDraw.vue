@@ -193,20 +193,17 @@ export default {
     },
     // 微信账号选择
     _pickWxAccount(data) {
-      console.log(data)
       this.formData.weixin_account = data.openid
       this._controlWxAccount()
     },
     // 发票图片选择
     _pickInvoice(data) {
       this.formData.invoice = data[0].url
-      console.log(data)
     },
     // 读取微信账号列表
     _getWxAccount() {
       this.getWxAccount()
         .then(res => {
-          console.log(res)
           this.wxAccountColumns = res.bind_wxlist
         })
         .catch(() => {
@@ -218,9 +215,7 @@ export default {
       // 锁
       if (this.loading) return false
       // 验证表单
-      console.log(this.$refs.observer)
       const isValid = await this.$refs.observer.validate()
-      console.log(this.formData)
       // 表单不完整
       if (!isValid) {
         this.$notify({

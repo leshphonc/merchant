@@ -649,7 +649,6 @@ export default {
       this.formData.cate_name = data.value
       this._controlCategoryPicker()
       this.getCouponSecondCategory(data.value).then(res => {
-        console.log(res)
         if (res) {
           this.secondCategoryColumns = res
         } else {
@@ -742,7 +741,6 @@ export default {
     // 选择店铺
     _pickStore() {
       const arr = []
-      console.log(this.cache)
       this.cache.forEach(item => {
         arr.push(item.value)
       })
@@ -761,7 +759,6 @@ export default {
         })
         this.imgList = [{ url: res.coupon.img }]
         this.getCouponSecondCategory(res.coupon.cate_name).then(res => {
-          console.log(res)
           if (res) {
             this.secondCategoryColumns = res
           } else {
@@ -779,7 +776,6 @@ export default {
               this.thirdCategoryColumns = []
             }
           })
-        console.log(res)
       })
     },
     // 获取优惠券使用类别
@@ -827,7 +823,6 @@ export default {
             text: item.text,
           }
         })
-        console.log(params)
         this[method](params)
           .then(() => {
             this.$toast.success({

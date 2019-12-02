@@ -182,7 +182,6 @@ export default {
     // 获取店铺
     _getStoreList() {
       this.getStoreList().then(res => {
-        console.log(res)
         this.storeColumns = res.store_list
       })
     },
@@ -196,7 +195,6 @@ export default {
           this.formData[item] = res[item]
         })
         this.formData.password = ''
-        console.log(res)
       })
     },
     async _submit() {

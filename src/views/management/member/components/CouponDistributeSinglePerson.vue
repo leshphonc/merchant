@@ -80,7 +80,6 @@ export default {
     },
     _getCouponInMemberGroup() {
       this.getCouponInMemberGroup().then(res => {
-        console.log(res)
         this.couponList = res
       })
     },
@@ -89,14 +88,12 @@ export default {
     },
     _searchUserList() {
       this.searchUserList(this.keyword).then(res => {
-        console.log(res)
         this.userList = res
       })
     },
     _distributeCoupon() {
       if (this.loading) return
       this.loading = true
-      debugger
       this.distributeSinglePersonCoupon({
         uid: this.user,
         coupon_id: this.coupon.join(),

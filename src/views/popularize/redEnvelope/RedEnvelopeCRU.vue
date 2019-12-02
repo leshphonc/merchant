@@ -332,7 +332,6 @@ export default {
     },
     // 红包类型选择
     _pickEnvelopeType(data) {
-      console.log(data)
       this.formData.packet_type = data.value
       this._controlEnvelopeTypePicker()
     },
@@ -343,7 +342,6 @@ export default {
     },
     // 活动图片选择
     _pickPic(data) {
-      console.log(data)
       this.formData.pic = data[0].url
     },
     // 开始时间选择
@@ -361,12 +359,10 @@ export default {
       this.formData.province_id = data[0].value
       this.formData.city_id = data[1].value
       this.formData.area_id = data[2].value
-      console.log(data)
     },
     // 默认数据读取
     _readRedEnvelopeDetail(id) {
       this.readRedEnvelopeDetail(id).then(res => {
-        console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res[item]
@@ -378,7 +374,6 @@ export default {
       })
     },
     async _submit() {
-      console.log(this.formData)
       // 锁
       if (this.loading) return false
       // 验证表单
