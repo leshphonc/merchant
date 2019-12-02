@@ -229,7 +229,6 @@ export default {
       })
     },
     _behaviorOnLoad() {
-      console.log(111)
       this.getAccessUserBehaviorList({
         uid: this.lastUid,
         page: this.behaviorPage,

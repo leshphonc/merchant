@@ -455,7 +455,6 @@ export default {
           this.formData.seckill_open_time = new Date(res.seckill_open_time * 1000)
           this.formData.seckill_close_time = new Date(res.seckill_close_time * 1000)
         } else {
-          debugger
           this.formData.seckill_open_time = new Date(res.seckill_open_time * 1000)
           this.formData.seckill_close_time = new Date(res.seckill_close_time * 1000)
         }
