@@ -25,5 +25,10 @@ export default {
       path: 'buyersRecord',
       component: () => import('@/views/popularize/staffPromotion/BuyersRecord'),
     },
+    {
+      // 店员推广详情
+      path: 'promotionDetail/:id',
+      component: () => import('@/views/popularize/staffPromotion/promotionDetail'),
+    },
   ],
 }
