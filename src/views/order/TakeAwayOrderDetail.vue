@@ -283,7 +283,7 @@ export default {
             }
           },
         })
-        .catch(err => {
+        .catch(() => {
           this.loading = false
         })
     },

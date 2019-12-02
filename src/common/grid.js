@@ -81,6 +81,10 @@ const PopularizeGrid = {
   ],
 }
 
+if (process.env.VUE_APP_ENV === 'czg') {
+  PopularizeGrid.list.splice(4, 2)
+}
+
 const AllianceGrid = {
   title: '异业联盟',
   list: [

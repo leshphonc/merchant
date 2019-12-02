@@ -43,4 +43,5 @@ module.exports = {
       },
     },
   },
+  publicPath: './',
 }

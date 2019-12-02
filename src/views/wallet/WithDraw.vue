@@ -28,6 +28,7 @@
             is-link
             label="微信账号"
             placeholder="请选择微信账号"
+            readonly
             required
           ></van-field>
         </ValidationProvider>

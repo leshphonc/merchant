@@ -201,7 +201,7 @@ export default {
         .catch(() => {})
     },
     // 删除团购套餐
-    _deletePackage(id) {
+    _deletePackage() {
       this.$dialog
         .confirm({
           title: '删除',

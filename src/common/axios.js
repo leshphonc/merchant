@@ -36,6 +36,9 @@ axios.interceptors.response.use(
           forbidClick: true,
           duration: 1500,
           onClose: () => {
+            localStorage.removeItem('ticket')
+            localStorage.removeItem('merchant_global')
+            localStorage.removeItem('merchant_user')
             router.replace('/login')
           },
         })

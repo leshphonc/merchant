@@ -223,7 +223,7 @@ export default {
       this.showDetailEditor = !this.showDetailEditor
     },
     // 坐标选择
-    _pickCoordinate(lng, lat, address) {
+    _pickCoordinate(lng, lat) {
       this.updateMerchantInfo({
         long: lng,
         lat: lat,
