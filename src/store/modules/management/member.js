@@ -50,6 +50,34 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 获取商家基础会员卡信息
+  async getBasicMemberCard() {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getBasicMemberCard()
+      data ? resolve(data) : reject()
+    })
+  },
+  // 修改商家基础会员卡信息
+  async updateBasicMemberCard(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.updateBasicMemberCard(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 修改商家基础会员卡余额信息
+  async updateBasicMemberCardBalance(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.updateBasicMemberCardBalance(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 修改商家基础会员卡微信配置
+  async updateBasicMemberCardInWX(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.updateBasicMemberCardInWX(payload)
+      data ? resolve() : reject()
+    })
+  },
   // 获取领卡会员列表
   async getCollarCardMemberList(context, payload) {
     return new Promise(async (resolve, reject) => {
@@ -106,6 +134,27 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 创建优惠券
+  async createCoupon(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.createCoupon(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 修改优惠券
+  async updateCoupon(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.updateCoupon(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 获取优惠券详情
+  async getCouponDetail(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getCouponDetail(id)
+      data ? resolve(data) : reject()
+    })
+  },
   // 优惠券状态变更
   async changeCouponStatus(context, payload) {
     return new Promise(async (resolve, reject) => {
@@ -125,6 +174,34 @@ const actions = {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.writeOffCoupon(code)
       data ? resolve() : reject()
+    })
+  },
+  // 获取优惠券使用类别列表
+  async getCouponCategory() {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getCouponCategory()
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取优惠券使用类别二级分类
+  async getCouponSecondCategory(context, type) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getCouponSecondCategory(type)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取优惠券使用类别三级分类
+  async getCouponThirdCategory(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getCouponThirdCategory(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取优惠券颜色列表
+  async getCouponColorList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getCouponColorList()
+      data ? resolve(data) : reject()
     })
   },
 }

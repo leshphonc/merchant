@@ -9,9 +9,13 @@
         </van-cell>
         <img-cropper :confirm="_pickPic" :list="logoList" field="会员卡LOGO" title="会员卡LOGO"></img-cropper>
         <van-cell title="使用默认背景图">
-          <van-switch active-value="1" inactive-value="0" v-model="formData.useDefault"></van-switch>
+          <van-switch active-value="1" inactive-value="0" v-model="useDefault"></van-switch>
         </van-cell>
-        <img-cropper :confirm="_pickBG" :list="bgList" field="背景图" title="上传背景图"></img-cropper>
+        <img-cropper :confirm="_pickBG" :list="bgList" field="背景图" title="上传背景图" v-if="useDefault !== '1'"></img-cropper>
+        <van-cell @click="_controlBackGroundPopup" is-link title="默认背景图">
+          <img :src="defaultBg" alt class="default-bg" v-if="useDefault === '1' && defaultBg" />
+          <div v-else>请选择</div>
+        </van-cell>
         <van-field class="color-input" label="卡号文字颜色" type="color" v-model.trim="formData.numbercolor" />
         <ValidationProvider name="会员卡折扣" rules="required|numeric" slim v-slot="{ errors }">
           <van-field
@@ -111,10 +115,31 @@
         </ValidationProvider>
       </van-cell-group>
     </ValidationObserver>
+    <!-- 弹出层 -->
+    <!-- 背景图片 -->
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showBackGroundPopup">
+      <van-radio-group v-model="formData.bg">
+        <van-cell-group>
+          <van-cell
+            :key="item.url"
+            :title="`款式${index + 1}`"
+            @click="_pickBackGround(item)"
+            center
+            clickable
+            v-for="(item, index) in defaultBgList"
+          >
+            <img :src="item.img" alt slot="icon" />
+            <van-radio :name="item.url" slot="right-icon" />
+          </van-cell>
+        </van-cell-group>
+      </van-radio-group>
+      <van-button @click="_controlBackGroundPopup">关闭</van-button>
+    </van-popup>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import ImgCropper from '@/components/ImgCropper'
 export default {
   name: 'basicMemberCard',
@@ -132,6 +157,7 @@ export default {
       formData: {
         status: '0',
         logo: '',
+        bg: '',
         diybg: '',
         numbercolor: '#ffffff',
         discount: '',
@@ -151,6 +177,10 @@ export default {
       logoList: [],
       bgList: [],
       bannerList: [],
+      defaultBg: '',
+      defaultBgList: [],
+      showBackGroundPopup: false,
+      loading: false,
     }
   },
 
@@ -160,11 +190,50 @@ export default {
 
   created() {},
 
-  mounted() {},
+  mounted() {
+    this.getBasicMemberCard().then(res => {
+      console.log(res)
+      const keys = Object.keys(this.formData)
+      keys.forEach(item => {
+        this.formData[item] = res.card[item]
+      })
+      res.card.logo && (this.logoList = [{ url: res.card.logo }])
+      res.card.diybg && (this.bgList = [{ url: res.card.diybg }])
+      res.card.posters && (this.bannerList = [{ url: res.card.posters }])
+      if (res.card.diybg) {
+        this.useDefault = '0'
+      } else {
+        this.useDefault = '1'
+        this.defaultBg = require(`@/assets/image/${res.card.bg.substr(-13)}`)
+      }
+    })
+    const defaultBgList = []
+    for (let i = 1; i < 24; i++) {
+      if (i === 10) continue
+      if (i === 14) continue
+      if (i === 18) continue
+      let index = i
+      if (i < 10) index = '0' + i
+      defaultBgList.push({
+        url: `./static/images/card/card_bg${index}.png`,
+        img: require(`@/assets/image/card_bg${index}.png`),
+      })
+    }
+    this.defaultBgList = defaultBgList
+    console.log(defaultBgList)
+  },
 
   destroyed() {},
 
   methods: {
+    ...mapActions('member', ['getBasicMemberCard', 'updateBasicMemberCard']),
+    _controlBackGroundPopup() {
+      this.showBackGroundPopup = !this.showBackGroundPopup
+    },
+    _pickBackGround(item) {
+      this.defaultBg = item.img
+      this.formData.bg = item.url
+    },
     _pickPic(data) {
       this.formData.logo = data[0].url
     },
@@ -187,22 +256,24 @@ export default {
         })
       } else {
         this.loading = true
-        // this.createMemberCard(this.formData)
-        //   .then(() => {
-        //     this.$toast.success({
-        //       message: '操作成功',
-        //       forbidClick: true,
-        //       duration: 1500,
-        //       onClose: () => {
-        //         // 解锁
-        //         this.loading = false
-        //         this.$goBack()
-        //       },
-        //     })
-        //   })
-        //   .catch(() => {
-        //     this.loading = false
-        //   })
+        const params = JSON.parse(JSON.stringify(this.formData))
+        this.useDefault === '0' ? (params.bg = '') : (params.diybg = '')
+        this.updateBasicMemberCard(params)
+          .then(() => {
+            this.$toast.success({
+              message: '操作成功',
+              forbidClick: true,
+              duration: 1500,
+              onClose: () => {
+                // 解锁
+                this.loading = false
+                this.$goBack()
+              },
+            })
+          })
+          .catch(() => {
+            this.loading = false
+          })
       }
     },
   },
@@ -222,5 +293,24 @@ export default {
 .van-icon {
   vertical-align: -2px;
   margin-right: 4px;
+}
+
+.van-popup {
+  padding-bottom: 44px;
+  .van-button {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  img {
+    width: 200px;
+    height: 100px;
+    margin-right: 30px;
+  }
+}
+
+.default-bg {
+  width: 100px;
+  height: 60px;
 }
 </style>

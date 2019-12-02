@@ -31,6 +31,16 @@ export default {
       component: () => import('@/views/management/member/BasicMemberCard'),
     },
     {
+      // 商家基础会员卡余额管理
+      path: 'basicMemberCardBalance',
+      component: () => import('@/views/management/member/BasicMemberCardBalance'),
+    },
+    {
+      // 商家基础会员卡微信配置
+      path: 'basicMemberCardInWX',
+      component: () => import('@/views/management/member/BasicMemberCardInWX'),
+    },
+    {
       // 领卡会员列表
       path: 'collarCardMemberList',
       component: () => import('@/views/management/member/CollarCardMemberList'),
@@ -54,6 +64,11 @@ export default {
       // 领券会员列表
       path: 'collarCouponMemberList',
       component: () => import('@/views/management/member/CollarCouponMemberList'),
+    },
+    {
+      // 优惠券编辑
+      path: 'memberCouponCRU/:id?',
+      component: () => import('@/views/management/member/MemberCouponCRU'),
     },
   ],
 }

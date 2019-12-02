@@ -30,6 +30,7 @@
   <div>
     <ValidationProvider :name="startField" rules="required" slim v-slot="{ errors }">
       <van-field
+        :disabled="disabled"
         :error-message="errors[0]"
         :label="startLabel"
         :value="startTimeLabel"
@@ -44,6 +45,7 @@
     </ValidationProvider>
     <ValidationProvider :name="endField" rules="required" slim v-slot="{ errors }">
       <van-field
+        :disabled="disabled"
         :error-message="errors[0]"
         :label="endLabel"
         :value="endTimeLabel"
@@ -148,6 +150,7 @@ export default {
       type: Function,
       required: true,
     },
+    disabled: Boolean,
   },
 
   data() {
@@ -247,9 +250,11 @@ export default {
 
   methods: {
     _controlStartTimePicker() {
+      if (this.disabled) return
       this.showStartTimePicker = !this.showStartTimePicker
     },
     _controlEndTimePicker() {
+      if (this.disabled) return
       this.showEndTimePicker = !this.showEndTimePicker
     },
     _changeStartTime(picker) {
