@@ -70,5 +70,10 @@ export default {
       path: 'memberCouponCRU/:id?',
       component: () => import('@/views/management/member/MemberCouponCRU'),
     },
+    {
+      // 派发优惠券
+      path: 'memberCouponDistribute',
+      component: () => import('@/views/management/member/MemberCouponDistribute'),
+    },
   ],
 }

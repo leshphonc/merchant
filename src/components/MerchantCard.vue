@@ -91,7 +91,9 @@ export default {
         forbidClick: true,
         duration: 1000,
         onClose: () => {
-          window.localStorage.removeItem('ticket')
+          localStorage.removeItem('ticket')
+          localStorage.removeItem('merchant_global')
+          localStorage.removeItem('merchant_user')
         },
       })
     },

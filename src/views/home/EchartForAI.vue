@@ -23,6 +23,11 @@
     <div class="white-space"></div>
     <div class="white-space"></div>
     <v-chart :options="polar" autoresize ref="echart"></v-chart>
+    <van-row class="row-box" justify="space-around" type="flex">
+      <van-col span="11">广告订单</van-col>
+      <van-col @click="_goScreen" span="11">推广内容</van-col>
+    </van-row>
+    <div class="white-space"></div>
 
     <!-- 弹出层 -->
     <!-- 店铺筛选 -->
@@ -280,6 +285,9 @@ export default {
         this.echartData = res
       })
     },
+    _goScreen() {
+      this.$router.push('/smartScreen')
+    },
   },
 }
 </script>
@@ -289,5 +297,17 @@ export default {
   width: 100%;
   height: 180px;
   z-index: 1;
+}
+
+.row-box {
+  .van-col {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: @gray-deep-c;
+    background: @gray-light-c;
+  }
 }
 </style>

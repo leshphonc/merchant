@@ -334,7 +334,7 @@
           <van-cell-group title="图文消息">
             <van-button @click="_addImageText" class="add-btn" icon="plus">新增</van-button>
           </van-cell-group>
-          <van-cell-group :key="index" v-for="(item, index) in formData.wx_image">
+          <van-cell-group :key="index" v-for="(item, index) in imageText">
             <div slot="title">
               {{ `图文消息${index + 1}` }}
               <van-button
@@ -342,13 +342,14 @@
                 class="delete-btn"
                 size="small"
                 type="danger"
-                v-if="formData.wx_image.length > 1"
+                v-if="imageText.length > 1"
               >删除</van-button>
             </div>
             <img-cropper
               :confirm="_pickImageText"
               :field="`图文${index + 1}`"
-              :list="imageText[index]"
+              :index="index"
+              :list="imageText[index].image_url"
               :title="`图文${index + 1}`"
             ></img-cropper>
             <ValidationProvider :name="`图文描述${index + 1}`" rules="required" slim v-slot="{ errors }">
@@ -357,7 +358,7 @@
                 :label="`图文描述${index + 1}`"
                 placeholder="请填写图文描述"
                 required
-                v-model.trim="formData.wx_image[index].text"
+                v-model.trim="imageText[index].text"
               />
             </ValidationProvider>
           </van-cell-group>
@@ -482,7 +483,7 @@ export default {
       formData: {
         name: '',
         img: '',
-        use_with_card: '',
+        use_with_card: '0',
         store_id: [],
         auto_get: '0',
         is_show: '0',
@@ -504,7 +505,7 @@ export default {
         end_time: '',
         effe_start_time: '',
         effe_end_time: '',
-        status: '',
+        status: '0',
         platform: [],
         sync_wx: '',
         color: '',
@@ -682,13 +683,13 @@ export default {
       this.formData.img = data[0].url
     },
     _pickImageText(data, index) {
-      console.log(data)
-      console.log(index)
+      this.imageText[index].image_url = [{ url: data[0].url }]
     },
     _pickAutoReceive(data) {
       this.formData.auto_get = data.value
       this._controlAutoReceivePicker()
     },
+    // 开始时间与结束时间选择
     _pickStartTime(data) {
       this.formData.start_time = this.$moment(data).format('YYYY-MM-DD')
     },
@@ -701,14 +702,17 @@ export default {
     _pickEffectEndTime(data) {
       this.formData.effe_end_time = this.$moment(data).format('YYYY-MM-DD')
     },
+    // 选择颜色
     _pickColor(name) {
       this.formData.color = name
     },
+    // 添加一条图文
     _addImageText() {
-      this.formData.wx_image.push({ image_url: '', text: '' })
+      this.imageText.push({ image_url: [], text: '' })
     },
+    // 删除一条图文
     _deleteImageText(index) {
-      this.formData.wx_image.splice(index, 1)
+      this.imageText.splice(index, 1)
     },
     // 读取店铺列表
     _getStoreList() {
@@ -721,15 +725,17 @@ export default {
       const item = this.storeList.find(item => item.value === id)
       return item && `${item.label} - ${item.adress}`
     },
-    // checkbox选中状态切换
+    // 店铺checkbox
     _toggle(index, flag) {
       // 判断是否选可选
       !flag && this.$refs.checkboxes[index].toggle()
     },
+    // 使用平台checkbox
     _togglePlatForm(ref) {
       const { id } = this.$route.params
       !id && this.$refs[ref].toggle()
     },
+    // 服务类型checkbox
     _toggleService(index) {
       this.$refs.checkboxesS[index].toggle()
     },
@@ -754,7 +760,25 @@ export default {
           this.formData[item] = res.coupon[item]
         })
         this.imgList = [{ url: res.coupon.img }]
-
+        this.getCouponSecondCategory(res.coupon.cate_name).then(res => {
+          console.log(res)
+          if (res) {
+            this.secondCategoryColumns = res
+          } else {
+            this.secondCategoryColumns = []
+          }
+        })
+        res.coupon.card_id &&
+          this.getCouponThirdCategory({
+            order_type: res.coupon.cate_name,
+            order_cate: res.coupon.cat_id,
+          }).then(res => {
+            if (res) {
+              this.thirdCategoryColumns = res
+            } else {
+              this.thirdCategoryColumns = []
+            }
+          })
         console.log(res)
       })
     },
@@ -771,6 +795,7 @@ export default {
         this.categoryColumns = arr
       })
     },
+    // 获取优惠券颜色列表
     _getCouponColorList() {
       this.getCouponColorList().then(res => {
         this.colorList = res
@@ -796,6 +821,12 @@ export default {
           method = 'updateCoupon'
           params.coupon_id = id
         }
+        params.wx_image = this.imageText.map(item => {
+          return {
+            image_url: item.image_url[0].url,
+            text: item.text,
+          }
+        })
         console.log(params)
         this[method](params)
           .then(() => {

@@ -299,6 +299,7 @@ export default {
           this.$router.push('/member/memberCouponCRU')
           break
         case 1:
+          this.$router.push('/member/memberCouponDistribute')
           break
         case 2:
           this._scanCodeWriteOff()

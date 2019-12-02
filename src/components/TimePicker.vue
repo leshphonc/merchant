@@ -169,6 +169,9 @@ export default {
     startTimeLabel() {
       if (this.showStartTimeLabel) {
         if (this.type !== 'time') {
+          if (this.type === 'datetime') {
+            return this.$moment(this.startTime).format('YYYY-MM-DD HH:mm')
+          }
           return this.$moment(this.startTime).format('YYYY-MM-DD')
         }
         return this.startTime
@@ -180,6 +183,9 @@ export default {
     endTimeLabel() {
       if (this.showEndTimeLabel) {
         if (this.type !== 'time') {
+          if (this.type === 'datetime') {
+            return this.$moment(this.endTime).format('YYYY-MM-DD HH:mm')
+          }
           return this.$moment(this.endTime).format('YYYY-MM-DD')
         }
         return this.endTime

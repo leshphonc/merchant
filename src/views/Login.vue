@@ -42,7 +42,17 @@ export default {
 
   created() {},
 
-  mounted() {},
+  mounted() {
+    const ticket = localStorage.getItem('ticket')
+    if (ticket) {
+      this.$router.push('/')
+      this.$toast({
+        duration: 800, // 持续展示 toast
+        forbidClick: true,
+        message: '欢迎回来',
+      })
+    }
+  },
 
   destroyed() {},
 

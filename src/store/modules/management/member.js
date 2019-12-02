@@ -204,6 +204,55 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 获取优惠券分组派发的分组列表
+  async getCoupoonGroupList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getCoupoonGroupList()
+      data ? resolve(data) : reject()
+    })
+  },
+  // 根据分组查询可分配的优惠券
+  async getCouponInMemberGroup(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getCouponInMemberGroup(id)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 分组派发优惠券
+  async distributeGroupCoupon(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.distributeGroupCoupon(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 查询个人派发用户
+  async searchUserList(context, keyword) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.searchUserList(keyword)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 派发个人优惠券
+  async distributeSinglePersonCoupon(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.distributeSinglePersonCoupon(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 获取全部派发分组
+  async getAllCouponGroup() {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getAllCouponGroup()
+      data ? resolve(data) : reject()
+    })
+  },
+  // 优惠券派发记录
+  async getCouponDistributeRecord(context, page) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getCouponDistributeRecord(page)
+      data ? resolve(data) : reject()
+    })
+  },
 }
 
 // mutations

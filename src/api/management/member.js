@@ -203,4 +203,45 @@ export default {
     axios.post('/appapi.php?c=Coupon&a=getColorList', {
       ticket: localStorage.getItem('ticket'),
     }),
+  // 获取优惠券分组派发的分组列表
+  getCoupoonGroupList: () =>
+    axios.post('/appapi.php?c=Coupon&a=getGroupList', {
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 根据分组查询可分配的优惠券
+  getCouponInMemberGroup: id =>
+    axios.post('/appapi.php?c=Coupon&a=getCouponByGroup', {
+      card_group_id: id,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 分组派发优惠券
+  distributeGroupCoupon: payload =>
+    axios.post('/appapi.php?c=Coupon&a=send', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 查询个人派发用户
+  searchUserList: keyword =>
+    axios.post('/appapi.php?c=Coupon&a=getUser', {
+      search_val: keyword,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 派发个人优惠券
+  distributeSinglePersonCoupon: payload =>
+    axios.post('/appapi.php?c=Coupon&a=sendOne', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取全部派发分组
+  getAllCouponGroup: () =>
+    axios.post('/appapi.php?c=Coupon&a=sendAllCouponList', {
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 优惠券派发记录
+  getCouponDistributeRecord: page =>
+    axios.post('/appapi.php?c=Coupon&a=send_history', {
+      page,
+      size: 10,
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

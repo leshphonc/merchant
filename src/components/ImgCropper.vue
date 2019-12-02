@@ -178,7 +178,7 @@ export default {
       this.showPopup = false
     },
     _deletePic(data) {
-      this.delete(data)
+      this.delete && this.delete(data)
     },
   },
 }
