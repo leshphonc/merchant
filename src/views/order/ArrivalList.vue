@@ -110,7 +110,6 @@ export default {
     },
     _onRefresh() {
       this.getArrivalList({
-        page: 1,
         store_id: this.store,
         stime: this.stime,
         etime: this.etime,

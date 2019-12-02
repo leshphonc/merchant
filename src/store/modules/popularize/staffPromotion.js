@@ -15,6 +15,20 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 获取扫码记录
+  async getPromotionStatistics() {
+    return new Promise(async (resolve, reject) => {
+      const data = await staffPromotionAPI.getPromotionStatistics()
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取扫码记录
+  async getPromotionStatisticsStaffList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await staffPromotionAPI.getPromotionStatisticsStaffList()
+      data ? resolve(data) : reject()
+    })
+  },
 }
 
 // mutations
