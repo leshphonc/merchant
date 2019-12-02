@@ -31,4 +31,31 @@ export default {
     axios.post('/appapi.php?c=Merchantapp&a=get_all_category', {
       ticket: localStorage.getItem('ticket'),
     }),
+  // 店铺资质审核
+  storeFroontQualificationAudit: payload =>
+    axios.post('/appapi.php?c=Merchantapp&type=merchantstore&a=auth_edit', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 读取店铺下绑定的电商商品列表
+  getStoreFrontBindECommerceList: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=selBindGoods', {
+      ...payload,
+      size: 10,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 读取店铺下绑定的服务商品列表
+  getStoreFrontBindServiceList: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=getStoreBindPro', {
+      ...payload,
+      size: 10,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 读取店铺下绑定的套餐商品列表
+  getStoreFrontBindPackageList: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=getStoreBindMeal', {
+      ...payload,
+      size: 10,
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

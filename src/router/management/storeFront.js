@@ -15,5 +15,10 @@ export default {
       path: 'storeFrontCRU/:id?',
       component: () => import('@/views/management/storeFront/StoreFrontCRU'),
     },
+    {
+      // 商铺商品管理
+      path: 'storeFrontCommodityManagement/:id',
+      component: () => import('@/views/management/storeFront/StoreFrontCommodityManagement'),
+    },
   ],
 }

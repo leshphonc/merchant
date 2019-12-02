@@ -43,6 +43,34 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 店铺资质审核
+  async storeFroontQualificationAudit(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.storeFroontQualificationAudit(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 读取店铺下绑定的电商商品列表
+  async getStoreFrontBindECommerceList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.getStoreFrontBindECommerceList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 读取店铺下绑定的服务商品列表
+  async getStoreFrontBindServiceList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.getStoreFrontBindServiceList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 读取店铺下绑定的套餐商品列表
+  async getStoreFrontBindPackageList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.getStoreFrontBindPackageList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
 }
 
 // mutations

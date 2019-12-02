@@ -1,6 +1,11 @@
 import axios from 'axios'
 
 export default {
+  // 获取统计数据
+  getMemberDashboard: () =>
+    axios.post('/appapi.php?c=Merchantapp&a=memberStatistics', {
+      ticket: localStorage.getItem('ticket'),
+    }),
   // 获取在线访问用户列表
   getAccessUserList: payload =>
     axios.get('/appapi.php?c=Merchantapp&a=visit_list', {

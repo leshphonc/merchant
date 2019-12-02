@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="_createStoreFront" fixed left-arrow right-text="创建店铺" title="店铺管理"></van-nav-bar>
+    <van-nav-bar
+      @click-left="$goBack"
+      @click-right="() => $router.push('/storeFront/storeFrontCRU')"
+      fixed
+      left-arrow
+      right-text="创建店铺"
+      title="店铺管理"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <div :key="i" v-for="(item, i) in list">
       <van-panel>
@@ -15,6 +22,8 @@
                 <van-tag type="success" v-if="item.have_meal === '1'">餐饮</van-tag>
                 <van-tag type="danger" v-if="item.have_hotel === '1'">酒店</van-tag>
                 <van-tag type="warning" v-if="item.have_auto_parts === '1'">汽配</van-tag>
+
+                <van-tag :type="auth[item.auth].type">{{ auth[item.auth].label }}</van-tag>
               </div>
             </div>
           </van-col>
@@ -23,25 +32,42 @@
           </van-col>
         </van-row>
         <div class="footer" slot="footer">
-          <van-button size="small" type="primary">资质审核</van-button>
+          <van-button
+            @click="_controlAuthPopup(item.store_id)"
+            size="small"
+            type="primary"
+            v-if="item.auth === '0' || item.auth === '2' || item.auth === '5'"
+          >资质审核</van-button>
+          <van-button :to="`/storefront/storeFrontCommodityManagement/${item.store_id}`" size="small" type="primary">商品</van-button>
           <van-button size="small" type="primary">业务信息</van-button>
           <van-button :to="`/storefront/storefrontCRU/${item.store_id}`" size="small" type="primary">基础信息</van-button>
         </div>
       </van-panel>
       <div class="white-space"></div>
     </div>
+    <!-- 弹出层 -->
+    <!-- 资质审核 -->
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showAuthPopup">
+      <ValidationObserver ref="observer" slim v-slot="{ invalid }">
+        <img-cropper :confirm="_pickPic" :count="5" field="资质图片" title="资质图片"></img-cropper>
+      </ValidationObserver>
+      <van-button @click="_submit" class="auth-btn" type="primary">提交审核</van-button>
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import ImgCropper from '@/components/ImgCropper'
 
 export default {
   name: 'storeFrontList',
 
   mixins: [],
 
-  components: {},
+  components: {
+    ImgCropper,
+  },
 
   props: {},
 
@@ -62,6 +88,36 @@ export default {
           color: '#dd4a68',
         },
       },
+      auth: {
+        0: {
+          label: '资质未提交',
+          type: 'warning',
+        },
+        1: {
+          label: '资质审核中',
+          type: 'primary',
+        },
+        2: {
+          label: '审核拒绝',
+          type: 'danger',
+        },
+        3: {
+          label: '审核通过',
+          type: 'success',
+        },
+        4: {
+          label: '资质审核中',
+          type: 'primary',
+        },
+        5: {
+          label: '审核驳回',
+          type: 'danger',
+        },
+      },
+      showAuthPopup: false,
+      loading: false,
+      auth_files: [],
+      last_id: '',
     }
   },
 
@@ -72,21 +128,59 @@ export default {
   created() {},
 
   mounted() {
-    this._getStoreFrontList()
+    this.getStoreFrontList().then(res => {
+      this.list = res
+    })
   },
 
   destroyed() {},
 
   methods: {
-    ...mapActions('storeFront', ['getStoreFrontList']),
+    ...mapActions('storeFront', ['getStoreFrontList', 'storeFroontQualificationAudit']),
     // 创建店铺
-    _createStoreFront() {
-      this.$router.push('/storeFront/storeFrontCRU')
+    _controlAuthPopup(id) {
+      this.last_id = id
+      this.showAuthPopup = !this.showAuthPopup
     },
-    _getStoreFrontList() {
-      this.getStoreFrontList().then(res => {
-        this.list = res
-      })
+    _pickPic(data) {
+      this.auth_files = data
+    },
+    // 提交数据
+    async _submit() {
+      // 锁
+      if (this.loading) return
+      // 验证表单
+      const isValid = await this.$refs.observer.validate()
+      console.log(this.formData)
+      // 表单不完整
+      if (!isValid) {
+        this.$notify({
+          type: 'warning',
+          message: '请填写完整信息',
+        })
+      } else {
+        // 加锁
+        this.loading = true
+        this.storeFroontQualificationAudit({
+          store_id: this.last_id,
+          auth_files: this.auth_files.map(item => item.url),
+        })
+          .then(() => {
+            this.$toast.success({
+              message: '操作成功',
+              forbidClick: true,
+              duration: 1500,
+              onClose: () => {
+                // 解锁
+                this.loading = false
+                this._controlAuthPopup()
+              },
+            })
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      }
     },
   },
 }
@@ -124,5 +218,10 @@ export default {
 
 .footer {
   text-align: right;
+}
+
+.auth-btn {
+  width: 100%;
+  margin-top: 40px;
 }
 </style>

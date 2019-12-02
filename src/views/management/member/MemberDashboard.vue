@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'memberDashboard',
 
@@ -65,26 +67,26 @@ export default {
         {
           icon: require('@/assets/image/access_user.png'),
           title: '访问用户',
-          count: '123',
+          count: '0',
           url: '/member/accessUserList',
         },
         {
           icon: require('@/assets/image/arrival_shop.png'),
           title: '到店用户',
-          count: '123',
+          count: '',
         },
       ],
       grid2: [
         {
           icon: require('@/assets/image/consumer_users.png'),
           title: '消费用户',
-          count: '123',
+          count: '0',
           url: '/member/consumeUserList',
         },
         {
           icon: require('@/assets/image/binding_fans.png'),
           title: '绑定粉丝',
-          count: '123',
+          count: '0',
           url: '/member/bindingFansList',
         },
       ],
@@ -92,13 +94,13 @@ export default {
         {
           icon: require('@/assets/image/collar_card_member.png'),
           title: '领卡会员',
-          count: '123',
+          count: '0',
           url: '/member/collarCardMemberList',
         },
         {
           icon: require('@/assets/image/coupon_member.png'),
           title: '领券会员',
-          count: '123',
+          count: '0',
           url: '/member/collarCouponMemberList',
         },
       ],
@@ -111,11 +113,20 @@ export default {
 
   created() {},
 
-  mounted() {},
+  mounted() {
+    this.getMemberDashboard().then(res => {
+      this.grid1[0].count = res.online_user
+      this.grid2[0].count = res.sale_user
+      this.grid2[1].count = res.bind_fans
+      this.grid3[0].count = res.card_user
+      this.grid3[1].count = res.coupon_user
+    })
+  },
 
   destroyed() {},
 
   methods: {
+    ...mapActions('member', ['getMemberDashboard']),
     _goDetail(url) {
       this.$router.push(url)
     },

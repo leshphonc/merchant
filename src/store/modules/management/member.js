@@ -8,6 +8,13 @@ const getters = {}
 
 // actions
 const actions = {
+  // 获取统计数据
+  async getMemberDashboard() {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getMemberDashboard()
+      data ? resolve(data) : reject()
+    })
+  },
   // 获取在线访问用户列表
   async getAccessUserList(context, payload) {
     return new Promise(async (resolve, reject) => {

@@ -2,7 +2,7 @@ const pxtoviewport = require('postcss-px-to-viewport')
 
 module.exports = {
   devServer: {
-    proxy: 'https://www.czg365.cn',
+    proxy: 'http://cs.7youke.com',
   },
   css: {
     loaderOptions: {
