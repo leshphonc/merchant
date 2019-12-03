@@ -16,6 +16,9 @@
           <div slot="tags">
             <van-tag plain type="danger">{{ item.freight_type === '1' ? '运费单独计算' : '运费最大值' }}</van-tag>
           </div>
+          <div slot="footer">
+            <van-button @click="_unbind(item.goods_id)" size="mini" type="danger">解绑</van-button>
+          </div>
         </van-card>
       </van-list>
     </van-pull-refresh>
@@ -58,7 +61,7 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('storeFront', ['getStoreFrontBindECommerceList']),
+    ...mapActions('storeFront', ['getStoreFrontBindECommerceList', 'unBindECommerce']),
     // 刷新电商商品列表
     _onRefresh() {
       const { id } = this.$route.params
@@ -86,6 +89,30 @@ export default {
         }
         this.list.push(...res)
       })
+    },
+    _unbind(gid) {
+      if (this.loading) return
+      this.loading = true
+      const { id } = this.$route.params
+      this.unBindECommerce({
+        store_id: id,
+        goods_id: gid,
+      })
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              // 解锁
+              this._onRefresh()
+              this.loading = false
+            },
+          })
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
   },
 }

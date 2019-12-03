@@ -3,7 +3,7 @@
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
       <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
         <van-card
-          :key="item.goods_id"
+          :key="item.id"
           :num="item.stock_num === '-1' ? '∞' : item.stock_num"
           :price="item.old_price"
           :tag="item.payment_status === '1' ? '定金' : null"
@@ -30,6 +30,9 @@
             <div v-if="item.payment_status === '1'">定金：¥{{ item.payment_money }}</div>
             <div>预约开始: {{ $moment(item.start_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
             <div>预约结束: {{ $moment(item.start_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
+          </div>
+          <div slot="footer">
+            <van-button @click="_unbind(item.id)" size="mini" type="danger">解绑</van-button>
           </div>
         </van-card>
       </van-list>
@@ -74,7 +77,7 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('storeFront', ['getStoreFrontBindServiceList']),
+    ...mapActions('storeFront', ['getStoreFrontBindServiceList', 'unBindService']),
     // 异步更新服务商品数据
     _onLoad() {
       const { id } = this.$route.params
@@ -102,6 +105,30 @@ export default {
         this.list = res
         this.refreshing = false
       })
+    },
+    _unbind(gid) {
+      if (this.loading) return
+      this.loading = true
+      const { id } = this.$route.params
+      this.unBindService({
+        store_id: id,
+        id: gid,
+      })
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              // 解锁
+              this._onRefresh()
+              this.loading = false
+            },
+          })
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
   },
 }

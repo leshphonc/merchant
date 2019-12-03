@@ -20,5 +20,25 @@ export default {
       path: 'storeFrontCommodityManagement/:id',
       component: () => import('@/views/management/storeFront/StoreFrontCommodityManagement'),
     },
+    {
+      // 商铺业务信息配置
+      path: 'storeFrontBusiness/:id',
+      component: () => import('@/views/management/storeFront/StoreFrontBusiness'),
+    },
+    {
+      // 商铺电商配置编辑
+      path: 'eCommerceSetting/:id',
+      component: () => import('@/views/management/storeFront/components/ECommerceSetting'),
+    },
+    {
+      // 商铺电商优惠编辑
+      path: 'eCommerceSettingPreferential/:id',
+      component: () => import('@/views/management/storeFront/components/ECommerceSettingPreferential'),
+    },
+    {
+      // 商铺服务配置
+      path: 'serviceSetting/:id',
+      component: () => import('@/views/management/storeFront/components/ServiceSetting'),
+    },
   ],
 }

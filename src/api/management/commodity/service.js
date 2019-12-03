@@ -5,6 +5,7 @@ export default {
   getServiceList: page =>
     axios.post('/appapi.php?c=SpaceMerchant&a=selProList', {
       page,
+      size: 10,
       ticket: localStorage.getItem('ticket'),
     }),
   // 创建服务商品

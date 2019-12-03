@@ -49,7 +49,7 @@ const PopularizeGrid = {
       disable: require('../assets/image/jpgl_gray.png'),
     },
     {
-      name: '全民分销',
+      name: '推广分佣',
       path: '/reward',
       enable: require('../assets/image/tgfy2.png'),
       disable: require('../assets/image/qmfx_gray.png'),

@@ -23,7 +23,7 @@
             <van-button :to="`/commodity/packageCRU/${item.meal_id}`" size="small" v-if="!item.type">编辑</van-button>
           </div>
           <div slot="footer" v-else>
-            <van-button :to="`/reward/packageReward/${item.meal_id}`" size="small" type="primary">佣金分销设置</van-button>
+            <van-button :to="`/reward/packageReward/${item.meal_id}`" size="small" type="primary">推广分佣设置</van-button>
           </div>
         </van-card>
       </van-list>

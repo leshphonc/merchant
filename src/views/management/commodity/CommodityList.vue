@@ -2,7 +2,7 @@
   <div>
     <van-nav-bar
       :right-text="$route.fullPath === '/commodity' ? rightText : ''"
-      :title="$route.fullPath === '/commodity' ? '商品管理' : '佣金分销管理'"
+      :title="$route.fullPath === '/commodity' ? '商品管理' : '推广分佣管理'"
       @click-left="$goBack"
       @click-right="_createCommodity"
       fixed

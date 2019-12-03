@@ -39,7 +39,7 @@
             v-if="item.auth === '0' || item.auth === '2' || item.auth === '5'"
           >资质审核</van-button>
           <van-button :to="`/storefront/storeFrontCommodityManagement/${item.store_id}`" size="small" type="primary">商品</van-button>
-          <van-button size="small" type="primary">业务信息</van-button>
+          <van-button :to="`/storefront/storeFrontBusiness/${item.store_id}`" size="small" type="primary">业务信息</van-button>
           <van-button :to="`/storefront/storefrontCRU/${item.store_id}`" size="small" type="primary">基础信息</van-button>
         </div>
       </van-panel>
@@ -128,9 +128,7 @@ export default {
   created() {},
 
   mounted() {
-    this.getStoreFrontList().then(res => {
-      this.list = res
-    })
+    this._getStoreFrontList()
   },
 
   destroyed() {},
@@ -144,6 +142,11 @@ export default {
     },
     _pickPic(data) {
       this.auth_files = data
+    },
+    _getStoreFrontList() {
+      this.getStoreFrontList().then(res => {
+        this.list = res
+      })
     },
     // 提交数据
     async _submit() {
@@ -172,6 +175,7 @@ export default {
               onClose: () => {
                 // 解锁
                 this.loading = false
+                this._getStoreFrontList()
                 this._controlAuthPopup()
               },
             })

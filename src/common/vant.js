@@ -33,6 +33,7 @@ import {
   Collapse,
   CollapseItem,
   Divider,
+  ImagePreview,
   Lazyload,
   List,
   Panel,
@@ -49,6 +50,7 @@ import {
   Tabs,
   Tabbar,
   TabbarItem,
+  TreeSelect,
   Area,
   Card,
   CouponCell,
@@ -82,6 +84,7 @@ Vue.use(SwipeCell)
 Vue.use(Toast)
 Vue.use(Collapse).use(CollapseItem)
 Vue.use(Divider)
+Vue.use(ImagePreview)
 Vue.use(Lazyload)
 Vue.use(List)
 Vue.use(Panel)
@@ -93,6 +96,7 @@ Vue.use(NavBar)
 Vue.use(Sidebar).use(SidebarItem)
 Vue.use(Tab).use(Tabs)
 Vue.use(Tabbar).use(TabbarItem)
+Vue.use(TreeSelect)
 Vue.use(Area)
 Vue.use(Card)
 Vue.use(CouponCell)

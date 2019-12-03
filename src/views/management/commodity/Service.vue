@@ -39,7 +39,7 @@
               <van-button :to="`/commodity/ServiceCRU/${item.appoint_id}`" size="small">编辑</van-button>
             </div>
             <div slot="footer" v-else>
-              <van-button :to="`/reward/serviceReward/${item.appoint_id}`" size="small" type="primary">佣金分销设置</van-button>
+              <van-button :to="`/reward/serviceReward/${item.appoint_id}`" size="small" type="primary">推广分佣设置</van-button>
             </div>
           </van-card>
         </van-list>

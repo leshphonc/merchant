@@ -20,7 +20,7 @@
     index<Number>：可存入外面传入的index，用于父组件数据处理，如果传入，则放入confirm第二个参数返回
     
     示例：
-    <img-cropper :confirm="_pickPic" :list="pic" field="商品图片" title="商品图片"></img-cropper>
+    <img-cropper :confirm="_pickPic" :list="picList" field="商品图片" title="商品图片"></img-cropper>
 -->
 <template>
   <div>

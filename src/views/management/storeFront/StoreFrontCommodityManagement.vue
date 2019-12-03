@@ -6,7 +6,7 @@
       fixed
       left-arrow
       right-text="添加"
-      title="店铺管理"
+      title="店铺下商品管理"
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-tabs :offset-top="offsetTop" sticky v-model="active">
@@ -23,31 +23,94 @@
     <!-- 弹出层 -->
     <!-- 绑定产品列表 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showCommodityPopup">
-      <!-- <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
-        <van-card
-          :key="item.goods_id"
-          :num="item.stock_num === '-1' ? '∞' : item.stock_num - item.sell_count"
-          :origin-price="item.old_price"
-          :price="item.price"
-          :tag="item.statusstr"
-          :thumb="item.list_pic"
-          :title="item.s_name"
-          lazy-load
-          v-for="item in list"
-        >
-          <div slot="tags">
-            <van-tag plain type="danger">{{ item.freight_type === '1' ? '运费单独计算' : '运费最大值' }}</van-tag>
-          </div>
-        </van-card>
-      </van-list> -->
+      <van-tabs sticky>
+        <van-tab title="电商">
+          <!-- 电商 -->
+          <van-list
+            :finished="eFinished"
+            :finished-text="eFinishText"
+            :immediate-check="false"
+            @load="_eOnLoad"
+            v-model="loading"
+          >
+            <van-checkbox-group v-model="eResult">
+              <van-cell-group>
+                <van-cell
+                  :icon="item.list_pic"
+                  :key="item.goods_id"
+                  :title="item.name"
+                  @click="toggleE(index)"
+                  clickable
+                  v-for="(item, index) in eList"
+                >
+                  <van-checkbox :name="item.goods_id" ref="checkboxesE" slot="right-icon" />
+                </van-cell>
+              </van-cell-group>
+            </van-checkbox-group>
+          </van-list>
+        </van-tab>
+        <van-tab title="服务">
+          <!-- 服务 -->
+          <van-list
+            :finished="sFinished"
+            :finished-text="sFinishText"
+            :immediate-check="false"
+            @load="_sOnLoad"
+            v-model="loading"
+          >
+            <van-checkbox-group v-model="sResult">
+              <van-cell-group>
+                <van-cell
+                  :icon="item.pic"
+                  :key="item.appoint_id"
+                  :title="item.appoint_name"
+                  @click="toggleS(index)"
+                  clickable
+                  v-for="(item, index) in sList"
+                >
+                  <van-checkbox :name="item.appoint_id" ref="checkboxesS" slot="right-icon" />
+                </van-cell>
+              </van-cell-group>
+            </van-checkbox-group>
+          </van-list>
+        </van-tab>
+        <van-tab title="套餐">
+          <!-- 套餐 -->
+          <van-list
+            :finished="pFinished"
+            :finished-text="pFinishText"
+            :immediate-check="false"
+            @load="_pOnLoad"
+            v-model="loading"
+          >
+            <van-checkbox-group v-model="pResult">
+              <van-cell-group>
+                <van-cell
+                  :icon="item.pic"
+                  :key="item.meal_id"
+                  :title="item.meal_name"
+                  @click="toggleP(index)"
+                  clickable
+                  v-for="(item, index) in pList"
+                >
+                  <van-checkbox :name="item.meal_id" ref="checkboxesP" slot="right-icon" />
+                </van-cell>
+              </van-cell-group>
+            </van-checkbox-group>
+          </van-list>
+        </van-tab>
+      </van-tabs>
+      <van-button @click="_controlCommodityPopup" class="close-btn">关闭</van-button>
+      <van-button @click="_submit" class="add-btn" type="primary">加入店铺</van-button>
     </van-popup>
   </div>
 </template>
 
 <script>
-import ECommerceList from './components/ECommerceList'
-import ServiceList from './components/ServiceList'
-import PackageList from './components/PackageList'
+import { mapActions } from 'vuex'
+import ECommerceList from './components/ECommerceBindList'
+import ServiceList from './components/ServiceBindList'
+import PackageList from './components/PackageBindList'
 
 export default {
   name: 'storeFrontCommodityManagement',
@@ -66,7 +129,19 @@ export default {
     return {
       active: 0,
       showCommodityPopup: false,
-      finished: false,
+      eList: [],
+      ePage: 1,
+      eFinished: false,
+      eResult: [],
+      sList: [],
+      sPage: 1,
+      sFinished: false,
+      sResult: [],
+      pList: [],
+      pPage: 1,
+      pFinished: false,
+      pResult: [],
+      loading: false,
     }
   },
 
@@ -74,8 +149,14 @@ export default {
     offsetTop() {
       return (46 / 375) * document.body.clientWidth
     },
-    finishText() {
-      return this.list.length ? '没有更多了' : '暂无商品'
+    eFinishText() {
+      return this.eList.length ? '没有更多了' : '暂无商品'
+    },
+    sFinishText() {
+      return this.sList.length ? '没有更多了' : '暂无商品'
+    },
+    pFinishText() {
+      return this.pList.length ? '没有更多了' : '暂无商品'
     },
   },
 
@@ -88,26 +169,179 @@ export default {
   destroyed() {},
 
   methods: {
+    ...mapActions('storeFront', [
+      'getStoreFrontUnBindECommerceList',
+      'getStoreFrontUnBindServiceList',
+      'getStoreFrontUnBindPackageList',
+      'bindECommerceToStoreFront',
+      'bindServiceToStoreFront',
+      'bindPackageToStoreFront',
+    ]),
     _controlCommodityPopup() {
       this.showCommodityPopup = !this.showCommodityPopup
+      this._eOnRefresh()
+      this._sOnRefresh()
+      this._pOnRefresh()
     },
-    _onLoad() {
+    _eOnRefresh() {
       const { id } = this.$route.params
-      this.getStoreFrontBindECommerceList({
+      this.getStoreFrontUnBindECommerceList({
         store_id: id,
-        page: this.page,
+        page: 1,
+      }).then(res => {
+        this.ePage = 2
+        this.eList = res
+      })
+    },
+    _eOnLoad() {
+      const { id } = this.$route.params
+      this.getStoreFrontUnBindECommerceList({
+        store_id: id,
+        page: this.ePage,
       }).then(res => {
         this.loading = false
         if (res.length < 10) {
-          this.finished = true
+          this.eFinished = true
         } else {
-          this.page += 1
+          this.ePage += 1
         }
-        this.list.push(...res)
+        this.eList.push(...res)
       })
+    },
+    toggleE(index) {
+      this.$refs.checkboxesE[index].toggle()
+    },
+    _sOnRefresh() {
+      const { id } = this.$route.params
+      this.getStoreFrontUnBindServiceList({
+        store_id: id,
+        page: 1,
+      }).then(res => {
+        this.sPage = 2
+        this.sList = res
+      })
+    },
+    _sOnLoad() {
+      const { id } = this.$route.params
+      this.getStoreFrontUnBindServiceList({
+        store_id: id,
+        page: this.sPage,
+      }).then(res => {
+        this.loading = false
+        if (res.length < 10) {
+          this.sFinished = true
+        } else {
+          this.sPage += 1
+        }
+        this.sList.push(...res)
+      })
+    },
+    toggleS(index) {
+      this.$refs.checkboxesS[index].toggle()
+    },
+    _pOnRefresh() {
+      const { id } = this.$route.params
+      this.getStoreFrontUnBindPackageList({
+        store_id: id,
+        page: 1,
+      }).then(res => {
+        this.pPage = 2
+        this.pList = res
+      })
+    },
+    _pOnLoad() {
+      const { id } = this.$route.params
+      this.getStoreFrontUnBindPackageList({
+        store_id: id,
+        page: this.pPage,
+      }).then(res => {
+        this.loading = false
+        if (res.length < 10) {
+          this.pFinished = true
+        } else {
+          this.pPage += 1
+        }
+        this.pList.push(...res)
+      })
+    },
+    toggleP(index) {
+      this.$refs.checkboxesP[index].toggle()
+    },
+    _submit() {
+      if (!this.eResult.length && !this.sResult.length && !this.pResult.length) return
+      if (this.loading) return
+      this.loading = true
+      const { id } = this.$route.params
+      const promiseArr = []
+      if (this.eResult.length) {
+        promiseArr.push(
+          this.bindECommerceToStoreFront({
+            store_id: id,
+            goods_ids: JSON.stringify(this.eResult),
+          })
+        )
+      }
+      if (this.sResult.length) {
+        promiseArr.push(
+          this.bindServiceToStoreFront({
+            store_id: id,
+            appoint_ids: JSON.stringify(this.sResult),
+          })
+        )
+      }
+      if (this.pResult.length) {
+        promiseArr.push(
+          this.bindPackageToStoreFront({
+            store_id: id,
+            meal_ids: JSON.stringify(this.pResult),
+          })
+        )
+      }
+      Promise.all(promiseArr)
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              // 解锁
+              this._controlCommodityPopup()
+              this.loading = false
+            },
+          })
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
   },
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.van-popup {
+  height: 100vh;
+  .van-list {
+    padding-bottom: 44px;
+  }
+}
+
+.close-btn {
+  position: fixed;
+  bottom: 0;
+  width: 50%;
+}
+
+.add-btn {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  width: 50%;
+  margin: 0;
+}
+
+.van-cell__left-icon {
+  font-size: 60px;
+  height: 60px;
+}
+</style>

@@ -3,7 +3,7 @@
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
       <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
         <van-card
-          :key="item.meal_id"
+          :key="item.id"
           :num="item.total_num"
           :price="item.price"
           :thumb="item.pic"
@@ -16,6 +16,9 @@
           </div>
           <div slot="bottom">
             <div>创建时间：{{ $moment(item.create_time * 1000).format('YYYY-MM-DD') }}</div>
+          </div>
+          <div slot="footer">
+            <van-button @click="_unbind(item.id)" size="mini" type="danger">解绑</van-button>
           </div>
         </van-card>
       </van-list>
@@ -60,7 +63,7 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('storeFront', ['getStoreFrontBindPackageList']),
+    ...mapActions('storeFront', ['getStoreFrontBindPackageList', 'unBindPackage']),
     // 异步更新电商商品数据
     _onLoad() {
       const { id } = this.$route.params
@@ -88,6 +91,30 @@ export default {
         this.list = res
         this.refreshing = false
       })
+    },
+    _unbind(gid) {
+      if (this.loading) return
+      this.loading = true
+      const { id } = this.$route.params
+      this.unBindPackage({
+        store_id: id,
+        id: gid,
+      })
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              // 解锁
+              this._onRefresh()
+              this.loading = false
+            },
+          })
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
   },
 }
