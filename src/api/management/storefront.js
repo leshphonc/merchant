@@ -175,4 +175,16 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  // 创建店铺优惠
+  createStoreFrontPreferential: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=add_discount', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 修改店铺优惠
+  updateStoreFrontPreferential: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=edit_discount', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

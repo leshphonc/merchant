@@ -197,6 +197,20 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 创建店铺优惠
+  async createStoreFrontPreferential(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.createStoreFrontPreferential(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 修改店铺优惠
+  async updateStoreFrontPreferential(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.updateStoreFrontPreferential(payload)
+      data ? resolve() : reject()
+    })
+  },
 }
 
 // mutations

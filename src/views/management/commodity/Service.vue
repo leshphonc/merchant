@@ -63,12 +63,12 @@
           :title="item.cat_name"
           v-for="item in firstCategoryList"
         >
-          <div @click.stop="_deleteCategory(item.cat_id, 1)" slot="icon" v-show="navText[2] === '取消'">
+          <div @click.stop="_deleteCategory(item.cat_id, 1)" slot="icon" v-show="navText[3] === '取消'">
             <van-icon class="delete-icon" name="close" />
           </div>
           <div v-if="!item.children.length">暂无分类</div>
           <van-tag
-            :closeable="navText[2] === '取消'"
+            :closeable="navText[3] === '取消'"
             :key="child.cat_id"
             @close="_deleteCategory(child.cat_id, 2)"
             size="medium"
@@ -284,7 +284,7 @@ export default {
     // 更改vuex中的变量，判断当前分类是不是管理状态
     _changeTab(tabIndex) {
       this.changeRightText({
-        index: 2,
+        index: 3,
         text: tabIndex ? '管理' : '创建',
       })
     },

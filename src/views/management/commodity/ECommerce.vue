@@ -69,6 +69,8 @@
       <van-tabbar-item icon="apps-o">商品</van-tabbar-item>
       <van-tabbar-item icon="label-o">分类</van-tabbar-item>
     </van-tabbar>
+    <!-- 弹出层 -->
+    <!-- 编辑分类 -->
     <van-popup class="category-cru-popup" position="bottom" safe-area-inset-bottom v-model="showCategoryCRUPopup">
       <ValidationObserver @submit.prevent="_submit" ref="observer" tag="form" v-slot="{ invalid }">
         <van-cell-group>
@@ -97,6 +99,7 @@
         </div>
       </ValidationObserver>
     </van-popup>
+    <!-- 选择分类归属 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showCategoryPicker">
       <van-picker :columns="firstCategoryListAddNull" @change="_changeCategory" value-key="sort_name" />
     </van-popup>
