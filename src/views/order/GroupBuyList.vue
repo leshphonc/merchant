@@ -187,6 +187,7 @@ export default {
         this.page = 2
         this.list = res.order_list
         this.refreshing = false
+        this.finished = false
       })
     },
     // 搜索商品

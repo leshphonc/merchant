@@ -18,7 +18,7 @@
       </van-tabs>
       <div class="white-space"></div>
     </van-sticky>
-    <van-loading type="spinner" v-show="!list.length"></van-loading>
+    <van-loading type="spinner" v-show="!list.length && loading"></van-loading>
     <div>
       <div :key="item.staff_id" class="bottom-space" v-for="item in list">
         <van-panel>

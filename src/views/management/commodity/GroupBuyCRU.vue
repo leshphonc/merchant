@@ -461,7 +461,9 @@ export default {
   created() {},
 
   async mounted() {
-    await this._getStoreList()
+    await this.getStoreList().then(res => {
+      this.storeList = res.store_list
+    })
     // 是否为编辑
     const { id } = this.$route.params
     if (id) {
@@ -547,12 +549,6 @@ export default {
       } else {
         picker.setColumnValues(1, [])
       }
-    },
-    // 读取店铺列表
-    _getStoreList() {
-      this.getStoreList().then(res => {
-        this.storeList = res.store_list
-      })
     },
     // 获取店铺名称
     _storeLabel(id) {

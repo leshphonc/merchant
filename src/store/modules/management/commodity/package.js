@@ -44,9 +44,9 @@ export default {
     })
   },
   // 读取套餐商品销售记录
-  readPackageSalesRecord(context, id) {
+  readPackageSalesRecord(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readPackageSalesRecord(id)
+      const data = await commodityAPI.readPackageSalesRecord(payload)
       data ? resolve(data) : reject()
     })
   },

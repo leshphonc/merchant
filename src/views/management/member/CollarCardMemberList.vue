@@ -125,9 +125,10 @@ export default {
     // 刷新领卡会员
     _onRefresh1() {
       this.getCollarCardMemberList(1).then(res => {
-        this.refreshing1 = false
         this.page1 = 2
         this.list1 = res.lists
+        this.refreshing1 = false
+        this.finished1 = false
       })
     },
     // 领卡会员加载
@@ -145,9 +146,10 @@ export default {
     // 刷新会员分组
     _onRefresh2() {
       this.getMemberGroupList(1).then(res => {
-        this.refreshing2 = false
         this.page2 = 2
         this.list2 = res.lists
+        this.refreshing2 = false
+        this.finished2 = false
       })
     },
     // 会员分组加载

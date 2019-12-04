@@ -76,9 +76,10 @@ export default {
     _onRefresh() {
       const { id } = this.$route.params
       this.getMemberCardAddCreditRecord({ id, page: 1 }).then(res => {
-        this.refreshing = false
         this.page = 2
         this.list = res.list
+        this.refreshing = false
+        this.finished = false
       })
     },
     // 领卡会员加载

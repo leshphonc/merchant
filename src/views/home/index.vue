@@ -57,7 +57,7 @@
       <v-chart :options="polar" autoresize ref="echart"></v-chart>
       <div class="white-space"></div>
     </div>
-    <div class="chart-box">
+    <div class="chart-box" v-if="showAI">
       <div class="chart-box-title">门店AI助手</div>
       <echart-for-AI :storeColumns="storeColumns"></echart-for-AI>
     </div>
@@ -188,6 +188,7 @@ export default {
       storeColumns: [],
       timeTypeColumns: [{ label: '日', value: '1' }, { label: '月', value: '2' }, { label: '年', value: '3' }],
       timeColumns: [],
+      showAI: false,
     }
   },
 
@@ -318,6 +319,9 @@ export default {
   created() {},
 
   mounted() {
+    if (process.env.VUE_APP_ENV === 'cs') {
+      this.showAI = true
+    }
     this._getStoreList()
     this.$refs.echart.showLoading()
     this.getIncomeEchartData({

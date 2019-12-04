@@ -75,6 +75,7 @@ export default {
         this.page = 2
         this.list = res.data
         this.refreshing = false
+        this.finished = false
       })
     },
     // 异步更新数据

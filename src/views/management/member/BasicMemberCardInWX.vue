@@ -251,6 +251,7 @@ export default {
       keys.forEach(item => {
         this.formData[item] = res.card.wx_param[item.substr(3)]
       })
+
       this.formData.wx_image_url = []
       this.formData.wx_text = []
       const imageText = res.card.wx_param.text_image_list.map(item => {
@@ -262,8 +263,10 @@ export default {
         }
       })
       this.imageText = imageText
-      this.serviceList = res.card.wx_param.business_service
       this.colorList = res.color_list
+      // 兼容数据
+      this.formData.wx_business_service = res.card.wx_param.wx_business_service || []
+      this.serviceList = res.card.wx_param.business_service || []
     })
   },
 

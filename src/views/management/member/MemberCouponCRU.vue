@@ -592,8 +592,10 @@ export default {
 
   created() {},
 
-  mounted() {
-    this._getStoreList()
+  async mounted() {
+    await this.getStoreList().then(res => {
+      this.storeList = res.store_list
+    })
     this._getCouponCategory()
     this._getCouponColorList()
     const { id } = this.$route.params
@@ -713,12 +715,6 @@ export default {
     _deleteImageText(index) {
       this.imageText.splice(index, 1)
     },
-    // 读取店铺列表
-    _getStoreList() {
-      this.getStoreList().then(res => {
-        this.storeList = res.store_list
-      })
-    },
     // 获取店铺名称
     _storeLabel(id) {
       const item = this.storeList.find(item => item.value === id)
@@ -757,6 +753,13 @@ export default {
         keys.forEach(item => {
           this.formData[item] = res.coupon[item]
         })
+        // 设置默认选中的店铺
+        const cache = []
+        res.coupon.store_id.forEach(item => {
+          const result = this.storeList.find(i => i.value === item)
+          result && cache.push(result)
+        })
+        this.cache = cache
         this.imgList = [{ url: res.coupon.img }]
         this.getCouponSecondCategory(res.coupon.cate_name).then(res => {
           if (res) {

@@ -81,6 +81,7 @@ export default {
         this.page = 2
         this.list = res
         this.refreshing = false
+        this.finished = false
       })
     },
     // 删除套餐

@@ -38,9 +38,12 @@ export default {
       ticket: localStorage.getItem('ticket'),
     }),
   // 读取套餐商品销售记录
-  readPackageSalesRecord: id =>
-    axios.post('/appapi.php?c=SpaceMerchant&a=.........', {
-      meal_id: id,
-      ticket: localStorage.getItem('ticket'),
+  readPackageSalesRecord: payload =>
+    axios.get('/appapi.php?c=Merchantapp&a=service_card_lists', {
+      params: {
+        ...payload,
+        size: 10,
+        ticket: localStorage.getItem('ticket'),
+      },
     }),
 }

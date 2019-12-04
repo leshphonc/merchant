@@ -165,6 +165,7 @@ export default {
         this.page = 2
         this.list = res.list
         this.refreshing = false
+        this.finished = false
       })
     },
     _statusLabel(s_status, status) {

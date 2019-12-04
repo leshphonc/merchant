@@ -9,6 +9,7 @@
       title="店铺管理"
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
+    <van-loading type="spinner" v-show="!list.length && loading"></van-loading>
     <div :key="i" v-for="(item, i) in list">
       <van-panel>
         <van-row class="row" slot="header">
@@ -144,8 +145,11 @@ export default {
       this.auth_files = data
     },
     _getStoreFrontList() {
+      if (this.loading) return
+      this.loading = true
       this.getStoreFrontList().then(res => {
         this.list = res
+        this.loading = false
       })
     },
     // 提交数据
@@ -226,5 +230,10 @@ export default {
 .auth-btn {
   width: 100%;
   margin-top: 40px;
+}
+
+.van-loading {
+  text-align: center;
+  margin: 50% 0;
 }
 </style>

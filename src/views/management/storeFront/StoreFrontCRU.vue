@@ -69,6 +69,7 @@
         </ValidationProvider>
         <ValidationProvider name="店铺业务" rules="required" slim v-slot="{ errors }">
           <van-field
+            :disabled="$route.params.id"
             :error-message="errors[0]"
             :value="businessLabel"
             @click="_controlBusinessPicker"
@@ -407,6 +408,8 @@ export default {
     },
     // 店铺业务开关
     _controlBusinessPicker() {
+      const { id } = this.$route.params
+      if (id) return
       this.showBusinessPicker = !this.showBusinessPicker
     },
     // 店铺分类开关
@@ -552,6 +555,24 @@ export default {
             url: res.qrcode_backgroup,
           },
         ]
+
+        //  { label: '标准', value: 'have_service' },
+        // { label: '外卖', value: 'have_peisong' },
+        // { label: '餐饮', value: 'have_meal' },
+        // { label: '酒店', value: 'have_hotel' },
+        // { label: '汽配', value: 'have_auto_parts' },
+
+        if (res.have_service === '1') {
+          this.businessValue = 'have_service'
+        } else if (res.have_peisong === '1') {
+          this.businessValue = 'have_peisong'
+        } else if (res.have_meal === '1') {
+          this.businessValue = 'have_meal'
+        } else if (res.have_hotel === '1') {
+          this.businessValue = 'have_hotel'
+        } else if (res.have_auto_parts === '1') {
+          this.businessValue = 'have_auto_parts'
+        }
         // 获取平台分类数据
         this._getPlatformStoreFrontCategory(res.cat_fid, res.cat_id)
         this.defaultArea = [res.province_id, res.city_id, res.area_id, res.circle_id, res.market_id]
@@ -589,6 +610,11 @@ export default {
             if (item.url) return item.url
             return item
           })
+          params.have_service = '0'
+          params.have_peisong = '0'
+          params.have_meal = '0'
+          params.have_hotel = '0'
+          params.have_auto_parts = '0'
           params[this.businessValue] = '1'
           if (this.businessValue === 'have_service') {
             params.have_mall = '1'

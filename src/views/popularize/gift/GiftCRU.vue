@@ -261,8 +261,10 @@ export default {
 
   created() {},
 
-  mounted() {
-    this._getStoreList()
+  async mounted() {
+    await this.getStoreList().then(res => {
+      this.storeList = res.store_list
+    })
     this._getGiftCategory()
     const { id } = this.$route.params
     id && this._readGiftDetail(id)
@@ -333,11 +335,6 @@ export default {
         }
       })
     },
-    _getStoreList() {
-      this.getStoreList().then(res => {
-        this.storeList = res.store_list
-      })
-    },
     _storeLabel(id) {
       const item = this.storeList.find(item => item.value === id)
       return item && `${item.label} - ${item.adress}`
@@ -350,6 +347,13 @@ export default {
           this.formData[item] = res[item]
         })
         this.formData.store = res.store_arr
+        // 设置默认选中的店铺
+        const cache = []
+        res.store_arr.forEach(item => {
+          const result = this.storeList.find(i => i.value === item)
+          result && cache.push(result)
+        })
+        this.cache = cache
         this.formData.wap_pic = res.wap_pic.split(',')
         res.province_idss !== '0' &&
           (this.defaultArea = [res.province_idss, res.city_idss, res.area_idss, res.circle_idss, res.market_idss])

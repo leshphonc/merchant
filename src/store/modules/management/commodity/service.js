@@ -51,9 +51,9 @@ export default {
     })
   },
   // 读取服务项目销售记录
-  readServiceSalesRecord(context, id) {
+  readServiceSalesRecord(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.readServiceSalesRecord(id)
+      const data = await commodityAPI.readServiceSalesRecord(payload)
       data ? resolve(data) : reject()
     })
   },

@@ -59,9 +59,12 @@ export default {
     })
   },
   // 读取服务项目销售记录
-  readServiceSalesRecord: id =>
-    axios.post('/appapi.php?c=SpaceMerchant&a=.........', {
-      app_id: id,
-      ticket: localStorage.getItem('ticket'),
+  readServiceSalesRecord: payload =>
+    axios.get('/appapi.php?c=Merchantapp&a=service_order', {
+      params: {
+        ...payload,
+        size: 10,
+        ticket: localStorage.getItem('ticket'),
+      },
     }),
 }

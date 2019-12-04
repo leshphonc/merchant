@@ -199,10 +199,11 @@ export default {
         begin_time: this.startTimeLabel,
         end_time: this.endTimeLabel,
       }).then(res => {
-        this.refreshing = false
         this.page = 2
-        this.total = res.total
         this.list = res.list
+        this.total = res.total
+        this.refreshing = false
+        this.finished = false
       })
     },
     _onLoad() {

@@ -41,6 +41,7 @@
       label="所处商圈"
       placeholder="选择商圈"
       readonly
+      v-if="circleColumns.length"
       v-show="pickCircle && areaLabel"
     ></van-field>
     <van-field
@@ -52,6 +53,7 @@
       label="所处商盟"
       placeholder="选择商盟"
       readonly
+      v-if="marketColumns.length"
       v-show="pickMarket && circleLabel"
     ></van-field>
     <!-- 弹出层 -->
@@ -234,7 +236,7 @@ export default {
       if (this.pickCircle) {
         this.circleColumns = []
         this.getCircle({ id: data[2].value, shift: true }).then(res => {
-          this.circleColumns = res
+          this.circleColumns = res || []
         })
       }
       this._controlAreaPicker()
@@ -246,7 +248,7 @@ export default {
       if (this.pickMarket) {
         this.marketColumns = []
         this.getMarket({ id: data.value, shift: true }).then(res => {
-          this.marketColumns = res
+          this.marketColumns = res || []
         })
       }
       this._controlCirclePicker()
@@ -281,11 +283,11 @@ export default {
         this.market_id = res.market_id
         if (this.data[3]) {
           this.circle_id = this.data[3]
-          this.circleColumns = res.circle
+          this.circleColumns = res.circle || []
         }
         if (this.data[4]) {
           this.market_id = this.data[4]
-          this.marketColumns = res.market
+          this.marketColumns = res.market || []
         }
       })
     },

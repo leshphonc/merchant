@@ -118,6 +118,7 @@ export default {
         this.sale = res.sale
         this.scan = res.scan
         this.refreshing = false
+        this.finished = false
       })
       this.getPromotionStatisticsStaffList({
         store_id: this.store,

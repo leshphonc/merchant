@@ -423,8 +423,10 @@ export default {
 
   created() {},
 
-  mounted() {
-    this._getStoreList()
+  async mounted() {
+    await this.getStoreList().then(res => {
+      this.storeList = res.store_list
+    })
     this._getPlatformReserveCategoryList()
     const { id } = this.$route.params
     if (id) {
@@ -546,11 +548,6 @@ export default {
         },
       ]
     },
-    _getStoreList() {
-      this.getStoreList().then(res => {
-        this.storeList = res.store_list
-      })
-    },
     // 添加自定义规格
     _addCustom() {
       this.customList.push({
@@ -573,7 +570,6 @@ export default {
         keys.forEach(item => {
           this.formData[item] = res.appoint_list[item]
         })
-        this.formData.store = res.store_arr
         this.formData.pic = res.appoint_list.pic.split(';')
         this.formData.office_start_time = res.office_time.open
         this.formData.office_stop_time = res.office_time.close
@@ -587,6 +583,14 @@ export default {
           obj.custom_use_time = item.use_time
           return obj
         })
+        this.formData.store = res.store_arr
+        // 设置默认选中的店铺
+        const cache = []
+        res.store_arr.forEach(item => {
+          const result = this.storeList.find(i => i.value === item)
+          result && cache.push(result)
+        })
+        this.cache = cache
         this.picList = res.appoint_list.pic.split(';').map(item => ({ url: item }))
         this.$nextTick(function() {
           this.$refs.editor.$refs.quillEditor.quill.blur()

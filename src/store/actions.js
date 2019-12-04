@@ -134,7 +134,7 @@ export default {
       // 商圈columns
       result.circle = circleData
 
-      if (!market) {
+      if (!market || market === '0') {
         resolve(result)
         return false
       }
