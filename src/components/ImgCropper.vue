@@ -207,7 +207,7 @@ export default {
   }
 
   .cropper {
-    height: calc(100% - 44px);
+    height: calc(100% - 44px) !important;
   }
 }
 </style>
