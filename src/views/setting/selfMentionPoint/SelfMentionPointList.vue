@@ -10,7 +10,11 @@
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <div :key="index" v-for="(item, index) in list">
-      <van-panel :desc="item.area_info.province" :status="item.phone" :title="item.name">
+      <van-panel
+        :desc="`${item.area_info.province}-${item.area_info.city}-${item.area_info.area}`"
+        :status="item.phone"
+        :title="item.name"
+      >
         <div>
           <van-button :to="`/selfMentionPoint/selfMentionPointCRU/${item.pick_addr_id}`" size="small">编辑</van-button>
           <van-button @click="_del(item.pick_addr_id)" class="sel_button" size="small">删除</van-button>
