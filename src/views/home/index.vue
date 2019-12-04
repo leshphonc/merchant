@@ -103,7 +103,7 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { ManagementGrid, PopularizeGrid } from '@/common/grid'
 import MerchantCard from '@/components/MerchantCard'
 import GridMap from '@/components/GridMap'
@@ -145,7 +145,6 @@ export default {
       },
       mdata: ManagementGrid,
       pdata: PopularizeGrid,
-      swipe: [],
       curType: 'income',
       row1: [
         {
@@ -193,6 +192,7 @@ export default {
   },
 
   computed: {
+    ...mapState('home', ['swipe']),
     // 生成x轴数据
     xData() {
       let xData = []
@@ -318,7 +318,6 @@ export default {
   created() {},
 
   mounted() {
-    this._getHomeInfo()
     this._getStoreList()
     this.$refs.echart.showLoading()
     this.getIncomeEchartData({
@@ -339,7 +338,6 @@ export default {
   methods: {
     ...mapActions(['getStoreList']),
     ...mapActions('home', [
-      'getHomeInfo',
       'getIncomeEchartData',
       'getOrderEchartData',
       'getFansEchartData',
@@ -388,13 +386,6 @@ export default {
     _getStoreList() {
       this.getStoreList(1).then(res => {
         this.storeColumns = res.store_list
-      })
-    },
-    // 读取首页轮播广告
-    _getHomeInfo() {
-      this.getHomeInfo().then(res => {
-        this.swipe = res.wap_MerchantAd
-        sessionStorage.setItem('merchant-balance', res.allmoney)
       })
     },
     // 跳转广告页面

@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'MerchantCard',
 
@@ -64,14 +65,12 @@ export default {
   },
 
   computed: {
+    ...mapState('home', ['money']),
     avatar() {
       return this.merchant_user && JSON.parse(this.merchant_user).avatar
     },
     name() {
       return this.merchant_user && JSON.parse(this.merchant_user).name
-    },
-    money() {
-      return this.merchant_money || 0
     },
   },
 
@@ -81,7 +80,6 @@ export default {
 
   mounted() {
     this.merchant_user = localStorage.getItem('merchant_user')
-    this.merchant_money = sessionStorage.getItem('merchant-balance')
   },
 
   destroyed() {},

@@ -139,7 +139,7 @@
         </ValidationProvider>
         <img-cropper :confirm="_pickShopLogo" :list="shop_logo" field="商户LOGO" title="商户LOGO"></img-cropper>
         <img-cropper :confirm="_pickPic" :count="5" :list="pic" :ratio="[2, 1]" field="店铺图片" title="店铺图片"></img-cropper>
-        <img-cropper :confirm="_pickQRCode" :fixedRatio="false" :list="qrcode_backgroup" field="二维码背景图" title="二维码背景图"></img-cropper>
+        <img-cropper :confirm="_pickQRCode" :list="qrcode_backgroup" :ratio="[666, 1000]" field="二维码背景图" title="二维码背景图"></img-cropper>
         <van-field
           :value="disCountLabel"
           @click="_controlDisCountPicker"

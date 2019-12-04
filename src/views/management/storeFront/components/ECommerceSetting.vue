@@ -4,7 +4,7 @@
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
-        <img-cropper :confirm="_pickPic" :list="picList" field="商品图片" title="商品图片"></img-cropper>
+        <img-cropper :confirm="_pickPic" :list="picList" :ratio="[2, 1]" field="商户背景图" title="商户背景图"></img-cropper>
         <van-cell title="开发票">
           <van-switch active-value="1" inactive-value="0" v-model="formData.is_invoice" />
         </van-cell>

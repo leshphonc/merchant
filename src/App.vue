@@ -52,12 +52,15 @@ export default {
         // 将处理过的obj注入全局localStorage
         localStorage.setItem('merchant_global', JSON.stringify(obj))
       })
+    // 读取首页信息
+    this.getHomeInfo()
   },
 
   destroyed() {},
 
   methods: {
     ...mapActions(['getWxConfig', 'getAlias', 'getPlatFormInfo']),
+    ...mapActions('home', ['getHomeInfo']),
     ...mapActions('basicInformation', ['readMerchantInfo']),
     // 获取商家配置信息
     async _readMerchantInfo() {

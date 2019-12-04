@@ -142,7 +142,6 @@ export default {
     },
     _getStoreFrontCurrentFlag(id) {
       this.getStoreFrontCurrentFlag(id).then(res => {
-        console.log(res)
         if (res.defined === 1) {
           this.flag = 1
         } else if (res.car === 1) {

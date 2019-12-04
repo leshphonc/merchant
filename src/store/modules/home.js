@@ -1,17 +1,27 @@
 import homeAPI from '@/api/home'
 
 // initial state
-const state = {}
+const state = {
+  money: '0',
+  swipe: [],
+}
 
 // getters
 const getters = {}
 
 // actions
 const actions = {
-  async getHomeInfo() {
+  async getHomeInfo({ commit }) {
     return new Promise(async (resolve, reject) => {
       const data = await homeAPI.getHomeInfo()
-      data ? resolve(data) : reject()
+      if (data) {
+        commit('save', {
+          money: data.allmoney,
+          swipe: data.wap_MerchantAd,
+        })
+      } else {
+        reject()
+      }
     })
   },
   // echart收入总数
