@@ -215,6 +215,10 @@ export default {
     })
     const { id } = this.$route.params
     await this.readECommerceDetail(id).then(res => {
+      const keys = Object.keys(this.formData)
+      keys.forEach(item => {
+        this.formData[item] = res[item]
+      })
       this.formData.level_set = res.level_set
       if (res.level_set === '1' && res.spread.length !== 0) {
         this.formData.spread = res.spread

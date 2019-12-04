@@ -215,6 +215,10 @@ export default {
     })
     const { id } = this.$route.params
     await this.readPackageDetail(id).then(res => {
+      const keys = Object.keys(this.formData)
+      keys.forEach(item => {
+        this.formData[item] = res[0][item]
+      })
       this.formData.level_set = res[0].level_set
       if (res[0].level_set === '1' && res[0].spread.length !== 0) {
         this.formData.spread = res[0].spread

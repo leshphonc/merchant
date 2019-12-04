@@ -26,51 +26,12 @@ export default {
     })
   },
 
-  mounted() {
-    const setting = localStorage.getItem('merchant_global')
-    const ticket = localStorage.getItem('ticket')
-    // 注入变量到vue全局
-    ticket &&
-      !setting &&
-      this.getAlias().then(async res => {
-        // 最后要注入的对象
-        const obj = {}
-        const dhb = res.find(item => item.name === 'dhb_name')
-        dhb && (obj.dhb_alias = dhb.value)
-        const score = res.find(item => item.name === 'score_name')
-        score && (obj.score_alias = score.value)
-
-        const setting = await this._readMerchantInfo()
-        const authority = await this.getPlatFormInfo()
-        const pingan = authority.find(item => item.name === 'pay_pingan_open')
-        const spread = authority.find(item => item.name === 'open_user_spread')
-
-        pingan && (obj.pingan = pingan.value)
-        spread && (obj.open_spread = spread.value)
-        Object.assign(obj, setting)
-
-        // 将处理过的obj注入全局localStorage
-        localStorage.setItem('merchant_global', JSON.stringify(obj))
-      })
-  },
+  mounted() {},
 
   destroyed() {},
 
   methods: {
-    ...mapActions(['getWxConfig', 'getAlias', 'getPlatFormInfo']),
-    ...mapActions('basicInformation', ['readMerchantInfo']),
-    // 获取商家配置信息
-    async _readMerchantInfo() {
-      let dhb_open = '0',
-        score_open = '0',
-        show_three = ''
-      await this.readMerchantInfo().then(res => {
-        dhb_open = res.now_merchant.dhb_open
-        score_open = res.now_merchant.score_open
-        show_three = res.now_merchant.show_three
-      })
-      return { dhb_open, score_open, show_three }
-    },
+    ...mapActions(['getWxConfig']),
   },
 }
 </script>
