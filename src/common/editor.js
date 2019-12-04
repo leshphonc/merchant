@@ -2,9 +2,9 @@ import Vue from 'vue'
 import VueQuillEditor from 'vue-quill-editor'
 
 // 引入所需css
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+// import 'quill/dist/quill.core.css'
+// import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.bubble.css'
 
 // 配置基础信息
 Vue.use(VueQuillEditor, {

@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MerchantCard',
 
@@ -79,12 +79,15 @@ export default {
   created() {},
 
   mounted() {
+    // 读取首页信息
+    this.getHomeInfo()
     this.merchant_user = localStorage.getItem('merchant_user')
   },
 
   destroyed() {},
 
   methods: {
+    ...mapActions('home', ['getHomeInfo']),
     // 退出登录
     _logout() {
       this.$router.push('/login')

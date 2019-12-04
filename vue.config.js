@@ -44,4 +44,14 @@ module.exports = {
     },
   },
   publicPath: './',
+  configureWebpack: {
+    externals: {
+      vue: 'Vue',
+      vuex: 'Vuex',
+      'vue-router': 'VueRouter',
+      'vue-baidu-map': 'BaiduMap',
+      moment: 'moment',
+      quill: 'Quill',
+    },
+  },
 }
