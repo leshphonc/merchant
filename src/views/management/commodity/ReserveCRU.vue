@@ -566,11 +566,19 @@ export default {
     // 编辑时获取详情数据
     _readReserveDetail(id) {
       this.readReserveDetail(id).then(res => {
+        // 阻止编辑器自动获取焦点
+        this.$refs.editor.$refs.quillEditor.quill.enable(false)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res.appoint_list[item]
         })
         this.formData.pic = res.appoint_list.pic.split(';')
+        if (res.appoint_list.start_time !== '0') {
+          this.formData.start_time = this.$moment(res.appoint_list.start_time * 1000).format('YYYY-MM-DD')
+        }
+        if (res.appoint_list.end_time !== '0') {
+          this.formData.end_time = this.$moment(res.appoint_list.end_time * 1000).format('YYYY-MM-DD')
+        }
         this.formData.office_start_time = res.office_time.open
         this.formData.office_stop_time = res.office_time.close
         this.customList = res.product_list.map(item => {
@@ -593,6 +601,7 @@ export default {
         this.cache = cache
         this.picList = res.appoint_list.pic.split(';').map(item => ({ url: item }))
         this.$nextTick(function() {
+          this.$refs.editor.$refs.quillEditor.quill.enable(true)
           this.$refs.editor.$refs.quillEditor.quill.blur()
           window.scroll(0, 0)
         })

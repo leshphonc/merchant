@@ -33,6 +33,13 @@ extend('decimal-max2', {
   message: '最多支持2位小数',
 })
 
+extend('gte-1', {
+  validate: value => {
+    return new RegExp(/^(-1|\d+)$/).test(value)
+  },
+  message: '请填写大于等于-1的整数',
+})
+
 // 全局注册组件
 Vue.component('ValidationObserver', ValidationObserver)
 Vue.component('ValidationProvider', ValidationProvider)

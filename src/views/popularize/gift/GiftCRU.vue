@@ -82,7 +82,7 @@
             v-model.trim="formData.worth"
           />
         </ValidationProvider>
-        <ValidationProvider name="库存数量" rules="required|numeric" slim v-slot="{ errors }">
+        <ValidationProvider name="库存数量" rules="required|gte-1" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             label="库存数量"

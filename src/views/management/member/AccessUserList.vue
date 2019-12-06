@@ -69,9 +69,9 @@
       <van-pull-refresh @refresh="_behaviorOnRefresh" v-model="behaviorRefreshing">
         <van-list
           :finished="behaviorFinished"
+          :finished-text="finishText"
           :immediate-check="false"
           @load="_behaviorOnLoad"
-          finished-text="没有更多了"
           v-model="loading"
         >
           <div :key="item.maycms_id" v-for="item in behaviorList">
@@ -130,6 +130,9 @@ export default {
     },
     endTimeLabel() {
       return this.$moment(this.endTime).format('YYYY-MM-DD')
+    },
+    finishText() {
+      return this.list.length ? '没有更多了' : '暂无记录'
     },
   },
 

@@ -65,6 +65,7 @@ export default {
       logo = require('@/assets/image/xyzg_logo.png')
     }
     this.logo = logo
+    // 判断是否已经登录
     const ticket = localStorage.getItem('ticket')
     if (ticket) {
       this.$router.push('/')
@@ -88,26 +89,28 @@ export default {
           message: '登录成功',
           duration: 1000,
           onClose: () => {
-            this.$router.replace('/')
-            this._injection()
+            this.$router.replace('/', () => {
+              this._injection()
+            })
           },
         })
       })
     },
+    // 注入变量到vue全局
     _injection() {
-      this.getWxConfig().then(config => {
-        this.$wxConfig(config)
-      })
-      // 注入变量到vue全局
+      // 获取别名
       this.getAlias().then(async res => {
-        // 最后要注入的对象
+        // 创建注入全局的对象
         const obj = {}
+        // 兑换币，积分别名获取
         const dhb = res.find(item => item.name === 'dhb_name')
         dhb && (obj.dhb_alias = dhb.value)
         const score = res.find(item => item.name === 'score_name')
         score && (obj.score_alias = score.value)
 
+        // 获取是否开启兑换币，积分，三级分佣（条件1）
         const setting = await this._readMerchantInfo()
+        // 获取是否开启平安支付，三级分佣（条件2）
         const authority = await this.getPlatFormInfo()
         const pingan = authority.find(item => item.name === 'pay_pingan_open')
         const spread = authority.find(item => item.name === 'open_user_spread')
@@ -118,6 +121,16 @@ export default {
 
         // 将处理过的obj注入全局localStorage
         localStorage.setItem('merchant_global', JSON.stringify(obj))
+
+        // 判断是否微信环境，注入sdk
+        if (this._isWx) {
+          this.getWxConfig().then(config => {
+            // 保存appid
+            sessionStorage.setItem('merchant_wx_appid', config.appId)
+            // 注入sdk
+            this.$wxConfig(config)
+          })
+        }
       })
     },
     // 获取商家配置信息

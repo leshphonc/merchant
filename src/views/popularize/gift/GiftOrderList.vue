@@ -223,7 +223,7 @@ export default {
             this._writeOffGift(code)
           })
           .catch(() => {
-            this.$toast.success({
+            this.$toast.fail({
               message: '核销码错误，核销失败',
               forbidClick: true,
               duration: 1500,

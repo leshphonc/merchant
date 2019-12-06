@@ -5,7 +5,6 @@
         <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
           <van-card
             :key="item.group_id"
-            :num="item.count_num - item.sale_count"
             :origin-price="item.old_price"
             :price="item.price"
             :tag="_getGroupBuyStatus(item)"

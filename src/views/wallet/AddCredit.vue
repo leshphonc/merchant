@@ -4,7 +4,7 @@
     <div class="nav-bar-holder"></div>
     <van-radio-group v-model="radio">
       <van-cell-group title="充值方式">
-        <van-cell center title="单元格">
+        <van-cell center title="使用微信支付">
           <div slot="icon">
             <img alt class="logo" src="@/assets/image/addCredit.jpeg" />
           </div>
@@ -32,6 +32,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import Utils from '@/utils'
+
 export default {
   name: 'addCredit',
 
@@ -47,6 +49,7 @@ export default {
       money: '',
       errorMessage: '',
       show: false,
+      loading: false,
     }
   },
 
@@ -57,13 +60,17 @@ export default {
   created() {},
 
   mounted() {
-    const session_code = sessionStorage.getItem('merchant_wx_code')
-    const { code } = this.$route.query
-    if (!session_code && code) sessionStorage.setItem('merchant_wx_code', session_code)
-    if (!this._isApp && !session_code && !code) {
-      this.getWxConfig().then(res => {
-        this.$getWXCode(res.appId)
-      })
+    if (this._isWx) {
+      const code = Utils.getUrlParam('code')
+      if (code) {
+        sessionStorage.setItem('merchant_wx_code', code)
+        this.$goBack()
+      }
+      const hasCode = sessionStorage.getItem('merchant_wx_code')
+      if (!hasCode) {
+        const appid = sessionStorage.getItem('merchant_wx_appid')
+        this.$getWXCode(appid)
+      }
     }
   },
 
@@ -89,6 +96,17 @@ export default {
           if (this._isApp) {
             // app充值
             const info = await this.getMerchantDetail(userInfo.mer_id)
+            if (info.uid === '0') {
+              this.$toast.fail({
+                message: '请先绑定微信',
+                forbidClick: true,
+                duration: 1000,
+                onClose: () => {
+                  this.$goBack()
+                },
+              })
+              return false
+            }
             const json = {
               action: 'WxPay',
               mer_id: userInfo.mer_id,
@@ -97,8 +115,8 @@ export default {
               paymoney: this.money,
               uid: info.uid,
             }
-            window._invokeAndroid(json)
-          } else {
+            this.$invokeAndroid(json)
+          } else if (this._isWx) {
             // 加锁
             this.loading = true
             // 微信环境充值
@@ -130,6 +148,8 @@ export default {
               .catch(() => {
                 this.loading = false
               })
+          } else {
+            this.$toast('请在微信环境下进行充值')
           }
         })
       } else {

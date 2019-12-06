@@ -90,10 +90,13 @@ export default {
     ...mapActions('home', ['getHomeInfo']),
     // 退出登录
     _logout() {
-      this.$router.push('/login')
+      // 清除环境变量
       localStorage.removeItem('ticket')
       localStorage.removeItem('merchant_global')
       localStorage.removeItem('merchant_user')
+      sessionStorage.removeItem('merchant_wx_appid')
+      sessionStorage.removeItem('merchant_wx_code')
+      this.$router.push('/login')
       this.$toast.success({
         message: '退出登录',
         forbidClick: true,

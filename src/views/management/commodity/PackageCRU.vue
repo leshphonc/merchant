@@ -29,10 +29,10 @@
             v-model.trim="formData.day_num"
           ></van-field>
         </ValidationProvider>
-        <ValidationProvider name="套餐总数" rules="required|numeric" slim v-if="false" v-slot="{ errors }">
+        <ValidationProvider name="套餐库存" rules="required|gte-1" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
-            label="总数"
+            label="库存"
             placeholder="套餐库存"
             required
             type="number"
@@ -55,7 +55,12 @@
         <van-icon name="point-gift-o" slot="right-icon" style="line-height: inherit;" />
       </van-cell>
       <!-- 选择出的服务列表 -->
-      <van-cell-group :border="false" :key="item.appoint_id" v-for="(item, index) in formData.project_data">
+      <van-cell-group
+        :border="false"
+        :key="item.appoint_id"
+        title="服务"
+        v-for="(item, index) in formData.project_data"
+      >
         <van-cell center>
           <span class="delete-icon" slot="icon">
             <van-icon @click="_deletePro(item.appoint_id, index)" name="close" />
@@ -65,7 +70,7 @@
             {{ item.name }}
             <van-tag type="warning">服务</van-tag>
           </div>
-          <van-stepper min="1" v-model="item.meal_num" />
+          <van-stepper min="0" v-model="item.meal_num" />
         </van-cell>
         <ValidationProvider name="有效天数" rules="required|numeric" slim v-slot="{ errors }">
           <van-field
@@ -79,7 +84,7 @@
         </ValidationProvider>
       </van-cell-group>
       <!-- 选择出的商品列表 -->
-      <van-cell-group :key="item.appoint_id" v-for="(item, index) in eCommerce_data">
+      <van-cell-group :key="item.appoint_id" title="商品" v-for="(item, index) in eCommerce_data">
         <van-cell center>
           <span class="delete-icon" slot="icon">
             <van-icon @click="_deleteProE(item.appoint_id, index)" class="delete-icon" name="close" slot="icon" />

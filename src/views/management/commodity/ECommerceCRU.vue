@@ -45,7 +45,7 @@
             v-model.trim="formData.price"
           />
         </ValidationProvider>
-        <ValidationProvider name="库存" rules="required|numeric" slim v-slot="{ errors }">
+        <ValidationProvider name="库存" rules="required|gte-1" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             label="库存"
@@ -541,6 +541,8 @@ export default {
     },
     _readECommerceDetail(id) {
       this.readECommerceDetail(id).then(res => {
+        // 阻止编辑器自动获取焦点
+        this.$refs.editor.$refs.quillEditor.quill.enable(false)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res[item]
@@ -554,6 +556,8 @@ export default {
           this._getECommerceFirstCategoryList(res.sort_id)
         }
         this.$nextTick(function() {
+          this.$refs.editor.$refs.quillEditor.quill.enable(true)
+          this.$refs.editor.$refs.quillEditor.quill.blur()
           window.scroll(0, 0)
         })
       })

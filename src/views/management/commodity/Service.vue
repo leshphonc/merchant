@@ -5,7 +5,6 @@
         <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
           <van-card
             :key="item.goods_id"
-            :num="item.stock_num === '-1' ? '∞' : item.stock_num"
             :price="item.old_price"
             :tag="item.payment_status === '1' ? '定金' : null"
             :thumb="item.pic"
@@ -30,7 +29,7 @@
             <div slot="bottom">
               <div v-if="item.payment_status === '1'">定金：¥{{ item.payment_money }}</div>
               <div>预约开始: {{ $moment(item.start_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
-              <div>预约结束: {{ $moment(item.start_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
+              <div>预约结束: {{ $moment(item.end_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
               <div class="white-space"></div>
             </div>
             <div slot="footer" v-if="$route.fullPath === '/commodity'">

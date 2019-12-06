@@ -32,7 +32,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-const user = JSON.parse(localStorage.getItem('merchant_user') || '{}')
 export default {
   name: 'index',
 
@@ -81,6 +80,7 @@ export default {
   methods: {
     ...mapActions(['getMerchantDetail']),
     _goStoreFrontPage() {
+      const user = JSON.parse(localStorage.getItem('merchant_user') || '{}')
       this.getMerchantDetail(user.mer_id).then(res => {
         const { uid } = res
         if (uid) {

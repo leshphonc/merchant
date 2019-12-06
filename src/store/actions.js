@@ -216,4 +216,25 @@ export default {
       data ? resolve(data) : reject()
     })
   },
+  // 根据微信code换取openid
+  getOpenid(context, code) {
+    return new Promise(async (resolve, reject) => {
+      const data = await common.getOpenid(code)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 使用open_id绑定微信
+  bindWx(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await common.bindWx(id)
+      data ? resolve() : reject()
+    })
+  },
+  // 使用union_id绑定微信
+  bindWxByUnionID(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await common.bindWxByUnionID(id)
+      data ? resolve() : reject()
+    })
+  },
 }

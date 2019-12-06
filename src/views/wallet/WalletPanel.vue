@@ -46,6 +46,7 @@ export default {
 
   mounted() {
     this.pingan = this.$getGlobal('pingan')
+    sessionStorage.removeItem('merchant_wx_code')
   },
 
   destroyed() {},

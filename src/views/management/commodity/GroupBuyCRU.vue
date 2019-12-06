@@ -614,13 +614,21 @@ export default {
     // 编辑时获取详情
     _readGroupBuyDetail(id) {
       this.readGroupBuyDetail(id).then(res => {
+        // 阻止编辑器自动获取焦点
+        this.$refs.editor.$refs.quillEditor.quill.enable(false)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res[item]
         })
-        this.formData.begin_time = this.$moment(res.begin_time * 1000).format('YYYY-MM-DD')
-        this.formData.end_time = this.$moment(res.end_time * 1000).format('YYYY-MM-DD')
-        this.formData.deadline_time = this.$moment(res.deadline_time * 1000).format('YYYY-MM-DD HH:mm')
+        if (res.begin_time !== '0') {
+          this.formData.begin_time = this.$moment(res.begin_time * 1000).format('YYYY-MM-DD')
+        }
+        if (res.end_time !== '0') {
+          this.formData.end_time = this.$moment(res.end_time * 1000).format('YYYY-MM-DD')
+        }
+        if (res.deadline_time !== '0') {
+          this.formData.deadline_time = this.$moment(res.deadline_time * 1000).format('YYYY-MM-DD HH:mm')
+        }
         this.formData.store = res.store_arr
         this.formData.pic = res.pic.split(';')
         this.picList = res.pic_arr
@@ -634,6 +642,7 @@ export default {
         // 设置化分类
         this._getPlatformGroupBuyCategoryList(res.cat_fid, res.cat_id)
         this.$nextTick(function() {
+          this.$refs.editor.$refs.quillEditor.quill.enable(true)
           this.$refs.editor.$refs.quillEditor.quill.blur()
           window.scroll(0, 0)
         })

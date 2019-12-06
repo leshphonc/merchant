@@ -20,10 +20,17 @@ export default {
 
   watch: {},
 
-  created() {
-    this.getWxConfig().then(config => {
-      this.$wxConfig(config)
-    })
+  async created() {
+    const ticket = localStorage.getItem('ticket')
+    // 判断是否微信环境，注入sdk并获取openid
+    if (ticket && this._isWx) {
+      this.getWxConfig().then(config => {
+        // 保存appid
+        sessionStorage.setItem('merchant_wx_appid', config.appId)
+        // 注入sdk
+        this.$wxConfig(config)
+      })
+    }
   },
 
   mounted() {},

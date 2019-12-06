@@ -90,4 +90,28 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  // 使用微信code换取openid
+  getOpenid: code =>
+    axios.get('/appapi.php?c=MerchantPay&a=get_openid', {
+      params: {
+        code,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // 使用openid绑定微信
+  bindWx: id =>
+    axios.get('/appapi.php?c=Merchantapp&a=bind', {
+      params: {
+        openid: id,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // 使用unionid绑定微信
+  bindWxByUnionID: id =>
+    axios.get('/appapi.php?c=Merchantapp&a=bind_app', {
+      params: {
+        union_id: id,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
 }

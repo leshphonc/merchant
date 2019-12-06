@@ -360,6 +360,8 @@ export default {
     // 查询服务商品详情
     _readServiceDetail(id) {
       this.readServiceDetail(id).then(res => {
+        // 阻止编辑器自动获取焦点
+        this.$refs.editor.$refs.quillEditor.quill.enable(false)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res[item]
@@ -367,8 +369,12 @@ export default {
         this.formData.appoint_date_type = res.appoint_date_type === '1'
         this.formData.car_no = res.car_no === '1'
         this.formData.car_type = res.car_type === '1'
-        this.formData.start_time = this.$moment(res.start_time * 1000)
-        this.formData.end_time = this.$moment(res.end_time * 1000)
+        if (res.start_time !== '0') {
+          this.formData.start_time = this.$moment(res.start_time * 1000)
+        }
+        if (res.end_time !== '0') {
+          this.formData.end_time = this.$moment(res.end_time * 1000)
+        }
         this.formData.pic = [res.pic]
         this.pic = [
           {
@@ -377,6 +383,8 @@ export default {
         ]
         this._getServiceCategoryList(res.cat_fid, res.cat_id)
         this.$nextTick(function() {
+          this.$refs.editor.$refs.quillEditor.quill.enable(true)
+          this.$refs.editor.$refs.quillEditor.quill.blur()
           window.scroll(0, 0)
         })
       })

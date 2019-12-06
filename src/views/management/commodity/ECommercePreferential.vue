@@ -7,7 +7,7 @@
         <ValidationProvider name="限时价" rules="required|decimal-max2" slim v-slot="{ errors }">
           <van-field :error-message="errors[0]" label="限时价" placeholder="0表示无限时价" v-model="formData.seckill_price"></van-field>
         </ValidationProvider>
-        <ValidationProvider name="限时价库存" rules="required" slim v-slot="{ errors }">
+        <ValidationProvider name="限时价库存" rules="required|gte-1" slim v-slot="{ errors }">
           <van-field :error-message="errors[0]" label="限时价库存" placeholder="-1表示不限量" v-model="formData.seckill_stock"></van-field>
         </ValidationProvider>
         <ValidationProvider name="限时价类型" rules="required" slim v-slot="{ errors }">

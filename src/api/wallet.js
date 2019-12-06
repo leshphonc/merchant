@@ -57,9 +57,11 @@ export default {
     }),
   // 检查订单
   checkOrder: payload =>
-    axios.post('/appapi.php?c=MerchantPay&a=check', {
-      ...payload,
-      ticket: localStorage.getItem('ticket'),
+    axios.get('/appapi.php?c=MerchantPay&a=check', {
+      params: {
+        ...payload,
+        ticket: localStorage.getItem('ticket'),
+      },
     }),
   // 获取支付参数
   getPayInfo: payload =>

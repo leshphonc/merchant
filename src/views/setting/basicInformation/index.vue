@@ -173,16 +173,35 @@ export default {
 
   watch: {},
 
-  created() {},
+  created() {
+    window['_WxLogin'] = this._WxLogin
+  },
 
   mounted() {
     this._readMerchantInfo()
+    if (this._isWx) {
+      const code = Utils.getUrlParam('code')
+      if (code) {
+        this.getOpenid(code).then(openid => {
+          this.bindWx(openid).then(() => {
+            this.$toast.success({
+              message: '绑定成功',
+              forbidClick: true,
+              duration: 1500,
+              onClose: () => {
+                this.$goBack()
+              },
+            })
+          })
+        })
+      }
+    }
   },
 
   destroyed() {},
 
   methods: {
-    ...mapActions('common', ['getWxConfig']),
+    ...mapActions(['getOpenid', 'bindWx', 'bindWxByUnionID']),
     ...mapActions('basicInformation', ['readMerchantInfo', 'updateMerchantInfo']),
     ...mapActions('storeFront', ['getPlatformStoreFrontCategory']),
     // 坐标拾取
@@ -501,16 +520,36 @@ export default {
         this.$toast('已绑定微信，无需重复绑定')
         return false
       }
-      const ua = window.navigator.userAgent.toLowerCase()
-      /* eslint eqeqeq: 0 */
-      if (!(ua.match(/micromessenger/i) == 'micromessenger')) {
-        this.$toast('请在微信环境下进行绑定')
+      if (this._isApp) {
+        const json = { callback: '_WxLogin', action: 'WxLogin' }
+        this.$invokeAndroid(json)
+      } else if (this._isWx) {
+        const appid = sessionStorage.getItem('merchant_wx_appid')
+        this.$getWXCode(appid)
       } else {
-        this.getWxConfig().then(res => {
-          const url = encodeURIComponent(window.location.href)
-          window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${res.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`
-        })
+        this.$toast('请在微信环境下进行绑定')
       }
+    },
+    // app绑定微信回调
+    _WxLogin(obj) {
+      this.bindWxByUnionID(obj.unionid)
+        .then(() => {
+          this.$toast.success({
+            message: '绑定成功',
+            forbidClick: true,
+            duration: 1000,
+            onClose: () => {
+              this._readMerchantInfo()
+            },
+          })
+        })
+        .catch(() => {
+          this.$toast.fail({
+            message: '绑定失败',
+            forbidClick: true,
+            duration: 1000,
+          })
+        })
     },
   },
 }

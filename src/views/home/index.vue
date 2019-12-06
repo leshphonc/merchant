@@ -149,29 +149,29 @@ export default {
       row1: [
         {
           label: '收入总数',
-          num: '12442',
+          num: '0',
           type: 'income',
         },
         {
           label: '订单总数',
-          num: '12442',
+          num: '0',
           type: 'order',
         },
       ],
       row2: [
         {
           label: '粉丝人数',
-          num: '12442',
+          num: '0',
           type: 'fans',
         },
         {
           label: '访问人数',
-          num: '12442',
+          num: '0',
           type: 'visitsPerson',
         },
         {
           label: '访问次数',
-          num: '12442',
+          num: '0',
           type: 'visitsNum',
         },
       ],
@@ -193,7 +193,7 @@ export default {
   },
 
   computed: {
-    ...mapState('home', ['swipe']),
+    ...mapState('home', ['swipe', 'total_earn', 'total_fans', 'total_order', 'total_visit', 'total_visit_num']),
     // 生成x轴数据
     xData() {
       let xData = []
@@ -314,7 +314,15 @@ export default {
     },
   },
 
-  watch: {},
+  watch: {
+    total_earn() {
+      this.row1[0].num = this.total_earn
+      this.row1[1].num = this.total_order
+      this.row2[0].num = this.total_fans
+      this.row2[1].num = this.total_visit
+      this.row2[2].num = this.total_visit_num
+    },
+  },
 
   created() {},
 
@@ -335,6 +343,11 @@ export default {
     for (let i = 0; i < 20; i++) {
       this.timeColumns.push(2010 + i)
     }
+    this.row1[0].num = this.total_earn
+    this.row1[1].num = this.total_order
+    this.row2[0].num = this.total_fans
+    this.row2[1].num = this.total_visit
+    this.row2[2].num = this.total_visit_num
   },
 
   destroyed() {},

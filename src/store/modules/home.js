@@ -4,6 +4,11 @@ import homeAPI from '@/api/home'
 const state = {
   money: '0',
   swipe: [],
+  total_earn: '0',
+  total_fans: '0',
+  total_order: '0',
+  total_visit: '0',
+  total_visit_num: '0',
 }
 
 // getters
@@ -18,6 +23,11 @@ const actions = {
         commit('save', {
           money: data.allmoney,
           swipe: data.wap_MerchantAd,
+          total_earn: data.total_earn,
+          total_fans: data.total_fans,
+          total_order: data.total_order,
+          total_visit: data.total_visit,
+          total_visit_num: data.total_visit_num,
         })
       } else {
         reject()

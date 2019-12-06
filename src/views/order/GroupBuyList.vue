@@ -14,13 +14,12 @@
       <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
         <van-card
           :key="index"
+          :num="item.num"
           :price="item.total_money"
           :tag="typeOption[item.type]"
           :thumb="item.pic"
           :title="item.s_name"
           @click="_goDetail(item.order_id)"
-          desc="描述信息"
-          num="2"
           v-for="(item, index) in list"
         >
           <div slot="tags">

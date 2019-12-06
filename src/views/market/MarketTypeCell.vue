@@ -1,12 +1,17 @@
 <template>
   <div>
-    <div :key="index" v-for="(item, index) in list">
-      <div class="white-space"></div>
-      <van-cell-group>
-        <van-cell :title="item.name" @click="_unEnabled" is-link />
-      </van-cell-group>
-    </div>
-    <div class="tab-bar-holder-sp"></div>
+    <van-nav-bar fixed left-text="营销活动"></van-nav-bar>
+    <div class="nav-bar-holder-sp"></div>
+    <div class="white-space"></div>
+    <van-grid clickable>
+      <van-grid-item
+        :icon="require(`@/assets/image/id_${item.id}.png`)"
+        :key="item.name"
+        :text="item.name"
+        @click="_unEnabled"
+        v-for="item in list"
+      />
+    </van-grid>
   </div>
 </template>
 
@@ -57,4 +62,18 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.van-nav-bar {
+  height: 54px;
+  line-height: 54px;
+  background-color: #fff;
+  .van-nav-bar__text {
+    color: #000;
+    font-size: 24px;
+  }
+}
+
+/deep/.van-grid-item__icon {
+  font-size: 32px;
+}
+</style>

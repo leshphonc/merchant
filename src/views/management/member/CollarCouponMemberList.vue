@@ -50,13 +50,7 @@
       v-model="showCouponList"
     >
       <van-pull-refresh @refresh="_onRefresh2" v-model="refreshing2">
-        <van-list
-          :finished="finished2"
-          :immediate-check="false"
-          @load="_onLoad2"
-          finished-text="没有更多了"
-          v-model="loading"
-        >
+        <van-list :finished="finished2" :finished-text="finishText" @load="_onLoad2" v-model="loading">
           <van-panel
             :class="{ isUsed: item.is_use !== '1' }"
             :icon="item.avatar"
@@ -144,6 +138,9 @@ export default {
   computed: {
     offsetTop() {
       return (8 / 375) * document.body.clientWidth
+    },
+    finishText() {
+      return this.list2.length ? '没有更多了' : '暂无记录'
     },
   },
 
@@ -268,7 +265,7 @@ export default {
             this._writeOffCoupon(_code)
           })
           .catch(() => {
-            this.$toast.success({
+            this.$toast.fail({
               message: '核销码错误，核销失败',
               forbidClick: true,
               duration: 1500,
