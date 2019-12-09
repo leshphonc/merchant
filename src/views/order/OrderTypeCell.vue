@@ -51,54 +51,54 @@ export default {
     ...mapActions('order', ['getOrderTypeList']),
     _getOrderTypeList() {
       this.getOrderTypeList().then(res => {
-        res.push({ name: '到店消费订单', count: '0' })
+        res.push({ name: '到店消费订单', count: '0', icon: 'daodian' })
         res.forEach(item => {
-          switch (item.name) {
-            case '团购订单':
+          switch (item.icon) {
+            case 'tuangou':
               item.url = '/order/groupBuyList'
               item.icon = require('@/assets/image/tuangou.png')
               break
-            case '预定订单':
+            case 'yuding':
               item.url = '/order/reserveList'
               item.icon = require('@/assets/image/yuding.png')
               break
-            case '零售订单':
+            case 'lingshou':
               item.url = '/order/takeAwayList'
               item.icon = require('@/assets/image/lingshou.png')
               break
-            case '外卖订单':
+            case 'waimai':
               item.url = '/order/takeAwayList'
               item.icon = require('@/assets/image/waimai.png')
               break
-            case '服务订单':
+            case 'fuwu':
               item.url = '/order/serviceList'
               item.icon = require('@/assets/image/fuwu.png')
               break
-            case '套餐订单':
+            case 'taocan':
               item.url = '/order/packageList'
               item.icon = require('@/assets/image/taocan.png')
               break
-            case '电商订单':
+            case 'dianshang':
               item.url = '/order/eCommerceList'
               item.icon = require('@/assets/image/dianshang.png')
               break
-            case '餐饮订单':
+            case 'canyin':
               item.url = '/404'
               item.icon = require('@/assets/image/canyin.png')
               break
-            case '汽配订单':
+            case 'qipei':
               item.url = '/404'
               item.icon = require('@/assets/image/qipei.png')
               break
-            case '酒店订单':
+            case 'suguan':
               item.url = '/404'
               item.icon = require('@/assets/image/jiudian.png')
               break
-            case '活动运营订单':
+            case 'huodong':
               item.url = '/404'
               item.icon = require('@/assets/image/huodong.png')
               break
-            case '到店消费订单':
+            case 'daodian':
               item.url = '/404'
               item.icon = require('@/assets/image/arrival_shop.png')
               break

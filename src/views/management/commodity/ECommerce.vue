@@ -86,10 +86,12 @@
             readonly
           ></van-field>
           <van-cell title="开启周几显示">
-            <van-switch v-model="formData.is_week" />
+            <van-switch active-value="1" inactive-value="0" v-model="formData.is_week" />
           </van-cell>
-          <van-cell v-if="formData.is_week">
-            <van-checkbox :key="item.label" shape="square" v-for="item in week" v-model="item.value">{{ item.label }}</van-checkbox>
+          <van-cell v-if="formData.is_week === '1'">
+            <van-checkbox-group :max="2" v-model="formData.week">
+              <van-checkbox :key="item.value" :name="index + 1" shape="square" v-for="(item, index) in week">{{ item.label }}</van-checkbox>
+            </van-checkbox-group>
           </van-cell>
         </van-cell-group>
         <div class="white-space-lg"></div>
@@ -122,8 +124,8 @@ export default {
       formData: {
         name: '',
         sort: 1,
-        week: '',
-        is_week: false,
+        week: [],
+        is_week: '0',
         fid: '0',
       },
       list: [],
@@ -140,31 +142,24 @@ export default {
       week: [
         {
           label: '周一',
-          value: false,
         },
         {
           label: '周二',
-          value: false,
         },
         {
           label: '周三',
-          value: false,
         },
         {
           label: '周四',
-          value: false,
         },
         {
           label: '周五',
-          value: false,
         },
         {
           label: '周六',
-          value: false,
         },
         {
           label: '周日',
-          value: false,
         },
       ],
     }
@@ -335,15 +330,9 @@ export default {
         // 加锁
         this.loading = true
         const params = JSON.parse(JSON.stringify(this.formData))
-        params.is_week = this.formData.is_week ? '1' : '0'
-        const weekArr = []
-        this.week.forEach((item, index) => {
-          if (item.value) {
-            weekArr.push(index + 1)
-          }
-        })
-        params.week = weekArr.join()
-        if (!params.week) {
+        params.week = params.week.join()
+        console.log(params)
+        if (params.is_week === '1' && !params.week) {
           this.$notify({
             type: 'warning',
             message: '请勾选要显示的日期',
@@ -351,7 +340,7 @@ export default {
           this.loading = false
           return false
         }
-        this.createECommerceCategory(this.formData)
+        this.createECommerceCategory(params)
           .then(() => {
             this.$toast.success({
               message: '操作成功',
@@ -365,8 +354,8 @@ export default {
                 this.formData = {
                   name: '',
                   sort: 1,
-                  week: '',
-                  is_week: false,
+                  week: [],
+                  is_week: '0',
                   fid: '0',
                 }
               },

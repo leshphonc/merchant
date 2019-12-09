@@ -8,6 +8,7 @@ import packageActions from './package'
 // initial state
 const state = {
   navText: ['创建', '创建', '创建', '创建', '创建'],
+  activeTab: 0,
 }
 
 // getters

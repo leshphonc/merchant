@@ -19,6 +19,7 @@
     <!-- 开始时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showStartTimePicker">
       <van-datetime-picker
+        :formatter="_formatter"
         :max-date="endTime"
         :value="startTime"
         @cancel="_controlStartTimePicker"
@@ -30,6 +31,7 @@
     <!-- 结束时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showEndTimePicker">
       <van-datetime-picker
+        :formatter="_formatter"
         :min-date="startTime"
         :value="endTime"
         @cancel="_controlEndTimePicker"
@@ -102,6 +104,16 @@ export default {
       this.endTime = data
       this._controlEndTimePicker()
       this.pickEndTime(data)
+    },
+    _formatter(type, value) {
+      if (type === 'year') {
+        return `${value}年`
+      } else if (type === 'month') {
+        return `${value}月`
+      } else if (type === 'day') {
+        return `${value}日`
+      }
+      return value
     },
   },
 }

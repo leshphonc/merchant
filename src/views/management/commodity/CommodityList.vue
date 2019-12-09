@@ -9,7 +9,7 @@
       left-arrow
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <van-tabs :offset-top="offsetTop" sticky v-model="active">
+    <van-tabs :offset-top="offsetTop" @change="_changeActiveTab" sticky v-model="activeTab">
       <van-tab title="电商">
         <e-commerce></e-commerce>
       </van-tab>
@@ -58,20 +58,17 @@ export default {
   props: {},
 
   data() {
-    return {
-      active: 0,
-      eCommerceActive: 0,
-    }
+    return {}
   },
 
   computed: {
-    ...mapState('commodity', ['navText']),
+    ...mapState('commodity', ['navText', 'activeTab']),
     offsetTop() {
       return (46 / 375) * document.body.clientWidth
     },
     // 根据当前tab的index获得rightText
     rightText() {
-      return this.navText[this.active]
+      return this.navText[this.activeTab]
     },
   },
 
@@ -87,11 +84,16 @@ export default {
   },
 
   methods: {
-    ...mapMutations('commodity', ['changeRightText', 'resetRightText']),
+    ...mapMutations('commodity', ['save', 'changeRightText', 'resetRightText']),
+    _changeActiveTab(index) {
+      this.save({
+        activeTab: index,
+      })
+    },
     // 创建商品
     _createCommodity() {
       if (this.rightText === '创建') {
-        switch (this.active) {
+        switch (this.activeTab) {
           case 0:
             this.$router.push('/commodity/eCommerceCRU')
             break
@@ -113,11 +115,11 @@ export default {
       } else {
         this.rightText === '管理'
           ? this.changeRightText({
-              index: this.active,
+              index: this.activeTab,
               text: '取消',
             })
           : this.changeRightText({
-              index: this.active,
+              index: this.activeTab,
               text: '管理',
             })
       }

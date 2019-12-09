@@ -441,6 +441,8 @@ export default {
       this.formData.province_id = data[0].value
       this.formData.city_id = data[1].value
       this.formData.area_id = data[2].value
+      this.formData.circle_id = ''
+      this.formData.market_id = ''
     },
     // 商圈选择
     _pickCircle(data) {

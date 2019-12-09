@@ -246,8 +246,10 @@
     <!-- 团购券有效期 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showValidityPicker">
       <van-datetime-picker
+        :formatter="_formatter"
         :min-date="new Date()"
         :value="formData.deadline_time"
+        @cancel="_controlValidityPicker"
         @confirm="_pickValidity"
         type="datetime"
       />
@@ -541,6 +543,20 @@ export default {
     _pickReduceType(data) {
       this.formData.stock_reduce_method = data.value
       this._controlReduceTypePicker()
+    },
+    _formatter(type, value) {
+      if (type === 'year') {
+        return `${value}年`
+      } else if (type === 'month') {
+        return `${value}月`
+      } else if (type === 'day') {
+        return `${value}日`
+      } else if (type === 'hour') {
+        return `${value}时`
+      } else if (type === 'minute') {
+        return `${value}分`
+      }
+      return value
     },
     // 切换所属分类
     _changeCategory(picker, values) {

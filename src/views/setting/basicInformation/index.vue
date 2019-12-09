@@ -14,7 +14,7 @@
       <van-cell :value="lnglatLabel" @click="_controlCoordinatePicker" is-link title="商户经纬度" />
       <van-cell :value="merchant.adress || '请编辑'" @click="_controlAddressPicker" is-link title="详细地址" />
       <van-cell @click="_controlStoreFrontCategoryPicker" is-link title="商户所属分类">
-        <div v-if="fidLabel && idLabel">
+        <div class="tag-box" v-if="fidLabel && idLabel">
           <van-tag plain type="primary">{{ fidLabel }}</van-tag>
           <van-tag plain type="primary">{{ idLabel }}</van-tag>
         </div>
@@ -24,8 +24,8 @@
 
     <van-cell-group title="商家描述">
       <van-cell :value="merchant.txt_info" @click="_controlDescDialog" is-link title="商户描述" />
-      <img-cropper :confirm="_pickLogo" :list="[{ url: merchant.service_ico }]" title="商户LOGO" />
-      <img-cropper :confirm="_pickPicture" :list="[{ url: merchant.pic_info }]" :ratio="[2, 1]" title="商户图片" />
+      <img-cropper :confirm="_pickLogo" :list="logoList" title="商户LOGO" />
+      <img-cropper :confirm="_pickPicture" :list="pictureList" :ratio="[2, 1]" title="商户图片" />
       <van-cell @click="_controlDetailEditor" is-link title="商户详情" />
     </van-cell-group>
     <van-cell-group title="绑定微信">
@@ -140,6 +140,8 @@ export default {
       showStoreFrontCategory: false,
       showDescDialog: false,
       showDetailEditor: false,
+      logoList: [],
+      pictureList: [],
     }
   },
 
@@ -391,6 +393,9 @@ export default {
         this.info.is_offline = res.now_merchant.is_offline === '1'
         this.info.txt_info = res.now_merchant.txt_info
         this.info.content = res.now_merchant.content
+        res.now_merchant.service_ico && (this.logoList = [{ url: res.now_merchant.service_ico }])
+        res.now_merchant.pic_info && (this.pictureList = [{ url: res.now_merchant.pic_info }])
+
         this._getPlatformStoreFrontCategory(res.now_merchant.cat_fid, res.now_merchant.cat_id)
       })
     },
@@ -532,6 +537,7 @@ export default {
     },
     // app绑定微信回调
     _WxLogin(obj) {
+      alert(obj.unionid)
       this.bindWxByUnionID(obj.unionid)
         .then(() => {
           this.$toast.success({
@@ -569,5 +575,9 @@ export default {
   .van-button {
     width: 100%;
   }
+}
+
+.tag-box {
+  padding-right: 1px;
 }
 </style>

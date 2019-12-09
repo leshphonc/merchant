@@ -57,7 +57,9 @@ export default {
 
   watch: {},
 
-  created() {},
+  created() {
+    window['_WxPay'] = this._WxPay
+  },
 
   mounted() {
     if (this._isWx) {
@@ -82,6 +84,16 @@ export default {
     _changeMoney() {
       this.$nextTick(() => {
         this.errorMessage = this.money ? '' : '充值金额必填'
+      })
+    },
+    _WxPay() {
+      this.$toast.success({
+        message: '支付成功',
+        forbidClick: true,
+        duration: 1000,
+        onClose: () => {
+          this.$goBack()
+        },
       })
     },
     async _submit() {
@@ -109,6 +121,7 @@ export default {
             }
             const json = {
               action: 'WxPay',
+              callback: '_WxPay',
               mer_id: userInfo.mer_id,
               order_id: order_id,
               order_type: type,

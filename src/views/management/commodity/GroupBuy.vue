@@ -17,7 +17,7 @@
               <van-tag plain type="danger">{{ item.status === '1' ? '开启状态' : '关闭状态' }}</van-tag>
             </div>
             <div slot="footer" v-if="$route.fullPath === '/commodity'">
-              <van-button :to="`/order/groupBuyList/${item.group_id}`" size="small">订单列表</van-button>
+              <van-button :to="`/order/groupBuyList/${item.group_id}`" size="small">销售记录</van-button>
               <van-button :to="`/commodity/groupBuyPreferential/${item.group_id}`" size="small">优惠</van-button>
               <van-button :to="`/commodity/groupBuyCRU/${item.group_id}`" size="small">编辑</van-button>
             </div>

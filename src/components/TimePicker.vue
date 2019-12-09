@@ -62,6 +62,7 @@
     <!-- 开始时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-if="type !== 'time'" v-model="showStartTimePicker">
       <van-datetime-picker
+        :formatter="_formatter"
         :max-date="endTime"
         :type="type"
         :value="startTime"
@@ -69,6 +70,7 @@
         @confirm="_pickStartTime"
       />
     </van-popup>
+    <!-- time类型 -->
     <van-popup
       :close-on-click-overlay="false"
       position="bottom"
@@ -90,6 +92,7 @@
     <!-- 结束时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-if="type !== 'time'" v-model="showEndTimePicker">
       <van-datetime-picker
+        :formatter="_formatter"
         :min-date="startTime"
         :type="type"
         :value="endTime"
@@ -97,6 +100,7 @@
         @confirm="_pickEndTime"
       />
     </van-popup>
+    <!-- time类型 -->
     <van-popup
       :close-on-click-overlay="false"
       position="bottom"
@@ -216,7 +220,7 @@ export default {
   watch: {
     data() {
       // 判断是否为有效数据，如不是则按默认数据展示
-      if (this.data && (this.data[0] !== '' && this.data[0] !== '0') && (this.data[1] !== '' && this.data[1] !== '0')) {
+      if (this.data && this.data[0] !== '' && this.data[0] !== '0' && this.data[1] !== '' && this.data[1] !== '0') {
         // 有效数据，且类型为time，则直接赋值
         if (this.type === 'time') {
           this.startTime = this.data[0]
@@ -284,6 +288,16 @@ export default {
       this.showEndTimeLabel = true
       this.pickEndTime(data)
       this._controlEndTimePicker()
+    },
+    _formatter(type, value) {
+      if (type === 'year') {
+        return `${value}年`
+      } else if (type === 'month') {
+        return `${value}月`
+      } else if (type === 'day') {
+        return `${value}日`
+      }
+      return value
     },
   },
 }

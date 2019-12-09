@@ -120,7 +120,7 @@ export default {
         { values: cityData, defaultIndex: cityIndex },
         { values: areaData, defaultIndex: areaIndex },
       ]
-      if (!circle) {
+      if (!circle || circle === '0') {
         resolve(result)
         return false
       }
@@ -232,8 +232,10 @@ export default {
   },
   // 使用union_id绑定微信
   bindWxByUnionID(context, id) {
+    alert('action')
     return new Promise(async (resolve, reject) => {
       const data = await common.bindWxByUnionID(id)
+      alert('data' + JSON.stringify(data))
       data ? resolve() : reject()
     })
   },

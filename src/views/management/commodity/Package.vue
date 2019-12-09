@@ -11,9 +11,9 @@
           lazy-load
           v-for="item in list"
         >
-          <div slot="tags">
+          <!-- <div slot="tags">
             <van-tag plain type="danger">每人限购：{{ item.person_num }}</van-tag>
-          </div>
+          </div> -->
           <div slot="bottom">
             <div>创建时间：{{ $moment(item.create_time * 1000).format('YYYY-MM-DD') }}</div>
           </div>

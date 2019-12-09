@@ -4,21 +4,7 @@
     <div class="nav-bar-holder"></div>
     <van-sticky :offset-top="offsetTop">
       <div class="white-space"></div>
-      <van-row align="center" type="flex">
-        <van-col style="flex: 1; margin: 0 8px; min-width: 0;">
-          <div @click="_controlStartTimePicker" class="filter-box">
-            <div class="van-ellipsis">{{ startTimeLabel }}</div>
-            <i class="iconfont">&#xe6f0;</i>
-          </div>
-        </van-col>
-        <span class="sp-line">-</span>
-        <van-col style="flex: 1; margin: 0 8px; min-width: 0;">
-          <div @click="_controlEndTimePicker" class="filter-box">
-            <div class="van-ellipsis">{{ endTimeLabel }}</div>
-            <i class="iconfont">&#xe6f0;</i>
-          </div>
-        </van-col>
-      </van-row>
+      <time-picker-box :pickEndTime="_pickEndTime" :pickStartTime="_pickStartTime"></time-picker-box>
       <van-divider>共 {{ total }} 条记录</van-divider>
     </van-sticky>
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
@@ -45,28 +31,6 @@
     </van-pull-refresh>
 
     <!-- 弹出层 -->
-    <!-- 开始时间 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showStartTimePicker">
-      <van-datetime-picker
-        :max-date="endTime"
-        :value="startTime"
-        @cancel="_controlStartTimePicker"
-        @confirm="_pickStartTime"
-        show-toolbar
-        type="date"
-      />
-    </van-popup>
-    <!-- 结束时间 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showEndTimePicker">
-      <van-datetime-picker
-        :min-date="startTime"
-        :value="endTime"
-        @cancel="_controlEndTimePicker"
-        @confirm="_pickEndTime"
-        show-toolbar
-        type="date"
-      />
-    </van-popup>
     <!-- 用户行为 -->
     <van-popup class="behavior" position="bottom" safe-area-inset-bottom v-model="showBehaviorPopup">
       <van-pull-refresh @refresh="_behaviorOnRefresh" v-model="behaviorRefreshing">
@@ -94,12 +58,16 @@
 
 <script>
 import { mapActions } from 'vuex'
+import TimePickerBox from '@/components/TimePickerBox'
+
 export default {
   name: 'bindingFansList',
 
   mixins: [],
 
-  components: {},
+  components: {
+    TimePickerBox,
+  },
 
   props: {},
 
@@ -111,11 +79,11 @@ export default {
       refreshing: false,
       finished: false,
       loading: false,
-      showStartTimePicker: false,
-      showEndTimePicker: false,
       showBehaviorPopup: false,
-      startTime: new Date(this.$moment().subtract(30, 'days')),
-      endTime: new Date(),
+      startTime: this.$moment()
+        .subtract(30, 'days')
+        .format('YYYY-MM-DD'),
+      endTime: this.$moment().format('YYYY-MM-DD'),
       behaviorPage: 1,
       behaviorList: [],
       behaviorRefreshing: false,
@@ -146,12 +114,6 @@ export default {
 
   methods: {
     ...mapActions('member', ['getBindingFansList', 'getBindingFansBehaviorList']),
-    _controlStartTimePicker() {
-      this.showStartTimePicker = !this.showStartTimePicker
-    },
-    _controlEndTimePicker() {
-      this.showEndTimePicker = !this.showEndTimePicker
-    },
     _controlBehaviorPopup(uid) {
       if (uid) {
         this.lastUid = uid
@@ -184,20 +146,18 @@ export default {
       }
     },
     _pickStartTime(data) {
-      this.startTime = data
+      this.startTime = this.$moment(data).format('YYYY-MM-DD')
       this._onRefresh()
-      this._controlStartTimePicker()
     },
     _pickEndTime(data) {
-      this.endTime = data
+      this.endTime = this.$moment(data).format('YYYY-MM-DD')
       this._onRefresh()
-      this._controlEndTimePicker()
     },
     _onRefresh() {
       this.getBindingFansList({
         page: 1,
-        begin_time: this.startTimeLabel,
-        end_time: this.endTimeLabel,
+        begin_time: this.startTime,
+        end_time: this.endTime,
       }).then(res => {
         this.page = 2
         this.list = res.list
@@ -209,8 +169,8 @@ export default {
     _onLoad() {
       this.getBindingFansList({
         page: this.page,
-        begin_time: this.startTimeLabel,
-        end_time: this.endTimeLabel,
+        begin_time: this.startTime,
+        end_time: this.endTime,
       }).then(res => {
         this.loading = false
         if (res.list.length < 10) {

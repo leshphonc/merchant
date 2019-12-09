@@ -42,8 +42,6 @@
 </template>
 
 <script>
-const user = JSON.parse(localStorage.getItem('merchant_user') || '{}')
-
 import { mapActions } from 'vuex'
 import TimePickerBox from '@/components/TimePickerBox'
 
@@ -137,6 +135,7 @@ export default {
       })
     },
     _getArrivalOrderStoreList() {
+      const user = JSON.parse(localStorage.getItem('merchant_user') || '{}')
       this.getArrivalOrderStoreList(user.mer_id).then(res => {
         const columns = []
         res.forEach(item => {
