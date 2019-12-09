@@ -1,11 +1,24 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}店铺`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}店铺`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
         <ValidationProvider name="店铺名称" rules="required" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="店铺名称" placeholder="店铺名称" required v-model.trim="formData.name" />
+          <van-field
+            :error-message="errors[0]"
+            label="店铺名称"
+            placeholder="店铺名称"
+            required
+            v-model.trim="formData.name"
+          />
         </ValidationProvider>
         <van-cell placeholder="请填写用户名" title="是否设置成主店">
           <van-switch slot="default" v-model="formData.ismain"></van-switch>
@@ -139,8 +152,21 @@
           ></van-field>
         </ValidationProvider>
         <img-cropper :confirm="_pickShopLogo" :list="shop_logo" field="商户LOGO" title="商户LOGO"></img-cropper>
-        <img-cropper :confirm="_pickPic" :count="5" :list="pic" :ratio="[2, 1]" field="店铺图片" title="店铺图片"></img-cropper>
-        <img-cropper :confirm="_pickQRCode" :list="qrcode_backgroup" :ratio="[666, 1000]" field="二维码背景图" title="二维码背景图"></img-cropper>
+        <img-cropper
+          :confirm="_pickPic"
+          :count="5"
+          :list="pic"
+          :ratio="[2, 1]"
+          field="店铺图片"
+          title="店铺图片"
+        ></img-cropper>
+        <img-cropper
+          :confirm="_pickQRCode"
+          :list="qrcode_backgroup"
+          :ratio="[666, 1000]"
+          field="二维码背景图"
+          title="二维码背景图"
+        ></img-cropper>
         <van-field
           :value="disCountLabel"
           @click="_controlDisCountPicker"
@@ -184,7 +210,11 @@
 
     <!-- 弹出层 -->
     <!-- 坐标选择 -->
-    <coordinate-picker :cancel="_controlCoordinatePicker" :confirm="_pickCoordinate" :show="showCoordinatePicker"></coordinate-picker>
+    <coordinate-picker
+      :cancel="_controlCoordinatePicker"
+      :confirm="_pickCoordinate"
+      :show="showCoordinatePicker"
+    ></coordinate-picker>
     <!-- 店铺业务 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showBusinessPicker">
       <van-picker
@@ -307,7 +337,11 @@ export default {
         { label: '汽配', value: 'have_auto_parts' },
       ],
       // 优惠类型pickerData
-      disCountColumns: [{ label: '无优惠', value: '0' }, { label: '折扣', value: '1' }, { label: '满减', value: '2' }],
+      disCountColumns: [
+        { label: '无优惠', value: '0' },
+        { label: '折扣', value: '1' },
+        { label: '满减', value: '2' },
+      ],
       // 店铺分类数据，用于更改一级分类时遍历出二级分类
       storeFrontCategoryOrigin: [],
       // 用于picker的店铺分类数据

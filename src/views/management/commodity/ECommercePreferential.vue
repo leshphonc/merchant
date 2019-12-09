@@ -1,14 +1,31 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存" title="电商商品优惠"></van-nav-bar>
+    <van-nav-bar
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+      title="电商商品优惠"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group title="基础设置">
         <ValidationProvider name="限时价" rules="required|decimal-max2" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="限时价" placeholder="0表示无限时价" v-model="formData.seckill_price"></van-field>
+          <van-field
+            :error-message="errors[0]"
+            label="限时价"
+            placeholder="0表示无限时价"
+            v-model="formData.seckill_price"
+          ></van-field>
         </ValidationProvider>
         <ValidationProvider name="限时价库存" rules="required|gte-1" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="限时价库存" placeholder="-1表示不限量" v-model="formData.seckill_stock"></van-field>
+          <van-field
+            :error-message="errors[0]"
+            label="限时价库存"
+            placeholder="-1表示不限量"
+            v-model="formData.seckill_stock"
+          ></van-field>
         </ValidationProvider>
         <ValidationProvider name="限时价类型" rules="required" slim v-slot="{ errors }">
           <van-field
@@ -107,7 +124,12 @@
             ></van-field>
           </ValidationProvider>
           <ValidationProvider name="赠送优惠券数量" rules="required|numeric" slim v-slot="{ errors }">
-            <van-field :error-message="errors[0]" label="数量" placeholder="赠送优惠券数量" v-model="item.goods_num"></van-field>
+            <van-field
+              :error-message="errors[0]"
+              label="数量"
+              placeholder="赠送优惠券数量"
+              v-model="item.goods_num"
+            ></van-field>
           </ValidationProvider>
         </div>
       </van-cell-group>

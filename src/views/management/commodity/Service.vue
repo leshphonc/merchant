@@ -38,12 +38,16 @@
               <van-button :to="`/commodity/ServiceCRU/${item.appoint_id}`" size="small">编辑</van-button>
             </div>
             <div slot="footer" v-else>
-              <van-button :to="`/reward/serviceReward/${item.appoint_id}`" size="small" type="primary">推广分佣设置</van-button>
+              <van-button :to="`/reward/serviceReward/${item.appoint_id}`" size="small" type="primary"
+                >推广分佣设置</van-button
+              >
             </div>
           </van-card>
         </van-list>
       </van-pull-refresh>
-      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'">点击右上角创建服务</van-divider>
+      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'"
+        >点击右上角创建服务</van-divider
+      >
     </div>
     <div v-if="active === 1">
       <van-sticky :offset-top="offsetTop">

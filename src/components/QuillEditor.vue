@@ -33,7 +33,13 @@
         </van-col>
       </van-row>
     </van-popup>
-    <input @change="_changeImg" accept="image/jpg, image/jpeg, image/png" ref="file" style="display: none;" type="file" />
+    <input
+      @change="_changeImg"
+      accept="image/jpg, image/jpeg, image/png"
+      ref="file"
+      style="display: none;"
+      type="file"
+    />
   </div>
 </template>
 

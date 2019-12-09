@@ -75,7 +75,10 @@ export default {
       },
       type: '2',
       showTypePicker: false,
-      typeColumns: [{ label: '微信钱包', value: '2' }, { label: '对公账户', value: '1' }],
+      typeColumns: [
+        { label: '微信钱包', value: '2' },
+        { label: '对公账户', value: '1' },
+      ],
     }
   },
 

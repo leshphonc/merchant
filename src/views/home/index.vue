@@ -186,7 +186,11 @@ export default {
       showTimeTypePicker: false,
       showTimePicker: false,
       storeColumns: [],
-      timeTypeColumns: [{ label: '日', value: '1' }, { label: '月', value: '2' }, { label: '年', value: '3' }],
+      timeTypeColumns: [
+        { label: '日', value: '1' },
+        { label: '月', value: '2' },
+        { label: '年', value: '3' },
+      ],
       timeColumns: [],
       showAI: false,
     }

@@ -2,7 +2,11 @@
   <div>
     <van-nav-bar @click-left="$goBack" fixed left-arrow title="预定订单详情"></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <van-panel :desc="detail.phone" :status="detail.appoint_type === '1' ? '上门服务' : '到店服务'" :title="detail.nickname">
+    <van-panel
+      :desc="detail.phone"
+      :status="detail.appoint_type === '1' ? '上门服务' : '到店服务'"
+      :title="detail.nickname"
+    >
       <div slot="footer">
         <van-row>
           <van-col span="12">
@@ -52,10 +56,16 @@
       <van-cell :value="detail.order_id" title="订单编号"></van-cell>
       <van-cell :value="detail.order_time" title="下单时间"></van-cell>
       <div v-if="detail.product_payment_price > 0 || detail.payment_money > 0">
-        <van-cell :value="detail.product_id > 0 ? detail.product_payment_price : detail.payment_money" title="预付定金"></van-cell>
+        <van-cell
+          :value="detail.product_id > 0 ? detail.product_payment_price : detail.payment_money"
+          title="预付定金"
+        ></van-cell>
         <van-cell :value="detail.paid === '0' ? '未支付' : '已支付'" title="支付状态"></van-cell>
       </div>
-      <van-cell :value="detail.product_id > 0 ? detail.product_price : detail.appoint_price" title="订单总价"></van-cell>
+      <van-cell
+        :value="detail.product_id > 0 ? detail.product_price : detail.appoint_price"
+        title="订单总价"
+      ></van-cell>
       <van-cell :value="detail.service_status > 0 ? '已支付' : '未支付'" title="支付状态"></van-cell>
       <van-cell :value="detail.merchant_balance" title="使用商户余额" v-if="detail.merchant_balance > 0"></van-cell>
       <van-cell
@@ -115,7 +125,11 @@
           title="实际支付系统优惠券金额"
           v-if="detail.product_coupon_price > 0"
         ></van-cell>
-        <van-cell :value="`-¥${detail.product_card_price}`" title="实际支付商家优惠券金额" v-if="detail.product_card_price > 0"></van-cell>
+        <van-cell
+          :value="`-¥${detail.product_card_price}`"
+          title="实际支付商家优惠券金额"
+          v-if="detail.product_card_price > 0"
+        ></van-cell>
         <div v-if="detail.cue_list">
           <van-cell :key="index" :title="item.name" v-for="(item, index) in detail.cue_list">
             <div v-if="item.type === '2' && item.address !== undefined">

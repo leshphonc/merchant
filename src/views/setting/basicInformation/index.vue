@@ -53,7 +53,11 @@
       ></van-picker>
     </van-popup>
     <!-- 经纬度 -->
-    <coordinate-picker :cancel="_controlCoordinatePicker" :confirm="_pickCoordinate" :show="showCoordinatePicker"></coordinate-picker>
+    <coordinate-picker
+      :cancel="_controlCoordinatePicker"
+      :confirm="_pickCoordinate"
+      :show="showCoordinatePicker"
+    ></coordinate-picker>
     <!-- 详细地址 -->
     <van-dialog :before-close="_editAddress" show-cancel-button title="商户详细地址" v-model="showAddressDialog">
       <van-field autosize placeholder="请填写商户详细地址" type="textarea" v-model="info.address"></van-field>

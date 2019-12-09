@@ -22,12 +22,16 @@
               <van-button :to="`/commodity/groupBuyCRU/${item.group_id}`" size="small">编辑</van-button>
             </div>
             <div slot="footer" v-else>
-              <van-button :to="`/reward/groupBuyReward/${item.group_id}`" size="small" type="primary">推广分佣设置</van-button>
+              <van-button :to="`/reward/groupBuyReward/${item.group_id}`" size="small" type="primary"
+                >推广分佣设置</van-button
+              >
             </div>
           </van-card>
         </van-list>
       </van-pull-refresh>
-      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'">点击右上角创建商品</van-divider>
+      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'"
+        >点击右上角创建商品</van-divider
+      >
     </div>
     <div v-if="active === 1">
       <van-sticky :offset-top="offsetTop">
@@ -57,7 +61,13 @@
       <ValidationObserver @submit.prevent="_submit" ref="observer" tag="form" v-slot="{ invalid }">
         <van-cell-group>
           <ValidationProvider name="套餐名称" rules="required" slim v-slot="{ errors }">
-            <van-field :error-message="errors[0]" label="套餐名称" placeholder="请填写套餐名称" required v-model="formData.title"></van-field>
+            <van-field
+              :error-message="errors[0]"
+              label="套餐名称"
+              placeholder="请填写套餐名称"
+              required
+              v-model="formData.title"
+            ></van-field>
           </ValidationProvider>
           <ValidationProvider name="套餐简介" rules="required" slim v-slot="{ errors }">
             <van-field

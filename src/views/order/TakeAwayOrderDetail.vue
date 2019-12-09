@@ -35,7 +35,10 @@
       <van-cell :value="detail.pay_time" title="支付时间"></van-cell>
       <van-cell :value="detail.pay_type_str" title="支付方式"></van-cell>
       <van-cell :value="detail.change_price > 0 ? detail.price : `¥${detail.go_pay_price}`" title="应收总额"></van-cell>
-      <van-cell :value="`${detail.minus_card_discount > 0 ? '- ' : ''}¥${detail.minus_card_discount}`" title="商家会员卡折扣"></van-cell>
+      <van-cell
+        :value="`${detail.minus_card_discount > 0 ? '- ' : ''}¥${detail.minus_card_discount}`"
+        title="商家会员卡折扣"
+      ></van-cell>
       <van-cell :value="`${detail.balance_pay > 0 ? '- ' : ''}¥${detail.balance_pay}`" title="系统余额支付"></van-cell>
     </van-cell-group>
     <van-row :gutter="10" class="operator">
@@ -123,8 +126,21 @@
     <!-- 发货 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showConfirmPopup">
       <van-cell-group>
-        <van-field :value="detail.address" autosize input-align="right" label="地址" readonly type="textarea"></van-field>
-        <van-field :value="`${detail.distance}km`" input-align="right" label="距离" readonly right-icon="location-o"></van-field>
+        <van-field
+          :value="detail.address"
+          autosize
+          input-align="right"
+          label="地址"
+          readonly
+          type="textarea"
+        ></van-field>
+        <van-field
+          :value="`${detail.distance}km`"
+          input-align="right"
+          label="距离"
+          readonly
+          right-icon="location-o"
+        ></van-field>
         <van-field
           :value="expressLabel"
           @click="_controlExpressPicker"

@@ -1,11 +1,24 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}套餐`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}套餐`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
         <ValidationProvider name="套餐名称" rules="required" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="套餐名称" placeholder="套餐名称" required v-model.trim="formData.name"></van-field>
+          <van-field
+            :error-message="errors[0]"
+            label="套餐名称"
+            placeholder="套餐名称"
+            required
+            v-model.trim="formData.name"
+          ></van-field>
         </ValidationProvider>
         <ValidationProvider name="价格" rules="required|decimal-max2" slim v-slot="{ errors }">
           <van-field
@@ -113,7 +126,12 @@
             <van-checkbox-group v-model="cache">
               <van-cell-group>
                 <van-cell :key="index" @click="_toggle(index, item.disabled)" clickable v-for="(item, index) in list">
-                  <van-checkbox :disabled="item.disabled" :name="item" ref="checkboxes" slot="right-icon"></van-checkbox>
+                  <van-checkbox
+                    :disabled="item.disabled"
+                    :name="item"
+                    ref="checkboxes"
+                    slot="right-icon"
+                  ></van-checkbox>
                   <div slot="title">
                     <img :src="item.pic" alt />
                     {{ item.appoint_name }}
@@ -134,7 +152,12 @@
             <van-checkbox-group v-model="cacheE">
               <van-cell-group>
                 <van-cell :key="index" @click="_toggleE(index, item.disabled)" clickable v-for="(item, index) in listE">
-                  <van-checkbox :disabled="item.disabled" :name="item" ref="checkboxesE" slot="right-icon"></van-checkbox>
+                  <van-checkbox
+                    :disabled="item.disabled"
+                    :name="item"
+                    ref="checkboxesE"
+                    slot="right-icon"
+                  ></van-checkbox>
                   <div slot="title">
                     <img :src="item.list_pic" alt />
                     {{ item.name }}

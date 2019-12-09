@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}团购`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}团购`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
@@ -136,7 +143,14 @@
             </div>
           </van-field>
         </ValidationProvider>
-        <img-cropper :confirm="_pickPic" :count="5" :delete="_deletePic" :list="picList" field="商品图片" title="商品图片"></img-cropper>
+        <img-cropper
+          :confirm="_pickPic"
+          :count="5"
+          :delete="_deletePic"
+          :list="picList"
+          field="商品图片"
+          title="商品图片"
+        ></img-cropper>
         <ValidationProvider name="商品总数量" rules="required|numeric" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -197,7 +211,9 @@
           <van-field
             :error-message="errors[0]"
             :label-width="resizeWidth"
-            @click-right-icon="$toast('手续费将按单价百分比（0-100）收取,设置为100（成团前所有参团人也不可退）则不允许退款')"
+            @click-right-icon="
+              $toast('手续费将按单价百分比（0-100）收取,设置为100（成团前所有参团人也不可退）则不允许退款')
+            "
             label="退款手续比例"
             placeholder="请填写百分比(0 - 100)"
             required

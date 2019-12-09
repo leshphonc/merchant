@@ -1,11 +1,24 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}店员`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}店员`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
         <ValidationProvider name="店员姓名" rules="required" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="姓名" placeholder="店员姓名" required v-model.trim="formData.name"></van-field>
+          <van-field
+            :error-message="errors[0]"
+            label="姓名"
+            placeholder="店员姓名"
+            required
+            v-model.trim="formData.name"
+          ></van-field>
         </ValidationProvider>
         <ValidationProvider name="店员类型" rules="required" slim v-slot="{ errors }">
           <van-field
@@ -42,7 +55,13 @@
           ></van-field>
         </ValidationProvider>
         <ValidationProvider name="手机号" rules="required|phone" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="手机号" placeholder="店员手机号" required v-model.trim="formData.tel"></van-field>
+          <van-field
+            :error-message="errors[0]"
+            label="手机号"
+            placeholder="店员手机号"
+            required
+            v-model.trim="formData.tel"
+          ></van-field>
         </ValidationProvider>
         <ValidationProvider name="所属店铺" rules="required" slim v-slot="{ errors }">
           <van-field

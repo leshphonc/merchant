@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存" title="预定商品优惠"></van-nav-bar>
+    <van-nav-bar
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+      title="预定商品优惠"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group title="基础设置">
@@ -66,7 +73,9 @@
       <van-cell-group :key="index" v-for="(item, index) in envList">
         <div slot="title">
           {{ `环境${index + 1}` }}
-          <van-button @click="_deleteEnvironment(index)" size="small" type="danger" v-show="envList.length > 1">删除</van-button>
+          <van-button @click="_deleteEnvironment(index)" size="small" type="danger" v-show="envList.length > 1"
+            >删除</van-button
+          >
         </div>
         <ValidationProvider name="环境名称" rules="required" slim v-slot="{ errors }">
           <van-field label="环境名称" placeholder="请填写环境名称" required v-model="item.envo_name"></van-field>
@@ -81,7 +90,13 @@
           field="选中前图标"
           title="选中前图标"
         ></img-cropper>
-        <img-cropper :confirm="_pickEnvAfterImg" :index="index" :list="envAfterImg[index]" field="选中后图标" title="选中后图标"></img-cropper>
+        <img-cropper
+          :confirm="_pickEnvAfterImg"
+          :index="index"
+          :list="envAfterImg[index]"
+          field="选中后图标"
+          title="选中后图标"
+        ></img-cropper>
         <img-cropper
           :confirm="_pickEnvServingImg"
           :index="index"

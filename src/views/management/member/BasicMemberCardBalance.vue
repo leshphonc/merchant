@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存" title="商家会员卡余额管理"></van-nav-bar>
+    <van-nav-bar
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+      title="商家会员卡余额管理"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group title="基础信息">

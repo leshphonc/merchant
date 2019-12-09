@@ -5,7 +5,13 @@
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
         <ValidationProvider name="提款人真实姓名" rules="required" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="姓名" placeholder="提款人真实姓名" required v-model.trim="formData.name"></van-field>
+          <van-field
+            :error-message="errors[0]"
+            label="姓名"
+            placeholder="提款人真实姓名"
+            required
+            v-model.trim="formData.name"
+          ></van-field>
         </ValidationProvider>
         <ValidationProvider name="提现金额" rules="required|decimal-max2" slim v-slot="{ errors }">
           <van-field
@@ -18,7 +24,13 @@
           ></van-field>
         </ValidationProvider>
         <van-cell :value="paymentLabel" @click="_controlPaymentType" is-link title="提现至"></van-cell>
-        <ValidationProvider name="微信账号" rules="required" slim v-if="formData.withdraw_type === '3'" v-slot="{ errors }">
+        <ValidationProvider
+          name="微信账号"
+          rules="required"
+          slim
+          v-if="formData.withdraw_type === '3'"
+          v-slot="{ errors }"
+        >
           <van-field
             :error-message="errors[0]"
             :value="wxAccountLabel"
@@ -65,7 +77,13 @@
           ></van-field>
         </ValidationProvider>
         <ValidationProvider name="开户行" rules="required" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="开户行" placeholder="请填写开户行" required v-model.trim="formData.bank"></van-field>
+          <van-field
+            :error-message="errors[0]"
+            label="开户行"
+            placeholder="请填写开户行"
+            required
+            v-model.trim="formData.bank"
+          ></van-field>
         </ValidationProvider>
         <img-cropper :confirm="_pickInvoice" field="发票" title="发票"></img-cropper>
       </van-cell-group>

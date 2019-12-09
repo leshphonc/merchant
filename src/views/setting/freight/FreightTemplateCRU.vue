@@ -1,10 +1,23 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}运费模版`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}运费模版`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <ValidationProvider name="模版名称" rules="required" slim v-slot="{ errors }">
-        <van-field :error-message="errors[0]" label="模版名称" placeholder="模版名称" required v-model.trim="formData.name" />
+        <van-field
+          :error-message="errors[0]"
+          label="模版名称"
+          placeholder="模版名称"
+          required
+          v-model.trim="formData.name"
+        />
       </ValidationProvider>
       <van-cell-group
         :key="index"

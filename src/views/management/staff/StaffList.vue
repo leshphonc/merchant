@@ -46,7 +46,11 @@
                 <div style="flex: 1;">销售报酬：{{ item.sale_money || 0 }} 元</div>
               </div>
               <div class="white-space"></div>
-              <div>最后登录：{{ item.last_time !== '0' ? $moment(item.last_time * 1000).format('YYYY-MM-DD HH:mm') : '暂无记录' }}</div>
+              <div>
+                最后登录：{{
+                  item.last_time !== '0' ? $moment(item.last_time * 1000).format('YYYY-MM-DD HH:mm') : '暂无记录'
+                }}
+              </div>
             </div>
             <div class="white-space"></div>
             <div style="text-align: right;" v-if="item.name !== '门店AI助手-小由' && status === '1'">
@@ -54,23 +58,24 @@
                 @click="_controlPermissionPicker(item.store_id, item.mer_id, item.staff_id)"
                 size="small"
                 type="primary"
-              >权限</van-button>
-              <van-button @click="_controlStorePicker(item.staff_id, item.store_id)" size="small" type="primary">调岗</van-button>
-              <van-button :to="`/staff/staffWorkRecord/${item.staff_id}`" size="small" type="primary">工作记录</van-button>
+                >权限</van-button
+              >
+              <van-button @click="_controlStorePicker(item.staff_id, item.store_id)" size="small" type="primary"
+                >调岗</van-button
+              >
+              <van-button :to="`/staff/staffWorkRecord/${item.staff_id}`" size="small" type="primary"
+                >工作记录</van-button
+              >
               <van-button @click="_staffStatusChange(item.staff_id)" size="small" type="danger">禁用</van-button>
             </div>
             <div style="text-align: right;">
-              <van-button
-                @click="_staffStatusChange(item.staff_id)"
-                size="small"
-                type="primary"
-                v-show="status === '2'"
-              >启用</van-button>
+              <van-button @click="_staffStatusChange(item.staff_id)" size="small" type="primary" v-show="status === '2'"
+                >启用</van-button
+              >
             </div>
-            <i
-              @click="() => $router.push(`/staff/staffCRU/${item.staff_id}/${item.store_id}`)"
-              class="iconfont"
-            >&#xe634;</i>
+            <i @click="() => $router.push(`/staff/staffCRU/${item.staff_id}/${item.store_id}`)" class="iconfont"
+              >&#xe634;</i
+            >
           </div>
         </van-panel>
         <div class="white-space"></div>

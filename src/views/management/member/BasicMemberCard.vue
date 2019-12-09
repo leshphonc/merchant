@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存" title="商家会员卡基础信息"></van-nav-bar>
+    <van-nav-bar
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+      title="商家会员卡基础信息"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group title="基础信息">
@@ -11,7 +18,13 @@
         <van-cell title="使用默认背景图">
           <van-switch active-value="1" inactive-value="0" v-model="useDefault"></van-switch>
         </van-cell>
-        <img-cropper :confirm="_pickBG" :list="bgList" field="背景图" title="上传背景图" v-if="useDefault !== '1'"></img-cropper>
+        <img-cropper
+          :confirm="_pickBG"
+          :list="bgList"
+          field="背景图"
+          title="上传背景图"
+          v-if="useDefault !== '1'"
+        ></img-cropper>
         <van-cell @click="_controlBackGroundPopup" is-link title="默认背景图">
           <img :src="defaultBg" alt class="default-bg" v-if="useDefault === '1' && defaultBg" />
           <div v-else>请选择</div>

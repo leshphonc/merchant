@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar :right-text="rightText" @click-left="$goBack" @click-right="_clickRight" fixed left-arrow title="领卡会员"></van-nav-bar>
+    <van-nav-bar
+      :right-text="rightText"
+      @click-left="$goBack"
+      @click-right="_clickRight"
+      fixed
+      left-arrow
+      title="领卡会员"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-tabs :offset-top="offsetTop" sticky v-model="active">
       <van-tab title="会员卡信息">
@@ -35,7 +42,9 @@
               </div>
               <div class="footer" slot="footer">
                 <span>领卡时间：{{ $moment(item.add_time * 1000).format('YYYY-MM-DD HH:mm') }}</span>
-                <van-button :to="`/member/memberCardAddCreditRecord/${item.id}`" size="small" type="primary">充值记录</van-button>
+                <van-button :to="`/member/memberCardAddCreditRecord/${item.id}`" size="small" type="primary"
+                  >充值记录</van-button
+                >
               </div>
             </van-card>
           </van-list>
@@ -54,7 +63,9 @@
               <div class="panel-footer" slot="footer">
                 <div>用户数量：{{ item.user_count }}</div>
                 <div>
-                  <van-button @click="() => $router.push(`/member/memberGroupCRU/${item.id}`)" size="small">编辑</van-button>
+                  <van-button @click="() => $router.push(`/member/memberGroupCRU/${item.id}`)" size="small"
+                    >编辑</van-button
+                  >
                   <van-button size="small" type="primary">查看分组用户</van-button>
                 </div>
               </div>

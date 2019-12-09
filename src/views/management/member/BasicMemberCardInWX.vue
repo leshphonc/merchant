@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存" title="微信会员卡"></van-nav-bar>
+    <van-nav-bar
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+      title="微信会员卡"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group title="基本信息">
@@ -131,7 +138,8 @@
             size="small"
             type="danger"
             v-if="imageText.length > 1"
-          >删除</van-button>
+            >删除</van-button
+          >
         </div>
         <img-cropper
           :confirm="_pickPic"

@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存" title="团购优惠"></van-nav-bar>
+    <van-nav-bar
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+      title="团购优惠"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group title="套餐设置">
@@ -72,7 +79,12 @@
             ></van-field>
           </ValidationProvider>
           <ValidationProvider name="赠送优惠券数量" rules="required|numeric" slim v-slot="{ errors }">
-            <van-field :error-message="errors[0]" label="数量" placeholder="赠送优惠券数量" v-model="item.goods_num"></van-field>
+            <van-field
+              :error-message="errors[0]"
+              label="数量"
+              placeholder="赠送优惠券数量"
+              v-model="item.goods_num"
+            ></van-field>
           </ValidationProvider>
         </div>
       </van-cell-group>
@@ -211,11 +223,7 @@ export default {
 
   methods: {
     ...mapActions(['getCouponList']),
-    ...mapActions('commodity', [
-      'getGroupBuyPackageList',
-      'readGroupBuyDetail',
-      'updateGroupBuyPreferential',
-    ]),
+    ...mapActions('commodity', ['getGroupBuyPackageList', 'readGroupBuyDetail', 'updateGroupBuyPreferential']),
     ...mapActions('member', ['getMemberGroupList']),
     _controlGroupBuyPackagePicker() {
       this.showGroupBuyPackagePicker = !this.showGroupBuyPackagePicker

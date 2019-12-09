@@ -29,13 +29,20 @@
       </div>
       <van-cell :title="pack_alias" :value="`¥${detail.packing_charge}`"></van-cell>
       <van-cell :title="freight_alias" :value="`¥${detail.freight_charge}`"></van-cell>
-      <van-cell :title="`订单 ¥${detail.discount_price}`" :value="`优惠  - ¥${detail.minus_price}`" class="red-font"></van-cell>
+      <van-cell
+        :title="`订单 ¥${detail.discount_price}`"
+        :value="`优惠  - ¥${detail.minus_price}`"
+        class="red-font"
+      ></van-cell>
     </van-cell-group>
     <van-cell-group title="支付信息">
       <van-cell :value="detail.pay_time" title="支付时间"></van-cell>
       <van-cell :value="detail.pay_type_str" title="支付方式"></van-cell>
       <van-cell :value="detail.change_price > 0 ? detail.price : `¥${detail.go_pay_price}`" title="应收总额"></van-cell>
-      <van-cell :value="`${detail.minus_card_discount > 0 ? '- ' : ''}¥${detail.minus_card_discount}`" title="商家会员卡折扣"></van-cell>
+      <van-cell
+        :value="`${detail.minus_card_discount > 0 ? '- ' : ''}¥${detail.minus_card_discount}`"
+        title="商家会员卡折扣"
+      ></van-cell>
       <van-cell :value="`${detail.balance_pay > 0 ? '- ' : ''}¥${detail.balance_pay}`" title="系统余额支付"></van-cell>
     </van-cell-group>
   </div>

@@ -66,7 +66,9 @@
           <van-col span="16">核销码：{{ item.group_pass }}</van-col>
           <van-col span="8">
             <div v-show="item.status === '1'">已验证</div>
-            <van-button @click="_scanCodeWriteOff" size="small" type="primary" v-show="item.status !== '1'">验证</van-button>
+            <van-button @click="_scanCodeWriteOff" size="small" type="primary" v-show="item.status !== '1'"
+              >验证</van-button
+            >
           </van-col>
         </van-row>
         <van-row>

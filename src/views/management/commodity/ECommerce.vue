@@ -18,17 +18,23 @@
               <van-tag plain type="danger">{{ item.freight_type === '1' ? '运费单独计算' : '运费最大值' }}</van-tag>
             </div>
             <div slot="footer" v-if="$route.fullPath === '/commodity'">
-              <van-button @click="_deleteCommodity(item.store_id, item.goods_id)" size="small" type="danger">删除</van-button>
+              <van-button @click="_deleteCommodity(item.store_id, item.goods_id)" size="small" type="danger"
+                >删除</van-button
+              >
               <van-button :to="`/commodity/eCommercePreferential/${item.goods_id}`" size="small">优惠</van-button>
               <van-button :to="`/commodity/eCommerceCRU/${item.goods_id}`" size="small">编辑</van-button>
             </div>
             <div slot="footer" v-else>
-              <van-button :to="`/reward/eCommerceReward/${item.goods_id}`" size="small" type="primary">推广分佣设置</van-button>
+              <van-button :to="`/reward/eCommerceReward/${item.goods_id}`" size="small" type="primary"
+                >推广分佣设置</van-button
+              >
             </div>
           </van-card>
         </van-list>
       </van-pull-refresh>
-      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'">点击右上角创建商品</van-divider>
+      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'"
+        >点击右上角创建商品</van-divider
+      >
     </div>
     <div v-if="active === 1">
       <van-sticky :offset-top="offsetTop">
@@ -75,7 +81,13 @@
       <ValidationObserver @submit.prevent="_submit" ref="observer" tag="form" v-slot="{ invalid }">
         <van-cell-group>
           <ValidationProvider name="分类名称" rules="required" slim v-slot="{ errors }">
-            <van-field :error-message="errors[0]" label="分类名称" placeholder="请填写分类名称" required v-model="formData.name"></van-field>
+            <van-field
+              :error-message="errors[0]"
+              label="分类名称"
+              placeholder="请填写分类名称"
+              required
+              v-model="formData.name"
+            ></van-field>
           </ValidationProvider>
           <van-field
             :placeholder="categoryLabel"
@@ -90,7 +102,9 @@
           </van-cell>
           <van-cell v-if="formData.is_week === '1'">
             <van-checkbox-group :max="2" v-model="formData.week">
-              <van-checkbox :key="item.value" :name="index + 1" shape="square" v-for="(item, index) in week">{{ item.label }}</van-checkbox>
+              <van-checkbox :key="item.value" :name="index + 1" shape="square" v-for="(item, index) in week">{{
+                item.label
+              }}</van-checkbox>
             </van-checkbox-group>
           </van-cell>
         </van-cell-group>

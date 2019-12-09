@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}优惠券`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}优惠券`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
@@ -255,13 +262,28 @@
       <van-checkbox-group v-model="formData.platform">
         <van-cell-group title="使用系统">
           <van-cell @click="_togglePlatForm('wap')" clickable title="移动网页">
-            <van-checkbox :disabled="$route.params.id ? true : false" name="wap" ref="wap" slot="right-icon"></van-checkbox>
+            <van-checkbox
+              :disabled="$route.params.id ? true : false"
+              name="wap"
+              ref="wap"
+              slot="right-icon"
+            ></van-checkbox>
           </van-cell>
           <van-cell @click="_togglePlatForm('app')" clickable title="APP">
-            <van-checkbox :disabled="$route.params.id ? true : false" name="app" ref="app" slot="right-icon"></van-checkbox>
+            <van-checkbox
+              :disabled="$route.params.id ? true : false"
+              name="app"
+              ref="app"
+              slot="right-icon"
+            ></van-checkbox>
           </van-cell>
           <van-cell @click="_togglePlatForm('weixin')" clickable title="微信">
-            <van-checkbox :disabled="$route.params.id ? true : false" name="weixin" ref="weixin" slot="right-icon"></van-checkbox>
+            <van-checkbox
+              :disabled="$route.params.id ? true : false"
+              name="weixin"
+              ref="weixin"
+              slot="right-icon"
+            ></van-checkbox>
           </van-cell>
         </van-cell-group>
       </van-checkbox-group>
@@ -343,7 +365,8 @@
                 size="small"
                 type="danger"
                 v-if="imageText.length > 1"
-              >删除</van-button>
+                >删除</van-button
+              >
             </div>
             <img-cropper
               :confirm="_pickImageText"

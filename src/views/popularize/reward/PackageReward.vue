@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存" title="推广分佣设置"></van-nav-bar>
+    <van-nav-bar
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+      title="推广分佣设置"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group title="分销设置">
@@ -8,7 +15,14 @@
           <van-switch active-value="1" inactive-value="0" v-model="formData.is_fx" />
         </van-cell>
         <div v-if="formData.is_fx === '1'">
-          <van-field :value="typeLabel" @click="_controlTypePicker" input-align="right" is-link label="分润类型" readonly />
+          <van-field
+            :value="typeLabel"
+            @click="_controlTypePicker"
+            input-align="right"
+            is-link
+            label="分润类型"
+            readonly
+          />
           <ValidationProvider name="分润金额" rules="required|decimal-max2" slim v-slot="{ errors }">
             <van-field
               :error-message="errors[0]"
@@ -22,7 +36,12 @@
         </div>
       </van-cell-group>
       <van-cell-group title="购买者赠送" v-if="formData.is_fx === '1'">
-        <ValidationProvider :name="`购买者赠送${$getGlobal('dhb_alias')}`" rules="required|numeric" slim v-slot="{ errors }">
+        <ValidationProvider
+          :name="`购买者赠送${$getGlobal('dhb_alias')}`"
+          rules="required|numeric"
+          slim
+          v-slot="{ errors }"
+        >
           <van-field
             :error-message="errors[0]"
             :label="`${$getGlobal('dhb_alias')}`"
@@ -49,7 +68,12 @@
         </ValidationProvider>
       </van-cell-group>
       <van-cell-group title="销售者获得" v-if="formData.is_fx === '1'">
-        <ValidationProvider :name="`销售者获得${$getGlobal('dhb_alias')}`" rules="required|numeric" slim v-slot="{ errors }">
+        <ValidationProvider
+          :name="`销售者获得${$getGlobal('dhb_alias')}`"
+          rules="required|numeric"
+          slim
+          v-slot="{ errors }"
+        >
           <van-field
             :error-message="errors[0]"
             :label="`${$getGlobal('dhb_alias')}`"

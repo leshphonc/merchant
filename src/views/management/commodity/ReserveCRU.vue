@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}预定`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}预定`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-field
@@ -96,7 +103,11 @@
           ></van-field>
         </ValidationProvider>
         <van-field
-          @click-left-icon="$toast('若开启可以选择多个连续的预约时间，且预约金额叠加，若选择两个连续的时间，预约订单最后的总价为设定全价的两倍，以此类推')"
+          @click-left-icon="
+            $toast(
+              '若开启可以选择多个连续的预约时间，且预约金额叠加，若选择两个连续的时间，预约订单最后的总价为设定全价的两倍，以此类推'
+            )
+          "
           input-align="right"
           label="日期多选"
           left-icon="question-o"
@@ -106,7 +117,9 @@
         <ValidationProvider name="预约天数" rules="required|numeric|" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
-            @click-left-icon="$toast('从今天开始算，可以向前预约的天数，最多30天，填写0表示只有今天可以预约，以此类推。')"
+            @click-left-icon="
+              $toast('从今天开始算，可以向前预约的天数，最多30天，填写0表示只有今天可以预约，以此类推。')
+            "
             label="预约天数"
             left-icon="question-o"
             placeholder="可提前预定天数"
@@ -176,7 +189,14 @@
             required
           ></van-field>
         </ValidationProvider>
-        <img-cropper :confirm="_pickPic" :count="5" :delete="_deletePic" :list="picList" field="预定图片" title="预定图片"></img-cropper>
+        <img-cropper
+          :confirm="_pickPic"
+          :count="5"
+          :delete="_deletePic"
+          :list="picList"
+          field="预定图片"
+          title="预定图片"
+        ></img-cropper>
         <van-field
           @click-left-icon="$toast('开启后，用户预约时可自行选择服务店铺')"
           input-align="right"
@@ -228,7 +248,12 @@
           <van-field label="规格名称" placeholder="请填写规格名称" required v-model="item.custom_name"></van-field>
         </ValidationProvider>
         <ValidationProvider name="规格定金" rules="required|decimal-max2" slim v-slot="{ errors }">
-          <van-field label="规格定金" placeholder="最多支持2位小数" required v-model="item.custom_payment_price"></van-field>
+          <van-field
+            label="规格定金"
+            placeholder="最多支持2位小数"
+            required
+            v-model="item.custom_payment_price"
+          ></van-field>
         </ValidationProvider>
         <ValidationProvider name="规格全价" rules="required|decimal-max2" slim v-slot="{ errors }">
           <van-field label="规格全价" placeholder="最多支持2位小数" required v-model="item.custom_price"></van-field>

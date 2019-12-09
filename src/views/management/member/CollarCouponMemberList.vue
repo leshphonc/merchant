@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="showActions = true" fixed left-arrow right-text="操作" title="优惠券列表"></van-nav-bar>
+    <van-nav-bar
+      @click-left="$goBack"
+      @click-right="showActions = true"
+      fixed
+      left-arrow
+      right-text="操作"
+      title="优惠券列表"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
       <van-list :finished="finished" @load="_onLoad" finished-text="没有更多了" v-model="loading">
@@ -19,23 +26,30 @@
           <div slot="price">满{{ item.order_money }} 减{{ item.discount }}</div>
           <div slot="footer">
             <div class="white-space"></div>
-            <div>有效期：{{ $moment(item.start_time * 1000).format('YYYY.MM.DD') }} - {{ $moment(item.end_time * 1000).format('YYYY.MM.DD') }}</div>
+            <div>
+              有效期：{{ $moment(item.start_time * 1000).format('YYYY.MM.DD') }} -
+              {{ $moment(item.end_time * 1000).format('YYYY.MM.DD') }}
+            </div>
             <div class="white-space"></div>
             <van-button
               @click="_changeCouponStatus(item.coupon_id, '1')"
               size="small"
               type="primary"
               v-if="item.status === '0'"
-            >启用</van-button>
+              >启用</van-button
+            >
             <van-button
               @click="_changeCouponStatus(item.coupon_id, '0')"
               size="small"
               type="danger"
               v-if="item.status === '1'"
-            >禁用</van-button>
+              >禁用</van-button
+            >
             <van-button size="small" v-if="item.status === '2'">超过期限</van-button>
             <van-button size="small" v-if="item.status === '3'">领完了</van-button>
-            <van-button @click="_controlCouponList(item.coupon_id)" size="small">已领取{{ item.had_pull }}张</van-button>
+            <van-button @click="_controlCouponList(item.coupon_id)" size="small"
+              >已领取{{ item.had_pull }}张</van-button
+            >
             <van-button :to="`/member/memberCouponCRU/${item.coupon_id}`" size="small" type="primary">编辑</van-button>
           </div>
         </van-card>
@@ -74,7 +88,9 @@
             </div>
             <div slot="footer">
               <div>领取时间：{{ $moment(item.receive_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
-              <van-button @click="_controlWriteOff(item.id)" size="small" type="primary" v-if="item.is_use === '0'">核销</van-button>
+              <van-button @click="_controlWriteOff(item.id)" size="small" type="primary" v-if="item.is_use === '0'"
+                >核销</van-button
+              >
               <van-button disabled size="small" v-else>已核销</van-button>
             </div>
           </van-panel>

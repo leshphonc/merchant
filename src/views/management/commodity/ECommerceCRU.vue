@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}电商商品`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}电商商品`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
@@ -14,7 +21,12 @@
           />
         </ValidationProvider>
         <ValidationProvider name="条形码" rules="alpha_num" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="条形码" placeholder="条形码数字（选填）" v-model.trim="formData.number" />
+          <van-field
+            :error-message="errors[0]"
+            label="条形码"
+            placeholder="条形码数字（选填）"
+            v-model.trim="formData.number"
+          />
         </ValidationProvider>
         <ValidationProvider name="计数单位" rules="required" slim v-slot="{ errors }">
           <van-field
@@ -252,10 +264,19 @@ export default {
         cat_id: '',
         des: '',
       },
-      statusColumns: [{ label: '在售', value: '1' }, { label: '停售', value: '0' }],
-      typesColumns: [{ label: '实体商品', value: '0' }, { label: '虚拟商品', value: '1' }],
+      statusColumns: [
+        { label: '在售', value: '1' },
+        { label: '停售', value: '0' },
+      ],
+      typesColumns: [
+        { label: '实体商品', value: '0' },
+        { label: '虚拟商品', value: '1' },
+      ],
       freightTemplateColumns: [],
-      freightTypeColumns: [{ label: '按订单最大值', value: '0' }, { label: '单独计算', value: '1' }],
+      freightTypeColumns: [
+        { label: '按订单最大值', value: '0' },
+        { label: '单独计算', value: '1' },
+      ],
       categoryColumnsOrigin: [],
       categoryColumns: [],
       platFormCategoryColumnsOrigin: [],

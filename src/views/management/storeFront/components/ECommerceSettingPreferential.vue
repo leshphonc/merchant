@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="_create" fixed left-arrow right-text="创建" title="店铺优惠"></van-nav-bar>
+    <van-nav-bar
+      @click-left="$goBack"
+      @click-right="_create"
+      fixed
+      left-arrow
+      right-text="创建"
+      title="店铺优惠"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <div :key="index" v-for="(item, index) in list">
       <van-panel
@@ -39,7 +46,14 @@
               v-model="formData.reduce_money"
             />
           </ValidationProvider>
-          <van-field :value="typeLabel" @click="_controlTypePicker" input-align="right" is-link label="优惠类型" readonly />
+          <van-field
+            :value="typeLabel"
+            @click="_controlTypePicker"
+            input-align="right"
+            is-link
+            label="优惠类型"
+            readonly
+          />
           <van-field
             :value="statusLabel"
             @click="_controlStatusPicker"
@@ -104,8 +118,14 @@ export default {
       showTypePicker: false,
       showStatusPicker: false,
       loading: false,
-      typeColumns: [{ label: '新单', value: '0' }, { label: '满减', value: '1' }],
-      statusColumns: [{ label: '停用', value: '0' }, { label: '启用', value: '1' }],
+      typeColumns: [
+        { label: '新单', value: '0' },
+        { label: '满减', value: '1' },
+      ],
+      statusColumns: [
+        { label: '停用', value: '0' },
+        { label: '启用', value: '1' },
+      ],
       lastId: '',
     }
   },

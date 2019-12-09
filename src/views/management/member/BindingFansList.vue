@@ -22,7 +22,9 @@
           <div class="footer" slot="footer">
             <div>
               <div>推广店员：{{ item.staff_name }}</div>
-              <div style="float: left;">绑定时间：{{ $moment(item.spread_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
+              <div style="float: left;">
+                绑定时间：{{ $moment(item.spread_time * 1000).format('YYYY-MM-DD HH:mm') }}
+              </div>
             </div>
             <van-button @click="_controlBehaviorPopup(item.uid)" size="small" type="primary">用户行为</van-button>
           </div>

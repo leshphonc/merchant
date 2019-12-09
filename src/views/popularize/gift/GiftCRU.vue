@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}礼品`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}礼品`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
@@ -53,7 +60,13 @@
           title="兑换地区"
           v-show="formData.pick_in_store === '0'"
         ></area-picker>
-        <ValidationProvider name="自提店铺" rules="required" slim v-if="formData.pick_in_store === '1'" v-slot="{ errors }">
+        <ValidationProvider
+          name="自提店铺"
+          rules="required"
+          slim
+          v-if="formData.pick_in_store === '1'"
+          v-slot="{ errors }"
+        >
           <van-field
             :error-message="errors[0]"
             :value="formData.store.length ? '1' : ''"

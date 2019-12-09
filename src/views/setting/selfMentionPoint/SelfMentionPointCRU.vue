@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}自提点`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}自提点`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-cell-group>
       <ValidationObserver ref="observer" slim v-slot="{ invalid }">
@@ -46,7 +53,11 @@
       </ValidationObserver>
     </van-cell-group>
     <!-- 坐标选择 -->
-    <coordinate-picker :cancel="_controlCoordinatePicker" :confirm="_pickCoordinate" :show="showCoordinatePicker"></coordinate-picker>
+    <coordinate-picker
+      :cancel="_controlCoordinatePicker"
+      :confirm="_pickCoordinate"
+      :show="showCoordinatePicker"
+    ></coordinate-picker>
   </div>
 </template>
 

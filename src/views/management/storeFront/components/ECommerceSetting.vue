@@ -1,14 +1,33 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存" title="电商业务配置"></van-nav-bar>
+    <van-nav-bar
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+      title="电商业务配置"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
-        <img-cropper :confirm="_pickPic" :list="picList" :ratio="[2, 1]" field="商户背景图" title="商户背景图"></img-cropper>
+        <img-cropper
+          :confirm="_pickPic"
+          :list="picList"
+          :ratio="[2, 1]"
+          field="商户背景图"
+          title="商户背景图"
+        ></img-cropper>
         <van-cell title="开发票">
           <van-switch active-value="1" inactive-value="0" v-model="formData.is_invoice" />
         </van-cell>
-        <ValidationProvider name="开票条件" rules="required" slim v-if="formData.is_invoice === '1'" v-slot="{ errors }">
+        <ValidationProvider
+          name="开票条件"
+          rules="required"
+          slim
+          v-if="formData.is_invoice === '1'"
+          v-slot="{ errors }"
+        >
           <van-field :error-message="errors[0]" label="开票条件" required v-model="formData.invoice_price" />
         </ValidationProvider>
         <van-cell @click="_controlPlatFormCategoryPopup" is-link title="所属商城分类"></van-cell>

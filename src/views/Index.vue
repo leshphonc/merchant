@@ -20,7 +20,12 @@
       </van-tabbar-item>
       <van-tabbar-item to="/marketing">
         <span>营销活动</span>
-        <img :src="props.active ? icons.marketing.active : icons.marketing.unactive" alt slot="icon" slot-scope="props" />
+        <img
+          :src="props.active ? icons.marketing.active : icons.marketing.unactive"
+          alt
+          slot="icon"
+          slot-scope="props"
+        />
       </van-tabbar-item>
       <van-tabbar-item replace to="/mine">
         <span>我的</span>

@@ -36,7 +36,9 @@
           </div>
           <div slot="footer">
             <div class="white-space"></div>
-            <van-button @click="_deleteRedEnvelope(item.id)" size="small" type="danger" v-if="item.is_fabu === '0'">删除</van-button>
+            <van-button @click="_deleteRedEnvelope(item.id)" size="small" type="danger" v-if="item.is_fabu === '0'"
+              >删除</van-button
+            >
             <van-button @click="_publicRedEnvelope(item.id)" size="small" v-if="item.is_fabu === '0'">发布</van-button>
             <van-button :to="`/redEnvelope/redEnvelopeReceivingRecord/${item.id}`" size="small">领取记录</van-button>
             <van-button :to="`/redEnvelope/redEnvelopeCRU/${item.id}`" size="small">编辑</van-button>
