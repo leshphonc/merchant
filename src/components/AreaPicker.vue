@@ -212,20 +212,19 @@ export default {
           values[0].children = res
           picker.setColumnValues(1, res)
           this.getArea({ id: res[0].value, shift: true }).then(res2 => {
-            res.children = res2
+            res[0].children = res2
             picker.setColumnValues(2, res2)
           })
         })
       } else {
-        const second = values[0].children[0]
         picker.setColumnValues(1, values[0].children)
-        if (!second.children) {
-          this.getArea({ id: second.value, shift: true }).then(res2 => {
-            second.children = res2
+        if (!values[1].children) {
+          this.getArea({ id: values[1].value, shift: true }).then(res2 => {
+            values[1].children = res2
             picker.setColumnValues(2, res2)
           })
         } else {
-          picker.setColumnValues(2, second.children)
+          picker.setColumnValues(2, values[1].children)
         }
       }
     },

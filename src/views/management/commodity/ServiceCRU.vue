@@ -254,6 +254,10 @@ export default {
     // 服务商品分类非空验证
     categoryLabel() {
       let resultStr = ''
+      if (this.formData.cat_fid === '0' && this.formData.cat_id !== '0') {
+        const item = this.categoryColumnsOrigin.find(item => item.cat_id === this.formData.cat_id)
+        return item && item.cat_name
+      }
       const item = this.categoryColumnsOrigin.find(item => item.cat_id === this.formData.cat_fid)
       if (item) {
         resultStr += item.cat_name
@@ -390,7 +394,11 @@ export default {
             url: res.pic,
           },
         ]
-        this._getServiceCategoryList(res.cat_fid, res.cat_id)
+        if (res.cat_fid !== '0') {
+          this._getServiceCategoryList(res.cat_fid, res.cat_id)
+        } else {
+          this._getServiceCategoryList(res.cat_id)
+        }
         this.$nextTick(function() {
           this.$refs.editor.$refs.quillEditor.quill.enable(true)
           this.$refs.editor.$refs.quillEditor.quill.blur()
@@ -429,6 +437,10 @@ export default {
           params.start_time = this.$moment(this.formData.start_time).valueOf() / 1000
           params.end_time = this.$moment(this.formData.end_time).valueOf() / 1000
           params.pic = this.formData.pic[0]
+          if (!params.cat_id && params.cat_fid) {
+            params.cat_id = params.cat_fid
+            params.cat_fid = ''
+          }
           this.createService(params)
             .then(() => {
               this.$toast.success({
