@@ -36,6 +36,13 @@ export default {
       data ? resolve() : reject()
     })
   },
+  // 修改套餐商品优惠
+  updatePackagePreferential(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.updatePackagePreferential(payload)
+      data ? resolve() : reject()
+    })
+  },
   // 读取套餐内包含的服务项目
   readServiceOfPackage(context, id) {
     return new Promise(async (resolve, reject) => {

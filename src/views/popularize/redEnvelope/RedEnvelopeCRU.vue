@@ -175,19 +175,19 @@
     <!-- 开始时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showStartTimePicker">
       <van-datetime-picker
+        :formatter="$timeFormatter"
         :value="formData.start_time"
         @cancel="_controlStartTimePicker"
         @confirm="_pickStartTime"
-        type="datetime"
       />
     </van-popup>
     <!-- 结束时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showEndTimePicker">
       <van-datetime-picker
+        :formatter="$timeFormatter"
         :value="formData.end_time"
         @cancel="_controlEndTimePicker"
         @confirm="_pickEndTime"
-        type="datetime"
       />
     </van-popup>
     <!-- 红包类型 -->

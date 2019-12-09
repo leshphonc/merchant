@@ -31,6 +31,12 @@ export default {
       meal_id: id,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 修改套餐商品优惠
+  updatePackagePreferential: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=meal_discount', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
   // 读取套餐内包含的服务项目
   readServiceOfPackage: id =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getMealProList', {

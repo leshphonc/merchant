@@ -26,6 +26,12 @@ export default {
       app_id: id,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 修改服务商品优惠
+  updateServicePreferential: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=service_discount', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
   // 读取服务商品分类列表
   getServiceCategoryList: () =>
     axios.post('/appapi.php?c=SpaceMerchant&a=selCateList', {

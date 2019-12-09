@@ -62,7 +62,7 @@
     <!-- 开始时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-if="type !== 'time'" v-model="showStartTimePicker">
       <van-datetime-picker
-        :formatter="_formatter"
+        :formatter="$timeFormatter"
         :max-date="endTime"
         :type="type"
         :value="startTime"
@@ -92,7 +92,7 @@
     <!-- 结束时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-if="type !== 'time'" v-model="showEndTimePicker">
       <van-datetime-picker
-        :formatter="_formatter"
+        :formatter="$timeFormatter"
         :min-date="startTime"
         :type="type"
         :value="endTime"
@@ -288,16 +288,6 @@ export default {
       this.showEndTimeLabel = true
       this.pickEndTime(data)
       this._controlEndTimePicker()
-    },
-    _formatter(type, value) {
-      if (type === 'year') {
-        return `${value}年`
-      } else if (type === 'month') {
-        return `${value}月`
-      } else if (type === 'day') {
-        return `${value}日`
-      }
-      return value
     },
   },
 }

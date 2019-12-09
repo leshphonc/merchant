@@ -345,7 +345,6 @@ export default {
         this.loading = true
         const params = JSON.parse(JSON.stringify(this.formData))
         params.week = params.week.join()
-        console.log(params)
         if (params.is_week === '1' && !params.week) {
           this.$notify({
             type: 'warning',

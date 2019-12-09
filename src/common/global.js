@@ -16,6 +16,22 @@ Vue.prototype.$getGlobal = key => {
   return result || ''
 }
 
+// 格式化vant时间
+Vue.prototype.$timeFormatter = (type, value) => {
+  if (type === 'year') {
+    return `${value}年`
+  } else if (type === 'month') {
+    return `${value}月`
+  } else if (type === 'day') {
+    return `${value}日`
+  } else if (type === 'hour') {
+    return `${value}时`
+  } else if (type === 'minute') {
+    return `${value}分`
+  }
+  return value
+}
+
 // app接口调用
 Vue.prototype.$invokeAndroid = json => {
   if (navigator.userAgent.toLowerCase().indexOf('android_chengshang_app') !== -1) {

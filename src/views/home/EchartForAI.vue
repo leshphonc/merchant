@@ -52,7 +52,13 @@
     </van-popup>
     <!-- 日期新增 -->
     <van-popup position="bottom" safe-area-inset-bottom v-if="timeTypeValue !== '3'" v-model="showTimePicker">
-      <van-datetime-picker :type="timeType" :value="timeValue" @cancel="_controlTimePicker" @confirm="_pickTime" />
+      <van-datetime-picker
+        :formatter="$timeFormatter"
+        :type="timeType"
+        :value="timeValue"
+        @cancel="_controlTimePicker"
+        @confirm="_pickTime"
+      />
     </van-popup>
     <van-popup position="bottom" safe-area-inset-bottom v-if="timeTypeValue === '3'" v-model="showTimePicker">
       <van-picker

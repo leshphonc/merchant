@@ -49,6 +49,7 @@
     <!-- 开始时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showStartTimePicker">
       <van-datetime-picker
+        :formatter="$timeFormatter"
         :max-date="endTime"
         :value="startTime"
         @cancel="_controlStartTimePicker"
@@ -59,6 +60,7 @@
     <!-- 结束时间 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showEndTimePicker">
       <van-datetime-picker
+        :formatter="$timeFormatter"
         :min-date="startTime"
         :value="endTime"
         @cancel="_controlEndTimePicker"

@@ -138,6 +138,7 @@
     <!-- 弹出层 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showStartTimePicker">
       <van-datetime-picker
+        :formatter="$timeFormatter"
         :min-date="new Date()"
         :value="formData.start_time"
         @cancel="_controlStartTimePicker"
@@ -147,6 +148,7 @@
     </van-popup>
     <van-popup position="bottom" safe-area-inset-bottom v-model="showEndTimePicker">
       <van-datetime-picker
+        :formatter="$timeFormatter"
         :min-date="new Date()"
         :value="formData.end_time"
         @cancel="_controlEndTimePicker"

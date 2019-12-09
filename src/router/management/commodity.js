@@ -46,6 +46,11 @@ export default {
       component: () => import('@/views/management/commodity/ServiceCRU'),
     },
     {
+      // 服务商品优惠编辑
+      path: 'servicePreferential/:id',
+      component: () => import('@/views/management/commodity/ServicePreferential'),
+    },
+    {
       // 服务商品销售记录
       path: 'serviceSalesRecord/:id',
       component: () => import('@/views/management/commodity/ServiceSalesRecord'),
@@ -54,6 +59,11 @@ export default {
       // 套餐商品编辑
       path: 'packageCRU/:id?',
       component: () => import('@/views/management/commodity/PackageCRU'),
+    },
+    {
+      // 套餐商品优惠编辑
+      path: 'packagePreferential/:id',
+      component: () => import('@/views/management/commodity/PackagePreferential'),
     },
     {
       // 套餐商品销售记录

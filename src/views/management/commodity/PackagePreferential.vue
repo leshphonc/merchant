@@ -6,67 +6,10 @@
       fixed
       left-arrow
       right-text="保存"
-      title="电商商品优惠"
+      title="套餐优惠"
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
-      <van-cell-group title="基础设置">
-        <ValidationProvider name="限时价" rules="required|decimal-max2" slim v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            label="限时价"
-            placeholder="0表示无限时价"
-            v-model="formData.seckill_price"
-          ></van-field>
-        </ValidationProvider>
-        <ValidationProvider name="限时价库存" rules="required|gte-1" slim v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            label="限时价库存"
-            placeholder="-1表示不限量"
-            v-model="formData.seckill_stock"
-          ></van-field>
-        </ValidationProvider>
-        <ValidationProvider name="限时价类型" rules="required" slim v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            :value="timeTypeLabel"
-            @click="_controlTimeTypePicker"
-            error-message-align="right"
-            input-align="right"
-            is-link
-            label="限时价类型"
-            placeholder="请选择"
-            readonly
-          ></van-field>
-        </ValidationProvider>
-        <ValidationProvider name="开始时间" rules="required" slim v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            :value="startTimeLabel"
-            @click="_controlStartTimePicker"
-            error-message-align="right"
-            input-align="right"
-            is-link
-            label="开始时间"
-            placeholder="请选择"
-            readonly
-          ></van-field>
-        </ValidationProvider>
-        <ValidationProvider name="结束时间" rules="required" slim v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            :value="endTimeLabel"
-            @click="_controlEndTimePicker"
-            error-message-align="right"
-            input-align="right"
-            is-link
-            label="结束时间"
-            placeholder="请选择"
-            readonly
-          ></van-field>
-        </ValidationProvider>
-      </van-cell-group>
       <van-cell-group title="用户消费赠送比例" v-if="$getGlobal('dhb_open') !== 0 || $getGlobal('score_open') !== 0">
         <ValidationProvider
           :name="`赠送${$getGlobal('score_alias')}数量`"
@@ -147,39 +90,6 @@
     </ValidationObserver>
     <div class="white-space"></div>
     <!-- 弹出层 -->
-    <!-- 限时价类型 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showTimeTypePicker">
-      <van-picker
-        :columns="timeTypeColumns"
-        :default-index="timeTypeIndex"
-        @cancel="_controlTimeTypePicker"
-        @confirm="_pickTimeType"
-        show-toolbar
-        value-key="label"
-      ></van-picker>
-    </van-popup>
-    <!-- 开始时间 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showStartTimePicker">
-      <van-datetime-picker
-        :formatter="$timeFormatter"
-        :type="timePickerDateType"
-        :value="formData.seckill_open_time"
-        @cancel="_controlStartTimePicker"
-        @confirm="_pickStartTime"
-        show-toolbar
-      />
-    </van-popup>
-    <!-- 结束时间 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showEndTimePicker">
-      <van-datetime-picker
-        :formatter="$timeFormatter"
-        :type="timePickerDateType"
-        :value="formData.seckill_close_time"
-        @cancel="_controlEndTimePicker"
-        @confirm="_pickEndTime"
-        show-toolbar
-      />
-    </van-popup>
     <!-- 优惠券 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showCouponPicker">
       <van-picker
@@ -209,7 +119,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'eCommercePreferential',
+  name: 'servicePreferential',
 
   mixins: [],
 
@@ -220,38 +130,18 @@ export default {
   data() {
     return {
       formData: {
-        seckill_price: '',
-        seckill_stock: '',
-        seckill_type: '',
-        seckill_open_time: '',
-        seckill_close_time: '',
         dhb_get_num: '',
         score_get_num: '',
         give: [],
         in_group: '',
       },
-      showTimeTypePicker: false,
-      showStartTimePicker: false,
-      showEndTimePicker: false,
       showCouponPicker: false,
       showMemberGroupPicker: false,
       loading: false,
       curCoupon: '',
       selectedCoupon: [],
-      timeTypeColumns: [
-        {
-          label: '固定时间段',
-          value: '0',
-        },
-        {
-          label: '每天时间段',
-          value: '1',
-        },
-      ],
       couponColumns: [],
       memberGroupColumns: [],
-      dhbOpen: '0',
-      scoreOpen: '0',
     }
   },
 
@@ -260,57 +150,10 @@ export default {
     resizeWidth() {
       return (120 / 375) * document.body.clientWidth + 'px'
     },
-    // 限时价类型非空验证
-    timeTypeLabel() {
-      const item = this.timeTypeColumns.find(item => item.value === this.formData.seckill_type)
-      return item && item.label
-    },
-    // 开始时间非空验证
-    startTimeLabel() {
-      if (this.formData.seckill_open_time === '0') {
-        return ''
-      }
-      if (this.timePickerDateType === 'datetime') {
-        return (
-          this.formData.seckill_open_time && this.$moment(this.formData.seckill_open_time).format('YYYY-MM-DD HH:mm')
-        )
-      } else {
-        return this.formData.seckill_open_time
-      }
-    },
-    // 结束时间非空验证
-    endTimeLabel() {
-      if (this.formData.seckill_close_time === '0') {
-        return ''
-      }
-      if (this.timePickerDateType === 'datetime') {
-        return (
-          this.formData.seckill_close_time && this.$moment(this.formData.seckill_close_time).format('YYYY-MM-DD HH:mm')
-        )
-      } else {
-        return this.formData.seckill_close_time
-      }
-    },
     // 会员分组非空验证
     memberGroupLabel() {
       const item = this.memberGroupColumns.find(item => item.id === this.formData.in_group)
       return item && item.name
-    },
-    // 目前时间类型
-    timePickerDateType() {
-      let timeType = 'datetime'
-      if (this.formData.seckill_type === '0') {
-        timeType = 'datetime'
-      }
-      if (this.formData.seckill_type === '1') {
-        timeType = 'time'
-      }
-      return timeType
-    },
-    // 限时价类型默认数据
-    timeTypeIndex() {
-      const index = this.timeTypeColumns.findIndex(item => item.value === this.formData.seckill_type)
-      return index
     },
     // 优惠券默认数据
     couponIndex() {
@@ -333,36 +176,21 @@ export default {
   created() {},
 
   mounted() {
-    // 商家信息   用来判断是否开启兑换币
-    this.readMerchantInfo()
     // 优惠券列表
     this._getCouponList()
     // 会员卡分组
     this._getMemberGroupList()
     // 优惠详情
     const id = this.$route.params.id
-    id && this._readECommerceDetail(id)
+    id && this._readPackageDetail(id)
   },
 
   destroyed() {},
 
   methods: {
     ...mapActions(['getCouponList']),
-    ...mapActions('basicInformation', ['readMerchantInfo']),
-    ...mapActions('commodity', ['updateECommercePreferential', 'readECommerceDetail']),
     ...mapActions('member', ['getMemberGroupList']),
-    // 时间类型开关
-    _controlTimeTypePicker() {
-      this.showTimeTypePicker = !this.showTimeTypePicker
-    },
-    // 开始时间开关
-    _controlStartTimePicker() {
-      this.showStartTimePicker = !this.showStartTimePicker
-    },
-    // 结束时间开关
-    _controlEndTimePicker() {
-      this.showEndTimePicker = !this.showEndTimePicker
-    },
+    ...mapActions('commodity', ['updatePackagePreferential', 'readPackageDetail']),
     // 优惠券开关
     _controlCouponPicker(index) {
       if (typeof index === 'number') this.curCoupon = index
@@ -371,23 +199,6 @@ export default {
     // 会员卡分组开关
     _controlMemberGroupPicker() {
       this.showMemberGroupPicker = !this.showMemberGroupPicker
-    },
-    // 选择时间类型
-    _pickTimeType(data) {
-      this.formData.seckill_type = data.value
-      this.formData.seckill_open_time = ''
-      this.formData.seckill_close_time = ''
-      this._controlTimeTypePicker()
-    },
-    // 选择开始时间
-    _pickStartTime(data) {
-      this.formData.seckill_open_time = data
-      this._controlStartTimePicker()
-    },
-    // 选择结束时间
-    _pickEndTime(data) {
-      this.formData.seckill_close_time = data
-      this._controlEndTimePicker()
     },
     // 选择优惠券
     _pickCoupon(data) {
@@ -444,13 +255,6 @@ export default {
       }
       this.formData.give.splice(index, 1)
     },
-    // 获取商家信息
-    _readMerchantInfo() {
-      this.readMerchantInfo().then(res => {
-        this.scoreOpen = res.now_merchant.score_open
-        this.dhbOpen = res.now_merchant.dhb_open
-      })
-    },
     // 获取优惠券列表
     _getCouponList() {
       this.getCouponList().then(res => {
@@ -469,19 +273,12 @@ export default {
       return item ? item.label : ''
     },
     // 页面默认数据
-    _readECommerceDetail(id) {
-      this.readECommerceDetail(id).then(res => {
+    _readPackageDetail(id) {
+      this.readPackageDetail(id).then(res => {
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
-          this.formData[item] = res[item]
+          this.formData[item] = res[0][item]
         })
-        if (res.seckill_type === '0') {
-          this.formData.seckill_open_time = new Date(res.seckill_open_time * 1000)
-          this.formData.seckill_close_time = new Date(res.seckill_close_time * 1000)
-        } else {
-          this.formData.seckill_open_time = new Date(res.seckill_open_time * 1000)
-          this.formData.seckill_close_time = new Date(res.seckill_close_time * 1000)
-        }
       })
     },
     async _submit() {
@@ -498,12 +295,9 @@ export default {
         // 加锁
         this.loading = true
         const params = JSON.parse(JSON.stringify(this.formData))
-        params.goods_id = this.$route.params.id
-        params.store_id = 0
-        params.seckill_open_time = this.startTimeLabel
-        params.seckill_close_time = this.endTimeLabel
+        params.meal_id = this.$route.params.id
         // 表单完整，进行数据修改并提交
-        this.updateECommercePreferential(params)
+        this.updatePackagePreferential(params)
           .then(() => {
             this.$toast.success({
               message: '操作成功',

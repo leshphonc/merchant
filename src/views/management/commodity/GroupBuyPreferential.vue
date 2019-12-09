@@ -198,7 +198,7 @@ export default {
     },
     // 会员分组默认数据
     memberIndex() {
-      const index = this.memberGroupColumns.findIndex(item => item.value === this.formData.in_group)
+      const index = this.memberGroupColumns.findIndex(item => item.id === this.formData.in_group)
       return index
     },
   },
