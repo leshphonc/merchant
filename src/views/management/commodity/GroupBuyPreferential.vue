@@ -30,7 +30,7 @@
           :name="`赠送${$getGlobal('score_alias')}数量`"
           rules="decimal-max4"
           slim
-          v-if="$getGlobal('dhb_open') !== '0'"
+          v-if="$getGlobal('score_open') !== '0'"
           v-slot="{ errors }"
         >
           <van-field
@@ -48,7 +48,7 @@
           :name="`赠送${$getGlobal('dhb_alias')}数量`"
           rules="decimal-max4"
           slim
-          v-if="$getGlobal('score_open') !== '0'"
+          v-if="$getGlobal('dhb_open') !== '0'"
           v-slot="{ errors }"
         >
           <van-field
