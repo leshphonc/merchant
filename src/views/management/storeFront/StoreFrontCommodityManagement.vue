@@ -2,7 +2,7 @@
   <div>
     <van-nav-bar
       @click-left="$goBack"
-      @click-right="_controlCommodityPopup"
+      @click-right="_controlCommodityPopup(true)"
       fixed
       left-arrow
       right-text="添加"
@@ -11,13 +11,13 @@
     <div class="nav-bar-holder"></div>
     <van-tabs :offset-top="offsetTop" sticky v-model="active">
       <van-tab title="电商">
-        <e-commerce-list></e-commerce-list>
+        <e-commerce-list ref="ecommerce"></e-commerce-list>
       </van-tab>
       <van-tab title="服务">
-        <service-list></service-list>
+        <service-list ref="service"></service-list>
       </van-tab>
       <van-tab title="套餐">
-        <package-list></package-list>
+        <package-list ref="package"></package-list>
       </van-tab>
     </van-tabs>
     <!-- 弹出层 -->
@@ -100,7 +100,7 @@
           </van-list>
         </van-tab>
       </van-tabs>
-      <van-button @click="_controlCommodityPopup" class="close-btn">关闭</van-button>
+      <van-button @click="_controlCommodityPopup()" class="close-btn">关闭</van-button>
       <van-button @click="_submit" class="add-btn" type="primary">加入店铺</van-button>
     </van-popup>
   </div>
@@ -177,11 +177,16 @@ export default {
       'bindServiceToStoreFront',
       'bindPackageToStoreFront',
     ]),
-    _controlCommodityPopup() {
+    _controlCommodityPopup(flag) {
+      if (flag) {
+        this._eOnRefresh()
+        this._sOnRefresh()
+        this._pOnRefresh()
+      }
+      this.eResult = []
+      this.sResult = []
+      this.pResult = []
       this.showCommodityPopup = !this.showCommodityPopup
-      this._eOnRefresh()
-      this._sOnRefresh()
-      this._pOnRefresh()
     },
     _eOnRefresh() {
       const { id } = this.$route.params
@@ -191,6 +196,8 @@ export default {
       }).then(res => {
         this.ePage = 2
         this.eList = res
+        this.eFinished = false
+        this.eResult = []
       })
     },
     _eOnLoad() {
@@ -219,6 +226,8 @@ export default {
       }).then(res => {
         this.sPage = 2
         this.sList = res
+        this.sFinished = false
+        this.sResult = []
       })
     },
     _sOnLoad() {
@@ -247,6 +256,8 @@ export default {
       }).then(res => {
         this.pPage = 2
         this.pList = res
+        this.pFinished = false
+        this.pResult = []
       })
     },
     _pOnLoad() {
@@ -306,6 +317,15 @@ export default {
             onClose: () => {
               // 解锁
               this._controlCommodityPopup()
+              if (this.$refs.ecommerce) {
+                this.$refs.ecommerce._onRefresh()
+              }
+              if (this.$refs.service) {
+                this.$refs.service._onRefresh()
+              }
+              if (this.$refs.package) {
+                this.$refs.package._onRefresh()
+              }
               this.loading = false
             },
           })

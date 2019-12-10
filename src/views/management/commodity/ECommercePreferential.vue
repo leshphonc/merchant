@@ -70,7 +70,7 @@
       <van-cell-group title="用户消费赠送比例" v-if="$getGlobal('dhb_open') !== 0 || $getGlobal('score_open') !== 0">
         <ValidationProvider
           :name="`赠送${$getGlobal('score_alias')}数量`"
-          rules="numeric"
+          rules="decimal-max4"
           slim
           v-if="$getGlobal('dhb_open') !== 0"
           v-slot="{ errors }"
@@ -88,7 +88,7 @@
         </ValidationProvider>
         <ValidationProvider
           :name="`赠送${$getGlobal('dhb_alias')}数量`"
-          rules="numeric"
+          rules="decimal-max4"
           slim
           v-if="$getGlobal('score_open') !== 0"
           v-slot="{ errors }"
@@ -128,6 +128,7 @@
               :error-message="errors[0]"
               label="数量"
               placeholder="赠送优惠券数量"
+              type="number"
               v-model="item.goods_num"
             ></van-field>
           </ValidationProvider>
@@ -475,6 +476,7 @@ export default {
         keys.forEach(item => {
           this.formData[item] = res[item]
         })
+        this.formData.give = res.give || []
         if (res.seckill_type === '0') {
           this.formData.seckill_open_time = new Date(res.seckill_open_time * 1000)
           this.formData.seckill_close_time = new Date(res.seckill_close_time * 1000)

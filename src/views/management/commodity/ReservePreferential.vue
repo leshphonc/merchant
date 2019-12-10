@@ -24,7 +24,7 @@
       <van-cell-group title="用户消费赠送比例" v-if="$getGlobal('dhb_open') !== 0 || $getGlobal('score_open') !== 0">
         <ValidationProvider
           :name="`赠送${$getGlobal('score_alias')}数量`"
-          rules="numeric"
+          rules="decimal-max4"
           slim
           v-if="$getGlobal('dhb_open') !== 0"
           v-slot="{ errors }"
@@ -42,7 +42,7 @@
         </ValidationProvider>
         <ValidationProvider
           :name="`赠送${$getGlobal('dhb_alias')}数量`"
-          rules="numeric"
+          rules="decimal-max4"
           slim
           v-if="$getGlobal('score_open') !== 0"
           v-slot="{ errors }"
@@ -62,6 +62,7 @@
       <van-cell-group title="环境配置">
         <ValidationProvider name="环境专区名称" rules="required" slim v-slot="{ errors }">
           <van-field
+            :error-message="errors[0]"
             :label-width="resizeWidth"
             label="环境专区名称"
             placeholder="请填写环境专区名称"
@@ -77,31 +78,43 @@
             >删除</van-button
           >
         </div>
-        <ValidationProvider name="环境名称" rules="required" slim v-slot="{ errors }">
-          <van-field label="环境名称" placeholder="请填写环境名称" required v-model="item.envo_name"></van-field>
+        <ValidationProvider :name="`环境名称${index + 1}`" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="环境名称"
+            placeholder="请填写环境名称"
+            required
+            v-model="item.envo_name"
+          ></van-field>
         </ValidationProvider>
-        <ValidationProvider name="每屏数量" rules="required" slim v-slot="{ errors }">
-          <van-field label="每屏数量" placeholder="请填写每屏数量" required v-model="item.envo_screen_num"></van-field>
+        <ValidationProvider :name="`每屏数量${index + 1}`" rules="required|numeric" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="每屏数量"
+            placeholder="请填写每屏数量"
+            required
+            v-model="item.envo_screen_num"
+          ></van-field>
         </ValidationProvider>
         <img-cropper
           :confirm="_pickEnvBeforeImg"
+          :field="`选中前图标${index + 1}`"
           :index="index"
           :list="envBeforeImg[index]"
-          field="选中前图标"
           title="选中前图标"
         ></img-cropper>
         <img-cropper
           :confirm="_pickEnvAfterImg"
+          :field="`选中后图标${index + 1}`"
           :index="index"
           :list="envAfterImg[index]"
-          field="选中后图标"
           title="选中后图标"
         ></img-cropper>
         <img-cropper
           :confirm="_pickEnvServingImg"
+          :field="`服务中图标${index + 1}`"
           :index="index"
           :list="envServingImg[index]"
-          field="服务中图标"
           title="服务中图标"
         ></img-cropper>
       </van-cell-group>
@@ -177,6 +190,7 @@ export default {
         keys.forEach(item => {
           this.formData[item] = res.appoint_list[item]
         })
+        this.formData.give = res.give || []
         this.envList = res.envo_info_list
         res.envo_info_list.forEach(item => {
           item.envo_before_select_pic && this.envBeforeImg.push([{ url: item.envo_before_select_pic }])
