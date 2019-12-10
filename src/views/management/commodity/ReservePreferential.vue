@@ -21,12 +21,15 @@
           <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.is_select_workerstaff" />
         </van-field>
       </van-cell-group>
-      <van-cell-group title="用户消费赠送比例" v-if="$getGlobal('dhb_open') !== 0 || $getGlobal('score_open') !== 0">
+      <van-cell-group
+        title="用户消费赠送比例"
+        v-if="$getGlobal('dhb_open') !== '0' || $getGlobal('score_open') !== '0'"
+      >
         <ValidationProvider
           :name="`赠送${$getGlobal('score_alias')}数量`"
           rules="decimal-max4"
           slim
-          v-if="$getGlobal('dhb_open') !== 0"
+          v-if="$getGlobal('dhb_open') !== '0'"
           v-slot="{ errors }"
         >
           <van-field
@@ -44,7 +47,7 @@
           :name="`赠送${$getGlobal('dhb_alias')}数量`"
           rules="decimal-max4"
           slim
-          v-if="$getGlobal('score_open') !== 0"
+          v-if="$getGlobal('score_open') !== '0'"
           v-slot="{ errors }"
         >
           <van-field
