@@ -16,7 +16,7 @@
         <div slot="footer">
           <van-button :to="`/smartScreen/customerMeetGreetingList/${item.imax_id}`" size="small">顾客见面语</van-button>
           <van-button :to="`/smartScreen/staffMeetGreetingList/${item.imax_id}`" size="small">员工见面语</van-button>
-          <van-button size="small" type="primary">推广海报</van-button>
+          <van-button :to="`/smartScreen/smartScreenPosterList/${item.imax_id}`" size="small" type="primary">推广海报</van-button>
         </div>
       </van-panel>
       <div class="white-space"></div>

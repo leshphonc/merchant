@@ -34,5 +34,15 @@ export default {
       path: 'staffMeetGreetingSpecifyList/:imax/:id',
       component: () => import('@/views/popularize/smartScreen/StaffMeetGreetingSpecifyList'),
     },
+    {
+      // 屏幕推广海报列表
+      path: 'smartScreenPosterList/:id',
+      component: () => import('@/views/popularize/smartScreen/SmartScreenPosterList'),
+    },
+    {
+      // 屏幕推广海报编辑
+      path: 'smartScreenPosterCRU/:imax/:id?',
+      component: () => import('@/views/popularize/smartScreen/SmartScreenPosterCRU'),
+    },
   ],
 }

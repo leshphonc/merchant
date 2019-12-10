@@ -39,4 +39,40 @@ export default {
       imax_id: id,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 推广海报列表
+  getSmartScreenPosterList: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=get_features', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 切换海报发布状态
+  changePosterRelease: id =>
+    axios.post('/appapi.php?c=Merchantimax&a=on', {
+      id,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 切换海报启用禁用状态
+  changePosterStatus: id =>
+    axios.post('/appapi.php?c=Merchantimax&a=using', {
+      id,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 创建海报
+  createPoster: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=site_features_set', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取海报详情
+  getPosterDetail: id =>
+    axios.post('/appapi.php?c=Merchantimax&a=site_features_detail', {
+      site_id: id,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 修改海报
+  updatePoster: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=site_features_set', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

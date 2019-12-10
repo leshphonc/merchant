@@ -323,8 +323,13 @@ export default {
     },
     // 服务类型分类选择
     _pickCategory(data) {
-      this.formData.cat_fid = data[0].cat_id
-      data[1] && (this.formData.cat_id = data[1].cat_id)
+      if (!data[1]) {
+        this.formData.cat_fid = '0'
+        this.formData.cat_id = data[0].cat_id
+      } else {
+        this.formData.cat_fid = data[0].cat_id
+        this.formData.cat_id = data[1].cat_id
+      }
       this._controlCategoryPicker()
     },
     // 服务商品图片
@@ -437,10 +442,6 @@ export default {
           params.start_time = this.$moment(this.formData.start_time).valueOf() / 1000
           params.end_time = this.$moment(this.formData.end_time).valueOf() / 1000
           params.pic = this.formData.pic[0]
-          if (!params.cat_id && params.cat_fid) {
-            params.cat_id = params.cat_fid
-            params.cat_fid = ''
-          }
           this.createService(params)
             .then(() => {
               this.$toast.success({
