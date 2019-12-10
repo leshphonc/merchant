@@ -43,10 +43,9 @@
               <div slot="footer" v-else-if="item.is_shelves === '2'">
                 <van-button @click="_changeStatus(item.id)" size="small" type="danger">禁用</van-button>
                 <van-button @click="_changeRelease(item.id)" size="small" type="primary">发布</van-button>
-                <van-button
-                  :to="`/smartScreen/smartScreenPosterCRU/${$route.params.id}/${item.site_id}`"
-                  size="small"
-                >编辑</van-button>
+                <van-button :to="`/smartScreen/smartScreenPosterCRU/${$route.params.id}/${item.site_id}`" size="small"
+                  >编辑</van-button
+                >
               </div>
             </van-panel>
             <div class="white-space"></div>
