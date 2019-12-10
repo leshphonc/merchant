@@ -205,9 +205,6 @@ export default {
           this.loading = false
         })
     },
-    _create() {
-      console.log('create')
-    },
   },
 }
 </script>

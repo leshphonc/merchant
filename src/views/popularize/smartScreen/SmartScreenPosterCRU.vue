@@ -129,7 +129,6 @@ export default {
     },
     _getPosterDetail(id) {
       this.getPosterDetail(id).then(res => {
-        console.log(res)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res[item]
