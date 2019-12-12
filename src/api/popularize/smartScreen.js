@@ -33,6 +33,12 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 删除见面语
+  deleteMeetGreeting: id =>
+    axios.post('/appapi.php?c=Merchantimax&a=deleted_sea', {
+      id,
+      ticket: localStorage.getItem('ticket'),
+    }),
   // 读取屏幕下店员列表
   getStaffList: id =>
     axios.post('/appapi.php?c=Merchantimax&a=get_worker_list', {
@@ -66,12 +72,42 @@ export default {
   // 获取海报详情
   getPosterDetail: id =>
     axios.post('/appapi.php?c=Merchantimax&a=site_features_detail', {
-      site_id: id,
+      id: id,
       ticket: localStorage.getItem('ticket'),
     }),
   // 修改海报
   updatePoster: payload =>
     axios.post('/appapi.php?c=Merchantimax&a=site_features_set', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取智能屏销售列表
+  getSmartScreenSalesRecord: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=...', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取商家店铺下上架且未推广的电商商品
+  getNotPopularizedECommerceList: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=...', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取商家店铺下上架且未推广的团购商品
+  getNotPopularizedGroupList: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=...', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取商家店铺下上架且未推广的服务商品
+  getNotPopularizedServiceList: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=...', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取商家店铺下上架且未推广的套餐商品
+  getNotPopularizedPackageList: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=...', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),

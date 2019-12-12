@@ -75,6 +75,20 @@ export default {
 
   methods: {
     ...mapActions('redEnvelope', ['getRedEnvelopeReceivingRecord']),
+    // 刷新列表
+    _onRefresh() {
+      const { id } = this.$route.params
+      this.getRedEnvelopeReceivingRecord({ id, page: 1 }).then(res => {
+        this.page = 2
+        this.list = res.lists
+        this.refreshing = false
+        if (res.lists.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
+      })
+    },
     // 加载更多
     _onLoad() {
       const { id } = this.$route.params
@@ -91,16 +105,6 @@ export default {
           this.page += 1
         }
         this.list.push(...res.lists)
-      })
-    },
-    // 刷新列表
-    _onRefresh() {
-      const { id } = this.$route.params
-      this.getRedEnvelopeReceivingRecord({ id, page: 1 }).then(res => {
-        this.page = 2
-        this.list = res.lists
-        this.refreshing = false
-        this.finished = false
       })
     },
   },

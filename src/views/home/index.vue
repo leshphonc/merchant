@@ -32,7 +32,7 @@
         <div class="white-space"></div>
         <div class="white-space"></div>
         <van-row type="flex">
-          <van-col style="flex: 1; margin-left: 8px; min-width: 0;">
+          <van-col style="flex: 1; min-width: 0;">
             <div @click="_controlStorePicker" class="filter-box">
               <div class="van-ellipsis">{{ storeLabel }}</div>
               <i class="iconfont">&#xe6f0;</i>
@@ -337,9 +337,9 @@ export default {
   created() {},
 
   mounted() {
-    if (process.env.VUE_APP_ENV === 'cs') {
-      this.showAI = true
-    }
+    this.getSmartScreenList().then(res => {
+      if (res.length) this.showAI = true
+    })
     this._getStoreList()
     this.$refs.echart.showLoading()
     this.getIncomeEchartData({
@@ -364,6 +364,7 @@ export default {
 
   methods: {
     ...mapActions(['getStoreList']),
+    ...mapActions('smartScreen', ['getSmartScreenList']),
     ...mapActions('home', [
       'getIncomeEchartData',
       'getOrderEchartData',

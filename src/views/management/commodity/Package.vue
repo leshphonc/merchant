@@ -75,6 +75,19 @@ export default {
 
   methods: {
     ...mapActions('commodity', ['getPackageList', 'deletePackage']),
+    // 刷新套餐列表
+    _onRefresh() {
+      this.getPackageList().then(res => {
+        this.page = 2
+        this.list = res
+        this.refreshing = false
+        if (res.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
+      })
+    },
     // 异步更新电商商品数据
     _onLoad() {
       this.getPackageList(this.page).then(res => {
@@ -85,15 +98,6 @@ export default {
           this.page += 1
         }
         this.list.push(...res)
-      })
-    },
-    // 刷新套餐列表
-    _onRefresh() {
-      this.getPackageList().then(res => {
-        this.page = 2
-        this.list = res
-        this.refreshing = false
-        this.finished = false
       })
     },
     // 删除套餐

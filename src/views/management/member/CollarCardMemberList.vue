@@ -139,7 +139,11 @@ export default {
         this.page1 = 2
         this.list1 = res.lists
         this.refreshing1 = false
-        this.finished1 = false
+        if (res.lists.length < 10) {
+          this.finished1 = true
+        } else {
+          this.finished1 = false
+        }
       })
     },
     // 领卡会员加载
@@ -160,7 +164,11 @@ export default {
         this.page2 = 2
         this.list2 = res.lists
         this.refreshing2 = false
-        this.finished2 = false
+        if (res.lists.length < 10) {
+          this.finished2 = true
+        } else {
+          this.finished2 = false
+        }
       })
     },
     // 会员分组加载

@@ -79,7 +79,11 @@ export default {
         this.page = 2
         this.list = res.list
         this.refreshing = false
-        this.finished = false
+        if (res.list.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
       })
     },
     // 领卡会员加载

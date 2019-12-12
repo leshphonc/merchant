@@ -135,6 +135,25 @@ export default {
       this.keyword = value
       this._onRefresh()
     },
+    // 刷新套餐列表
+    _onRefresh() {
+      this.getPackageList({
+        page: 1,
+        searchtype: this.find_type,
+        stime: this.stime,
+        etime: this.etime,
+        keyword: this.keyword,
+      }).then(res => {
+        this.page = 2
+        this.list = res.list
+        this.refreshing = false
+        if (res.list.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
+      })
+    },
     // 异步更新电商商品数据
     _onLoad() {
       this.getPackageList({
@@ -151,21 +170,6 @@ export default {
           this.page += 1
         }
         this.list.push(...res.list)
-      })
-    },
-    // 刷新套餐列表
-    _onRefresh() {
-      this.getPackageList({
-        page: 1,
-        searchtype: this.find_type,
-        stime: this.stime,
-        etime: this.etime,
-        keyword: this.keyword,
-      }).then(res => {
-        this.page = 2
-        this.list = res.list
-        this.refreshing = false
-        this.finished = false
       })
     },
     // 进入详情

@@ -7,12 +7,17 @@ export default {
     {
       // 智能屏设备列表
       path: '',
-      component: () => import('@/views/popularize/smartScreen/SmartScreenList.vue'),
+      component: () => import('@/views/popularize/smartScreen/SmartScreenList'),
+    },
+    {
+      // 智能屏销售记录
+      path: 'smartScreenSalesRecord/:imax',
+      component: () => import('@/views/popularize/smartScreen/SmartScreenSalesRecord'),
     },
     {
       // 顾客见面语列表
       path: 'customerMeetGreetingList/:imax',
-      component: () => import('@/views/popularize/smartScreen/CustomerMeetGreetingList.vue'),
+      component: () => import('@/views/popularize/smartScreen/CustomerMeetGreetingList'),
     },
     {
       // 顾客见面语编辑
@@ -43,6 +48,11 @@ export default {
       // 屏幕推广海报编辑
       path: 'smartScreenPosterCRU/:imax/:id?',
       component: () => import('@/views/popularize/smartScreen/SmartScreenPosterCRU'),
+    },
+    {
+      // 屏幕推广商品列表
+      path: 'smartScreenCommodityList/:imax',
+      component: () => import('@/views/popularize/smartScreen/SmartScreenCommodityList'),
     },
   ],
 }

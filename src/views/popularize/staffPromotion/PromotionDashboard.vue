@@ -59,7 +59,6 @@ export default {
       etime: this.$moment().format('YYYY-MM-DD'),
       storeColumns: [], //店铺列表
       refreshing: false,
-      finished: false,
       loading: false,
     }
   },
@@ -118,7 +117,6 @@ export default {
         this.sale = res.sale
         this.scan = res.scan
         this.refreshing = false
-        this.finished = false
       })
       this.getPromotionStatisticsStaffList({
         store_id: this.store,

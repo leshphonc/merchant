@@ -55,17 +55,23 @@
             rows="3"
             show-word-limit
             type="textarea"
-            v-model.trim="formData.site_name"
+            v-model.trim="formData.read_txt"
           />
         </ValidationProvider>
-        <img-cropper :confirm="_pickPoster" :list="posterList" field="海报图片" title="海报图片"></img-cropper>
+        <img-cropper
+          :confirm="_pickPoster"
+          :list="posterList"
+          :ratio="[1080, 1920]"
+          field="海报图片"
+          title="海报图片"
+        ></img-cropper>
         <ValidationProvider name="海报网址" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             label="海报网址"
             placeholder="请填写海报网址"
             required
-            v-model.trim="formData.pic_url"
+            v-model.trim="formData.url"
           />
         </ValidationProvider>
       </van-cell-group>
@@ -94,9 +100,9 @@ export default {
         title: '',
         keywords: '',
         sort: '',
-        site_name: '',
-        pic: '',
-        pic_url: '',
+        read_txt: '',
+        ad_img: '',
+        url: '',
         width: '0.32',
       },
       keywords: [],
@@ -125,7 +131,7 @@ export default {
   methods: {
     ...mapActions('smartScreen', ['createPoster', 'getPosterDetail', 'updatePoster']),
     _pickPoster(data) {
-      this.formData.pic = data[0].url
+      this.formData.ad_img = data[0].url
     },
     _getPosterDetail(id) {
       this.getPosterDetail(id).then(res => {
@@ -133,7 +139,7 @@ export default {
         keys.forEach(item => {
           this.formData[item] = res[item]
         })
-        this.posterList = [{ url: res.pic }]
+        this.posterList = [{ url: res.ad_img }]
         this.formData.width = '0.32'
         this.keywords = res.keywords.split(',')
       })

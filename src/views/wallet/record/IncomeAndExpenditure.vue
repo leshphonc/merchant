@@ -154,10 +154,6 @@ export default {
       this._controlEndTimePicker()
       this._onRefresh()
     },
-    _onLoad() {
-      // 异步更新数据
-      this._incomeAndExpenditureRecord()
-    },
     // 刷新列表
     _onRefresh() {
       this.incomeAndExpenditureRecord({
@@ -170,7 +166,29 @@ export default {
         this.page = 2
         this.list = res.lists
         this.refreshing = false
-        this.finished = false
+        if (res.lists.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
+      })
+    },
+    // 异步更新数据
+    _onLoad() {
+      this.incomeAndExpenditureRecord({
+        page: this.page,
+        type: this.value1,
+        store_id: this.value2,
+        begin_time: this.startTimeLabel,
+        end_time: this.endTimeLabel,
+      }).then(res => {
+        this.loading = false
+        if (res.lists.length < 10) {
+          this.finished = true
+        } else {
+          this.page += 1
+        }
+        this.list.push(...res.lists)
       })
     },
     // 明细分类
@@ -189,23 +207,6 @@ export default {
           item.text = item.label
         })
         this.option2 = res.store_list
-      })
-    },
-    _incomeAndExpenditureRecord() {
-      this.incomeAndExpenditureRecord({
-        page: this.page,
-        type: this.value1,
-        store_id: this.value2,
-        begin_time: this.startTimeLabel,
-        end_time: this.endTimeLabel,
-      }).then(res => {
-        this.loading = false
-        if (res.lists.length < 10) {
-          this.finished = true
-        } else {
-          this.page += 1
-        }
-        this.list.push(...res.lists)
       })
     },
   },

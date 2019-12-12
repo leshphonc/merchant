@@ -116,20 +116,21 @@ export default {
         this._onRefresh()
       })
     },
-    _onLoad() {
-      // 异步更新数据
-      this._withdrawRecord()
-    },
     // 刷新列表
     _onRefresh() {
       this.withdrawRecord({ page: 1, type: this.type }).then(res => {
         this.page = 2
         this.list = res.lists
         this.refreshing = false
-        this.finished = false
+        if (res.lists.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
       })
     },
-    _withdrawRecord() {
+    // 异步更新数据
+    _onLoad() {
       this.withdrawRecord({ page: this.page, type: this.type }).then(res => {
         this.loading = false
         if (res.lists.length < 10) {

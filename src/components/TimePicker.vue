@@ -7,13 +7,16 @@
   修改内容：
   修改人员：
   修改时间：
-  备注：  暂不支持验证可选，需要包在ValidationObserver内使用
+  备注：  如需验证，则包在ValidationObserver内使用，并传入需要验证的字段
   props：
     startTimeLabel<String>：开始时间label
+    startTimeField<String>：开始时间验证字段
     endTimeLabel<String>：结束时间label
+    endTimeField<String>：结束时间验证字段
     data<Object>：默认时间 只接受 2000-01-01 或者 10位时间戳
     pickStartTime<Function>：返回选中的开始时间到父组件
     pickEndTime<Function>：返回选中的结束时间到父组件
+    showDefault<Boolean>：在DropdownMenu中使用时，是否展示初始值
 
     示例：
     <time-picker
@@ -28,11 +31,12 @@
 -->
 <template>
   <div>
-    <ValidationProvider :name="startField" rules="required" slim v-slot="{ errors }">
+    <ValidationProvider :name="startField" :rules="startField ? 'required' : null" slim v-slot="{ errors }">
       <van-field
         :disabled="disabled"
         :error-message="errors[0]"
         :label="startLabel"
+        :required="!!startField"
         :value="startTimeLabel"
         @click="_controlStartTimePicker"
         error-message-align="right"
@@ -40,14 +44,14 @@
         is-link
         placeholder="选择开始时间"
         readonly
-        required
       ></van-field>
     </ValidationProvider>
-    <ValidationProvider :name="endField" rules="required" slim v-slot="{ errors }">
+    <ValidationProvider :name="endField" :rules="endField ? 'required' : null" slim v-slot="{ errors }">
       <van-field
         :disabled="disabled"
         :error-message="errors[0]"
         :label="endLabel"
+        :required="!!endField"
         :value="endTimeLabel"
         @click="_controlEndTimePicker"
         error-message-align="right"
@@ -55,7 +59,6 @@
         is-link
         placeholder="选择结束时间"
         readonly
-        required
       ></van-field>
     </ValidationProvider>
     <!-- 弹出层 -->
@@ -155,6 +158,7 @@ export default {
       required: true,
     },
     disabled: Boolean,
+    showDefault: Boolean,
   },
 
   data() {
@@ -254,7 +258,12 @@ export default {
     }
   },
 
-  mounted() {},
+  mounted() {
+    if (this.showDefault) {
+      this.showStartTimeLabel = true
+      this.showEndTimeLabel = true
+    }
+  },
 
   destroyed() {},
 

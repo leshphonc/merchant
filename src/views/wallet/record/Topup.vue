@@ -53,6 +53,19 @@ export default {
 
   methods: {
     ...mapActions('wallet', ['topupRecord']),
+    // 刷新列表
+    _onRefresh() {
+      this.topupRecord().then(res => {
+        this.page = 2
+        this.list = res.lists
+        this.refreshing = false
+        if (res.lists.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
+      })
+    },
     _onLoad() {
       // 异步更新数据
       this.topupRecord(this.page).then(res => {
@@ -63,15 +76,6 @@ export default {
           this.page += 1
         }
         this.list.push(...res.lists)
-      })
-    },
-    // 刷新列表
-    _onRefresh() {
-      this.topupRecord().then(res => {
-        this.page = 2
-        this.list = res.lists
-        this.refreshing = false
-        this.finished = false
       })
     },
   },

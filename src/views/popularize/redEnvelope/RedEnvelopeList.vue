@@ -92,6 +92,19 @@ export default {
 
   methods: {
     ...mapActions('redEnvelope', ['getRedEnvelopeList', 'publicRedEnvelope', 'deleteRedEnvelope']),
+    // 刷新红包列表
+    _onRefresh() {
+      this.getRedEnvelopeList().then(res => {
+        this.page = 2
+        this.list = res.lists
+        this.refreshing = false
+        if (res.lists.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
+      })
+    },
     // 加载更多红包列表
     _onLoad() {
       this.getRedEnvelopeList(this.page).then(res => {
@@ -102,15 +115,6 @@ export default {
           this.page += 1
         }
         this.list.push(...res.lists)
-      })
-    },
-    // 刷新红包列表
-    _onRefresh() {
-      this.getRedEnvelopeList().then(res => {
-        this.page = 2
-        this.list = res.lists
-        this.refreshing = false
-        this.finished = false
       })
     },
     _publicRedEnvelope(id) {

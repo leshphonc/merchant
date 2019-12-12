@@ -22,9 +22,7 @@
           <div class="footer" slot="footer">
             <div>
               <div>推广店员：{{ item.staff_name }}</div>
-              <div style="float: left;">
-                绑定时间：{{ $moment(item.spread_time * 1000).format('YYYY-MM-DD HH:mm') }}
-              </div>
+              <div style="float: left;">绑定时间：{{ $moment(item.spread_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
             </div>
             <van-button @click="_controlBehaviorPopup(item.uid)" size="small" type="primary">用户行为</van-button>
           </div>
@@ -165,7 +163,11 @@ export default {
         this.list = res.list
         this.total = res.total
         this.refreshing = false
-        this.finished = false
+        if (res.list.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
       })
     },
     _onLoad() {
@@ -189,9 +191,18 @@ export default {
         uid: this.lastUid,
         page: 1,
       }).then(res => {
-        this.behaviorRefreshing = false
         this.behaviorPage = 2
         this.behaviorList = res.behavior_list
+        this.behaviorRefreshing = false
+        if (res.behavior_list) {
+          if (res.behavior_list.length < 10) {
+            this.behaviorFinished = true
+          } else {
+            this.behaviorFinished = false
+          }
+        } else {
+          this.behaviorFinished = true
+        }
       })
     },
     _behaviorOnLoad() {

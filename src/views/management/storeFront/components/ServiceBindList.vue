@@ -78,6 +78,23 @@ export default {
 
   methods: {
     ...mapActions('storeFront', ['getStoreFrontBindServiceList', 'unBindService']),
+    // 刷新服务商品列表
+    _onRefresh() {
+      const { id } = this.$route.params
+      this.getStoreFrontBindServiceList({
+        store_id: id,
+        page: 1,
+      }).then(res => {
+        this.page = 2
+        this.list = res
+        this.refreshing = false
+        if (res.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
+      })
+    },
     // 异步更新服务商品数据
     _onLoad() {
       const { id } = this.$route.params
@@ -92,19 +109,6 @@ export default {
           this.page += 1
         }
         this.list.push(...res)
-      })
-    },
-    // 刷新服务商品列表
-    _onRefresh() {
-      const { id } = this.$route.params
-      this.getStoreFrontBindServiceList({
-        store_id: id,
-        page: 1,
-      }).then(res => {
-        this.page = 2
-        this.list = res
-        this.refreshing = false
-        this.finished = false
       })
     },
     _unbind(gid) {

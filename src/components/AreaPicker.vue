@@ -22,6 +22,7 @@
       <van-field
         :error-message="errors[0]"
         :label="title"
+        :required="!!field"
         :value="areaLabel"
         @click="_controlAreaPicker"
         error-message-align="right"
@@ -29,7 +30,6 @@
         is-link
         placeholder="选择地址"
         readonly
-        required
       ></van-field>
     </ValidationProvider>
     <van-field

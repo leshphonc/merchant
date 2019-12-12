@@ -196,8 +196,12 @@ export default {
       }).then(res => {
         this.ePage = 2
         this.eList = res
-        this.eFinished = false
         this.eResult = []
+        if (res.length < 10) {
+          this.eFinished = true
+        } else {
+          this.eFinished = false
+        }
       })
     },
     _eOnLoad() {
@@ -226,8 +230,12 @@ export default {
       }).then(res => {
         this.sPage = 2
         this.sList = res
-        this.sFinished = false
         this.sResult = []
+        if (res.length < 10) {
+          this.sFinished = true
+        } else {
+          this.sFinished = false
+        }
       })
     },
     _sOnLoad() {
@@ -256,8 +264,12 @@ export default {
       }).then(res => {
         this.pPage = 2
         this.pList = res
-        this.pFinished = false
         this.pResult = []
+        if (res.length < 10) {
+          this.pFinished = true
+        } else {
+          this.pFinished = false
+        }
       })
     },
     _pOnLoad() {
@@ -344,20 +356,20 @@ export default {
   .van-list {
     padding-bottom: 44px;
   }
-}
 
-.close-btn {
-  position: fixed;
-  bottom: 0;
-  width: 50%;
-}
+  .close-btn {
+    position: fixed;
+    bottom: 0;
+    width: 50%;
+  }
 
-.add-btn {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  width: 50%;
-  margin: 0;
+  .add-btn {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    width: 50%;
+    margin: 0;
+  }
 }
 
 .van-cell__left-icon {

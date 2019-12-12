@@ -153,6 +153,26 @@ export default {
 
   methods: {
     ...mapActions('order', ['getReserveList']),
+    // 刷新套餐列表
+    _onRefresh() {
+      this.getReserveList({
+        page: 1,
+        pay_type: this.status,
+        searchtype: this.find_type,
+        stime: this.stime,
+        etime: this.etime,
+        keyword: this.keyword,
+      }).then(res => {
+        this.page = 2
+        this.list = res.lists
+        this.refreshing = false
+        if (res.lists.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
+      })
+    },
     // 异步更新电商商品数据
     _onLoad() {
       this.getReserveList({
@@ -170,22 +190,6 @@ export default {
           this.page += 1
         }
         this.list.push(...res.lists)
-      })
-    },
-    // 刷新套餐列表
-    _onRefresh() {
-      this.getReserveList({
-        page: 1,
-        pay_type: this.status,
-        searchtype: this.find_type,
-        stime: this.stime,
-        etime: this.etime,
-        keyword: this.keyword,
-      }).then(res => {
-        this.page = 2
-        this.list = res.lists
-        this.refreshing = false
-        this.finished = false
       })
     },
     // 搜索商品

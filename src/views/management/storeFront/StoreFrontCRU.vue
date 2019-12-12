@@ -77,6 +77,7 @@
             placeholder="列表中显示顺序"
             required
             right-icon="question-o"
+            type="number"
             v-model.trim="formData.sort"
           ></van-field>
         </ValidationProvider>

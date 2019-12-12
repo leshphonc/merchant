@@ -1,25 +1,27 @@
 <template>
   <div>
-    <van-row type="flex">
-      <van-col style="flex: 1; margin-left: 8px; min-width: 0;">
-        <div @click="_controlStorePicker" class="filter-box">
-          <div class="van-ellipsis">{{ storeLabel }}</div>
-          <i class="iconfont">&#xe6f0;</i>
-        </div>
-      </van-col>
-      <van-col style="flex: 1; margin-left: 8px; min-width: 0;">
-        <div @click="_controlTimeTypePicker" class="filter-box">
-          <div class="van-ellipsis">{{ timeTypeLabel }}</div>
-          <i class="iconfont">&#xe6f0;</i>
-        </div>
-      </van-col>
-      <van-col style="flex: 1; margin-left: 8px; min-width: 0;">
-        <div @click="_controlTimePicker" class="filter-box">
-          <div class="van-ellipsis">{{ timeLabel }}</div>
-          <i class="iconfont">&#xe6f0;</i>
-        </div>
-      </van-col>
-    </van-row>
+    <div class="wing-blank">
+      <van-row type="flex">
+        <van-col style="flex: 1; margin-left; min-width: 0;">
+          <div @click="_controlStorePicker" class="filter-box">
+            <div class="van-ellipsis">{{ storeLabel }}</div>
+            <i class="iconfont">&#xe6f0;</i>
+          </div>
+        </van-col>
+        <van-col style="flex: 1; margin-left: 8px; min-width: 0;">
+          <div @click="_controlTimeTypePicker" class="filter-box">
+            <div class="van-ellipsis">{{ timeTypeLabel }}</div>
+            <i class="iconfont">&#xe6f0;</i>
+          </div>
+        </van-col>
+        <van-col style="flex: 1; margin-left: 8px; min-width: 0;">
+          <div @click="_controlTimePicker" class="filter-box">
+            <div class="van-ellipsis">{{ timeLabel }}</div>
+            <i class="iconfont">&#xe6f0;</i>
+          </div>
+        </van-col>
+      </van-row>
+    </div>
     <div class="white-space"></div>
     <div class="white-space"></div>
     <v-chart :options="polar" autoresize ref="echart"></v-chart>
@@ -98,7 +100,7 @@ export default {
       timeTypeLabel: '日',
       timeTypeValue: '1',
       timeValue: new Date(),
-      seriesLabel: '收入',
+      seriesLabel: '进店人数',
       showStorePicker: false,
       showTimeTypePicker: false,
       showTimePicker: false,

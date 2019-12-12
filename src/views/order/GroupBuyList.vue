@@ -154,6 +154,26 @@ export default {
 
   methods: {
     ...mapActions('order', ['getGroupBuyList']),
+    // 刷新套餐列表
+    _onRefresh() {
+      const { id } = this.$route.params
+      this.getGroupBuyList({
+        group_id: id,
+        page: 1,
+        status: this.status,
+        find_type: this.find_type,
+        keyword: this.keyword,
+      }).then(res => {
+        this.page = 2
+        this.list = res.order_list
+        this.refreshing = false
+        if (res.order_list.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
+      })
+    },
     // 异步更新电商商品数据
     _onLoad() {
       const { id } = this.$route.params
@@ -171,22 +191,6 @@ export default {
           this.page += 1
         }
         this.list.push(...res.order_list)
-      })
-    },
-    // 刷新套餐列表
-    _onRefresh() {
-      const { id } = this.$route.params
-      this.getGroupBuyList({
-        group_id: id,
-        page: 1,
-        status: this.status,
-        find_type: this.find_type,
-        keyword: this.keyword,
-      }).then(res => {
-        this.page = 2
-        this.list = res.order_list
-        this.refreshing = false
-        this.finished = false
       })
     },
     // 搜索商品

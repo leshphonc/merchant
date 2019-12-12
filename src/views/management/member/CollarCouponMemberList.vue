@@ -199,7 +199,11 @@ export default {
         this.category = res.category
         this.platform = res.platform
         this.refreshing = false
-        this.finished = false
+        if (res.lists.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
       })
     },
     // 加载更多
@@ -222,7 +226,11 @@ export default {
         this.page2 = 2
         this.list2 = res.lists
         this.refreshing2 = false
-        this.finished2 = false
+        if (res.lists.length < 10) {
+          this.finished2 = true
+        } else {
+          this.finished2 = false
+        }
       })
     },
     // 加载更多

@@ -84,7 +84,7 @@ export default {
     }),
   // 店员服务记录
   staffServiceRecord: payload =>
-    axios.post('/appapi.php?c=Merchantapp&a=getStaffDoorPay', {
+    axios.post('/appapi.php?c=Merchantapp&a=...', {
       ...payload,
       size: 10,
       ticket: localStorage.getItem('ticket'),

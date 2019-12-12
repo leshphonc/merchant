@@ -13,16 +13,23 @@
       <van-tab title="统一见面语">
         <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
           <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
-            <van-cell
+            <van-swipe-cell
               :key="index"
-              :label="item.context"
-              :title="item.title"
-              @click="_modifyMeetGreeting(item.id)"
-              center
-              is-link
+              :on-close="(clickPosition, instance) => _deleteMeetGreeting(clickPosition, instance, item.id)"
               v-for="(item, index) in list"
-              value="修改"
-            />
+            >
+              <van-cell
+                :label="item.context"
+                :title="item.title"
+                @click="_modifyMeetGreeting(item.id)"
+                center
+                is-link
+                value="修改"
+              />
+              <template slot="right">
+                <van-button square text="删除" type="danger" />
+              </template>
+            </van-swipe-cell>
           </van-list>
         </van-pull-refresh>
       </van-tab>
@@ -37,6 +44,7 @@
             value="配置特殊见面语"
           />
         </van-cell-group>
+        <van-divider v-if="!staffList.length">店铺内暂无店员</van-divider>
       </van-tab>
     </van-tabs>
   </div>
@@ -71,7 +79,7 @@ export default {
       return (46 / 375) * document.body.clientWidth
     },
     finishText() {
-      return this.list.length ? '没有更多了' : ''
+      return this.list.length ? '没有更多了' : '点击右上角创建'
     },
   },
 
@@ -89,7 +97,7 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('smartScreen', ['getMeetGreetingList', 'getStaffList']),
+    ...mapActions('smartScreen', ['getMeetGreetingList', 'getStaffList', 'deleteMeetGreeting']),
     // 刷新列表
     _onRefresh() {
       const { imax } = this.$route.params
@@ -101,7 +109,11 @@ export default {
         this.page = 2
         this.list = res.data
         this.refreshing = false
-        this.finished = false
+        if (res.data.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
       })
     },
     // 异步更新数据
@@ -129,6 +141,33 @@ export default {
       const { imax } = this.$route.params
       this.$router.push(`/smartScreen/StaffMeetGreetingCRU/${imax}`)
     },
+    _deleteMeetGreeting(clickPosition, instance, id) {
+      switch (clickPosition) {
+        case 'outside':
+          instance.close()
+          break
+        case 'right':
+          if (this.loading) return
+          this.loading = true
+          this.$dialog
+            .confirm({
+              message: '确定删除吗？',
+            })
+            .then(() => {
+              this.deleteMeetGreeting(id).then(res => {
+                this.$toast.success({
+                  message: '操作成功',
+                  forbidClick: true,
+                  duration: 1000,
+                })
+                instance.close()
+                this._onRefresh()
+                this.loading = false
+              })
+            })
+          break
+      }
+    },
     _staffMeetGreetingSpecifyList(id) {
       const { imax } = this.$route.params
       this.$router.push(`/smartScreen/staffMeetGreetingSpecifyList/${imax}/${id}`)
@@ -137,4 +176,10 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.van-swipe-cell__right {
+  .van-button {
+    height: 100%;
+  }
+}
+</style>

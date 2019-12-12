@@ -63,6 +63,19 @@ export default {
 
   methods: {
     ...mapActions('commodity', ['getTakeAwayList', 'deleteTakeAway']),
+    // 刷新列表
+    _onRefresh() {
+      this.getTakeAwayList().then(res => {
+        this.page = 2
+        this.list = res
+        this.refreshing = false
+        if (res.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
+      })
+    },
     // 异步更新数据
     _onLoad() {
       this.getTakeAwayList(this.page).then(res => {
@@ -73,15 +86,6 @@ export default {
           this.page += 1
         }
         this.list.push(...res)
-      })
-    },
-    // 刷新列表
-    _onRefresh() {
-      this.getTakeAwayList().then(res => {
-        this.page = 2
-        this.list = res
-        this.refreshing = false
-        this.finished = false
       })
     },
     // 删除套餐

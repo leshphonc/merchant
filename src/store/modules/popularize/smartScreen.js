@@ -43,6 +43,13 @@ const actions = {
       data ? resolve() : reject()
     })
   },
+  // 删除见面语
+  deleteMeetGreeting(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.deleteMeetGreeting(id)
+      data ? resolve() : reject()
+    })
+  },
   // 读取屏幕下店员列表
   getStaffList(context, id) {
     return new Promise(async (resolve, reject) => {
@@ -90,6 +97,41 @@ const actions = {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.updatePoster(payload)
       data ? resolve() : reject()
+    })
+  },
+  // 获取智能屏销售列表
+  getSmartScreenSalesRecord(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getSmartScreenSalesRecord(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取商家店铺下上架且未推广的电商商品
+  getNotPopularizedECommerceList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getNotPopularizedECommerceList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取商家店铺下上架且未推广的团购商品
+  getNotPopularizedGroupList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getNotPopularizedGroupList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取商家店铺下上架且未推广的服务商品
+  getNotPopularizedServiceList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getNotPopularizedServiceList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取商家店铺下上架且未推广的套餐商品
+  getNotPopularizedPackageList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getNotPopularizedPackageList(payload)
+      data ? resolve(data) : reject()
     })
   },
 }

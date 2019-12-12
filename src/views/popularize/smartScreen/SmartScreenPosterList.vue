@@ -16,13 +16,13 @@
             <van-panel :icon="item.ad_img" :status="_currentStatus(item)" :title="item.title">
               <div>
                 <van-row>
-                  <van-col span="10">触达人数：{{ item.reach || 0 }}</van-col>
-                  <van-col span="10">播报次数：{{ item.scan || 0 }}</van-col>
+                  <van-col span="10">触达人数：{{ item.reach || 111 }}</van-col>
+                  <van-col span="10">播报次数：{{ item.scan || 111 }}</van-col>
                 </van-row>
                 <div class="white-space"></div>
                 <van-row>
-                  <van-col span="10">浏览人数：{{ item.wait || 0 }}</van-col>
-                  <van-col span="10">下单人数：{{ item.buy || 0 }}</van-col>
+                  <van-col span="10">浏览人数：{{ item.wait || 111 }}</van-col>
+                  <van-col span="10">下单人数：{{ item.buy || 111 }}</van-col>
                 </van-row>
                 <div class="white-space"></div>
                 <van-row>
@@ -43,7 +43,7 @@
               <div slot="footer" v-else-if="item.is_shelves === '2'">
                 <van-button @click="_changeStatus(item.id)" size="small" type="danger">禁用</van-button>
                 <van-button @click="_changeRelease(item.id)" size="small" type="primary">发布</van-button>
-                <van-button :to="`/smartScreen/smartScreenPosterCRU/${$route.params.id}/${item.site_id}`" size="small"
+                <van-button :to="`/smartScreen/smartScreenPosterCRU/${$route.params.id}/${item.id}`" size="small"
                   >编辑</van-button
                 >
               </div>
@@ -58,13 +58,13 @@
             <van-panel :icon="item.ad_img" :status="_currentStatus(item)" :title="item.title">
               <div>
                 <van-row>
-                  <van-col span="10">触达人数：{{ item.reach || 0 }}</van-col>
-                  <van-col span="10">播报次数：{{ item.scan || 0 }}</van-col>
+                  <van-col span="10">触达人数：{{ item.reach || 111 }}</van-col>
+                  <van-col span="10">播报次数：{{ item.scan || 111 }}</van-col>
                 </van-row>
                 <div class="white-space"></div>
                 <van-row>
-                  <van-col span="10">浏览人数：{{ item.wait || 0 }}</van-col>
-                  <van-col span="10">下单人数：{{ item.buy || 0 }}</van-col>
+                  <van-col span="10">浏览人数：{{ item.wait || 111 }}</van-col>
+                  <van-col span="10">下单人数：{{ item.buy || 111 }}</van-col>
                 </van-row>
                 <div class="white-space"></div>
                 <van-row>

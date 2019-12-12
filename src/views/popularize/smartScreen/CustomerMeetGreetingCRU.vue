@@ -56,7 +56,7 @@ export default {
         title: '',
         context: '',
       },
-      loading: true,
+      loading: false,
     }
   },
 

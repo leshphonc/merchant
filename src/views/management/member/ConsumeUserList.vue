@@ -155,7 +155,11 @@ export default {
         this.list = res.lists
         this.total = res.total
         this.refreshing = false
-        this.finished = false
+        if (res.lists.length < 10) {
+          this.finished = true
+        } else {
+          this.finished = false
+        }
       })
     },
     _onLoad() {
@@ -179,9 +183,14 @@ export default {
         uid: this.lastUid,
         page: 1,
       }).then(res => {
-        this.recordRefreshing = false
         this.recordPage = 2
         this.recordList = res.lists
+        this.recordRefreshing = false
+        if (res.lists.length < 10) {
+          this.recordFinished = true
+        } else {
+          this.recordFinished = false
+        }
       })
     },
     _recordOnLoad() {
