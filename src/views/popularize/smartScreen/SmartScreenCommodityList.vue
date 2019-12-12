@@ -305,7 +305,6 @@ export default {
         })
         return
       }
-      console.log(this.result_id)
       this.result_id = ''
       this.showCommodityPopup = false
     },
