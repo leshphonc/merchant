@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" @click-right="_addCommodity" fixed left-arrow right-text="添加" title="智能屏推广商品"></van-nav-bar>
+    <van-nav-bar
+      @click-left="$goBack"
+      @click-right="_addCommodity"
+      fixed
+      left-arrow
+      right-text="添加"
+      title="智能屏推广商品"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <!-- 弹出层 -->
     <!-- 绑定产品列表 -->
