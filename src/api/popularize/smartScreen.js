@@ -65,7 +65,7 @@ export default {
     }),
   // 创建海报
   createPoster: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=site_features_set', {
+    axios.post('/appapi.php?c=Merchantimax&a=savePushAd', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
@@ -77,7 +77,7 @@ export default {
     }),
   // 修改海报
   updatePoster: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=site_features_set', {
+    axios.post('/appapi.php?c=Merchantimax&a=savePushAd', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
@@ -89,8 +89,9 @@ export default {
     }),
   // 获取商家店铺下上架且未推广的电商商品
   getNotPopularizedECommerceList: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=...', {
+    axios.post('/appapi.php?c=SpaceMerchant&a=spro', {
       ...payload,
+      size: 10,
       ticket: localStorage.getItem('ticket'),
     }),
   // 获取商家店铺下上架且未推广的团购商品

@@ -5,9 +5,19 @@ export default {
   component: Index,
   children: [
     {
-      // 智能屏设备列表
+      // 智能屏推广
       path: '',
+      component: () => import('@/views/popularize/smartScreen/SmartScreenDashboard'),
+    },
+    {
+      // 智能屏设备列表
+      path: 'smartScreenList',
       component: () => import('@/views/popularize/smartScreen/SmartScreenList'),
+    },
+    {
+      // 智能屏对话记录
+      path: 'smartScreenChatRecord',
+      component: () => import('@/views/popularize/smartScreen/SmartScreenChatRecord'),
     },
     {
       // 智能屏销售记录
@@ -41,12 +51,12 @@ export default {
     },
     {
       // 屏幕推广海报列表
-      path: 'smartScreenPosterList/:id',
+      path: 'smartScreenPosterList',
       component: () => import('@/views/popularize/smartScreen/SmartScreenPosterList'),
     },
     {
       // 屏幕推广海报编辑
-      path: 'smartScreenPosterCRU/:imax/:id?',
+      path: 'smartScreenPosterCRU/:id?',
       component: () => import('@/views/popularize/smartScreen/SmartScreenPosterCRU'),
     },
     {

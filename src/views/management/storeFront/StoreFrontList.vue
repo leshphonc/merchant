@@ -83,6 +83,10 @@ export default {
     return {
       list: [],
       status: {
+        0: {
+          label: '关闭',
+          color: '#dd4a68',
+        },
         1: {
           label: '正常',
           color: '#690',
@@ -90,10 +94,6 @@ export default {
         2: {
           label: '审核',
           color: '#ffb000',
-        },
-        4: {
-          label: '禁用',
-          color: '#dd4a68',
         },
       },
       auth: {

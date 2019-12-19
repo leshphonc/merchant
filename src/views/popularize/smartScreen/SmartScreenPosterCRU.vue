@@ -1,33 +1,11 @@
 <template>
   <div>
-    <van-nav-bar
-      :title="`${type}推广海报`"
-      @click-left="$goBack"
-      @click-right="_submit"
-      fixed
-      left-arrow
-      right-text="保存"
-    ></van-nav-bar>
+    <van-nav-bar :title="`${type}推广海报`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
-        <ValidationProvider name="商品名称" rules="required" slim v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            label="海报标题"
-            placeholder="请填写海报标题"
-            required
-            v-model.trim="formData.title"
-          />
-        </ValidationProvider>
         <ValidationProvider name="关键词1" rules="required|min:2|max:6" slim v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            label="对话关键词1"
-            placeholder="关键词1"
-            required
-            v-model.trim="keywords[0]"
-          />
+          <van-field :error-message="errors[0]" label="对话关键词1" placeholder="关键词1" required v-model.trim="keywords[0]" />
         </ValidationProvider>
         <ValidationProvider name="关键词2" rules="min:2|max:6" slim v-slot="{ errors }">
           <van-field :error-message="errors[0]" label="对话关键词2" placeholder="关键词2" v-model.trim="keywords[1]" />
@@ -58,14 +36,28 @@
             v-model.trim="formData.read_txt"
           />
         </ValidationProvider>
+        <van-cell title="选择商品">
+          <van-switch active-value="1" inactive-value="0" v-model="formData.data_type"></van-switch>
+        </van-cell>
+        <commodity-radio :id="formData.id" :pickCommodity="_pickCommodity" v-show="formData.data_type === '1'"></commodity-radio>
+        <ValidationProvider name="海报标题" rules="required" slim v-if="formData.data_type === '0'" v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="海报标题"
+            placeholder="请填写海报标题"
+            required
+            v-model.trim="formData.title"
+          />
+        </ValidationProvider>
         <img-cropper
           :confirm="_pickPoster"
           :list="posterList"
           :ratio="[1080, 1920]"
           field="海报图片"
           title="海报图片"
+          v-if="formData.data_type === '0'"
         ></img-cropper>
-        <ValidationProvider name="海报网址" rules="required" slim v-slot="{ errors }">
+        <ValidationProvider name="海报网址" rules="required" slim v-if="formData.data_type === '0'" v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             label="海报网址"
@@ -82,6 +74,7 @@
 <script>
 import { mapActions } from 'vuex'
 import ImgCropper from '@/components/ImgCropper'
+import CommodityRadio from '@/components/CommodityRadio'
 
 export default {
   name: 'smartScreenPosterCRU',
@@ -90,6 +83,7 @@ export default {
 
   components: {
     ImgCropper,
+    CommodityRadio,
   },
 
   props: {},
@@ -104,6 +98,9 @@ export default {
         ad_img: '',
         url: '',
         width: '0.32',
+        data_type: '0',
+        goods_id: '',
+        goods_type: '',
       },
       keywords: [],
       posterList: [],
@@ -144,6 +141,10 @@ export default {
         this.keywords = res.keywords.split(',')
       })
     },
+    _pickCommodity(id, type) {
+      this.formData.goods_id = id
+      this.formData.goods_type = type
+    },
     // 提交表单
     async _submit() {
       // 锁
@@ -169,6 +170,15 @@ export default {
           params.site_id = id
         } else {
           params.isnew = 1
+        }
+        if (params.data_type === '1' && !params.goods_id) {
+          this.$toast.info({
+            message: '请选择推广商品',
+            forbidClick: true,
+            duration: 1000,
+          })
+          this.loading = false
+          return
         }
         this[method](params)
           .then(() => {

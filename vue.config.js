@@ -2,7 +2,7 @@ const pxtoviewport = require('postcss-px-to-viewport')
 
 module.exports = {
   devServer: {
-    proxy: 'https://www.9youke.com',
+    proxy: 'http://cs.7youke.com',
   },
   css: {
     loaderOptions: {
@@ -21,6 +21,7 @@ module.exports = {
           'tabs-default-color': '@primary-c',
           'picker-action-text-color': '@primary-c',
           'checkbox-checked-icon-color': '@primary-c',
+          'radio-checked-icon-color': '@primary-c',
           'primary-c': '#00a29a',
           'primary-deep-c': '#007b81',
           'gray-light-c': '#f7f7f7',

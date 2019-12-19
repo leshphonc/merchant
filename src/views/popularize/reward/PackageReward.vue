@@ -241,11 +241,18 @@ export default {
     await this.readPackageDetail(id).then(res => {
       const keys = Object.keys(this.formData)
       keys.forEach(item => {
+        if (item === 'spread') return
         this.formData[item] = res[0][item]
       })
       this.formData.level_set = res[0].level_set
       if (res[0].level_set === '1' && res[0].spread.length !== 0) {
         this.formData.spread = res[0].spread
+        res[0].spread.forEach((item, index) => {
+          this.formData.spread[index].spread_sale = item.spread_sale
+          this.formData.spread[index].spread_rate = item.spread_rate
+          item.sub_spread_rate && (this.formData.spread[index].sub_spread_rate = item.sub_spread_rate)
+          item.third_spread_rate && (this.formData.spread[index].third_spread_rate = item.third_spread_rate)
+        })
       }
     })
   },

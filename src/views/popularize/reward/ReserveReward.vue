@@ -114,7 +114,12 @@ export default {
     await this.readReserveDetail(id).then(res => {
       this.formData.level_set = res.appoint_list.level_set
       if (res.appoint_list.level_set === '1' && res.appoint_list.spread.length !== 0) {
-        this.formData.spread = res.appoint_list.spread
+        res.appoint_list.spread.forEach((item, index) => {
+          this.formData.spread[index].spread_sale = item.spread_sale
+          this.formData.spread[index].spread_rate = item.spread_rate
+          item.sub_spread_rate && (this.formData.spread[index].sub_spread_rate = item.sub_spread_rate)
+          item.third_spread_rate && (this.formData.spread[index].third_spread_rate = item.third_spread_rate)
+        })
       }
     })
   },

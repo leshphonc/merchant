@@ -2,11 +2,11 @@
   <div>
     <van-nav-bar
       @click-left="$goBack"
-      @click-right="() => $router.push(`/smartScreen/smartScreenPosterCRU/${$route.params.id}`)"
+      @click-right="() => $router.push('/smartScreen/smartScreenPosterCRU')"
       fixed
       left-arrow
       right-text="创建"
-      title="智能屏推广海报"
+      title="智能屏推广列表"
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-tabs :offset-top="offsetTop" sticky v-model="active">

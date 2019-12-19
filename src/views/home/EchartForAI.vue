@@ -26,8 +26,8 @@
     <div class="white-space"></div>
     <v-chart :options="polar" autoresize ref="echart"></v-chart>
     <van-row class="row-box" justify="space-around" type="flex">
-      <van-col span="11">广告订单</van-col>
-      <van-col @click="_goScreen" span="11">推广内容</van-col>
+      <van-col @click="() => $router.push('/smartScreen/smartScreenChatRecord')" span="11">对话记录</van-col>
+      <van-col @click="() => $router.push('/smartScreen')" span="11">推广内容</van-col>
     </van-row>
     <div class="white-space"></div>
 
@@ -293,9 +293,6 @@ export default {
       this.getVisitsFaceEchartData(obj).then(res => {
         this.echartData = res
       })
-    },
-    _goScreen() {
-      this.$router.push('/smartScreen')
     },
   },
 }
