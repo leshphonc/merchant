@@ -39,7 +39,12 @@
         <van-cell title="选择商品">
           <van-switch active-value="1" inactive-value="0" v-model="formData.data_type"></van-switch>
         </van-cell>
-        <commodity-radio :id="formData.id" :pickCommodity="_pickCommodity" v-show="formData.data_type === '1'"></commodity-radio>
+        <commodity-radio
+          :id="formData.goods_id"
+          :pickCommodity="_pickCommodity"
+          :type="formData.goods_type"
+          v-show="formData.data_type === '1'"
+        ></commodity-radio>
         <ValidationProvider name="海报标题" rules="required" slim v-if="formData.data_type === '0'" v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"

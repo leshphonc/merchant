@@ -9,7 +9,13 @@
         <!-- 电商 -->
         <van-tab title="电商">
           <van-pull-refresh @refresh="_eOnRefresh" v-model="eRefreshing">
-            <van-list :finished="eFinished" :finished-text="eFinishText" @load="_eOnLoad" v-model="loading">
+            <van-list
+              :finished="eFinished"
+              :finished-text="eFinishText"
+              :immediate-check="false"
+              @load="_eOnLoad"
+              v-model="loading"
+            >
               <van-radio-group v-model="result_id">
                 <van-cell-group>
                   <van-cell
@@ -30,7 +36,13 @@
         <!-- 团购 -->
         <van-tab title="团购">
           <van-pull-refresh @refresh="_gOnRefresh" v-model="gRefreshing">
-            <van-list :finished="gFinished" :finished-text="gFinishText" @load="_gOnLoad" v-model="loading">
+            <van-list
+              :finished="gFinished"
+              :finished-text="gFinishText"
+              :immediate-check="false"
+              @load="_gOnLoad"
+              v-model="loading"
+            >
               <van-radio-group v-model="result_id">
                 <van-cell-group>
                   <van-cell
@@ -51,7 +63,13 @@
         <!-- 服务 -->
         <van-tab title="服务">
           <van-pull-refresh @refresh="_sOnRefresh" v-model="sRefreshing">
-            <van-list :finished="sFinished" :finished-text="sFinishText" @load="_sOnLoad" v-model="loading">
+            <van-list
+              :finished="sFinished"
+              :finished-text="sFinishText"
+              :immediate-check="false"
+              @load="_sOnLoad"
+              v-model="loading"
+            >
               <van-radio-group v-model="result_id">
                 <van-cell-group>
                   <van-cell
@@ -72,7 +90,13 @@
         <!-- 套餐 -->
         <van-tab title="套餐">
           <van-pull-refresh @refresh="_pOnRefresh" v-model="pRefreshing">
-            <van-list :finished="pFinished" :finished-text="pFinishText" @load="_pOnLoad" v-model="loading">
+            <van-list
+              :finished="pFinished"
+              :finished-text="pFinishText"
+              :immediate-check="false"
+              @load="_pOnLoad"
+              v-model="loading"
+            >
               <van-radio-group v-model="result_id">
                 <van-cell-group>
                   <van-cell
@@ -110,6 +134,14 @@ export default {
     pickCommodity: {
       required: true,
       type: Function,
+    },
+    id: {
+      required: true,
+      type: String,
+    },
+    type: {
+      required: true,
+      type: String,
     },
   },
 
@@ -161,7 +193,7 @@ export default {
     },
     _commodityLabel() {
       let name
-      switch (this.result_type) {
+      switch (this.result_type - 0) {
         case 0:
           let e = this.eList.find(item => item.goods_id === this.result_id)
           name = e && e.name
@@ -183,7 +215,7 @@ export default {
     },
     _commodityImg() {
       let img
-      switch (this.result_type) {
+      switch (this.result_type - 0) {
         case 0:
           let e = this.eList.find(item => item.goods_id === this.result_id)
           img = e && e.list_pic
@@ -205,7 +237,7 @@ export default {
     },
     _commodityType() {
       let type
-      switch (this.result_type) {
+      switch (this.result_type - 0) {
         case 0:
           type = '电商'
           break
@@ -223,11 +255,23 @@ export default {
     },
   },
 
-  watch: {},
+  watch: {
+    id() {
+      this.result_id = this.id
+    },
+    type() {
+      this.result_type = this.type
+    },
+  },
 
   created() {},
 
-  mounted() {},
+  mounted() {
+    this._eOnRefresh()
+    this._gOnRefresh()
+    this._sOnRefresh()
+    this._pOnRefresh()
+  },
 
   destroyed() {},
 
