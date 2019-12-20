@@ -167,7 +167,7 @@ export default {
         params.imax_id = imax
         if (id) {
           method = 'updatePoster'
-          params.site_id = id
+          params.ad_id = id
         } else {
           params.isnew = 1
         }

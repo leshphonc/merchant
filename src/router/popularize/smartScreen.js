@@ -59,10 +59,5 @@ export default {
       path: 'smartScreenPosterCRU/:id?',
       component: () => import('@/views/popularize/smartScreen/SmartScreenPosterCRU'),
     },
-    {
-      // 屏幕推广商品列表
-      path: 'smartScreenCommodityList/:imax',
-      component: () => import('@/views/popularize/smartScreen/SmartScreenCommodityList'),
-    },
   ],
 }

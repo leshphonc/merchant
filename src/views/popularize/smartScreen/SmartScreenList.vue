@@ -18,12 +18,6 @@
           <van-button :to="`/smartScreen/smartScreenSalesRecord/${item.imax_id}`" size="small">销售记录</van-button>
           <van-button :to="`/smartScreen/customerMeetGreetingList/${item.imax_id}`" size="small">顾客见面语</van-button>
           <van-button :to="`/smartScreen/staffMeetGreetingList/${item.imax_id}`" size="small">员工见面语</van-button>
-          <van-button :to="`/smartScreen/smartScreenCommodityList/${item.imax_id}`" size="small" type="primary">
-            推广商品
-          </van-button>
-          <van-button :to="`/smartScreen/smartScreenPosterList/${item.imax_id}`" size="small" type="primary">
-            推广海报
-          </van-button>
         </div>
       </van-panel>
       <div class="white-space"></div>

@@ -99,6 +99,27 @@ const actions = {
       data ? resolve() : reject()
     })
   },
+  // 获取海报可推广角色
+  getSmartScreenRoleList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getSmartScreenRoleList()
+      data ? resolve(data) : reject()
+    })
+  },
+  // 绑定海报到屏幕
+  bindPosterToSmartScreen(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.bindPosterToSmartScreen(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 获取海报下绑定的屏幕
+  getSmartScreenInPoster(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getSmartScreenInPoster(id)
+      data ? resolve(data) : reject()
+    })
+  },
   // 获取智能屏销售列表
   getSmartScreenSalesRecord(context, payload) {
     return new Promise(async (resolve, reject) => {

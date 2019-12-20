@@ -47,8 +47,9 @@ export default {
     }),
   // 推广海报列表
   getSmartScreenPosterList: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=get_features', {
+    axios.post('/appapi.php?c=Merchantimax&a=getAdList', {
       ...payload,
+      size: 10,
       ticket: localStorage.getItem('ticket'),
     }),
   // 切换海报发布状态
@@ -80,6 +81,25 @@ export default {
     axios.post('/appapi.php?c=Merchantimax&a=savePushAd', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取海报下推广角色
+  getSmartScreenRoleList: () =>
+    axios.post('/appapi.php?c=Merchantimax&a=getMerchantRoleList', {
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 绑定海报到屏幕
+  bindPosterToSmartScreen: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=adBindImax', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取海报下绑定的屏幕
+  getSmartScreenInPoster: id =>
+    axios.get('/appapi.php?c=Merchantimax&a=getAdBindImaxList', {
+      params: {
+        ad_id: id,
+        ticket: localStorage.getItem('ticket'),
+      },
     }),
   // 获取智能屏销售列表
   getSmartScreenSalesRecord: payload =>

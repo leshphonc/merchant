@@ -252,8 +252,12 @@ export default {
   },
 
   created() {
-    if (this.type === 'time') {
-      this.startTime = '7:00'
+    console.log(this.data)
+    if (this.type === 'time' && this.data[0] !== '0' && this.data[1] !== '0') {
+      this.startTime = this.data[0]
+      this.endTime = this.data[1]
+    } else {
+      this.startTime = '07:00'
       this.endTime = '20:59'
     }
   },
