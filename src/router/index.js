@@ -47,6 +47,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "login" */ '@/views/Login'),
   },
   {
+    path: '/joinThePlatform',
+    name: 'joinThePlatform',
+    component: () => import(/* webpackChunkName: "login" */ '@/views/JoinThePlatform'),
+  },
+  {
     path: '*',
     name: '404',
     // route level code-splitting

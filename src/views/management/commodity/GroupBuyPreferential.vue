@@ -39,7 +39,7 @@
             :placeholder="`赠送${$getGlobal('score_alias')}数量`"
             label="每消费1元赠送"
             type="number"
-            v-model="formData.dhb_get_num"
+            v-model="formData.score_get_num"
           >
             <div slot="right-icon">{{ $getGlobal('score_alias') }}</div>
           </van-field>
@@ -57,7 +57,7 @@
             :placeholder="`赠送${$getGlobal('dhb_alias')}数量`"
             label="每消费1元赠送"
             type="number"
-            v-model="formData.score_get_num"
+            v-model="formData.dhb_get_num"
           >
             <div slot="right-icon">{{ $getGlobal('dhb_alias') }}</div>
           </van-field>

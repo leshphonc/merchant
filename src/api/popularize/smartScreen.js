@@ -72,7 +72,7 @@ export default {
     }),
   // 获取海报详情
   getPosterDetail: id =>
-    axios.post('/appapi.php?c=Merchantimax&a=site_features_detail', {
+    axios.post('/appapi.php?c=Merchantimax&a=getAdDetail', {
       id: id,
       ticket: localStorage.getItem('ticket'),
     }),

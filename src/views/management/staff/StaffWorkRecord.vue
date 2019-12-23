@@ -2,23 +2,23 @@
   <div>
     <van-nav-bar @click-left="$goBack" fixed left-arrow title="店员工作记录"></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <van-sticky :offset-top="offsetTop">
-      <div class="white-space"></div>
-      <van-tabs type="card">
-        <van-tab title="到岗记录">
-          <arrival-record :storeColumns="storeColumns" />
-        </van-tab>
-        <van-tab title="开单记录">
-          <billing-record :storeColumns="storeColumns" />
-        </van-tab>
-        <van-tab title="服务记录">
-          <service-record :storeColumns="storeColumns" />
-        </van-tab>
-        <van-tab title="销售记录">
-          <sales-record :storeColumns="storeColumns" />
-        </van-tab>
-      </van-tabs>
+    <van-sticky :offset-top="offsetTop46">
+      <div class="white-space bg"></div>
     </van-sticky>
+    <van-tabs :offset-top="offsetTop" sticky type="card">
+      <van-tab title="到岗记录">
+        <arrival-record :storeColumns="storeColumns" />
+      </van-tab>
+      <van-tab title="开单记录">
+        <billing-record :storeColumns="storeColumns" />
+      </van-tab>
+      <van-tab title="服务记录">
+        <service-record :storeColumns="storeColumns" />
+      </van-tab>
+      <van-tab title="销售记录">
+        <sales-record :storeColumns="storeColumns" />
+      </van-tab>
+    </van-tabs>
   </div>
 </template>
 
@@ -49,8 +49,11 @@ export default {
   },
 
   computed: {
-    offsetTop() {
+    offsetTop46() {
       return (46 / 375) * document.body.clientWidth
+    },
+    offsetTop() {
+      return (54 / 375) * document.body.clientWidth
     },
   },
 
@@ -77,4 +80,8 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.bg {
+  background-color: @gray-background-c;
+}
+</style>

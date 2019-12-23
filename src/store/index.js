@@ -8,6 +8,7 @@ import wallet from './modules/wallet'
 import management from './modules/management'
 import popularize from './modules/popularize'
 import setting from './modules/setting'
+import platform from './modules/platform'
 
 Vue.use(Vuex)
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     order,
     market,
     wallet,
+    platform,
     ...management,
     ...popularize,
     ...setting,

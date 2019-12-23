@@ -418,6 +418,10 @@ export default {
     },
     // 跳转广告页面
     _goAd(url) {
+      if (url === 'http://cs.7youke.com/wap.php?g=Wap&c=merchant&a=joinSubPlat') {
+        this.$router.push('/joinThePlatform')
+        return
+      }
       window.location.href = url
     },
     // echart数据切换

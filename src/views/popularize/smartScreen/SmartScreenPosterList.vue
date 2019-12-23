@@ -16,7 +16,7 @@
             <div :key="item.id" v-for="item in eList">
               <van-panel
                 :desc="_currentDesc(item)"
-                :icon="item.data_type === '0' ? item.ad_img : item.goods_info.image"
+                :icon="item.data_type === '0' ? item.ad_img : item.goods_info.image.split(';')[0]"
                 :status="_currentStatus(item)"
                 :title="item.data_type === '0' ? item.title : item.goods_info.name"
               >
@@ -217,7 +217,6 @@ export default {
 
   mounted() {
     this.getSmartScreenList().then(res => {
-      console.log(res)
       this.screenList = res
     })
     this.getSmartScreenRoleList().then(res => {
@@ -241,13 +240,12 @@ export default {
       this.formData.role = item.to_user_ids
       this.formData.ad_id = item.id
       item.time_start && (this.formData.start_time = item.time_start)
-      if (item.time_start !== item.time_end) {
+      if (item.time_end && item.time_start !== item.time_end) {
         item.time_end && (this.formData.end_time = item.time_end)
       }
       await this.getSmartScreenInPoster(item.id).then(res => {
         this.formData.screen = res
       })
-      console.log(item)
       this.showPopup = true
     },
     _closePopup() {
@@ -417,7 +415,6 @@ export default {
         time_start: this.formData.start_time,
         time_end: this.formData.end_time,
       }
-      console.log(params)
       this.bindPosterToSmartScreen(params).then(res => {
         this.$toast.success({
           message: '操作成功',

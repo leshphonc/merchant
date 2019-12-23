@@ -1,11 +1,24 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}推广海报`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}智能屏推广`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
         <ValidationProvider name="关键词1" rules="required|min:2|max:6" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="对话关键词1" placeholder="关键词1" required v-model.trim="keywords[0]" />
+          <van-field
+            :error-message="errors[0]"
+            label="对话关键词1"
+            placeholder="关键词1"
+            required
+            v-model.trim="keywords[0]"
+          />
         </ValidationProvider>
         <ValidationProvider name="关键词2" rules="min:2|max:6" slim v-slot="{ errors }">
           <van-field :error-message="errors[0]" label="对话关键词2" placeholder="关键词2" v-model.trim="keywords[1]" />

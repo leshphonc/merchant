@@ -30,7 +30,9 @@
         >
           <van-field :error-message="errors[0]" label="开票条件" required v-model="formData.invoice_price" />
         </ValidationProvider>
-        <van-cell @click="_controlPlatFormCategoryPopup" is-link title="所属商城分类"></van-cell>
+        <van-cell @click="_controlPlatFormCategoryPopup" is-link title="所属商城分类">
+          <div :key="index" v-for="(item, index) in formData.store_category">{{ _getCateName(item) }}</div>
+        </van-cell>
         <ValidationProvider name="优惠方式" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -395,6 +397,17 @@ export default {
         images: [this.qrcode],
         showIndex: false,
       })
+    },
+    _getCateName(id) {
+      let name = ''
+      for (let i = 0; i < this.categoryTree.length; i++) {
+        for (let j = 0; j < this.categoryTree[i].children.length; j++) {
+          if (this.categoryTree[i].children[j].id === id) {
+            name = this.categoryTree[i].children[j].text
+            return name
+          }
+        }
+      }
     },
     // 提交表单
     async _submit() {

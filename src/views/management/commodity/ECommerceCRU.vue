@@ -151,7 +151,7 @@
           readonly
         />
         <img-cropper :confirm="_pickPic" :list="pic" field="商品图片" title="商品图片"></img-cropper>
-        <van-cell required title="店铺详情"></van-cell>
+        <van-cell required title="商品详情"></van-cell>
         <quill-editor :changeHtml="_changeHtml" :context="formData.des" ref="editor"></quill-editor>
       </van-cell-group>
     </ValidationObserver>

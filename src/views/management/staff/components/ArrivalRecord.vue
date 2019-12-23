@@ -18,7 +18,14 @@
     </van-sticky>
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
       <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
-        <div :key="index" v-for="(item, index) in list">123</div>
+        <div :key="index" v-for="(item, index) in list">
+          <van-panel
+            :desc="`${item.store_name}`"
+            :status="$moment(item.time * 1000).format('YYYY-MM-DD HH:mm:ss')"
+            :title="item.name"
+          ></van-panel>
+          <div class="white-space"></div>
+        </div>
       </van-list>
     </van-pull-refresh>
   </div>
