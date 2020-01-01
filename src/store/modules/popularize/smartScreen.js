@@ -65,9 +65,9 @@ const actions = {
     })
   },
   // 切换海报发布状态
-  changePosterRelease(context, id) {
+  changePosterRelease(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await smartScreenAPI.changePosterRelease(id)
+      const data = await smartScreenAPI.changePosterRelease(payload)
       data ? resolve() : reject()
     })
   },
@@ -152,6 +152,13 @@ const actions = {
   getNotPopularizedPackageList() {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.getNotPopularizedPackageList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取推广海报的分类和标签
+  getSmartScreenPosterTagAndCateList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getSmartScreenPosterTagAndCateList(payload)
       data ? resolve(data) : reject()
     })
   },

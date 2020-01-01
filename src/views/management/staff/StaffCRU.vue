@@ -63,6 +63,18 @@
             v-model.trim="formData.tel"
           ></van-field>
         </ValidationProvider>
+        <ValidationProvider name="分佣比例" rules="required|numeric|min_value:0|max_value:100" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="分佣比例"
+            placeholder="0-100之间整数，0表示不分佣"
+            required
+            type="number"
+            v-model.trim="formData.spread_rato"
+          >
+            <div slot="right-icon">%</div>
+          </van-field>
+        </ValidationProvider>
         <ValidationProvider name="所属店铺" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -124,6 +136,7 @@ export default {
         username: '',
         password: '',
         tel: '',
+        spread_rato: '',
         store_id: '',
       },
       loading: false,

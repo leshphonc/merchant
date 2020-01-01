@@ -27,7 +27,7 @@
             <div class="white-space"></div>
             <van-row>
               <van-col span="6">实付：</van-col>
-              <van-col span="18">{{ item.pay_money }}</van-col>
+              <van-col span="18">{{ item.paid === '0' ? '暂未支付' : item.pay_money }}</van-col>
             </van-row>
             <div class="white-space"></div>
           </van-panel>
@@ -81,7 +81,7 @@ export default {
       const { id } = this.$route.params
       this.readPackageSalesRecord({
         page: 1,
-        appoint_id: id,
+        meal_id: id,
       }).then(res => {
         this.page = 2
         this.list = res.list
@@ -98,7 +98,7 @@ export default {
       const { id } = this.$route.params
       this.readPackageSalesRecord({
         page: this.page,
-        appoint_id: id,
+        meal_id: id,
       }).then(res => {
         this.loading = false
         if (res.list.length < 10) {

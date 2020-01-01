@@ -27,7 +27,10 @@
               <van-col span="12">
                 <img :src="item.avatar ? item.avatar : require('@/assets/image/staffAvatar.png')" alt />
                 <div style="display: inline-block">
-                  <span class="name">{{ item.name }}</span>
+                  <span class="name">
+                    {{ item.name }}
+                    <i class="iconfont icon-kf" v-if="item.is_kefu === '1'">&#xe638;</i>
+                  </span>
                   <div class="tel">
                     <a :href="'tel:' + item.tel" v-if="item.tel">
                       {{ item.tel }}
@@ -46,6 +49,10 @@
                 <div style="flex: 1;">销售报酬：{{ item.sale_money || 0 }} 元</div>
               </div>
               <div class="white-space"></div>
+              <div style="display: flex;">
+                <div style="flex: 1;">分佣比例：{{ item.spread_rato || 0 }}%</div>
+              </div>
+              <div class="white-space"></div>
               <div>
                 最后登录：{{
                   item.last_time !== '0' ? $moment(item.last_time * 1000).format('YYYY-MM-DD HH:mm') : '暂无记录'
@@ -54,14 +61,20 @@
             </div>
             <div class="white-space"></div>
             <div style="text-align: right;" v-if="item.name !== '门店AI助手-小由' && status === '1'">
+              <van-button @click="_changeKF(item)" size="small" v-if="item.is_kefu === '1'">取消客服身份</van-button>
+              <van-button @click="_changeKF(item)" size="small" v-else>设为客服</van-button>
+              <van-button
+                @click="_controlStorePicker(item.staff_id, item.store_id)"
+                size="small"
+                type="primary"
+                v-if="item.is_kefu === '0'"
+                >调岗</van-button
+              >
               <van-button
                 @click="_controlPermissionPicker(item.store_id, item.mer_id, item.staff_id)"
                 size="small"
                 type="primary"
                 >权限</van-button
-              >
-              <van-button @click="_controlStorePicker(item.staff_id, item.store_id)" size="small" type="primary"
-                >调岗</van-button
               >
               <van-button :to="`/staff/staffWorkRecord/${item.staff_id}`" size="small" type="primary"
                 >工作记录</van-button
@@ -73,7 +86,9 @@
                 >启用</van-button
               >
             </div>
-            <i @click="() => $router.push(`/staff/staffCRU/${item.staff_id}/${item.store_id}`)" class="iconfont"
+            <i
+              @click="() => $router.push(`/staff/staffCRU/${item.staff_id}/${item.store_id}`)"
+              class="iconfont icon-edit"
               >&#xe634;</i
             >
           </div>
@@ -234,6 +249,7 @@ export default {
       'updateStaffPermission',
       'staffTransfer',
       'staffStatusChange',
+      'staffKFStatusChange',
     ]),
     // 权限选择开关
     async _controlPermissionPicker(store_id, mer_id, staff_id) {
@@ -281,6 +297,29 @@ export default {
               this.loading = false
               this._getStaffList()
               this._controlStorePicker()
+            },
+          })
+        })
+        .catch(() => {
+          this.loading = false
+        })
+    },
+    _changeKF(item) {
+      if (this.loading) return
+      this.loading = true
+      this.staffKFStatusChange({
+        staff_id: item.staff_id,
+        store_id: item.store_id,
+      })
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 600,
+            onClose: () => {
+              // 解锁
+              this.loading = false
+              this._getStaffList()
             },
           })
         })
@@ -400,6 +439,7 @@ img {
   height: 40px;
   margin-right: 10px;
   vertical-align: bottom;
+  border-radius: 40px;
 }
 .van-row {
   padding: 10px 16px;
@@ -408,6 +448,7 @@ img {
 .name {
   font-size: 16px;
 }
+
 .tel {
   & > a {
     font-size: 14px;
@@ -463,11 +504,17 @@ img {
   margin: 50% 0;
 }
 
-.iconfont {
+.icon-edit {
   position: absolute;
   top: 10px;
   right: 10px;
   color: @black-c;
+}
+
+.icon-kf {
+  font-size: 20px;
+  color: @red-c;
+  margin-left: 4px;
 }
 
 .bottom-space:last-child {

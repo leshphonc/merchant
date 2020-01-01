@@ -5,6 +5,7 @@
     <div :key="index" v-for="(item, index) in list">
       <van-panel :desc="item.address" :title="item.store_name">
         <div>管理员：{{ item.contact }}</div>
+        <div class="white-space"></div>
         <div>
           联系方式：
           {{ item.tel }}
@@ -13,6 +14,7 @@
             <van-icon color="#1989fa" name="phone-o" />
           </a>
         </div>
+        <div class="white-space"></div>
         <div>销售金额：{{ item.contact }}</div>
         <div slot="footer">
           <van-button :to="`/smartScreen/smartScreenSalesRecord/${item.imax_id}`" size="small">销售记录</van-button>
@@ -65,10 +67,11 @@ export default {
 
 <style lang="less" scoped>
 .van-panel__content {
-  padding: 4px 16px;
-  font-size: 14px;
-  color: @black-c;
+  padding: 10px 16px;
+  font-size: 13px;
+  color: @font-gray-c;
 }
+
 .van-panel__footer {
   text-align: right;
   .van-button {

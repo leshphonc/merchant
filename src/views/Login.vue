@@ -59,7 +59,7 @@ export default {
 
   mounted() {
     let logo = ''
-    if (process.env.VUE_APP_ENV === 'cs') {
+    if (window.location.href.indexOf('9youke') > -1) {
       logo = require('@/assets/image/logo.jpg')
     } else {
       logo = require('@/assets/image/xyzg_logo.png')

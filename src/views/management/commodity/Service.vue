@@ -7,7 +7,7 @@
             :key="item.goods_id"
             :price="item.old_price"
             :tag="item.payment_status === '1' ? '定金' : null"
-            :thumb="item.pic"
+            :thumb="item.list_pic"
             :title="item.appoint_name"
             lazy-load
             v-for="item in list"

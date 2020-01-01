@@ -16,9 +16,9 @@
             <div :key="item.id" v-for="item in eList">
               <van-panel
                 :desc="_currentDesc(item)"
-                :icon="item.data_type === '0' ? item.ad_img : item.goods_info.image.split(';')[0]"
+                :icon="item.data_type === '0' ? item.ad_img : item.goods_info.goods_icon"
                 :status="_currentStatus(item)"
-                :title="item.data_type === '0' ? item.title : item.goods_info.name"
+                :title="item.data_type === '0' ? item.title : item.goods_info.goods_name"
               >
                 <div>
                   <van-row>
@@ -37,6 +37,11 @@
                   </van-row>
                   <div class="white-space"></div>
                   <van-row>
+                    <van-col span="10">推广分类：{{ item.cate_name }}</van-col>
+                    <van-col span="10">推广标签：{{ item.label_names.join() }}</van-col>
+                  </van-row>
+                  <div class="white-space"></div>
+                  <van-row>
                     <van-col span="5">播报语音：</van-col>
                     <van-col span="19">{{ item.read_txt }}</van-col>
                   </van-row>
@@ -49,7 +54,7 @@
                 </div>
                 <div slot="footer" v-else-if="item.is_shelves === '2'">
                   <van-button @click="_changeStatus(item.id)" size="small" type="danger">禁用</van-button>
-                  <van-button @click="_changeRelease(item.id)" size="small" type="primary">同城发布</van-button>
+                  <van-button @click="_needCheckStore(item)" size="small" type="primary">同城发布</van-button>
                   <van-button @click="_openPopup(item)" size="small">选择推广屏幕</van-button>
                   <van-button :to="`/smartScreen/smartScreenPosterCRU/${item.id}`" size="small">编辑</van-button>
                 </div>
@@ -65,9 +70,9 @@
             <div :key="item.id" v-for="item in dList">
               <van-panel
                 :desc="_currentDesc(item)"
-                :icon="item.data_type === '0' ? item.ad_img : item.goods_info.image"
+                :icon="item.data_type === '0' ? item.ad_img : item.goods_info.goods_icon"
                 :status="_currentStatus(item)"
-                :title="item.data_type === '0' ? item.title : item.goods_info.name"
+                :title="item.data_type === '0' ? item.title : item.goods_info.goods_name"
               >
                 <div>
                   <van-row>
@@ -112,11 +117,11 @@
                 :key="index"
                 :label="item.address"
                 :title="item.store_name"
-                @click="_rToggle(index)"
+                @click="_sToggle(index)"
                 clickable
                 v-for="(item, index) in screenList"
               >
-                <van-checkbox :name="item.id" ref="checkboxesR" slot="right-icon" />
+                <van-checkbox :name="item.imax_id" ref="checkboxesS" slot="right-icon" />
               </van-cell>
             </van-cell-group>
           </van-checkbox-group>
@@ -127,11 +132,11 @@
               <van-cell
                 :key="index"
                 :title="item.name"
-                @click="_sToggle(index)"
+                @click="_rToggle(index)"
                 clickable
                 v-for="(item, index) in roleList"
               >
-                <van-checkbox :name="item.id" ref="checkboxesS" slot="right-icon" />
+                <van-checkbox :name="item.id" ref="checkboxesR" slot="right-icon" />
               </van-cell>
             </van-cell-group>
           </van-checkbox-group>
@@ -148,10 +153,30 @@
           type="time"
         ></time-picker>
       </van-collapse>
-
       <div class="btn-group">
         <van-button @click="_closePopup" native-type="button">取消</van-button>
-        <van-button @click="_submit" type="primary">确认</van-button>
+        <van-button @click="_submit" type="primary">发布到屏幕</van-button>
+      </div>
+    </van-popup>
+    <!-- 同城发布店铺选择 -->
+    <van-popup :lazy-render="false" position="bottom" safe-area-inset-bottom v-model="showStorePicker">
+      <van-checkbox-group v-model="store">
+        <van-cell-group>
+          <van-cell
+            :key="index"
+            :label="item.adress"
+            :title="item.label"
+            @click="_storeToggle(index)"
+            clickable
+            v-for="(item, index) in storeColumns"
+          >
+            <van-checkbox :name="item.value" ref="checkboxesStore" slot="right-icon" />
+          </van-cell>
+        </van-cell-group>
+      </van-checkbox-group>
+      <div class="btn-group">
+        <van-button @click="_controlStorePicker()" native-type="button">取消</van-button>
+        <van-button @click="_submitSameCity" type="primary">发布到同城</van-button>
       </div>
     </van-popup>
   </div>
@@ -185,7 +210,6 @@ export default {
       activeNames: ['1', '2'],
       screenList: [],
       roleList: [],
-      list: [1, 2, 3, 4, 5, 6, 7, 8],
       ePage: 1,
       eList: [],
       eRefreshing: false,
@@ -196,6 +220,10 @@ export default {
       dFinished: false,
       loading: false,
       showPopup: false,
+      showStorePicker: false,
+      storeColumns: [],
+      lastAd: '',
+      store: [],
     }
   },
 
@@ -222,11 +250,15 @@ export default {
     this.getSmartScreenRoleList().then(res => {
       this.roleList = res
     })
+    this.getStoreList().then(res => {
+      this.storeColumns = res.store_list
+    })
   },
 
   destroyed() {},
 
   methods: {
+    ...mapActions(['getStoreList', 'getFilterStoreList']),
     ...mapActions('smartScreen', [
       'getSmartScreenList',
       'getSmartScreenPosterList',
@@ -236,6 +268,17 @@ export default {
       'bindPosterToSmartScreen',
       'getSmartScreenInPoster',
     ]),
+    // 店铺选择开关
+    _controlStorePicker(id) {
+      this.showStorePicker = !this.showStorePicker
+      if (id) {
+        this.lastAd = id
+        this.store = []
+      } else {
+        this.lastAd = ''
+      }
+    },
+    // 选择推广屏幕
     async _openPopup(item) {
       this.formData.role = item.to_user_ids
       this.formData.ad_id = item.id
@@ -251,6 +294,7 @@ export default {
     _closePopup() {
       this.showPopup = false
     },
+
     // 刷新列表
     _eOnRefresh() {
       this.getSmartScreenPosterList({
@@ -313,16 +357,23 @@ export default {
         this.dList.push(...res.lists)
       })
     },
-    _rToggle(index) {
-      this.$refs.checkboxesR[index].toggle()
-    },
+    // 屏幕选择
     _sToggle(index) {
       this.$refs.checkboxesS[index].toggle()
     },
-    _changeRelease(id) {
+    // 角色选择
+    _rToggle(index) {
+      this.$refs.checkboxesR[index].toggle()
+    },
+    // 同城发布店铺选择
+    _storeToggle(index) {
+      this.$refs.checkboxesStore[index].toggle()
+    },
+    // 同城发布
+    _changeRelease(id, store_ids) {
       if (this.loading) return
       this.loading = true
-      this.changePosterRelease(id)
+      this.changePosterRelease({ id, store_ids })
         .then(() => {
           this.$toast.success({
             message: '操作成功',
@@ -332,6 +383,9 @@ export default {
               // 解锁
               this.loading = false
               this._eOnRefresh()
+              if (this.showStorePicker) {
+                this._controlStorePicker()
+              }
             },
           })
         })
@@ -407,6 +461,29 @@ export default {
     _pickCloseTime(data) {
       this.formData.end_time = data
     },
+    _needCheckStore(item) {
+      if (item.data_type === '1') {
+        this.getFilterStoreList({
+          goods_type: item.goods_type,
+          goods_id: item.goods_id,
+        }).then(res => {
+          const arr = res.map(item => {
+            return {
+              label: item.name,
+              value: item.store_id,
+              adress: item.adress,
+            }
+          })
+          this.storeColumns = arr
+          this._controlStorePicker(item.id)
+        })
+      } else {
+        this.getStoreList().then(res => {
+          this.storeColumns = res.store_list
+          this._controlStorePicker(item.id)
+        })
+      }
+    },
     _submit() {
       const params = {
         ad_id: this.formData.ad_id,
@@ -436,6 +513,10 @@ export default {
         })
       })
     },
+    // 选择店铺且将海报同城发布
+    _submitSameCity() {
+      this._changeRelease(this.lastAd, this.store.join())
+    },
   },
 }
 </script>
@@ -444,6 +525,7 @@ export default {
 .van-cell__left-icon {
   font-size: 80px;
   height: 80px;
+  margin-right: 10px;
 }
 
 .van-panel__content {

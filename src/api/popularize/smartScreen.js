@@ -53,9 +53,9 @@ export default {
       ticket: localStorage.getItem('ticket'),
     }),
   // 切换海报发布状态
-  changePosterRelease: id =>
+  changePosterRelease: payload =>
     axios.post('/appapi.php?c=Merchantimax&a=on', {
-      id,
+      ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
   // 切换海报启用禁用状态
@@ -131,5 +131,14 @@ export default {
     axios.post('/appapi.php?c=Merchantimax&a=...', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取推广海报的分类和标签
+  getSmartScreenPosterTagAndCateList: payload =>
+    axios.get('/appapi.php?c=Merchantimax&a=getAdCategoryList', {
+      params: {
+        ...payload,
+        size: 10,
+        ticket: localStorage.getItem('ticket'),
+      },
     }),
 }

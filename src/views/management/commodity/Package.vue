@@ -6,7 +6,7 @@
           :key="item.meal_id"
           :num="item.total_num"
           :price="item.price"
-          :thumb="item.pic"
+          :thumb="item.list_pic"
           :title="item.meal_name"
           lazy-load
           v-for="item in list"

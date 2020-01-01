@@ -33,6 +33,12 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 店员客服状态修改
+  staffKFStatusChange: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=setStoreKefu', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
   // 店员状态更改
   staffStatusChange: id =>
     axios.post('/appapi.php?c=Merchantapp&a=staff_dell', {

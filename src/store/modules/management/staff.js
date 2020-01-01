@@ -43,6 +43,13 @@ const actions = {
       data ? resolve() : reject()
     })
   },
+  // 店员客服状态修改
+  async staffKFStatusChange(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await staffAPI.staffKFStatusChange(payload)
+      data ? resolve() : reject()
+    })
+  },
   // 店员状态修改
   async staffStatusChange(context, id) {
     return new Promise(async (resolve, reject) => {

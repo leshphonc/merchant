@@ -79,7 +79,7 @@
                     clickable
                     v-for="(item, index) in sList"
                   >
-                    <van-image :src="item.pic" lazy-load slot="icon" />
+                    <van-image :src="item.list_pic" lazy-load slot="icon" />
                     <van-radio :name="item.appoint_id" slot="right-icon" />
                   </van-cell>
                 </van-cell-group>
@@ -106,7 +106,7 @@
                     clickable
                     v-for="(item, index) in pList"
                   >
-                    <van-image :src="item.pic" lazy-load slot="icon" />
+                    <van-image :src="item.list_pic" lazy-load slot="icon" />
                     <van-radio :name="item.meal_id" slot="right-icon" />
                   </van-cell>
                 </van-cell-group>

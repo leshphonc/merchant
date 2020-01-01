@@ -65,6 +65,14 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  // 筛选商铺列表 (根据商品类型和海报类型)
+  getFilterStoreList: payload =>
+    axios.get('/appapi.php?c=Merchantimax&a=getBindGoodsStoreList', {
+      params: {
+        ...payload,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
   // 获取平台配置信息
   getPlatFormInfo: () =>
     axios.post('/appapi.php?c=Merchantapp&a=get_config', {

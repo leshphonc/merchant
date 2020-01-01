@@ -27,7 +27,7 @@
             <div class="white-space"></div>
             <van-row>
               <van-col span="6">实付：</van-col>
-              <van-col span="18">{{ item.pay_price }}</van-col>
+              <van-col span="18">{{ item.paid === '0' ? '暂未支付' : item.pay_price }}</van-col>
             </van-row>
             <div class="white-space"></div>
           </van-panel>

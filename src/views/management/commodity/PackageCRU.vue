@@ -133,7 +133,7 @@
                     slot="right-icon"
                   ></van-checkbox>
                   <div slot="title">
-                    <img :src="item.pic" alt />
+                    <img :src="item.list_pic" alt />
                     {{ item.appoint_name }}
                   </div>
                 </van-cell>
@@ -336,7 +336,7 @@ export default {
                 name: item.appoint_name,
                 day_num: '',
                 meal_num: '',
-                img: item.pic,
+                img: item.list_pic,
                 type: 0,
               })
             }

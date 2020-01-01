@@ -188,6 +188,13 @@ export default {
       data ? resolve(data) : reject()
     })
   },
+  // 筛选商铺列表 (根据商品类型和海报类型)
+  getFilterStoreList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await common.getFilterStoreList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
   // 获取平台配置信息
   getPlatFormInfo() {
     return new Promise(async (resolve, reject) => {
