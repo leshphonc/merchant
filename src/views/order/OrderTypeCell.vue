@@ -105,6 +105,8 @@ export default {
             default:
               item.url = '404'
           }
+          // 到店因为数量不对暂时隐藏
+          // /order/arrivalList
         })
         this.list = res
       })

@@ -18,7 +18,27 @@
     </van-sticky>
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
       <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
-        <div :key="index" v-for="(item, index) in list">123</div>
+        <div :key="index" v-for="(item, index) in list">
+          <van-panel
+            :desc="$moment(item.addtime * 1000).format('YYYY-MM-DD HH:mm:ss')"
+            :icon="item.pic"
+            :status="`¥${item.order_money}`"
+            :title="`${item.goods_name}`"
+          >
+            <div>
+              <van-row>
+                <van-col span="4">昵称：</van-col>
+                <van-col span="20">{{ item.user_name || '-' }}</van-col>
+              </van-row>
+              <div class="white-space"></div>
+              <van-row>
+                <van-col span="4">店铺：</van-col>
+                <van-col span="20">{{ item.store_name }}</van-col>
+              </van-row>
+            </div>
+          </van-panel>
+          <div class="white-space"></div>
+        </div>
       </van-list>
     </van-pull-refresh>
   </div>
@@ -132,4 +152,21 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.van-panel__content {
+  padding: 10px 16px;
+  font-size: 13px;
+  color: @font-gray-c;
+  overflow: auto;
+}
+
+.van-cell__left-icon {
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+  .van-icon__image {
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>

@@ -18,7 +18,7 @@
             <div>创建时间：{{ $moment(item.create_time * 1000).format('YYYY-MM-DD') }}</div>
           </div>
           <div slot="footer" v-if="$route.fullPath === '/commodity'">
-            <van-button @click="_deleteCommodity(item.meal_id)" size="small" type="danger">删除</van-button>
+            <!-- <van-button @click="_deleteCommodity(item.meal_id)" size="small" type="danger">删除</van-button> -->
             <van-button :to="`/commodity/packageSalesRecord/${item.meal_id}`" size="small">销售记录</van-button>
             <van-button :to="`/commodity/packagePreferential/${item.meal_id}`" size="small">优惠</van-button>
             <van-button :to="`/commodity/packageCRU/${item.meal_id}`" size="small" v-if="!item.type">编辑</van-button>

@@ -1,11 +1,24 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}智能屏推广`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}智能屏推广`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
         <ValidationProvider name="关键词1" rules="required|min:2|max:6" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="对话关键词1" placeholder="关键词1" required v-model.trim="keywords[0]" />
+          <van-field
+            :error-message="errors[0]"
+            label="对话关键词1"
+            placeholder="关键词1"
+            required
+            v-model.trim="keywords[0]"
+          />
         </ValidationProvider>
         <ValidationProvider name="关键词2" rules="min:2|max:6" slim v-slot="{ errors }">
           <van-field :error-message="errors[0]" label="对话关键词2" placeholder="关键词2" v-model.trim="keywords[1]" />
@@ -27,7 +40,7 @@
           <van-field
             :error-message="errors[0]"
             label="播报语音"
-            maxlength="100"
+            maxlength="200"
             placeholder="请填写播报语音"
             required
             rows="3"
@@ -52,7 +65,7 @@
             required
           >
             <div :key="index" slot="input" v-for="(item, index) in formData.label_ids">
-              <van-tag type="primary">{{ _tagLabel(item) }}</van-tag>
+              <van-tag type="primary">{{ _tagLabel(item, index) }}</van-tag>
             </div>
           </van-field>
         </ValidationProvider>
@@ -72,14 +85,20 @@
             required
           />
         </ValidationProvider>
-        <!-- <van-cell title="选择商品">
+        <van-cell title="选择商品">
           <van-switch active-value="1" inactive-value="0" v-model="formData.data_type"></van-switch>
-        </van-cell>-->
+        </van-cell>
       </van-cell-group>
-      <van-cell-group title="推广内容">
+      <van-cell-group title="选择推广内容">
         <van-tabs :lazy-render="false" v-model="formData.data_type">
           <van-tab title="海报">
-            <ValidationProvider name="海报标题" rules="required" slim v-if="formData.data_type === 0" v-slot="{ errors }">
+            <ValidationProvider
+              name="海报标题"
+              rules="required"
+              slim
+              v-if="formData.data_type === 0"
+              v-slot="{ errors }"
+            >
               <van-field
                 :error-message="errors[0]"
                 label="海报标题"
@@ -88,7 +107,13 @@
                 v-model.trim="formData.title"
               />
             </ValidationProvider>
-            <ValidationProvider name="海报网址" rules="required" slim v-if="formData.data_type === 0" v-slot="{ errors }">
+            <ValidationProvider
+              name="海报网址"
+              rules="required"
+              slim
+              v-if="formData.data_type === 0"
+              v-slot="{ errors }"
+            >
               <van-field
                 :error-message="errors[0]"
                 label="海报网址"
@@ -100,7 +125,6 @@
             <img-cropper
               :confirm="_pickPoster"
               :list="posterList"
-              :ratio="[7, 10]"
               field="海报图片"
               title="海报图片"
               v-if="formData.data_type === 0"
@@ -110,6 +134,7 @@
           <van-tab title="商品">
             <commodity-radio
               :id="formData.goods_id"
+              :cacheImg="radioImg"
               :pickCommodity="_pickCommodity"
               :type="formData.goods_type"
               v-show="formData.data_type === 1"
@@ -118,15 +143,22 @@
         </van-tabs>
       </van-cell-group>
     </ValidationObserver>
+    <!-- 标签选择 -->
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showTagPicker">
+      <van-list :finished="tFinished" :finished-text="tFinishText" @load="_tOnLoad" v-model="loading">
+        <van-checkbox-group :max="3" v-model="formData.label_ids">
+          <van-cell-group>
+            <van-cell :key="index" :title="item.name" @click="_tToggle(index)" clickable v-for="(item, index) in tList">
+              <van-checkbox :name="item.cat_id" ref="checkboxesT" slot="right-icon" />
+            </van-cell>
+          </van-cell-group>
+        </van-checkbox-group>
+      </van-list>
+      <van-button @click="_controlTagPicker">关闭</van-button>
+    </van-popup>
     <!-- 分类选择 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showCatePicker">
-      <van-list
-        :finished="cFinished"
-        :finished-text="cFinishText"
-        :immediate-check="false"
-        @load="_cOnLoad"
-        v-model="loading"
-      >
+      <van-list :finished="cFinished" :finished-text="cFinishText" @load="_cOnLoad" v-model="loading">
         <van-radio-group v-model="formData.cate_id">
           <van-cell-group>
             <van-cell :key="index" :title="item.name" @click="_cToggle(index)" clickable v-for="(item, index) in cList">
@@ -136,25 +168,6 @@
         </van-radio-group>
       </van-list>
       <van-button @click="_controlCatePicker">关闭</van-button>
-    </van-popup>
-    <!-- 标签选择 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showTagPicker">
-      <van-list
-        :finished="tFinished"
-        :finished-text="tFinishText"
-        :immediate-check="false"
-        @load="_tOnLoad"
-        v-model="loading"
-      >
-        <van-checkbox-group v-model="formData.label_ids">
-          <van-cell-group>
-            <van-cell :key="index" :title="item.name" @click="_tToggle(index)" clickable v-for="(item, index) in tList">
-              <van-checkbox :name="item.cat_id" ref="checkboxesT" slot="right-icon" />
-            </van-cell>
-          </van-cell-group>
-        </van-checkbox-group>
-      </van-list>
-      <van-button @click="_controlTagPicker">关闭</van-button>
     </van-popup>
   </div>
 </template>
@@ -202,6 +215,10 @@ export default {
       tPage: 1,
       tList: [],
       tFinished: false,
+      loading: false,
+      cateName: '',
+      tagName: [],
+      radioImg: '',
     }
   },
 
@@ -218,7 +235,7 @@ export default {
     },
     cateLabel() {
       const item = this.cList.find(item => item.cat_id === this.formData.cate_id)
-      return item && item.name
+      return (item && item.name) || this.cateName
     },
   },
 
@@ -229,8 +246,6 @@ export default {
   mounted() {
     const { id } = this.$route.params
     id && this._getPosterDetail(id)
-    this._cOnLoad()
-    this._tOnLoad()
   },
 
   destroyed() {},
@@ -242,29 +257,14 @@ export default {
       'updatePoster',
       'getSmartScreenPosterTagAndCateList',
     ]),
-    _controlCatePicker() {
-      this.showCatePicker = !this.showCatePicker
-    },
     _controlTagPicker() {
       this.showTagPicker = !this.showTagPicker
     },
+    _controlCatePicker() {
+      this.showCatePicker = !this.showCatePicker
+    },
     _pickPoster(data) {
       this.formData.ad_img = data[0].url
-    },
-    _cOnLoad() {
-      const { id } = this.$route.params
-      this.getSmartScreenPosterTagAndCateList({
-        page: this.cPage,
-        data_type: 0,
-      }).then(res => {
-        this.loading = false
-        if (res.lists.length < 10) {
-          this.cFinished = true
-        } else {
-          this.cPage += 1
-        }
-        this.cList.push(...res.lists)
-      })
     },
     _tOnLoad() {
       const { id } = this.$route.params
@@ -281,6 +281,21 @@ export default {
         this.tList.push(...res.lists)
       })
     },
+    _cOnLoad() {
+      const { id } = this.$route.params
+      this.getSmartScreenPosterTagAndCateList({
+        page: this.cPage,
+        data_type: 0,
+      }).then(res => {
+        this.loading = false
+        if (res.lists.length < 10) {
+          this.cFinished = true
+        } else {
+          this.cPage += 1
+        }
+        this.cList.push(...res.lists)
+      })
+    },
     _getPosterDetail(id) {
       this.getPosterDetail(id).then(res => {
         const keys = Object.keys(this.formData)
@@ -291,6 +306,9 @@ export default {
         this.posterList = [{ url: res.ad_img }]
         this.formData.width = '0.32'
         this.keywords = res.keywords.split(',')
+        this.tagName = res.label_names
+        this.cateName = res.cate_name
+        this.radioImg = res.goods_info.goods_icon
       })
     },
     _pickCommodity(id, type) {
@@ -298,9 +316,9 @@ export default {
       this.formData.goods_type = type
     },
 
-    _tagLabel(id) {
+    _tagLabel(id, index) {
       const item = this.tList.find(item => item.cat_id === id)
-      return item && item.name
+      return (item && item.name) || this.tagName[index]
     },
     // 屏幕选择
     _cToggle(index) {

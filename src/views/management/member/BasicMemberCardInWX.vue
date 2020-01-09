@@ -262,15 +262,17 @@ export default {
 
       this.formData.wx_image_url = []
       this.formData.wx_text = []
-      const imageText = res.card.wx_param.text_image_list.map(item => {
-        this.formData.wx_image_url.push(item.image_url)
-        this.formData.wx_text.push(item.text)
-        return {
-          wx_image_url: [{ url: item.image_url }],
-          wx_text: item.text,
-        }
-      })
-      this.imageText = imageText
+      if (res.card.wx_param.text_image_list) {
+        const imageText = res.card.wx_param.text_image_list.map(item => {
+          this.formData.wx_image_url.push(item.image_url)
+          this.formData.wx_text.push(item.text)
+          return {
+            wx_image_url: [{ url: item.image_url }],
+            wx_text: item.text,
+          }
+        })
+        this.imageText = imageText
+      }
       this.colorList = res.color_list
       // 兼容数据
       this.formData.wx_business_service = res.card.wx_param.wx_business_service || []

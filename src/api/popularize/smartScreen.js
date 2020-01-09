@@ -2,9 +2,51 @@ import axios from 'axios'
 
 export default {
   // 获取智能屏设备列表
-  getSmartScreenList: () =>
+  getSmartScreenList: id =>
     axios.get('/appapi.php?c=Merchantimax&a=setting', {
       params: {
+        store_id: id,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // 获取智能屏布局
+  getSmartScreenLayout: imax =>
+    axios.get('/appapi.php?c=Merchantimax&a=getImaxLayout', {
+      params: {
+        imax_id: imax,
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // 创建智能屏布局轮播图
+  createCarousel: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=createImaxSite', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 修改智能屏布局轮播图
+  updateCarousel: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=updateImaxSite', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 删除智能屏布局轮播图
+  deleteCarousel: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=deleteImaxSite', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 智能屏布局菜单选择
+  selectSmartScreenMenu: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=setImaxMenuIsSelected', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取智能屏对话记录
+  getSmartScreenDialogueRecord: payload =>
+    axios.get('/appapi.php?c=Merchantapp&a=getTalkLogList', {
+      params: {
+        ...payload,
+        size: 10,
         ticket: localStorage.getItem('ticket'),
       },
     }),

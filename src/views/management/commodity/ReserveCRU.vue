@@ -103,6 +103,14 @@
           ></van-field>
         </ValidationProvider>
         <van-field
+          @click-left-icon.stop="$toast('将商品加入店铺首页的推荐列表')"
+          input-align="right"
+          label="本店推荐"
+          left-icon="question-o"
+        >
+          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.recommend" />
+        </van-field>
+        <van-field
           @click-left-icon="
             $toast(
               '若开启可以选择多个连续的预约时间，且预约金额叠加，若选择两个连续的时间，预约订单最后的总价为设定全价的两倍，以此类推'
@@ -374,6 +382,7 @@ export default {
         office_stop_time: '',
         appoint_status: '0',
         appoint_pic_content: '',
+        recommend: '0',
       },
       cache: [],
       storeList: [],

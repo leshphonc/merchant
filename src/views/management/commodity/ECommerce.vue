@@ -18,9 +18,10 @@
               <van-tag plain type="danger">{{ item.freight_type === '1' ? '运费单独计算' : '运费最大值' }}</van-tag>
             </div>
             <div slot="footer" v-if="$route.fullPath === '/commodity'">
-              <van-button @click="_deleteCommodity(item.store_id, item.goods_id)" size="small" type="danger"
+              <!-- <van-button @click="_deleteCommodity(item.store_id, item.goods_id)" size="small" type="danger"
                 >删除</van-button
-              >
+              > -->
+              <van-button :to="`/commodity/serviceSalesRecord/${item.appoint_id}`" size="small">销售记录</van-button>
               <van-button :to="`/commodity/eCommercePreferential/${item.goods_id}`" size="small">优惠</van-button>
               <van-button :to="`/commodity/eCommerceCRU/${item.goods_id}`" size="small">编辑</van-button>
             </div>

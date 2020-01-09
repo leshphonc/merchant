@@ -77,6 +77,17 @@
           </van-col>
         </van-row>
       </template>
+      <template v-else-if="order.group_pass && order.status === 0">
+        <van-row>
+          <van-col span="16">核销码：{{ order.group_pass }}</van-col>
+          <van-col span="8">
+            <div v-show="item.status === '1'">已验证</div>
+            <van-button @click="_scanCodeWriteOff" size="small" type="primary" v-show="item.status !== '1'"
+              >验证</van-button
+            >
+          </van-col>
+        </van-row>
+      </template>
     </van-panel>
     <template v-if="order.store_id && distribution.adress">
       <div class="white-space"></div>

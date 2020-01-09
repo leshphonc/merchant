@@ -15,6 +15,11 @@ export default {
       component: () => import('@/views/popularize/smartScreen/SmartScreenList'),
     },
     {
+      // 智能屏布局内容
+      path: 'smartScreenLayout/:imax',
+      component: () => import('@/views/popularize/smartScreen/SmartScreenLayout'),
+    },
+    {
       // 智能屏对话记录
       path: 'smartScreenChatRecord',
       component: () => import('@/views/popularize/smartScreen/SmartScreenChatRecord'),

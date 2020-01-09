@@ -11,6 +11,14 @@
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
+        <van-field
+          @click-left-icon.stop="$toast('将商品加入店铺首页的推荐列表')"
+          input-align="right"
+          label="本店推荐"
+          left-icon="question-o"
+        >
+          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.recommend" />
+        </van-field>
         <ValidationProvider name="套餐名称" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -205,6 +213,7 @@ export default {
         total_num: '',
         person_num: '',
         project_data: [],
+        recommend: '0',
       },
       loading: false,
       pic: [],

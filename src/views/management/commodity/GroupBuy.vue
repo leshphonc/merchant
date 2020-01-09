@@ -160,7 +160,7 @@ export default {
         this.$refs.observer.reset()
       })
     },
-    // 刷新团购商品列表
+    // 刷新商品列表
     _onRefresh() {
       this.getGroupBuyList().then(res => {
         this.page = 2
@@ -173,7 +173,7 @@ export default {
         }
       })
     },
-    // 异步更新团购商品数据
+    // 异步更新商品数据
     _onLoad() {
       this.getGroupBuyList(this.page).then(res => {
         this.loading = false
@@ -185,7 +185,7 @@ export default {
         this.list.push(...res.lists)
       })
     },
-    // 删除团购产品
+    // 删除产品
     _deleteCommodity(store_id, group_id) {
       this.$dialog
         .confirm({

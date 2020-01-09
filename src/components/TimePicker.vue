@@ -67,6 +67,7 @@
       <van-datetime-picker
         :formatter="$timeFormatter"
         :max-date="endTime"
+        :swipe-duration="300"
         :type="type"
         :value="startTime"
         @cancel="_controlStartTimePicker"
@@ -74,16 +75,11 @@
       />
     </van-popup>
     <!-- time类型 -->
-    <van-popup
-      :close-on-click-overlay="false"
-      position="bottom"
-      safe-area-inset-bottom
-      v-else
-      v-model="showStartTimePicker"
-    >
+    <van-popup position="bottom" safe-area-inset-bottom v-else v-model="showStartTimePicker">
       <van-datetime-picker
         :max-hour="maxHour"
         :max-minute="maxMinute"
+        :swipe-duration="300"
         :type="type"
         :value="startTime"
         @cancel="_controlStartTimePicker"
@@ -97,6 +93,7 @@
       <van-datetime-picker
         :formatter="$timeFormatter"
         :min-date="startTime"
+        :swipe-duration="300"
         :type="type"
         :value="endTime"
         @cancel="_controlEndTimePicker"
@@ -104,16 +101,11 @@
       />
     </van-popup>
     <!-- time类型 -->
-    <van-popup
-      :close-on-click-overlay="false"
-      position="bottom"
-      safe-area-inset-bottom
-      v-else
-      v-model="showEndTimePicker"
-    >
+    <van-popup position="bottom" safe-area-inset-bottom v-else v-model="showEndTimePicker">
       <van-datetime-picker
         :min-hour="minHour"
         :min-minute="minMinute"
+        :swipe-duration="300"
         :type="type"
         :value="endTime"
         @cancel="_controlEndTimePicker"
@@ -253,7 +245,7 @@ export default {
 
   created() {
     if (this.type === 'time') {
-      if (this.data[0] !== '0' && this.data[1] !== '0') {
+      if (this.data && this.data[0] !== '' && this.data[0] !== '0' && this.data[1] !== '' && this.data[1] !== '0') {
         this.startTime = this.data[0]
         this.endTime = this.data[1]
       } else {

@@ -1,6 +1,12 @@
 <template>
   <div>
-    <van-cell @click="_controlCommodityPopup" arrow-direction="down" is-link title="推广商品"></van-cell>
+    <van-cell
+      @click="_controlCommodityPopup"
+      arrow-direction="down"
+      value="点击选择"
+      is-link
+      title="推广商品"
+    ></van-cell>
     <van-cell :icon="_commodityImg" :title="_commodityLabel" :value="_commodityType" center v-if="result_id"></van-cell>
     <!-- 弹出层 -->
     <!-- 绑定产品列表 -->
@@ -143,6 +149,10 @@ export default {
       required: true,
       type: String,
     },
+    cacheImg: {
+      required: true,
+      type: String,
+    },
   },
 
   data() {
@@ -233,7 +243,7 @@ export default {
           img = p && p.pic
           break
       }
-      return img
+      return img || this.cacheImg
     },
     _commodityType() {
       let type

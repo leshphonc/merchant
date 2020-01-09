@@ -203,7 +203,6 @@ export default {
         rollback_time: '',
         leveloff: [],
         store_category: [],
-        store_id: '',
       },
       showDiscountTypePicker: false,
       showStockTypePicker: false,
@@ -312,14 +311,15 @@ export default {
         })
         res.store_shop.background && (this.picList = [{ url: res.store_shop.background }])
         this.formData.store_category = res.relation_array
-        res.store_shop.leveloff.forEach(item => {
-          this.levelDom.find(level => {
-            if (level.id === item.id) {
-              level.type = item.type + ''
-              level.vv = item.vv + ''
-            }
+        res.store_shop.leveloff &&
+          res.store_shop.leveloff.forEach(item => {
+            this.levelDom.find(level => {
+              if (level.id === item.id) {
+                level.type = item.type + ''
+                level.vv = item.vv + ''
+              }
+            })
           })
-        })
         const tree = res.category_list.map(item => {
           let children = []
           if (item.son_list) {
@@ -425,6 +425,7 @@ export default {
         this.loading = true
         const params = JSON.parse(JSON.stringify(this.formData))
         params.leveloff = this.levelDom
+        params.store_id = this.$route.params.id
         this.updateStoreFrontBusinessDetail(params)
           .then(() => {
             this.$toast.success({

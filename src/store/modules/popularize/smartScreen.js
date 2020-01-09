@@ -9,9 +9,51 @@ const getters = {}
 // actions
 const actions = {
   // 获取智能屏设备列表
-  getSmartScreenList() {
+  getSmartScreenList(context, id) {
     return new Promise(async (resolve, reject) => {
-      const data = await smartScreenAPI.getSmartScreenList()
+      const data = await smartScreenAPI.getSmartScreenList(id)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取智能屏布局
+  getSmartScreenLayout(context, imax) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getSmartScreenLayout(imax)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 创建智能屏布局轮播图
+  createCarousel(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.createCarousel(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 修改智能屏布局轮播图
+  updateCarousel(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.updateCarousel(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 删除智能屏布局轮播图
+  deleteCarousel(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.deleteCarousel(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 智能屏布局菜单选择
+  selectSmartScreenMenu(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.selectSmartScreenMenu(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 获取智能屏对话记录
+  getSmartScreenDialogueRecord(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getSmartScreenDialogueRecord(payload)
       data ? resolve(data) : reject()
     })
   },

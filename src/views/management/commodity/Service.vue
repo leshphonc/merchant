@@ -33,7 +33,7 @@
               <div class="white-space"></div>
             </div>
             <div slot="footer" v-if="$route.fullPath === '/commodity'">
-              <van-button @click="_deleteCommodity(item.appoint_id)" size="small" type="danger">删除</van-button>
+              <!-- <van-button @click="_deleteCommodity(item.appoint_id)" size="small" type="danger">删除</van-button> -->
               <van-button :to="`/commodity/serviceSalesRecord/${item.appoint_id}`" size="small">销售记录</van-button>
               <van-button :to="`/commodity/servicePreferential/${item.appoint_id}`" size="small">优惠</van-button>
               <van-button :to="`/commodity/serviceCRU/${item.appoint_id}`" size="small">编辑</van-button>

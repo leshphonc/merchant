@@ -170,7 +170,7 @@
           <van-field
             :error-message="errors[0]"
             autosize
-            label="简短描述"
+            label="使用说明"
             maxlength="50"
             placeholder="微信卡券使用须知"
             required

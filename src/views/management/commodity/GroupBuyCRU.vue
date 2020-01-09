@@ -40,6 +40,14 @@
         <van-field input-align="right" label="支持退款">
           <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.no_refund" />
         </van-field>
+        <van-field
+          @click-left-icon.stop="$toast('将商品加入店铺首页的推荐列表')"
+          input-align="right"
+          label="本店推荐"
+          left-icon="question-o"
+        >
+          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.recommend" />
+        </van-field>
         <ValidationProvider name="原价" rules="required|decimal-max2" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -375,6 +383,7 @@ export default {
         pin_effective_time: '',
         success_num: 1,
         status: '',
+        recommend: '0',
       },
       groupBuyColumns: [
         {

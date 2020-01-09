@@ -48,14 +48,16 @@
                   <div class="white-space"></div>
                 </div>
                 <div slot="footer" v-if="item.is_shelves === '1'">
-                  <van-button disabled size="small" v-if="item.audit === '2'">审核中</van-button>
-                  <van-button @click="_changeRelease(item.id)" size="small" type="danger" v-else>取消发布</van-button>
-                  <van-button @click="_openPopup(item)" size="small">选择推广屏幕</van-button>
+                  <!-- <van-button disabled size="small" v-if="item.audit === '2'">同城审核中</van-button> -->
+                  <van-button @click="_changeRelease(item.id)" size="small" type="danger" v-if="item.audit !== '2'"
+                    >取消发布</van-button
+                  >
+                  <van-button @click="_openPopup(item)" size="small">智能屏推广</van-button>
                 </div>
                 <div slot="footer" v-else-if="item.is_shelves === '2'">
                   <van-button @click="_changeStatus(item.id)" size="small" type="danger">禁用</van-button>
                   <van-button @click="_needCheckStore(item)" size="small" type="primary">同城发布</van-button>
-                  <van-button @click="_openPopup(item)" size="small">选择推广屏幕</van-button>
+                  <van-button @click="_openPopup(item)" size="small">智能屏推广</van-button>
                   <van-button :to="`/smartScreen/smartScreenPosterCRU/${item.id}`" size="small">编辑</van-button>
                 </div>
               </van-panel>
@@ -111,6 +113,7 @@
     <van-popup position="bottom" safe-area-inset-bottom v-model="showPopup">
       <van-collapse v-model="activeNames">
         <van-collapse-item name="1" title="推广屏幕">
+          <van-icon @click.stop="$toast('播放此条海报的屏幕')" class="question-icon" name="question-o" slot="icon" />
           <van-checkbox-group v-model="formData.screen">
             <van-cell-group>
               <van-cell
@@ -127,6 +130,7 @@
           </van-checkbox-group>
         </van-collapse-item>
         <van-collapse-item name="2" title="推广角色">
+          <van-icon @click.stop="$toast('此条海报的推广角色')" class="question-icon" name="question-o" slot="icon" />
           <van-checkbox-group v-model="formData.role">
             <van-cell-group>
               <van-cell
@@ -417,18 +421,18 @@ export default {
     _currentStatus(item) {
       if (item.is_shelves === '2') {
         if (item.audit === '9') {
-          return '未上架'
+          return '未上架同城'
         } else if (item.audit === '3') {
-          return '审核失败'
+          return '同城审核失败'
         } else if (item.audit === '2') {
-          return '未发布'
+          return '未发布同城'
         } else {
-          return '未上架'
+          return '未上架同城'
         }
       } else if (item.audit === '1') {
-        return '审核成功'
+        return '已发布同城'
       } else if (item.audit === '2') {
-        return '审核中'
+        return '同城审核中'
       }
     },
     _currentDesc(item) {
@@ -555,5 +559,11 @@ export default {
   /deep/.van-collapse-item__content {
     padding: 0;
   }
+}
+
+.question-icon {
+  height: 24px;
+  line-height: 24px;
+  margin-right: 6px;
 }
 </style>
