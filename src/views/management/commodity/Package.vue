@@ -5,6 +5,7 @@
         <van-card
           :key="item.meal_id"
           :num="item.total_num"
+          :origin-price="item.old_price"
           :price="item.price"
           :thumb="item.list_pic"
           :title="item.meal_name"

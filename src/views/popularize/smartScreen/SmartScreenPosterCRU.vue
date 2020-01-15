@@ -54,7 +54,7 @@
             :error-message="errors[0]"
             :value="formData.label_ids.length ? '1' : ''"
             @click="_controlTagPicker"
-            @click-left-icon.stop="$toast('该标签用于本店与同城推广')"
+            @click-left-icon.stop="$toast('用于店内与同城推广')"
             error-message-align="right"
             input-align="right"
             is-link
@@ -74,7 +74,7 @@
             :error-message="errors[0]"
             :value="cateLabel"
             @click="_controlCatePicker"
-            @click-left-icon.stop="$toast('该分类用于同城推广')"
+            @click-left-icon.stop="$toast('用于店内与同城推广')"
             error-message-align="right"
             input-align="right"
             is-link
@@ -85,9 +85,9 @@
             required
           />
         </ValidationProvider>
-        <van-cell title="选择商品">
+        <!-- <van-cell title="选择商品">
           <van-switch active-value="1" inactive-value="0" v-model="formData.data_type"></van-switch>
-        </van-cell>
+        </van-cell>-->
       </van-cell-group>
       <van-cell-group title="选择推广内容">
         <van-tabs :lazy-render="false" v-model="formData.data_type">
@@ -122,6 +122,38 @@
                 v-model.trim="formData.url"
               />
             </ValidationProvider>
+            <ValidationProvider
+              name="商品原价"
+              rules="required|decimal-max2"
+              slim
+              v-if="formData.data_type === 0"
+              v-slot="{ errors }"
+            >
+              <van-field
+                :error-message="errors[0]"
+                label="商品原价"
+                placeholder="请确认商品原价，避免虚假宣传"
+                required
+                type="number"
+                v-model.trim="formData.old_price"
+              />
+            </ValidationProvider>
+            <ValidationProvider
+              name="商品现价"
+              rules="required|decimal-max2"
+              slim
+              v-if="formData.data_type === 0"
+              v-slot="{ errors }"
+            >
+              <van-field
+                :error-message="errors[0]"
+                label="商品现价"
+                placeholder="请确认商品现价，避免虚假宣传"
+                required
+                type="number"
+                v-model.trim="formData.price"
+              />
+            </ValidationProvider>
             <img-cropper
               :confirm="_pickPoster"
               :list="posterList"
@@ -133,8 +165,8 @@
           </van-tab>
           <van-tab title="商品">
             <commodity-radio
-              :id="formData.goods_id"
               :cacheImg="radioImg"
+              :id="formData.goods_id"
               :pickCommodity="_pickCommodity"
               :type="formData.goods_type"
               v-show="formData.data_type === 1"
@@ -204,6 +236,8 @@ export default {
         goods_type: '',
         cate_id: '',
         label_ids: [],
+        price: '',
+        old_price: '',
       },
       keywords: [],
       posterList: [],

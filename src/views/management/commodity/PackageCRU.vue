@@ -11,14 +11,6 @@
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
-        <van-field
-          @click-left-icon.stop="$toast('将商品加入店铺首页的推荐列表')"
-          input-align="right"
-          label="本店推荐"
-          left-icon="question-o"
-        >
-          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.recommend" />
-        </van-field>
         <ValidationProvider name="套餐名称" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -28,11 +20,21 @@
             v-model.trim="formData.name"
           ></van-field>
         </ValidationProvider>
-        <ValidationProvider name="价格" rules="required|decimal-max2" slim v-slot="{ errors }">
+        <ValidationProvider name="原价" rules="required|decimal-max2" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
-            label="价格"
-            placeholder="套餐价格"
+            label="原价"
+            placeholder="套餐原价"
+            required
+            type="number"
+            v-model.trim="formData.old_price"
+          ></van-field>
+        </ValidationProvider>
+        <ValidationProvider name="现价" rules="required|decimal-max2" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="现价"
+            placeholder="套餐现价"
             required
             type="number"
             v-model.trim="formData.price"
@@ -208,12 +210,12 @@ export default {
       formData: {
         name: '',
         price: '',
+        old_price: '',
         day_num: '',
         pic: '',
         total_num: '',
         person_num: '',
         project_data: [],
-        recommend: '0',
       },
       loading: false,
       pic: [],

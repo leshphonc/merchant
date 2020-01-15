@@ -83,7 +83,6 @@
         </ValidationProvider>
         <ValidationProvider name="店铺业务" rules="required" slim v-slot="{ errors }">
           <van-field
-            :disabled="$route.params.id"
             :error-message="errors[0]"
             :value="businessLabel"
             @click="_controlBusinessPicker"
@@ -357,7 +356,7 @@ export default {
       // 锁
       loading: false,
       // 后续需要后台更改的字段
-      businessValue: 'have_service',
+      businessValue: '',
       defaultArea: null,
     }
   },
@@ -444,7 +443,7 @@ export default {
     // 店铺业务开关
     _controlBusinessPicker() {
       const { id } = this.$route.params
-      if (id) return
+      if (id && this.businessLabel) return
       this.showBusinessPicker = !this.showBusinessPicker
     },
     // 店铺分类开关
@@ -496,7 +495,8 @@ export default {
     // 店铺业务选择
     _pickBusiness(data) {
       this.businessValue = data.value
-      this._controlBusinessPicker()
+      // 特殊处理。。
+      this.showBusinessPicker = !this.showBusinessPicker
     },
     // 店铺分类选择
     _pickStoreFrontCategory(data) {
@@ -593,15 +593,15 @@ export default {
           },
         ]
 
-        //  { label: '标准', value: 'have_service' },
+        // { label: '标准', value: 'have_service' },
         // { label: '外卖', value: 'have_peisong' },
         // { label: '餐饮', value: 'have_meal' },
         // { label: '酒店', value: 'have_hotel' },
         // { label: '汽配', value: 'have_auto_parts' },
 
-        if (res.have_service === '1') {
+        if (res.have_service === '1' && res.have_mall === '1' && res.have_shop === '1') {
           this.businessValue = 'have_service'
-        } else if (res.have_peisong === '1') {
+        } else if (res.have_peisong === '1' && res.have_shop === '1') {
           this.businessValue = 'have_peisong'
         } else if (res.have_meal === '1') {
           this.businessValue = 'have_meal'

@@ -290,6 +290,7 @@ export default {
     _pickColor(name) {
       this.formData.wx_color = name
     },
+    // 因为使用imageText渲染列表，选择图片后自动会覆盖指针数据，所以此方法不需要使用
     _pickPic() {},
     _addImageText() {
       this.imageText.push({ wx_image_url: [], wx_text: '' })

@@ -32,6 +32,10 @@
             <div>预约结束: {{ $moment(item.start_time * 1000).format('YYYY-MM-DD HH:mm') }}</div>
           </div>
           <div slot="footer">
+            <van-button @click="_recommend(item.appoint_id)" v-if="item.is_recommend === '0'" size="mini"
+              >推荐</van-button
+            >
+            <van-button @click="_recommend(item.appoint_id)" v-else size="mini">取消推荐</van-button>
             <van-button @click="_unbind(item.id)" size="mini" type="danger">解绑</van-button>
           </div>
         </van-card>
@@ -77,7 +81,7 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('storeFront', ['getStoreFrontBindServiceList', 'unBindService']),
+    ...mapActions('storeFront', ['getStoreFrontBindServiceList', 'unBindService', 'addServiceToRecommend']),
     // 刷新服务商品列表
     _onRefresh() {
       const { id } = this.$route.params
@@ -110,6 +114,30 @@ export default {
         }
         this.list.push(...res)
       })
+    },
+    _recommend(gid) {
+      if (this.loading) return
+      this.loading = true
+      const { id } = this.$route.params
+      this.addServiceToRecommend({
+        store_id: id,
+        appoint_id: gid,
+      })
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              // 解锁
+              this._onRefresh()
+              this.loading = false
+            },
+          })
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
     _unbind(gid) {
       if (this.loading) return

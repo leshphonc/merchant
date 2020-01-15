@@ -904,10 +904,10 @@
   resolved "https://registry.npm.taobao.org/@types/q/download/@types/q-1.5.2.tgz?cache=0&sync_timestamp=1567534086032&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fq%2Fdownload%2F%40types%2Fq-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
   integrity sha1-aQoUdbhPKohP0HzXl8APXzE1bqg=
 
-"@vant/icons@1.1.15":
-  version "1.1.15"
-  resolved "https://registry.npm.taobao.org/@vant/icons/download/@vant/icons-1.1.15.tgz#53c51ace21e9992bfeeb2e1ad9094fbf6506d116"
-  integrity sha1-U8UaziHpmSv+6y4a2QlPv2UG0RY=
+"@vant/icons@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npm.taobao.org/@vant/icons/download/@vant/icons-1.2.0.tgz#ed31f367185704fa2ef9b437a0c8d3ee5e4f5f58"
+  integrity sha1-7THzZxhXBPou+bQ3oMjT7l5PX1g=
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.0.0":
   version "1.0.0"
@@ -1599,13 +1599,12 @@ aws4@^1.8.0:
   resolved "https://registry.npm.taobao.org/aws4/download/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
   integrity sha1-8OAD2cqef1nHpQiUXXsu+aBKVC8=
 
-axios@^0.19.0:
-  version "0.19.0"
-  resolved "https://registry.npm.taobao.org/axios/download/axios-0.19.0.tgz#8e09bff3d9122e133f7b8101c8fbdd00ed3d2ab8"
-  integrity sha1-jgm/89kSLhM/e4EByPvdAO09Krg=
+axios@^0.19.1:
+  version "0.19.1"
+  resolved "https://registry.npm.taobao.org/axios/download/axios-0.19.1.tgz#8a6a04eed23dfe72747e1dd43c604b8f1677b5aa"
+  integrity sha1-imoE7tI9/nJ0fh3UPGBLjxZ3tao=
   dependencies:
     follow-redirects "1.5.10"
-    is-buffer "^2.0.2"
 
 babel-eslint@^10.0.1:
   version "10.0.3"
@@ -2489,10 +2488,15 @@ core-js-compat@^3.4.3, core-js-compat@^3.4.7:
     browserslist "^4.8.2"
     semver "^6.3.0"
 
-core-js@^3.4.3, core-js@^3.5.0:
+core-js@^3.4.3:
   version "3.5.0"
   resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.5.0.tgz?cache=0&sync_timestamp=1576112446173&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-3.5.0.tgz#66df8e49be4bd775e6f952a9d083b756ad41c1ed"
   integrity sha1-Zt+OSb5L13Xm+VKp0IO3Vq1Bwe0=
+
+core-js@^3.6.4:
+  version "3.6.4"
+  resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.6.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-3.6.4.tgz#440a83536b458114b9cb2ac1580ba377dc470647"
+  integrity sha1-RAqDU2tFgRS5yyrBWAujd9xHBkc=
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -3088,12 +3092,12 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-echarts@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.npm.taobao.org/echarts/download/echarts-4.5.0.tgz#2111960645a345eb819ddac4792a2c065bdff162"
-  integrity sha1-IRGWBkWjReuBndrEeSosBlvf8WI=
+echarts@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.npm.taobao.org/echarts/download/echarts-4.6.0.tgz#b5a47a1046cec93ceeef954f9ee54751340558ec"
+  integrity sha1-taR6EEbOyTzu75VPnuVHUTQFWOw=
   dependencies:
-    zrender "4.1.2"
+    zrender "4.2.0"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -4533,11 +4537,6 @@ is-buffer@^1.1.5:
   version "1.1.6"
   resolved "https://registry.npm.taobao.org/is-buffer/download/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
   integrity sha1-76ouqdqg16suoTqXsritUf776L4=
-
-is-buffer@^2.0.2:
-  version "2.0.4"
-  resolved "https://registry.npm.taobao.org/is-buffer/download/is-buffer-2.0.4.tgz#3e572f23c8411a5cfd9557c849e3665e0b290623"
-  integrity sha1-PlcvI8hBGlz9lVfISeNmXgspBiM=
 
 is-callable@^1.1.4:
   version "1.1.4"
@@ -8242,13 +8241,13 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-vant@^2.2.16:
-  version "2.2.16"
-  resolved "https://registry.npm.taobao.org/vant/download/vant-2.2.16.tgz#0d03b4715d291ec3250850aed4bf5e5c1546cdea"
-  integrity sha1-DQO0cV0pHsMlCFCu1L9eXBVGzeo=
+vant@^2.4.2-beta.2:
+  version "2.4.2-beta.2"
+  resolved "https://registry.npm.taobao.org/vant/download/vant-2.4.2-beta.2.tgz?cache=0&sync_timestamp=1578684306789&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvant%2Fdownload%2Fvant-2.4.2-beta.2.tgz#484ea2c1b7f8e22cfe4b6448ed5165648cfc8df0"
+  integrity sha1-SE6iwbf44iz+S2RI7VFlZIz8jfA=
   dependencies:
     "@babel/runtime" "7.x"
-    "@vant/icons" "1.1.15"
+    "@vant/icons" "1.2.0"
     "@vue/babel-helper-vue-jsx-merge-props" "^1.0.0"
     vue-lazyload "1.2.3"
 
@@ -8257,10 +8256,10 @@ vary@~1.1.2:
   resolved "https://registry.npm.taobao.org/vary/download/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vee-validate@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.npm.taobao.org/vee-validate/download/vee-validate-3.2.0.tgz#0e8b2a4307339b05df01db4d2c91ab6ed8a3b90d"
-  integrity sha1-DosqQwczmwXfAdtNLJGrbtijuQ0=
+vee-validate@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.npm.taobao.org/vee-validate/download/vee-validate-3.2.1.tgz#053ab09fe6676a00f8c1a0c428d88c0acccde7ec"
+  integrity sha1-BTqwn+ZnagD4waDEKNiMCszN5+w=
 
 vendors@^1.0.0:
   version "1.0.3"
@@ -8717,7 +8716,7 @@ yorkie@^2.0.0:
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
 
-zrender@4.1.2:
-  version "4.1.2"
-  resolved "https://registry.npm.taobao.org/zrender/download/zrender-4.1.2.tgz?cache=0&sync_timestamp=1573136590999&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fzrender%2Fdownload%2Fzrender-4.1.2.tgz#8368deff24c7e237cbcbd3a2ff93017905ae43f7"
-  integrity sha1-g2je/yTH4jfLy9Oi/5MBeQWuQ/c=
+zrender@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npm.taobao.org/zrender/download/zrender-4.2.0.tgz#d001302e155f28de1f9fc7fcd5c254bad28471cf"
+  integrity sha1-0AEwLhVfKN4fn8f81cJUutKEcc8=

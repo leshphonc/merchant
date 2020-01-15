@@ -26,7 +26,7 @@ export default {
     }),
   // 读取平台团购商品分类
   getPlatformGroupBuyCategoryList: () =>
-    axios.get('/appapi.php?c=SpaceMerchant&a=goods_category', {
+    axios.get('/appapi.php?c=SpaceMerchant&a=getGroupCategoryList', {
       params: {
         ticket: localStorage.getItem('ticket'),
       },

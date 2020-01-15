@@ -11,9 +11,7 @@
           placeholder="点击配置"
           readonly
         >
-          <div slot="left-icon">
-            <van-image :src="item.pic" />
-          </div>
+          <van-image :src="item.pic" slot="left-icon" />
         </van-field>
         <template slot="right">
           <van-button @click="_delete(item.id)" square text="删除" type="danger" />
@@ -35,10 +33,27 @@
         </div>
       </van-field>
     </van-cell-group>
+    <van-cell-group title="菜单选中抽奖后生效">
+      <van-field
+        :value="lotteryLabel"
+        @click="_controlLotteryPicker()"
+        input-align="right"
+        is-link
+        label="抽奖活动"
+        placeholder="点击配置"
+        readonly
+      ></van-field>
+    </van-cell-group>
     <!-- 弹出层 -->
     <!-- 轮播图配置 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showCarouselPopup">
-      <img-cropper :confirm="_pickPic" :list="picList" title="轮播海报图"></img-cropper>
+      <img-cropper
+        :compression="1"
+        :confirm="_pickPic"
+        :list="picList"
+        :ratio="[675, 252]"
+        title="轮播海报图"
+      ></img-cropper>
       <van-field label="跳转地址" placeholder="点击海报跳转的地址" v-model="formData.pic_url"></van-field>
       <div class="btn-group">
         <van-button @click="_controlCarouselPopup()">取消</van-button>
@@ -61,14 +76,26 @@
         </van-cell-group>
       </van-checkbox-group>
       <div class="btn-group">
-        <van-button style="width: 100%;" @click="_controlMenuPicker()">关闭</van-button>
+        <van-button @click="_controlMenuPicker()" style="width: 100%;">关闭</van-button>
       </div>
+    </van-popup>
+    <!-- 抽奖地址选择 -->
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showLotteryPicker">
+      <van-picker
+        :columns="lotteryColumns"
+        :default-index="lotteryIndex"
+        @cancel="_controlLotteryPicker"
+        @confirm="_pickLottery"
+        show-toolbar
+        value-key="label"
+      ></van-picker>
     </van-popup>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import Utils from '@/utils'
 import ImgCropper from '@/components/ImgCropper'
 export default {
   name: 'smartScreenLayout',
@@ -95,10 +122,34 @@ export default {
       showMenuPicker: false,
       swipeList: [],
       loading: false,
+      showLotteryPicker: false,
+      lotteryColumns: [],
+      menuID: '',
     }
   },
 
-  computed: {},
+  computed: {
+    lotteryIndex() {
+      const menu = this.menuList.find(item => item.site_name === '抽奖')
+      if (menu) {
+        const id = Utils.getUrlParam('lottery_id', menu.pic_url)
+        const index = this.lotteryColumns.findIndex(item => item.value === id)
+        return index
+      } else {
+        return 0
+      }
+    },
+    lotteryLabel() {
+      const menu = this.menuList.find(item => item.site_name === '抽奖')
+      if (menu) {
+        const id = Utils.getUrlParam('lottery_id', menu.pic_url)
+        const item = this.lotteryColumns.find(item => item.value === id)
+        return item && item.label
+      } else {
+        return ''
+      }
+    },
+  },
 
   watch: {},
 
@@ -106,6 +157,14 @@ export default {
 
   mounted() {
     this._getSmartScreenLayout()
+    this.getLotteryList().then(res => {
+      this.lotteryColumns = res.map(item => {
+        return {
+          label: item.title,
+          value: item.id,
+        }
+      })
+    })
   },
 
   destroyed() {},
@@ -117,12 +176,14 @@ export default {
       'updateCarousel',
       'deleteCarousel',
       'selectSmartScreenMenu',
+      'updateMenuLotteryUrl',
+      'getLotteryList',
     ]),
     _controlCarouselPopup(index) {
       if (index) {
         this.picList = [{ url: this.swipeList[index].pic }]
         this.formData.id = this.swipeList[index].id
-        this.formData.pic = this.swipeList[index].pic
+        this.formData.pic = [this.swipeList[index].pic]
         this.formData.pic_url = this.swipeList[index].pic_url
       } else {
         this.picList = []
@@ -135,8 +196,38 @@ export default {
     _controlMenuPicker() {
       this.showMenuPicker = !this.showMenuPicker
     },
+    _controlLotteryPicker() {
+      this.showLotteryPicker = !this.showLotteryPicker
+    },
     _pickPic(data) {
       this.formData.pic = data.map(item => item.url)
+    },
+    _pickLottery(item) {
+      if (this.loading) return
+      this.loading = true
+      const { imax } = this.$route.params
+      const menu = this.menuList.find(item => item.site_name === '抽奖')
+      this.updateMenuLotteryUrl({
+        id: menu.id,
+        imax_id: imax,
+        lottery_id: item.value,
+      })
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1500,
+            onClose: () => {
+              // 解锁
+              this.loading = false
+              this._controlLotteryPicker()
+              this._getSmartScreenLayout()
+            },
+          })
+        })
+        .catch(() => {
+          this.loading = true
+        })
     },
     _toggle(index, id) {
       if (this.loading) return
@@ -153,6 +244,7 @@ export default {
         return
       }
       if (this.loading) return
+      this.loading = true
       const { imax } = this.$route.params
       this.loading = true
       this.deleteCarousel({
@@ -188,6 +280,7 @@ export default {
 
         // 菜单
         this.menuList = res[1].itemList
+        this.menuID = res[1].site_id
         let m = []
         res[1].itemList.forEach(item => {
           if (item.is_selected === '1') {
@@ -271,8 +364,8 @@ export default {
 
 .van-field__left-icon {
   .van-image {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 100%;
   }
 }
 

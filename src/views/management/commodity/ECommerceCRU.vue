@@ -68,14 +68,6 @@
           />
         </ValidationProvider>
         <van-field
-          @click-left-icon.stop="$toast('将商品加入店铺首页的推荐列表')"
-          input-align="right"
-          label="本店推荐"
-          left-icon="question-o"
-        >
-          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.recommend" />
-        </van-field>
-        <van-field
           :value="statusLabel"
           @click="_controlStatusPicker"
           error-message-align="right"
@@ -271,7 +263,6 @@ export default {
         cat_fid: '',
         cat_id: '',
         des: '',
-        recommend: '0',
       },
       statusColumns: [
         { label: '在售', value: '1' },

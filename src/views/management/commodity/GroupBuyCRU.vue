@@ -37,16 +37,16 @@
             v-model.trim="formData.intro"
           />
         </ValidationProvider>
-        <van-field input-align="right" label="支持退款">
-          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.no_refund" />
-        </van-field>
         <van-field
           @click-left-icon.stop="$toast('将商品加入店铺首页的推荐列表')"
           input-align="right"
           label="本店推荐"
           left-icon="question-o"
         >
-          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.recommend" />
+          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.is_recommend" />
+        </van-field>
+        <van-field input-align="right" label="支持退款">
+          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.no_refund" />
         </van-field>
         <ValidationProvider name="原价" rules="required|decimal-max2" slim v-slot="{ errors }">
           <van-field
@@ -383,7 +383,7 @@ export default {
         pin_effective_time: '',
         success_num: 1,
         status: '',
-        recommend: '0',
+        is_recommend: '0',
       },
       groupBuyColumns: [
         {
@@ -598,7 +598,7 @@ export default {
       this._controlStorePopup()
     },
     _pickPic(data) {
-      this.formData.pic.push(data[0].url)
+      this.formData.pic = data.map(item => item.url)
     },
     _deletePic(data) {
       const index = this.formData.pic.findIndex(item => item === data.url)
@@ -658,7 +658,7 @@ export default {
           this.formData.deadline_time = this.$moment(res.deadline_time * 1000).format('YYYY-MM-DD HH:mm')
         }
         this.formData.store = res.store_arr
-        this.formData.pic = res.pic.split(';')
+        this.formData.pic = res.pic_arr.map(item => item.url)
         this.picList = res.pic_arr
         // 设置默认选中的店铺
         const cache = []

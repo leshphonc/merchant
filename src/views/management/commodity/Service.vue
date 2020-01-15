@@ -5,6 +5,7 @@
         <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
           <van-card
             :key="item.goods_id"
+            :origin-price="item.show_price"
             :price="item.old_price"
             :tag="item.payment_status === '1' ? '定金' : null"
             :thumb="item.list_pic"

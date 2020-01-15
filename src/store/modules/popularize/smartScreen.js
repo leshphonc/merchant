@@ -50,6 +50,20 @@ const actions = {
       data ? resolve() : reject()
     })
   },
+  // 获取抽奖活动列表
+  getLotteryList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getLotteryList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 智能屏抽奖活动选择
+  updateMenuLotteryUrl(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.updateMenuLotteryUrl(payload)
+      data ? resolve() : reject()
+    })
+  },
   // 获取智能屏对话记录
   getSmartScreenDialogueRecord(context, payload) {
     return new Promise(async (resolve, reject) => {

@@ -30,9 +30,24 @@
         >
           <van-field :error-message="errors[0]" label="开票条件" required v-model="formData.invoice_price" />
         </ValidationProvider>
-        <van-cell @click="_controlPlatFormCategoryPopup" is-link title="所属商城分类">
-          <div :key="index" v-for="(item, index) in formData.store_category">{{ _getCateName(item) }}</div>
-        </van-cell>
+        <ValidationProvider name="商城分类" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            :value="formData.store_category.length ? '1' : ''"
+            @click="_controlPlatFormCategoryPopup"
+            error-message-align="right"
+            input-align="right"
+            is-link
+            label="所属商城分类"
+            placeholder="请选择"
+            readonly
+            required
+          >
+            <div slot="input" v-if="formData.store_category.length">
+              <div :key="index" v-for="(item, index) in formData.store_category">{{ _getCateName(item) }}</div>
+            </div>
+          </van-field>
+        </ValidationProvider>
         <ValidationProvider name="优惠方式" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -47,12 +62,18 @@
             required
           />
         </ValidationProvider>
-        <ValidationProvider name="店铺折扣" rules="required" slim v-slot="{ errors }">
+        <ValidationProvider
+          name="店铺折扣"
+          rules="required|decimal-max2|min_value:0|max_value:10"
+          slim
+          v-slot="{ errors }"
+        >
           <van-field
             :error-message="errors[0]"
             label="店铺折扣"
             placeholder="请填写店铺折扣"
             required
+            type="number"
             v-model.trim="formData.store_discount"
           />
         </ValidationProvider>
@@ -84,18 +105,27 @@
             required
           />
         </ValidationProvider>
-        <ValidationProvider name="买单时长" rules="required" slim v-slot="{ errors }">
+        <ValidationProvider name="买单时长" rules="required|numeric" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             label="买单时长"
             placeholder="单位：分钟"
             required
+            type="number"
             v-model.trim="formData.rollback_time"
           />
         </ValidationProvider>
         <van-cell title="店铺二维码">
           <img :src="qrcode" @click="_preView" alt class="qrcode" />
         </van-cell>
+        <van-field
+          autosize
+          label="店铺公告"
+          placeholder="店铺首页展示公告"
+          rows="2"
+          type="textarea"
+          v-model.trim="formData.store_notice"
+        />
       </van-cell-group>
       <van-cell-group title="会员等级优惠">
         <div :key="index" v-for="(item, index) in levelDom">
@@ -201,6 +231,7 @@ export default {
         stock_type: '',
         reduce_stock_type: 0,
         rollback_time: '',
+        store_notice: '',
         leveloff: [],
         store_category: [],
       },

@@ -355,7 +355,7 @@ export default {
     },
     // 活动图片选择
     _pickPic(data) {
-      this.formData.pic = data[0].url
+      this.formData.pic = data.map(item => item.url)[0]
     },
     // 开始时间选择
     _pickStartTime(data) {

@@ -115,6 +115,24 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 将电商产品加入店铺首页推荐
+  addECommerceToRecommend: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=recommendOnlineGoods', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 将服务产品加入店铺首页推荐
+  addServiceToRecommend: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=recommendAppointGoods', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 将套餐产品加入店铺首页推荐
+  addPackageToRecommend: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=recommendMealGoods', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
   // 获取店铺下的自定义标识位
   getStoreFrontFlagList: id =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getNowStation', {

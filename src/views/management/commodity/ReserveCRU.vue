@@ -103,14 +103,6 @@
           ></van-field>
         </ValidationProvider>
         <van-field
-          @click-left-icon.stop="$toast('将商品加入店铺首页的推荐列表')"
-          input-align="right"
-          label="本店推荐"
-          left-icon="question-o"
-        >
-          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.recommend" />
-        </van-field>
-        <van-field
           @click-left-icon="
             $toast(
               '若开启可以选择多个连续的预约时间，且预约金额叠加，若选择两个连续的时间，预约订单最后的总价为设定全价的两倍，以此类推'
@@ -382,7 +374,6 @@ export default {
         office_stop_time: '',
         appoint_status: '0',
         appoint_pic_content: '',
-        recommend: '0',
       },
       cache: [],
       storeList: [],
@@ -536,7 +527,7 @@ export default {
       this.formData.office_stop_time = data
     },
     _pickPic(data) {
-      this.formData.pic.push(data[0].url)
+      this.formData.pic = data.map(item => item.url)
     },
     _deletePic(data) {
       const index = this.formData.pic.findIndex(item => item === data.url)
@@ -606,7 +597,8 @@ export default {
         keys.forEach(item => {
           this.formData[item] = res.appoint_list[item]
         })
-        this.formData.pic = res.appoint_list.pic.split(';')
+        this.formData.pic = res.appoint_list.pic_arr.map(item => item.url)
+        this.picList = res.appoint_list.pic_arr
         if (res.appoint_list.start_time !== '0') {
           this.formData.start_time = this.$moment(res.appoint_list.start_time * 1000).format('YYYY-MM-DD')
         }
@@ -633,7 +625,6 @@ export default {
           result && cache.push(result)
         })
         this.cache = cache
-        this.picList = res.appoint_list.pic.split(';').map(item => ({ url: item }))
         this.$nextTick(function() {
           this.$refs.editor.$refs.quillEditor.quill.enable(true)
           this.$refs.editor.$refs.quillEditor.quill.blur()

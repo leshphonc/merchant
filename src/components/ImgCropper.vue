@@ -18,6 +18,7 @@
     field<String>：传入字段名，判断是否开始验证
     delete<Function>：如果需要裁剪多张图片，删除图片时将会触发此回调，用于删除外层提交用的数据
     index<Number>：可存入外面传入的index，用于父组件数据处理，如果传入，则放入confirm第二个参数返回
+    compression<Number>：图片压缩比例
     
     示例：
     <img-cropper :confirm="_pickPic" :list="picList" field="商品图片" title="商品图片"></img-cropper>
@@ -41,12 +42,12 @@
         />
       </van-field>
     </ValidationProvider>
-    <van-popup class="upload-popup" position="bottom" safe-area-inset-bottom v-model="showPopup">
+    <van-popup class="upload-popup" position="bottom" get-container="body" safe-area-inset-bottom v-model="showPopup">
       <vue-cropper
         :fixed="fixedRatio"
         :fixedNumber="ratio"
         :img="img"
-        :outputSize="0.3"
+        :outputSize="compression"
         autoCrop
         centerBox
         class="cropper"
@@ -114,6 +115,11 @@ export default {
     delete: Function,
     // 外层index
     index: Number,
+    // 图片压缩比例，默认0.3
+    compression: {
+      type: Number,
+      default: 0.3,
+    },
   },
 
   data() {

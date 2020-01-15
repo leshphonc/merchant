@@ -41,6 +41,17 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 获取抽奖活动列表
+  getLotteryList: () =>
+    axios.post('/appapi.php?c=Merchantimax&a=lotteryList', {
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 智能屏抽奖活动选择
+  updateMenuLotteryUrl: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=updateImaxSiteLotteryLink', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
   // 获取智能屏对话记录
   getSmartScreenDialogueRecord: payload =>
     axios.get('/appapi.php?c=Merchantapp&a=getTalkLogList', {

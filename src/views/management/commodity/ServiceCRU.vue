@@ -36,20 +36,22 @@
             placeholder="最多支持2位小数"
             required
             type="number"
+            v-model.trim="formData.show_price"
+          ></van-field>
+        </ValidationProvider>
+        <ValidationProvider name="现价" rules="required|decimal-max2" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="现价"
+            placeholder="服务现价"
+            required
+            type="number"
             v-model.trim="formData.old_price"
           ></van-field>
         </ValidationProvider>
         <van-cell title="日期多选">
           <van-switch v-model="formData.appoint_date_type"></van-switch>
         </van-cell>
-        <van-field
-          @click-left-icon.stop="$toast('将商品加入店铺首页的推荐列表')"
-          input-align="right"
-          label="本店推荐"
-          left-icon="question-o"
-        >
-          <van-switch active-value="1" inactive-value="0" slot="input" v-model="formData.recommend" />
-        </van-field>
         <ValidationProvider name="预约天数" rules="required|numeric" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -209,6 +211,7 @@ export default {
       formData: {
         appoint_name: '',
         appoint_content: '',
+        show_price: '',
         old_price: '',
         payment_status: '0',
         payment_money: '',
@@ -224,7 +227,6 @@ export default {
         cat_id: '',
         pic: '',
         appoint_pic_content: '',
-        recommend: '0',
       },
       pic: [],
       showStartTimePicker: false,

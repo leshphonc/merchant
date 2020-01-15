@@ -193,6 +193,8 @@ export default {
       ImagePreview({
         images: [url],
         showIndex: false,
+        closeOnPopstate: true,
+        maxZoom: 1,
       })
     },
   },

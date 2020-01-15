@@ -246,13 +246,13 @@ export default {
       this.formData.bg = item.url
     },
     _pickPic(data) {
-      this.formData.logo = data[0].url
+      this.formData.logo = data.map(item => item.url)[0]
     },
     _pickBG(data) {
-      this.formData.diybg = data[0].url
+      this.formData.diybg = data.map(item => item.url)[0]
     },
     _pickBanner(data) {
-      this.formData.posters = data[0].url
+      this.formData.posters = data.map(item => item.url)[0]
     },
     // 提交表单
     async _submit() {
