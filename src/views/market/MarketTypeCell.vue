@@ -12,6 +12,7 @@
         v-for="item in list"
       />
     </van-grid>
+    <div class="tab-bar-holder-sp"></div>
   </div>
 </template>
 

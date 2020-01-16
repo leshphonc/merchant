@@ -130,25 +130,6 @@ export default {
 
   data() {
     return {
-      active: 0,
-      icons: {
-        home: {
-          active: require('@/assets/image/home.png'),
-          unactive: require('@/assets/image/home_gray.png'),
-        },
-        order: {
-          active: require('@/assets/image/order.png'),
-          unactive: require('@/assets/image/order_gray.png'),
-        },
-        marketing: {
-          active: require('@/assets/image/marketing.png'),
-          unactive: require('@/assets/image/marketing_gray.png'),
-        },
-        mine: {
-          active: require('@/assets/image/mine.png'),
-          unactive: require('@/assets/image/mine_gray.png'),
-        },
-      },
       mdata: ManagementGrid,
       pdata: PopularizeGrid,
       curType: 'income',
