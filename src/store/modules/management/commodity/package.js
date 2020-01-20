@@ -43,6 +43,27 @@ export default {
       data ? resolve() : reject()
     })
   },
+  // 读取套餐商品分类
+  getPackageCategoryList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.getPackageCategoryList()
+      data ? resolve(data) : reject()
+    })
+  },
+  // 创建套餐商品分类
+  createPackageCategory(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.createPackageCategory(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 删除套餐商品分类
+  deletePackageCategory(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.deletePackageCategory(id)
+      data ? resolve() : reject()
+    })
+  },
   // 读取套餐内包含的服务项目
   readServiceOfPackage(context, id) {
     return new Promise(async (resolve, reject) => {

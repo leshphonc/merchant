@@ -30,7 +30,10 @@
           </van-cell>
         </van-cell-group>
       </van-checkbox-group>
-      <van-button @click="_distributeCoupon" type="primary">派发</van-button>
+      <div class="btn-group">
+        <van-button @click="_controlCouponPicker">取消</van-button>
+        <van-button @click="_distributeCoupon" type="primary">派发</van-button>
+      </div>
     </van-popup>
   </div>
 </template>
@@ -93,6 +96,13 @@ export default {
       this.$refs.checkboxesCoupon[index].toggle()
     },
     _distributeCoupon() {
+      if (!this.coupon.length) {
+        this.$notify({
+          type: 'warning',
+          message: '请选择要派发的优惠券',
+        })
+        return false
+      }
       if (this.loading) return
       this.loading = true
       this.distributeGroupCoupon({
@@ -129,8 +139,11 @@ export default {
 }
 
 .van-popup {
-  .van-button {
-    width: 100%;
+  .btn-group {
+    .van-button {
+      margin: 0;
+      width: 50%;
+    }
   }
 }
 .margin-bottom {

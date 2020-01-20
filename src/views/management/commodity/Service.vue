@@ -119,7 +119,7 @@
       </ValidationObserver>
     </van-popup>
     <van-popup position="bottom" safe-area-inset-bottom v-model="showCategoryPicker">
-      <van-picker :columns="firstCategoryListAddNull" @change="_changeCategory" value-key="cat_name" />
+      <van-picker ref="catePicker" :columns="firstCategoryListAddNull" @change="_changeCategory" value-key="cat_name" />
     </van-popup>
   </div>
 </template>
@@ -144,15 +144,14 @@ export default {
       list: [],
       page: 1,
       active: 0,
-      activeCategory: '',
-      categoryLabel: '无',
       loading: false,
       finished: false,
       refreshing: false,
+      activeCategory: '',
+      categoryLabel: '无',
       firstCategoryList: [],
       showCategoryCRUPopup: false,
       showCategoryPicker: false,
-      columns: ['杭州', '宁波', '温州', '嘉兴', '湖州'],
     }
   },
 
@@ -200,6 +199,8 @@ export default {
       this.showCategoryCRUPopup = !this.showCategoryCRUPopup
       this.$nextTick(() => {
         this.$refs.observer.reset()
+        this.categoryLabel = '无'
+        this.$refs.catePicker.setIndexes([0])
       })
     },
     // 分类归属开关

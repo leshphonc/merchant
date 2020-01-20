@@ -118,7 +118,12 @@
     </van-popup>
     <!-- 选择分类归属 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showCategoryPicker">
-      <van-picker :columns="firstCategoryListAddNull" @change="_changeCategory" value-key="sort_name" />
+      <van-picker
+        ref="catePicker"
+        :columns="firstCategoryListAddNull"
+        @change="_changeCategory"
+        value-key="sort_name"
+      />
     </van-popup>
   </div>
 </template>
@@ -224,6 +229,8 @@ export default {
       this.showCategoryCRUPopup = !this.showCategoryCRUPopup
       this.$nextTick(() => {
         this.$refs.observer.reset()
+        this.categoryLabel = '无'
+        this.$refs.catePicker.setIndexes([0])
       })
     },
     // 分类归属开关

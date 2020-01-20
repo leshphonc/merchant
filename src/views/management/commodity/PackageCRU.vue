@@ -72,6 +72,20 @@
             v-model.trim="formData.person_num"
           ></van-field>
         </ValidationProvider>
+        <ValidationProvider name="商家服务分类" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            :value="categoryLabel"
+            @click="_controlCategoryPicker"
+            error-message-align="right"
+            input-align="right"
+            is-link
+            label="所属分类"
+            placeholder="选择分类"
+            readonly
+            required
+          ></van-field>
+        </ValidationProvider>
       </van-cell-group>
       <img-cropper :confirm="_pickPic" :list="pic" field="套餐图片" title="套餐图片"></img-cropper>
       <van-cell @click="_controlCommodityPicker" clickable title="套餐包含项目">
@@ -187,6 +201,17 @@
         </van-col>
       </van-row>
     </van-popup>
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showCategoryPicker">
+      <van-picker
+        :columns="categoryColumns"
+        :default-index="categoryIndex"
+        @cancel="_controlCategoryPicker"
+        @change="_changeCategory"
+        @confirm="_pickCategory"
+        show-toolbar
+        value-key="cat_name"
+      ></van-picker>
+    </van-popup>
   </div>
 </template>
 
@@ -216,6 +241,8 @@ export default {
         total_num: '',
         person_num: '',
         project_data: [],
+        cat_fid: '',
+        cat_id: '',
       },
       loading: false,
       pic: [],
@@ -232,6 +259,9 @@ export default {
       pageE: 1,
       finishedE: false,
       cacheE: [],
+      categoryColumnsOrigin: [],
+      categoryColumns: [],
+      showCategoryPicker: false,
     }
   },
 
@@ -241,10 +271,25 @@ export default {
       return this.$route.params.id ? '编辑' : '创建'
     },
     finishText() {
-      return this.list.length ? '没有更多了' : ''
+      return this.list.length ? '没有更多了' : '暂无'
     },
     finishTextE() {
-      return this.listE.length ? '没有更多了' : ''
+      return this.listE.length ? '没有更多了' : '暂无'
+    },
+    // 服务商品分类非空验证
+    categoryLabel() {
+      let resultStr = ''
+      if (this.formData.cat_fid === '0' && this.formData.cat_id !== '0') {
+        const item = this.categoryColumnsOrigin.find(item => item.cat_id === this.formData.cat_id)
+        return item && item.cat_name
+      }
+      const item = this.categoryColumnsOrigin.find(item => item.cat_id === this.formData.cat_fid)
+      if (item) {
+        resultStr += item.cat_name
+        const child = item.children.find(item => item.cat_id === this.formData.cat_id)
+        child && (resultStr += ' / ' + child.cat_name)
+      }
+      return resultStr
     },
   },
 
@@ -256,6 +301,9 @@ export default {
     const { id } = this.$route.params
     if (id) {
       this._readPackageDetail(id)
+    } else {
+      // 读取套餐分类
+      this._getPackageCategoryList()
     }
   },
 
@@ -269,10 +317,15 @@ export default {
       'updatePackage',
       'readPackageDetail',
       'readServiceOfPackage',
+      'getPackageCategoryList',
     ]),
     // 服务商品选择开关
     _controlCommodityPicker() {
       this.showServicePicker = !this.showServicePicker
+    },
+    // 服务商品分类开关
+    _controlCategoryPicker() {
+      this.showCategoryPicker = !this.showCategoryPicker
     },
     // checkbox选中状态切换
     _toggle(index, flag) {
@@ -403,7 +456,6 @@ export default {
       this.eCommerce_data.splice(index, 1)
 
       this.$forceUpdate()
-
       // 将不是灰色且选中的 变为 未选中
       this.$nextTick(() => {
         this.$refs.checkboxesE.forEach(item => {
@@ -412,6 +464,53 @@ export default {
           }
         })
       })
+    },
+    // 套餐类型分类选择
+    _pickCategory(data) {
+      if (!data[1]) {
+        this.formData.cat_fid = '0'
+        this.formData.cat_id = data[0].cat_id
+      } else {
+        this.formData.cat_fid = data[0].cat_id
+        this.formData.cat_id = data[1].cat_id
+      }
+      this._controlCategoryPicker()
+    },
+    // 生成套餐商品分类 第二行数据
+    _changeCategory(picker, values) {
+      picker.setColumnValues(1, values[0].children || [])
+    },
+    // 读取套餐分类
+    _getPackageCategoryList(fid, id) {
+      this.getPackageCategoryList().then(res => {
+        this.categoryColumnsOrigin = res
+        this._serializationECommerceCategory(fid, id)
+      })
+    },
+    // 根据columns原始数据序列化套餐商品分类
+    _serializationECommerceCategory(fid, id) {
+      const data = this.categoryColumnsOrigin
+      let index1 = 0
+      let index2 = 0
+      if (fid && id) {
+        index1 = data.findIndex(item => item.cat_id === fid) >= 0 ? data.findIndex(item => item.cat_id === fid) : 0
+        index2 =
+          data[index1].children.findIndex(item => item.cat_id === id) >= 0
+            ? data[index1].children.findIndex(item => item.cat_id === id)
+            : 0
+      } else if (fid) {
+        index1 = data.findIndex(item => item.cat_id === fid) >= 0 ? data.findIndex(item => item.cat_id === fid) : 0
+      }
+      this.categoryColumns = [
+        {
+          values: data,
+          defaultIndex: index1,
+        },
+        {
+          values: data[index1].children,
+          defaultIndex: index2,
+        },
+      ]
     },
     // 读取套餐详情
     _readPackageDetail(id) {
@@ -436,6 +535,12 @@ export default {
           this.eCommerce_data = eCommerce
           this._onLoad()
           this._onLoadE()
+          this.formData.cat_fid = res[0].cat_parent_id
+          if (res[0].cat_parent_id !== '0') {
+            this._getPackageCategoryList(res[0].cat_parent_id, res[0].cat_id)
+          } else {
+            this._getPackageCategoryList(res[0].cat_id)
+          }
         })
       })
     },

@@ -301,9 +301,11 @@ export default {
   }
 }
 
-.van-icon {
-  vertical-align: -2px;
-  margin-right: 4px;
+.van-cell {
+  .van-icon {
+    vertical-align: -2px;
+    margin-right: 4px;
+  }
 }
 
 .van-popup {

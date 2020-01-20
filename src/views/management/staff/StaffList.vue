@@ -443,6 +443,9 @@ img {
 }
 .van-row {
   padding: 10px 16px;
+  .van-icon {
+    vertical-align: -2px;
+  }
 }
 
 .name {
@@ -464,10 +467,6 @@ img {
   color: @red-c;
   text-align: right;
   font-size: 14px;
-}
-
-.van-icon {
-  vertical-align: -2px;
 }
 
 .van-panel__footer {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-search @search="_searchUserList" placeholder="请输入搜索关键词" v-model="keyword" />
-    <van-radio-group v-model="user">
+    <van-radio-group v-if="userList.length" v-model="user">
       <van-cell-group class="margin-bottom" title="选择用户">
         <van-cell
           :key="item.uid"
@@ -15,6 +15,8 @@
         </van-cell>
       </van-cell-group>
     </van-radio-group>
+    <van-divider v-else>暂无用户</van-divider>
+
     <van-button @click="_controlCouponPicker" class="check-btn" type="primary" v-if="user">选择优惠券</van-button>
     <!-- 弹出层 -->
     <!-- 优惠券列表 -->

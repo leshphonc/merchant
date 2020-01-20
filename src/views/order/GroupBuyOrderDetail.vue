@@ -61,7 +61,7 @@
         <van-col span="6">付款时间：</van-col>
         <van-col span="18">{{ order.pay_time }}</van-col>
       </van-row>
-      <template v-if="order.store_id !== '0' && order.type === 1 && order.tuan_type !== 2 && passArr.length > 1">
+      <template v-if="order.store_id !== '0' && order.tuan_type !== 2 && passArr.length > 0">
         <van-row :key="item.group_pass" v-for="item in passArr">
           <van-col span="16">核销码：{{ item.group_pass }}</van-col>
           <van-col span="8">
@@ -71,22 +71,11 @@
             >
           </van-col>
         </van-row>
-        <van-row>
+        <!-- <van-row>
           <van-col>
-            <van-button @click="_verificationAllCode" size="small" type="primary">全部验证</van-button>
+            <van-button v-if="passArr.length > 1" @click="_verificationAllCode" size="small" type="primary">全部验证</van-button>
           </van-col>
-        </van-row>
-      </template>
-      <template v-else-if="order.group_pass && order.status === 0">
-        <van-row>
-          <van-col span="16">核销码：{{ order.group_pass }}</van-col>
-          <van-col span="8">
-            <div v-show="item.status === '1'">已验证</div>
-            <van-button @click="_scanCodeWriteOff" size="small" type="primary" v-show="item.status !== '1'"
-              >验证</van-button
-            >
-          </van-col>
-        </van-row>
+        </van-row>-->
       </template>
     </van-panel>
     <template v-if="order.store_id && distribution.adress">
@@ -319,7 +308,8 @@ export default {
           .then(code => {
             this._verificationCode(code)
           })
-          .catch(() => {
+          .catch(e => {
+            alert(e)
             this.$toast.fail({
               message: '核销码错误，核销失败',
               forbidClick: true,
@@ -331,7 +321,7 @@ export default {
     _verificationCode(code) {
       const { id } = this.$route.params
       if (this.order.now_order.num > 1) {
-        this.verifyArrayGroupBuyCode(id, code).then(() => {
+        this.verifyArrayGroupBuyCode({ order_id: id, group_pass: code }).then(() => {
           this.$toast.success({
             message: '操作成功',
             forbidClick: true,
@@ -342,7 +332,7 @@ export default {
           })
         })
       } else {
-        this.verifySingleGroupBuyCode(id, code).then(() => {
+        this.verifySingleGroupBuyCode({ order_id: id, group_pass: code }).then(() => {
           this.$toast.success({
             message: '操作成功',
             forbidClick: true,
@@ -358,7 +348,7 @@ export default {
       if (this.loading) return
       this.loading = true
       const { id } = this.$route.params
-      this.verifyAllGroupBuyCode({ id, store_id: this.order.store_id })
+      this.verifyAllGroupBuyCode({ order_id: id, store_id: this.order.store_id })
         .then(() => {
           this.$toast.success({
             message: '操作成功',
@@ -384,11 +374,11 @@ export default {
         this.express = res.express_list
         this.expressID = this.distribution.express_type
         this.expressNO = this.distribution.express_id
-        if (res.now_order.pass_array === '1') {
-          this.readGroupBuyOrderWriteOff(id).then(res => {
-            this.passArr = res.pass_array
-          })
-        }
+        // if (res.now_order.pass_array === '1') {
+        this.readGroupBuyOrderWriteOff(id).then(res => {
+          this.passArr = res.pass_array
+        })
+        // }
       })
     },
   },
@@ -415,6 +405,10 @@ export default {
   .van-col:last-child {
     color: #444;
   }
+
+  .van-icon {
+    vertical-align: -2px;
+  }
 }
 
 .van-row:last-child {
@@ -434,10 +428,6 @@ export default {
     display: flex;
     align-items: center;
   }
-}
-
-.van-icon {
-  vertical-align: -2px;
 }
 
 .van-field {

@@ -37,6 +37,26 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 读取套餐商品分类列表
+  getPackageCategoryList: () =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=getMealCategoryList', {
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 创建套餐商品分类
+  createPackageCategory: ({ cat_name, cat_fid }) => {
+    return axios.post('/appapi.php?c=SpaceMerchant&a=createMealCategory', {
+      name: cat_name,
+      parent_id: cat_fid,
+      ticket: localStorage.getItem('ticket'),
+    })
+  },
+  // 删除套餐商品分类
+  deletePackageCategory: ({ cat_id }) => {
+    return axios.post('/appapi.php?c=SpaceMerchant&a=deleteMealCategory', {
+      id: cat_id,
+      ticket: localStorage.getItem('ticket'),
+    })
+  },
   // 读取套餐内包含的服务项目
   readServiceOfPackage: id =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getMealProList', {
