@@ -141,6 +141,20 @@
           ></van-field>
         </ValidationProvider>
         <img-cropper :confirm="_pickPic" :list="pic" field="服务项目图片" title="服务项目图片"></img-cropper>
+        <ValidationProvider name="服务项目描述" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            autosize
+            label="服务项目描述"
+            maxlength="100"
+            placeholder="服务项目描述"
+            required
+            rows="3"
+            show-word-limit
+            type="textarea"
+            v-model.trim="formData.description"
+          />
+        </ValidationProvider>
         <van-cell required title="服务项目详情"></van-cell>
         <quill-editor :changeHtml="_changeHtml" :context="formData.appoint_pic_content" ref="editor"></quill-editor>
       </van-cell-group>
@@ -227,6 +241,7 @@ export default {
         cat_id: '',
         pic: '',
         appoint_pic_content: '',
+        description: '',
       },
       pic: [],
       showStartTimePicker: false,

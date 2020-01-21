@@ -63,7 +63,6 @@
             label="库存"
             placeholder="库存量"
             required
-            type="number"
             v-model.trim="formData.stock_num"
           />
         </ValidationProvider>
@@ -151,6 +150,20 @@
           readonly
         />
         <img-cropper :confirm="_pickPic" :list="pic" field="商品图片" title="商品图片"></img-cropper>
+        <ValidationProvider name="商品描述" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            autosize
+            label="商品描述"
+            maxlength="100"
+            placeholder="电商商品描述"
+            required
+            rows="3"
+            show-word-limit
+            type="textarea"
+            v-model.trim="formData.description"
+          />
+        </ValidationProvider>
         <van-cell required title="商品详情"></van-cell>
         <quill-editor :changeHtml="_changeHtml" :context="formData.des" ref="editor"></quill-editor>
       </van-cell-group>
@@ -263,6 +276,7 @@ export default {
         cat_fid: '',
         cat_id: '',
         des: '',
+        description: '',
       },
       statusColumns: [
         { label: '在售', value: '1' },

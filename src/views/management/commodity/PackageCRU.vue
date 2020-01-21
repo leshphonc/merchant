@@ -58,7 +58,6 @@
             label="库存"
             placeholder="套餐库存"
             required
-            type="number"
             v-model.trim="formData.total_num"
           ></van-field>
         </ValidationProvider>
@@ -88,6 +87,20 @@
         </ValidationProvider>
       </van-cell-group>
       <img-cropper :confirm="_pickPic" :list="pic" field="套餐图片" title="套餐图片"></img-cropper>
+      <ValidationProvider name="套餐描述" rules="required" slim v-slot="{ errors }">
+        <van-field
+          :error-message="errors[0]"
+          autosize
+          label="套餐描述"
+          maxlength="100"
+          placeholder="套餐描述"
+          required
+          rows="3"
+          show-word-limit
+          type="textarea"
+          v-model.trim="formData.description"
+        />
+      </ValidationProvider>
       <van-cell @click="_controlCommodityPicker" clickable title="套餐包含项目">
         <van-icon name="point-gift-o" slot="right-icon" style="line-height: inherit;" />
       </van-cell>
@@ -243,6 +256,7 @@ export default {
         project_data: [],
         cat_fid: '',
         cat_id: '',
+        description: '',
       },
       loading: false,
       pic: [],
