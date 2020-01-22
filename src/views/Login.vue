@@ -61,7 +61,9 @@ export default {
     let logo = ''
     if (window.location.href.indexOf('9youke') > -1) {
       logo = require('@/assets/image/logo.jpg')
-    } else {
+    } else if (window.location.href.indexOf('czg365.com') > -1) {
+      logo = require('@/assets/image/czg_logo2.png')
+    } else if (window.location.href.indexOf('czg365.cn') > -1) {
       logo = require('@/assets/image/xyzg_logo.png')
     }
     this.logo = logo

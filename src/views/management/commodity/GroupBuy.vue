@@ -14,7 +14,9 @@
             v-for="item in list"
           >
             <div slot="tags">
-              <van-tag plain type="danger">{{ item.status === '1' ? '开启状态' : '关闭状态' }}</van-tag>
+              <van-tag plain type="success" v-if="item.status === '1'">团购开启</van-tag>
+              <van-tag plain type="danger" v-else-if="item.status === '0'">团购关闭</van-tag>
+              <van-tag plain type="warning" v-else-if="item.status === '2'">平台审核中</van-tag>
             </div>
             <div slot="footer" v-if="$route.fullPath === '/commodity'">
               <van-button :to="`/order/groupBuyList/${item.group_id}`" size="small">销售记录</van-button>
