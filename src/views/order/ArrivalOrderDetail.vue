@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" fixed left-arrow title="电商订单详情"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" fixed left-arrow title="零售订单详情"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-cell-group title="订单信息">
       <van-cell :value="detail.order.order_id" title="订单编号"></van-cell>

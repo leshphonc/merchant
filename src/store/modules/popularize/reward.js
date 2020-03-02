@@ -8,7 +8,7 @@ const getters = {}
 
 // actions
 const actions = {
-  // 电商商品分销分佣修改
+  // 零售商品分销分佣修改
   async updateECommerceReward(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await rewardAPI.updateECommerceReward(payload)

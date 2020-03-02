@@ -154,7 +154,7 @@ export default {
         },
         3: {
           page: 'eCommerce.html',
-          name: '电商订单',
+          name: '零售订单',
         },
         4: {
           page: 'package.html',

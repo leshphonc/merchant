@@ -49,9 +49,7 @@
                 </div>
                 <div slot="footer" v-if="item.is_shelves === '1'">
                   <!-- <van-button disabled size="small" v-if="item.audit === '2'">同城审核中</van-button> -->
-                  <van-button @click="_changeRelease(item.id)" size="small" type="danger" v-if="item.audit !== '2'"
-                    >取消发布</van-button
-                  >
+                  <van-button @click="_changeRelease(item.id)" size="small" type="danger" v-if="item.audit !== '2'">取消发布</van-button>
                   <van-button @click="_openPopup(item)" size="small">智能屏推广</van-button>
                 </div>
                 <div slot="footer" v-else-if="item.is_shelves === '2'">
@@ -110,27 +108,63 @@
     </van-tabs>
     <!-- 弹出层 -->
     <!-- 选择推广屏幕 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showPopup">
-      <van-collapse v-model="activeNames">
-        <van-collapse-item name="1" title="推广屏幕">
-          <van-icon @click.stop="$toast('播放此条海报的屏幕')" class="question-icon" name="question-o" slot="icon" />
-          <van-checkbox-group v-model="formData.screen">
-            <van-cell-group>
-              <van-cell
-                :key="index"
-                :label="item.address"
-                :title="item.store_name"
-                @click="_sToggle(index)"
-                clickable
-                v-for="(item, index) in screenList"
-              >
-                <van-checkbox :name="item.imax_id" ref="checkboxesS" slot="right-icon" />
-              </van-cell>
-            </van-cell-group>
-          </van-checkbox-group>
-        </van-collapse-item>
-        <van-collapse-item name="2" title="推广角色">
-          <van-icon @click.stop="$toast('此条海报的推广角色')" class="question-icon" name="question-o" slot="icon" />
+    <van-popup class="full-popup" position="bottom" safe-area-inset-bottom v-model="showPopup">
+      <van-steps :active="curStep">
+        <van-step>选择屏幕</van-step>
+        <van-step>选择需求</van-step>
+        <van-step>推广角色</van-step>
+        <van-step>推广时间</van-step>
+      </van-steps>
+      <van-checkbox-group v-model="formData.screen" v-show="curStep === 0">
+        <van-cell-group>
+          <van-cell
+            :key="index"
+            :label="item.address"
+            :title="item.store_name"
+            @click="_sToggle(index)"
+            clickable
+            v-for="(item, index) in screenList"
+          >
+            <van-checkbox :name="item.imax_id" ref="checkboxesS" slot="right-icon" />
+          </van-cell>
+        </van-cell-group>
+      </van-checkbox-group>
+      <div v-show="curStep === 1">
+        <van-checkbox-group v-model="formData.guest_demand_ids">
+          <van-cell-group>
+            <van-cell
+              :key="index"
+              :title="item.name"
+              @click="_dToggle(index)"
+              clickable
+              v-for="(item, index) in demandList"
+            >
+              <van-checkbox :name="item.id" ref="checkboxesD" slot="right-icon" />
+            </van-cell>
+          </van-cell-group>
+        </van-checkbox-group>
+        <van-field
+          :value="guestType"
+          @click="_controlGuestTypePicker"
+          clickable
+          input-align="right"
+          label="客人数量"
+          placeholder="点击选择"
+          readonly
+        />
+        <van-field input-align="right" label="人数" v-if="formData.guest_num_type === '1'">
+          <van-stepper slot="input" v-model="formData.guest_num" />
+        </van-field>
+        <van-field input-align="right" label="最少人数" v-if="formData.guest_num_type === '2'">
+          <van-stepper :max="formData.guest_num_max" slot="input" v-model="formData.guest_num_min" />
+        </van-field>
+        <van-field input-align="right" label="最多人数" v-if="formData.guest_num_type === '2'">
+          <van-stepper :min="formData.guest_num_min + 1" slot="input" v-model="formData.guest_num_max" />
+        </van-field>
+      </div>
+      <van-collapse v-model="activeNames" v-show="curStep === 2">
+        <van-collapse-item name="1" title="推广角色">
+          <van-icon @click.stop="$toast('收到此条推广的角色身份')" class="question-icon" name="question-o" slot="icon" />
           <van-checkbox-group v-model="formData.role">
             <van-cell-group>
               <van-cell
@@ -145,25 +179,66 @@
             </van-cell-group>
           </van-checkbox-group>
         </van-collapse-item>
-        <time-picker
-          :data="[formData.start_time, formData.end_time]"
-          :pickEndTime="_pickCloseTime"
-          :pickStartTime="_pickOpenTime"
-          endField="结束时间"
-          endLabel="结束时间"
-          showDefault
-          startField="开始时间"
-          startLabel="开始时间"
-          type="time"
-        ></time-picker>
+        <van-collapse-item name="2" title="推广会员">
+          <van-icon @click.stop="$toast('收到此条推广的会员身份')" class="question-icon" name="question-o" slot="icon" />
+          <van-checkbox-group v-model="formData.promotion_role_member">
+            <van-cell-group>
+              <van-cell
+                :key="index"
+                :title="item.name"
+                @click="_mToggle(index)"
+                clickable
+                v-for="(item, index) in memberList"
+              >
+                <van-checkbox :name="item.id" ref="checkboxesM" slot="right-icon" />
+              </van-cell>
+            </van-cell-group>
+          </van-checkbox-group>
+        </van-collapse-item>
+        <van-collapse-item name="3" title="推广店员">
+          <van-icon @click.stop="$toast('收到此条推广的店员身份')" class="question-icon" name="question-o" slot="icon" />
+          <van-checkbox-group v-model="formData.promotion_role">
+            <van-cell-group>
+              <van-cell
+                :key="index"
+                :title="item.name"
+                @click="_stToggle(index)"
+                clickable
+                v-for="(item, index) in staffList"
+              >
+                <van-checkbox :name="item.id" ref="checkboxesST" slot="right-icon" />
+              </van-cell>
+            </van-cell-group>
+          </van-checkbox-group>
+        </van-collapse-item>
       </van-collapse>
+      <time-picker
+        :data="[formData.start_time, formData.end_time]"
+        :pickEndTime="_pickCloseTime"
+        :pickStartTime="_pickOpenTime"
+        endField="结束时间"
+        endLabel="结束时间"
+        showDefault
+        startField="开始时间"
+        startLabel="开始时间"
+        type="time"
+        v-show="curStep === 3"
+      ></time-picker>
       <div class="btn-group">
-        <van-button @click="_closePopup" native-type="button">取消</van-button>
-        <van-button @click="_submit" type="primary">发布到屏幕</van-button>
+        <van-button @click="_closePopup" native-type="button" v-show="curStep === 0">取消</van-button>
+        <van-button @click="curStep -= 1" v-show="curStep > 0">上一步</van-button>
+        <van-button @click="_nextStep" type="primary" v-show="curStep < 3">下一步</van-button>
+        <van-button @click="_submit" type="primary" v-show="curStep === 3">发布到屏幕</van-button>
       </div>
     </van-popup>
     <!-- 同城发布店铺选择 -->
-    <van-popup :lazy-render="false" position="bottom" safe-area-inset-bottom v-model="showStorePicker">
+    <van-popup
+      :lazy-render="false"
+      class="full-popup"
+      position="bottom"
+      safe-area-inset-bottom
+      v-model="showStorePicker"
+    >
       <van-checkbox-group v-model="store">
         <van-cell-group>
           <van-cell
@@ -182,6 +257,17 @@
         <van-button @click="_controlStorePicker()" native-type="button">取消</van-button>
         <van-button @click="_submitSameCity" type="primary">发布到同城</van-button>
       </div>
+    </van-popup>
+    <!-- 客人数量类型选则 -->
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showGuestTypePicker">
+      <van-picker
+        :columns="guestTypeColumns"
+        :default-index="statusIndex"
+        @cancel="_controlGuestTypePicker"
+        @confirm="_pickGuestType"
+        show-toolbar
+        value-key="label"
+      ></van-picker>
     </van-popup>
   </div>
 </template>
@@ -209,11 +295,22 @@ export default {
         screen: [],
         start_time: '07:00',
         end_time: '20:59',
+        promotion_role: [],
+        promotion_role_member: [],
+        guest_num: '',
+        guest_num_type: '0',
+        guest_num_min: '',
+        guest_num_max: '',
+        guest_demand_ids: [],
       },
+      curStep: 0,
       active: 0,
-      activeNames: ['1', '2'],
+      activeNames: [],
       screenList: [],
       roleList: [],
+      memberList: [],
+      staffList: [],
+      demandList: [],
       ePage: 1,
       eList: [],
       eRefreshing: false,
@@ -228,6 +325,21 @@ export default {
       storeColumns: [],
       lastAd: '',
       store: [],
+      guestTypeColumns: [
+        {
+          label: '不限',
+          value: '0',
+        },
+        {
+          label: '固定人数',
+          value: '1',
+        },
+        {
+          label: '人数区间',
+          value: '2',
+        },
+      ],
+      showGuestTypePicker: false,
     }
   },
 
@@ -241,6 +353,10 @@ export default {
     dFinishText() {
       return this.dList.length ? '没有更多了' : '暂无推广内容'
     },
+    guestType() {
+      const item = this.guestTypeColumns.find(item => item.value === this.formData.guest_num_type)
+      return item && item.label
+    },
   },
 
   watch: {},
@@ -253,6 +369,12 @@ export default {
     })
     this.getSmartScreenRoleList().then(res => {
       this.roleList = res
+    })
+    this.getSmartScreenMemberList().then(res => {
+      this.memberList = res.lists
+    })
+    this.getSmartScreenStaffList().then(res => {
+      this.staffList = res
     })
     this.getStoreList().then(res => {
       this.storeColumns = res.store_list
@@ -269,6 +391,9 @@ export default {
       'changePosterRelease',
       'changePosterStatus',
       'getSmartScreenRoleList',
+      'getSmartScreenMemberList',
+      'getSmartScreenStaffList',
+      'getSmartScreenDemandList',
       'bindPosterToSmartScreen',
       'getSmartScreenInPoster',
     ]),
@@ -284,8 +409,17 @@ export default {
     },
     // 选择推广屏幕
     async _openPopup(item) {
-      this.formData.role = item.to_user_ids
       this.formData.ad_id = item.id
+      this.formData.guest_num = item.guest_num
+      this.formData.role = item.to_user_ids // 角色
+      this.formData.promotion_role = item.promotion_role ? item.promotion_role.split(',') : [] // 店员
+      this.formData.promotion_role_member = item.promotion_role_member ? item.promotion_role_member.split(',') : [] // 会员
+      this.formData.guest_num = item.guest_num
+      this.formData.guest_num_type = item.guest_num_type
+      this.formData.guest_num_min = item.guest_num_min
+      this.formData.guest_num_max = item.guest_num_max
+      this.formData.guest_demand_ids = item.guest_demand_ids ? item.guest_demand_ids.split(',') : []
+
       item.time_start && (this.formData.start_time = item.time_start)
       if (item.time_end && item.time_start !== item.time_end) {
         item.time_end && (this.formData.end_time = item.time_end)
@@ -296,6 +430,21 @@ export default {
       this.showPopup = true
     },
     _closePopup() {
+      this.formData = {
+        ad_id: '',
+        role: [],
+        screen: [],
+        start_time: '07:00',
+        end_time: '20:59',
+        promotion_role: [],
+        promotion_role_member: [],
+        guest_num: '',
+        guest_num_type: '0',
+        guest_num_min: '',
+        guest_num_max: '',
+        guest_demand_ids: [],
+      }
+      this.curStep = 0
       this.showPopup = false
     },
 
@@ -365,9 +514,21 @@ export default {
     _sToggle(index) {
       this.$refs.checkboxesS[index].toggle()
     },
+    // 需求选择
+    _dToggle(index) {
+      this.$refs.checkboxesD[index].toggle()
+    },
     // 角色选择
     _rToggle(index) {
       this.$refs.checkboxesR[index].toggle()
+    },
+    // 角色选择
+    _mToggle(index) {
+      this.$refs.checkboxesM[index].toggle()
+    },
+    // 角色选择
+    _stToggle(index) {
+      this.$refs.checkboxesST[index].toggle()
     },
     // 同城发布店铺选择
     _storeToggle(index) {
@@ -442,7 +603,7 @@ export default {
       } else {
         switch (item.goods_type) {
           case '0':
-            str = '电商商品'
+            str = '零售商品'
             break
           case '1':
             str = '团购商品'
@@ -495,6 +656,13 @@ export default {
         role_ids: this.formData.role.join(),
         time_start: this.formData.start_time,
         time_end: this.formData.end_time,
+        promotion_role: this.formData.promotion_role.join(),
+        promotion_role_member: this.formData.promotion_role_member.join(),
+        guest_num: this.formData.guest_num,
+        guest_num_type: this.formData.guest_num_type,
+        guest_num_min: this.formData.guest_num_min,
+        guest_num_max: this.formData.guest_num_max,
+        guest_demand_ids: this.formData.guest_demand_ids.join(),
       }
       this.bindPosterToSmartScreen(params).then(res => {
         this.$toast.success({
@@ -506,13 +674,6 @@ export default {
             this.loading = false
             this._closePopup()
             this._eOnRefresh()
-            this.formData = {
-              ad_id: '',
-              role: [],
-              screen: [],
-              start_time: '07:00',
-              end_time: '20:59',
-            }
           },
         })
       })
@@ -520,6 +681,33 @@ export default {
     // 选择店铺且将海报同城发布
     _submitSameCity() {
       this._changeRelease(this.lastAd, this.store.join())
+    },
+    _nextStep() {
+      if (this.curStep === 0) {
+        if (this.formData.screen.length === 0) {
+          this.$toast('请选择推广店铺')
+        } else {
+          this.getSmartScreenDemandList(this.formData.screen).then(res => {
+            this.demandList = res
+            this.curStep += 1
+          })
+        }
+      } else if (this.curStep === 1) {
+        if (this.formData.guest_demand_ids.length === 0) {
+          this.$toast('请选择用户需求')
+        } else {
+          this.curStep += 1
+        }
+      } else {
+        this.curStep += 1
+      }
+    },
+    _pickGuestType(item) {
+      this.formData.guest_num_type = item.value
+      this._controlGuestTypePicker()
+    },
+    _controlGuestTypePicker() {
+      this.showGuestTypePicker = !this.showGuestTypePicker
     },
   },
 }
@@ -542,7 +730,7 @@ export default {
   text-align: right;
 }
 
-.van-popup {
+.full-popup {
   height: 100vh;
   box-sizing: border-box;
   padding-bottom: 44px;

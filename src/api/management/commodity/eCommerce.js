@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default {
-  // 读取电商商品列表
+  // 读取零售商品列表
   getECommerceList: page =>
     axios.get('/appapi.php?c=SpaceMerchant&a=spro', {
       params: {
@@ -11,34 +11,34 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
-  // 删除电商商品
+  // 删除零售商品
   deleteECommerce: ({ store_id, goods_id }) =>
     axios.post('/appapi.php?c=SpaceMerchant&a=goods_del', {
       store_id,
       goods_id,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 读取电商商品1级分类
+  // 读取零售商品1级分类
   getECommerceFirstCategoryList: () =>
     axios.get('/appapi.php?c=SpaceMerchant&a=getShopCate', {
       params: {
         ticket: localStorage.getItem('ticket'),
       },
     }),
-  // 读取电商商品2级分类
+  // 读取零售商品2级分类
   getECommerceSecondCategoryList: sort_id =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getShopTwoCate', {
       sort_id,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 读取平台电商商品分类
+  // 读取平台零售商品分类
   getPlatformEcommerceCommodityCategoryList: () =>
     axios.get('/appapi.php?c=SpaceMerchant&a=goods_category', {
       params: {
         ticket: localStorage.getItem('ticket'),
       },
     }),
-  // 创建电商分类
+  // 创建零售分类
   createECommerceCategory: ({ name, sort, is_week, week, discount, fid }) => {
     let method = 'addEditShopCate'
     if (fid !== '0') {
@@ -54,7 +54,7 @@ export default {
       ticket: localStorage.getItem('ticket'),
     })
   },
-  // 删除电商分类
+  // 删除零售分类
   deleteECommerceCategory: ({ sort_id, type }) => {
     let method = 'delShopCate'
     if (type !== 1) {
@@ -65,13 +65,13 @@ export default {
       ticket: localStorage.getItem('ticket'),
     })
   },
-  // 创建电商商品
+  // 创建零售商品
   createECommerce: payload =>
     axios.post(`/appapi.php?c=SpaceMerchant&a=goods_add`, {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 查询电商商品详情
+  // 查询零售商品详情
   readECommerceDetail: id =>
     axios.get(`/appapi.php?c=SpaceMerchant&a=goods_detail`, {
       params: {
@@ -79,13 +79,13 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
-  // 修改电商商品
+  // 修改零售商品
   updateECommerce: payload =>
     axios.post(`/appapi.php?c=SpaceMerchant&a=goods_edit`, {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 修改电商商品优惠
+  // 修改零售商品优惠
   updateECommercePreferential: payload =>
     axios.post(`/appapi.php?c=SpaceMerchant&a=goods_discount`, {
       ...payload,

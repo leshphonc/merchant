@@ -178,7 +178,7 @@
             </van-checkbox-group>
           </van-list>
         </van-tab>
-        <van-tab title="电商商品">
+        <van-tab title="零售商品">
           <van-list
             :finished="finishedE"
             :finished-text="finishTextE"
@@ -268,7 +268,7 @@ export default {
       page: 1,
       finished: false,
       cache: [],
-      // 电商数据
+      // 零售数据
       listE: [],
       pageE: 1,
       finishedE: false,
@@ -377,7 +377,7 @@ export default {
         this.list.push(...res)
       })
     },
-    // 更新电商商品数据
+    // 更新零售商品数据
     _onLoadE() {
       this.getECommerceList(this.pageE).then(res => {
         this.loading = false

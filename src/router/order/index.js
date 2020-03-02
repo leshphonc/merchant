@@ -51,7 +51,7 @@ export default {
       path: 'packageOrderDetail/:id',
       component: () => import('@/views/order/PackageOrderDetail'),
     },
-    // 电商
+    // 零售
     {
       path: 'eCommerceList/:id?',
       component: () => import('@/views/order/ECommerceList'),

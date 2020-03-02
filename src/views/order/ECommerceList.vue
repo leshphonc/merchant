@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" fixed left-arrow title="电商订单"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" fixed left-arrow title="零售订单"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-sticky :offset-top="offsetTop">
       <van-search @search="_onSearch" placeholder="请填写搜索关键词" v-model="keyword" />

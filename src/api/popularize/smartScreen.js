@@ -137,7 +137,25 @@ export default {
     }),
   // 获取海报下推广角色
   getSmartScreenRoleList: () =>
+    axios.post('/appapi.php?c=Merchantimax&a=getAiUserRolesList', {
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取海报下推广会员
+  getSmartScreenMemberList: () =>
+    axios.get('/appapi.php?c=SpaceMerchant&a=card_group&page=1&size=50', {
+      params: {
+        ticket: localStorage.getItem('ticket'),
+      },
+    }),
+  // 获取海报下推广店员
+  getSmartScreenStaffList: () =>
     axios.post('/appapi.php?c=Merchantimax&a=getMerchantRoleList', {
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取海报下客人需求
+  getSmartScreenDemandList: ids =>
+    axios.post('/appapi.php?c=Merchantimax&a=getGuestDemandList', {
+      imax_ids: ids,
       ticket: localStorage.getItem('ticket'),
     }),
   // 绑定海报到屏幕
@@ -160,7 +178,7 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 获取商家店铺下上架且未推广的电商商品
+  // 获取商家店铺下上架且未推广的零售商品
   getNotPopularizedECommerceList: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=spro', {
       ...payload,

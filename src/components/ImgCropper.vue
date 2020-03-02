@@ -27,8 +27,10 @@
   <div>
     <ValidationProvider :name="field" :rules="field ? 'required' : null" slim v-slot="{ errors }">
       <van-field
+        :rules="[{ required: !!name, message: '请上传图片' }]"
         :error-message="errors[0]"
         :label="title"
+        :name="name"
         :required="field ? true : false"
         class="upload-field"
         v-model="validate"
@@ -42,7 +44,7 @@
         />
       </van-field>
     </ValidationProvider>
-    <van-popup class="upload-popup" position="bottom" get-container="body" safe-area-inset-bottom v-model="showPopup">
+    <van-popup class="upload-popup" get-container="body" position="bottom" safe-area-inset-bottom v-model="showPopup">
       <vue-cropper
         :fixed="fixedRatio"
         :fixedNumber="ratio"
@@ -110,6 +112,7 @@ export default {
       default: true,
     },
     // 是否开始验证
+    name: String,
     field: String,
     // 删除回调
     delete: Function,

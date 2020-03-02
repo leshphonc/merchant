@@ -173,7 +173,7 @@ const BusinessGrid = {
   title: '商家业务',
   list: [
     {
-      name: '电商管理',
+      name: '零售管理',
       path: '1',
       enable: require('../assets/image/dsgl.png'),
       disable: require('../assets/image/dsgl_gray.png'),

@@ -209,7 +209,7 @@ export default {
   created() {},
 
   mounted() {
-    // 电商商品一级分类
+    // 零售商品一级分类
     this._getECommerceFirstCategoryList()
   },
 
@@ -237,7 +237,7 @@ export default {
     _controlCategoryPicker() {
       this.showCategoryPicker = !this.showCategoryPicker
     },
-    // 刷新电商商品列表
+    // 刷新零售商品列表
     _onRefresh() {
       this.getECommerceList().then(res => {
         this.page = 2
@@ -250,7 +250,7 @@ export default {
         }
       })
     },
-    // 异步更新电商商品数据
+    // 异步更新零售商品数据
     _onLoad() {
       this.getECommerceList(this.page).then(res => {
         this.loading = false
@@ -262,7 +262,7 @@ export default {
         this.list.push(...res.lists)
       })
     },
-    // 删除电商产品
+    // 删除零售产品
     _deleteCommodity(store_id, goods_id) {
       this.$dialog
         .confirm({
@@ -329,7 +329,7 @@ export default {
         text: tabIndex ? '管理' : '创建',
       })
     },
-    // 获取电商商品一级分类
+    // 获取零售商品一级分类
     _getECommerceFirstCategoryList() {
       this.getECommerceFirstCategoryList().then(res => {
         this.firstCategoryList = res

@@ -2,7 +2,7 @@
   <div>
     <van-nav-bar @click-left="$goBack" fixed left-arrow title="业务信息配置"></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <van-cell-group title="电商配置" v-if="detail.have_mall === '1'">
+    <van-cell-group title="零售配置" v-if="detail.have_mall === '1'">
       <van-cell :to="`/storefront/eCommerceSetting/${detail.store_id}`" is-link title="配置编辑"></van-cell>
       <van-cell :to="`/storefront/eCommerceSettingPreferential/${detail.store_id}`" is-link title="店铺优惠"></van-cell>
     </van-cell-group>

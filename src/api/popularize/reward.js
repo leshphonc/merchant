@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default {
-  // 电商商品分销分佣修改
+  // 零售商品分销分佣修改
   updateECommerceReward: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=goods_spread', {
       ...payload,

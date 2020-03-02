@@ -12,8 +12,8 @@
     <!-- 绑定产品列表 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showCommodityPopup">
       <van-tabs sticky>
-        <!-- 电商 -->
-        <van-tab title="电商">
+        <!-- 零售 -->
+        <van-tab title="零售">
           <van-pull-refresh @refresh="_eOnRefresh" v-model="eRefreshing">
             <van-list
               :finished="eFinished"
@@ -162,7 +162,7 @@ export default {
       loading: false,
       result_id: '',
       result_type: '',
-      // 电商
+      // 零售
       eList: [],
       ePage: 1,
       eFinished: false,
@@ -249,7 +249,7 @@ export default {
       let type
       switch (this.result_type - 0) {
         case 0:
-          type = '电商'
+          type = '零售'
           break
         case 1:
           type = '团购'

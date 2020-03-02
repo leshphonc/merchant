@@ -37,7 +37,7 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 读取店铺下绑定的电商商品列表
+  // 读取店铺下绑定的零售商品列表
   getStoreFrontBindECommerceList: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=selBindGoods', {
       ...payload,
@@ -58,7 +58,7 @@ export default {
       size: 10,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 读取店铺下未绑定的电商商品列表
+  // 读取店铺下未绑定的零售商品列表
   getStoreFrontUnBindECommerceList: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=selNoBindOnlineGoods', {
       ...payload,
@@ -79,7 +79,7 @@ export default {
       size: 10,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 绑定电商商品到店铺下
+  // 绑定零售商品到店铺下
   bindECommerceToStoreFront: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=onlineGoodsBindStore', {
       ...payload,
@@ -97,7 +97,7 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 解绑店铺下的电商商品
+  // 解绑店铺下的零售商品
   unBindECommerce: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=goodsDelBindStore', {
       ...payload,
@@ -115,7 +115,7 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 将电商产品加入店铺首页推荐
+  // 将零售产品加入店铺首页推荐
   addECommerceToRecommend: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=recommendOnlineGoods', {
       ...payload,

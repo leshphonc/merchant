@@ -76,7 +76,7 @@ export default {
 
   methods: {
     ...mapActions('commodity', ['readServiceSalesRecord']),
-    // 刷新电商商品列表
+    // 刷新零售商品列表
     _onRefresh() {
       const { id } = this.$route.params
       this.readServiceSalesRecord({
@@ -93,7 +93,7 @@ export default {
         }
       })
     },
-    // 异步更新电商商品数据
+    // 异步更新零售商品数据
     _onLoad() {
       const { id } = this.$route.params
       this.readServiceSalesRecord({

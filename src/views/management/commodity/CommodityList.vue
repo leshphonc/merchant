@@ -10,7 +10,7 @@
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-tabs :offset-top="offsetTop" @change="_changeActiveTab" sticky v-model="activeTab">
-      <van-tab title="电商">
+      <van-tab title="零售">
         <e-commerce></e-commerce>
       </van-tab>
       <van-tab title="预定">

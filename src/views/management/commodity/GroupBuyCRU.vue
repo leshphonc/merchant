@@ -496,7 +496,7 @@ export default {
     if (id) {
       this._readGroupBuyDetail(id)
     } else {
-      // 电商分类
+      // 零售分类
       this._getPlatformGroupBuyCategoryList()
     }
   },

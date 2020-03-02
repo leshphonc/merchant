@@ -162,6 +162,27 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 获取海报可推广会员
+  getSmartScreenMemberList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getSmartScreenMemberList()
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取海报可推广店员
+  getSmartScreenStaffList() {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getSmartScreenStaffList()
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取海报可绑定需求列表
+  getSmartScreenDemandList(context, ids) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getSmartScreenDemandList(ids)
+      data ? resolve(data) : reject()
+    })
+  },
   // 绑定海报到屏幕
   bindPosterToSmartScreen(context, payload) {
     return new Promise(async (resolve, reject) => {
@@ -183,7 +204,7 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
-  // 获取商家店铺下上架且未推广的电商商品
+  // 获取商家店铺下上架且未推广的零售商品
   getNotPopularizedECommerceList() {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.getNotPopularizedECommerceList(payload)

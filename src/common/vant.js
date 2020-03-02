@@ -12,6 +12,7 @@ import {
   CheckboxGroup,
   DatetimePicker,
   Field,
+  Form,
   NumberKeyboard,
   Picker,
   Radio,
@@ -37,6 +38,8 @@ import {
   Lazyload,
   List,
   Panel,
+  Step,
+  Steps,
   Sticky,
   Swipe,
   SwipeItem,
@@ -66,6 +69,7 @@ Vue.use(Popup)
 Vue.use(Checkbox).use(CheckboxGroup)
 Vue.use(DatetimePicker)
 Vue.use(Field)
+Vue.use(Form)
 Vue.use(NumberKeyboard)
 Vue.use(Picker)
 Vue.use(Radio).use(RadioGroup)
@@ -88,6 +92,7 @@ Vue.use(ImagePreview)
 Vue.use(Lazyload)
 Vue.use(List)
 Vue.use(Panel)
+Vue.use(Step).use(Steps)
 Vue.use(Sticky)
 Vue.use(Swipe).use(SwipeItem)
 Vue.use(Tag)

@@ -10,7 +10,7 @@
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-tabs :offset-top="offsetTop" sticky v-model="active">
-      <van-tab title="电商">
+      <van-tab title="零售">
         <e-commerce-list ref="ecommerce"></e-commerce-list>
       </van-tab>
       <van-tab title="服务">
@@ -24,8 +24,8 @@
     <!-- 绑定产品列表 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showCommodityPopup">
       <van-tabs sticky>
-        <van-tab title="电商">
-          <!-- 电商 -->
+        <van-tab title="零售">
+          <!-- 零售 -->
           <van-list
             :finished="eFinished"
             :finished-text="eFinishText"

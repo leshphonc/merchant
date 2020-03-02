@@ -6,7 +6,7 @@
       fixed
       left-arrow
       right-text="保存"
-      title="电商业务配置"
+      title="零售业务配置"
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">

@@ -10,7 +10,7 @@ export default {
       component: () => import('@/views/management/commodity/CommodityList'),
     },
     {
-      // 电商佣金分佣设置
+      // 零售佣金分佣设置
       path: 'eCommerceReward/:id',
       component: () => import('@/views/popularize/reward/ECommerceReward'),
     },

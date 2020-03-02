@@ -75,7 +75,7 @@ export default {
 
   methods: {
     ...mapActions('gift', ['getGiftList', 'deleteGift']),
-    // 刷新电商商品列表
+    // 刷新零售商品列表
     _onRefresh(value) {
       this.getGiftList({ page: 1, keyword: value || this.keyword }).then(res => {
         this.page = 2
@@ -88,7 +88,7 @@ export default {
         }
       })
     },
-    // 异步更新电商商品数据
+    // 异步更新零售商品数据
     _onLoad() {
       this.getGiftList({ page: this.page, keyword: this.keyword }).then(res => {
         this.loading = false

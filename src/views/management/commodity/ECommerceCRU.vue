@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-nav-bar
-      :title="`${type}电商商品`"
+      :title="`${type}零售商品`"
       @click-left="$goBack"
       @click-right="_submit"
       fixed
@@ -15,7 +15,7 @@
           <van-field
             :error-message="errors[0]"
             label="商品名称"
-            placeholder="电商商品名称"
+            placeholder="零售商品名称"
             required
             v-model.trim="formData.name"
           />
@@ -66,6 +66,12 @@
             v-model.trim="formData.stock_num"
           />
         </ValidationProvider>
+        <van-cell title="需要桌台/房间">
+          <van-switch active-value="1" inactive-value="0" v-model="formData.need_table" />
+        </van-cell>
+        <van-cell title="需要服务人员">
+          <van-switch active-value="1" inactive-value="0" v-model="formData.need_service_personnel" />
+        </van-cell>
         <van-field
           :value="statusLabel"
           @click="_controlStatusPicker"
@@ -84,7 +90,7 @@
           label="类型"
           readonly
         />
-        <ValidationProvider name="商家电商分类" rules="required" slim v-slot="{ errors }">
+        <ValidationProvider name="商家零售分类" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             :value="categoryLabel"
@@ -156,7 +162,7 @@
             autosize
             label="商品描述"
             maxlength="100"
-            placeholder="电商商品描述"
+            placeholder="零售商品描述"
             required
             rows="3"
             show-word-limit
@@ -277,6 +283,8 @@ export default {
         cat_id: '',
         des: '',
         description: '',
+        need_table: '0',
+        need_service_personnel: '0',
       },
       statusColumns: [
         { label: '在售', value: '1' },
@@ -350,7 +358,7 @@ export default {
     freightTypeIndex() {
       return 0
     },
-    // 所属电商分类非空验证
+    // 所属零售分类非空验证
     categoryLabel() {
       let resultStr = ''
       if (this.sort_fid) {
@@ -366,7 +374,7 @@ export default {
       }
       return resultStr
     },
-    // 平台商城电商分类非空验证
+    // 平台商城零售分类非空验证
     platformCategoryLabel() {
       let resultStr = ''
       const item = this.platFormCategoryColumnsOrigin.find(item => item.value === this.formData.cat_fid)
@@ -398,14 +406,14 @@ export default {
   mounted() {
     // 运费模版
     this._getFreightTemPlateList()
-    // 平台电商分类
+    // 平台零售分类
     this._getPlatformECommerceCategoryList()
     // 是否为编辑店铺
     const { id } = this.$route.params
     if (id) {
       this._readECommerceDetail(id)
     } else {
-      // 电商分类
+      // 零售分类
       this._getECommerceFirstCategoryList()
     }
   },

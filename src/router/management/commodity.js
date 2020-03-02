@@ -11,12 +11,12 @@ export default {
       component: CommodityList,
     },
     {
-      // 电商商品编辑
+      // 零售商品编辑
       path: 'eCommerceCRU/:id?',
       component: () => import('@/views/management/commodity/ECommerceCRU'),
     },
     {
-      // 电商商品优惠编辑
+      // 零售商品优惠编辑
       path: 'eCommercePreferential/:id',
       component: () => import('@/views/management/commodity/ECommercePreferential'),
     },

@@ -26,12 +26,12 @@ export default {
       component: () => import('@/views/management/storeFront/StoreFrontBusiness'),
     },
     {
-      // 商铺电商配置编辑
+      // 商铺零售配置编辑
       path: 'eCommerceSetting/:id',
       component: () => import('@/views/management/storeFront/components/ECommerceSetting'),
     },
     {
-      // 商铺电商优惠编辑
+      // 商铺零售优惠编辑
       path: 'eCommerceSettingPreferential/:id',
       component: () => import('@/views/management/storeFront/components/ECommerceSettingPreferential'),
     },

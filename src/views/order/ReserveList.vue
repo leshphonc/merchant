@@ -173,7 +173,7 @@ export default {
         }
       })
     },
-    // 异步更新电商商品数据
+    // 异步更新零售商品数据
     _onLoad() {
       this.getReserveList({
         page: this.page,

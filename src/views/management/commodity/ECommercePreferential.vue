@@ -6,7 +6,7 @@
       fixed
       left-arrow
       right-text="保存"
-      title="电商商品优惠"
+      title="零售商品优惠"
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">

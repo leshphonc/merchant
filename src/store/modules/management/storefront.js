@@ -50,7 +50,7 @@ const actions = {
       data ? resolve() : reject()
     })
   },
-  // 读取店铺下绑定的电商商品列表
+  // 读取店铺下绑定的零售商品列表
   getStoreFrontBindECommerceList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.getStoreFrontBindECommerceList(payload)
@@ -71,7 +71,7 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
-  // 读取店铺下未绑定的电商商品列表
+  // 读取店铺下未绑定的零售商品列表
   getStoreFrontUnBindECommerceList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.getStoreFrontUnBindECommerceList(payload)
@@ -92,7 +92,7 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
-  // 绑定电商商品到店铺下
+  // 绑定零售商品到店铺下
   bindECommerceToStoreFront(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.bindECommerceToStoreFront(payload)
@@ -113,7 +113,7 @@ const actions = {
       data ? resolve() : reject()
     })
   },
-  // 解绑店铺下的电商商品
+  // 解绑店铺下的零售商品
   unBindECommerce(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.unBindECommerce(payload)
@@ -134,7 +134,7 @@ const actions = {
       data ? resolve() : reject()
     })
   },
-  // 将电商产品加入店铺首页推荐
+  // 将零售产品加入店铺首页推荐
   addECommerceToRecommend(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.addECommerceToRecommend(payload)

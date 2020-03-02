@@ -33,25 +33,59 @@
         </van-cell>
       </div>
       <div class="btn-group">
-        <van-button @click="_controlFlagEditor()" class="create-btn" type="primary">创建标识</van-button>
         <van-button @click="_controlFlagPopup" class="close-btn">关闭</van-button>
+        <van-button @click="_controlFlagEditor()" class="create-btn" type="primary">创建</van-button>
       </div>
     </van-popup>
-    <van-dialog :before-close="_submit" show-cancel-button title="标识位" v-model="showFlagEditor">
+    <van-popup class="popup" position="bottom" safe-area-inset-bottom v-model="showFlagEditor">
+      <van-form @submit="_submit">
+        <van-field
+          :rules="[{ required: true, message: '标识名称是必须的' }]"
+          label="标识名称"
+          name="name"
+          placeholder="请填写标识名称"
+          v-model="formData.name"
+        />
+        <van-field
+          :rules="[{ required: true, message: '最大容纳人数是必须的' }]"
+          label="容纳人数"
+          name="person_num"
+          placeholder="请填写最大容纳人数"
+          type="digit"
+          v-model="formData.person_num"
+        />
+        <van-field
+          :rules="[{ required: true, message: '内部地址是必须的' }]"
+          label="内部地址"
+          name="detailed_address"
+          placeholder="请填写内部地址"
+          v-model="formData.detailed_address"
+        />
+        <img-cropper :confirm="_pickPic" :count="5" :list="pic" name="env_img" title="环境图片"></img-cropper>
+        <div class="btn-group">
+          <van-button @click="_controlFlagEditor()" class="close-btn" native-type="button">关闭</van-button>
+          <van-button class="create-btn" native-type="submit" type="primary">确认</van-button>
+        </div>
+      </van-form>
+    </van-popup>
+    <!-- <van-dialog :before-close="_submit" show-cancel-button title="标识位" v-model="showFlagEditor">
       <van-field input-align="center" placeholder="请输入标识位名称" v-model="name"></van-field>
-    </van-dialog>
+    </van-dialog>-->
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import { ImagePreview } from 'vant'
+import ImgCropper from '@/components/ImgCropper'
 export default {
   name: 'serviceSetting',
 
   mixins: [],
 
-  components: {},
+  components: {
+    ImgCropper,
+  },
 
   props: {},
 
@@ -74,7 +108,13 @@ export default {
       loading: false,
       list: [],
       lastId: '',
-      name: '',
+      formData: {
+        name: '',
+        person_num: '',
+        env_img: [],
+        detailed_address: '',
+      },
+      pic: [],
     }
   },
 
@@ -118,10 +158,25 @@ export default {
     _controlFlagEditor(data) {
       if (data) {
         this.lastId = data.id
-        this.name = data.s_name
+        this.formData = {
+          name: data.s_name,
+          person_num: data.person_num,
+          env_img: data.env_img,
+          detailed_address: data.detailed_address,
+        }
+        this.pic = data.env_img.map(item => {
+          return {
+            url: item,
+          }
+        })
       } else {
         this.lastId = ''
-        this.name = ''
+        this.formData = {
+          name: '',
+          person_num: '',
+          env_img: [],
+          detailed_address: '',
+        }
       }
       this.showFlagEditor = !this.showFlagEditor
     },
@@ -149,41 +204,37 @@ export default {
         }
       })
     },
-    _submit(action, done) {
+    _submit(values) {
       if (this.loading) return
       this.loading = true
-      if (action === 'confirm') {
-        const { id } = this.$route.params
-        let params = {
-          type: '1',
-          store_id: id,
-          name: this.name,
-        }
-        let methods = 'createStoreFrontFlag'
-        if (this.lastId) {
-          methods = 'updateStoreFrontFlag'
-          params.id = this.lastId
-        }
-        this[methods](params)
-          .then(() => {
-            this.$toast.success({
-              message: '操作成功',
-              duration: 1000,
-              onClose: () => {
-                this._getStoreFrontFlagList(id)
-              },
-            })
-            done()
-            this.loading = false
-          })
-          .catch(() => {
-            done()
-            this.loading = false
-          })
-      } else {
-        done()
-        this.loading = false
+      const { id } = this.$route.params
+      let params = {
+        type: '1',
+        store_id: id,
+        ...values,
+        env_img: values.env_img.map(item => item.url),
       }
+      let methods = 'createStoreFrontFlag'
+      if (this.lastId) {
+        methods = 'updateStoreFrontFlag'
+        params.id = this.lastId
+      }
+      this[methods](params)
+        .then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            duration: 1000,
+            onClose: () => {
+              this._getStoreFrontFlagList(id)
+            },
+          })
+          this._controlFlagEditor()
+          this.loading = false
+        })
+        .catch(() => {
+          this._controlFlagEditor()
+          this.loading = false
+        })
     },
     _preView(sid) {
       const { id } = this.$route.params
@@ -196,6 +247,9 @@ export default {
         closeOnPopstate: true,
         maxZoom: 1,
       })
+    },
+    _pickPic(data) {
+      // console.log(data)
     },
   },
 }
@@ -216,5 +270,9 @@ export default {
       margin: 0;
     }
   }
+}
+
+.full {
+  height: 100vh;
 }
 </style>

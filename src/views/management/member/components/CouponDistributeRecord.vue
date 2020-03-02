@@ -54,7 +54,7 @@ export default {
 
   methods: {
     ...mapActions('member', ['getCouponDistributeRecord']),
-    // 刷新电商商品列表
+    // 刷新零售商品列表
     _onRefresh() {
       this.getCouponDistributeRecord().then(res => {
         this.page = 2
@@ -67,7 +67,7 @@ export default {
         }
       })
     },
-    // 异步更新电商商品数据
+    // 异步更新零售商品数据
     _onLoad() {
       this.getCouponDistributeRecord(this.page).then(res => {
         this.loading = false
