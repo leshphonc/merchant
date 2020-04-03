@@ -108,7 +108,7 @@
           </van-field>
         </ValidationProvider>
       </van-cell-group>
-      <van-cell-group title="赠送商家优惠券">
+      <van-cell-group title="赠送商家优惠券" v-if="goodsType !== '2'">
         <van-button @click="_addCoupon" icon="plus">新增</van-button>
         <div :key="index" class="van-hairline--bottom" v-for="(item, index) in formData.give">
           <ValidationProvider name="优惠券" rules="required" slim v-slot="{ errors }">
@@ -256,6 +256,7 @@ export default {
       memberGroupColumns: [],
       dhbOpen: '0',
       scoreOpen: '0',
+      goodsType: '0',
     }
   },
 
@@ -475,6 +476,7 @@ export default {
     // 页面默认数据
     _readECommerceDetail(id) {
       this.readECommerceDetail(id).then(res => {
+        this.goodsType = res.goods_type
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
           this.formData[item] = res[item]

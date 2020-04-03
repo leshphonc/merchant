@@ -29,6 +29,14 @@
         <package></package>
       </van-tab>
     </van-tabs>
+    <van-action-sheet
+      :actions="actions"
+      @cancel="show = false"
+      @select="onSelect"
+      cancel-text="取消"
+      description="选择产品类型"
+      v-model="show"
+    />
   </div>
 </template>
 
@@ -58,7 +66,10 @@ export default {
   props: {},
 
   data() {
-    return {}
+    return {
+      show: false,
+      actions: [{ name: '配送产品' }, { name: '到店消费产品' }, { name: '虚拟产品' }],
+    }
   },
 
   computed: {
@@ -95,7 +106,8 @@ export default {
       if (this.rightText === '创建') {
         switch (this.activeTab) {
           case 0:
-            this.$router.push('/commodity/eCommerceCRU')
+            this.show = true
+            // this.$router.push('/commodity/eCommerceCRU')
             break
           case 1:
             this.$router.push('/commodity/reserveCRU')
@@ -122,6 +134,25 @@ export default {
               index: this.activeTab,
               text: '管理',
             })
+      }
+    },
+    onSelect(item) {
+      // 默认情况下点击选项时不会自动收起
+      // 可以通过 close-on-click-action 属性开启自动收起
+      this.show = false
+      switch (item.name) {
+        case '配送产品':
+          this.show = true
+          this.$router.push('/commodity/eCommerceCRU/0')
+          break
+        case '虚拟产品':
+          this.$router.push('/commodity/eCommerceCRU/1')
+          break
+        case '到店消费产品':
+          this.$router.push('/commodity/eCommerceCRU/2')
+          break
+        default:
+          break
       }
     },
   },

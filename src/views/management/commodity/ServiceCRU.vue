@@ -49,6 +49,15 @@
             v-model.trim="formData.old_price"
           ></van-field>
         </ValidationProvider>
+        <ValidationProvider name="查询关键字" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="查询关键字"
+            placeholder="查询关键字"
+            required
+            v-model.trim="formData.keyword"
+          ></van-field>
+        </ValidationProvider>
         <van-cell title="日期多选">
           <van-switch v-model="formData.appoint_date_type"></van-switch>
         </van-cell>
@@ -242,6 +251,7 @@ export default {
         pic: '',
         appoint_pic_content: '',
         description: '',
+        keyword: '',
       },
       pic: [],
       showStartTimePicker: false,

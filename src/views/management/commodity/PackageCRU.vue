@@ -40,6 +40,15 @@
             v-model.trim="formData.price"
           ></van-field>
         </ValidationProvider>
+        <ValidationProvider name="查询关键字" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="查询关键字"
+            placeholder="查询关键字"
+            required
+            v-model.trim="formData.keyword"
+          ></van-field>
+        </ValidationProvider>
         <ValidationProvider name="有效天数" rules="required|numeric" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -257,6 +266,7 @@ export default {
         cat_fid: '',
         cat_id: '',
         description: '',
+        keyword: '',
       },
       loading: false,
       pic: [],

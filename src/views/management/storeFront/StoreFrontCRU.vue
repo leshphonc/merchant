@@ -109,6 +109,26 @@
             required
           ></van-field>
         </ValidationProvider>
+        <ValidationProvider name="打卡" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            :value="formData.clock_in_type.length ? '1' : ''"
+            @click="_controlClockInPopup"
+            error-message-align="right"
+            input-align="right"
+            is-link
+            label="员工打卡"
+            placeholder="请选择"
+            readonly
+            required
+          >
+            <div slot="input" v-if="formData.clock_in_type.length">
+              <div :key="item" v-for="item in formData.clock_in_type">
+                <van-tag type="primary">{{ _clockLabel(item) }}</van-tag>
+              </div>
+            </div>
+          </van-field>
+        </ValidationProvider>
         <ValidationProvider name="营业开始时间" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -265,6 +285,30 @@
         value-key="label"
       ></van-picker>
     </van-popup>
+    <!-- 选择打卡 -->
+    <van-popup position="top" safe-area-inset-bottom v-model="showClockInPopup">
+      <van-checkbox-group class="cache-list" v-model="cache">
+        <van-cell-group>
+          <van-cell
+            :key="index"
+            :title="item.name"
+            @click="_toggle(index)"
+            clickable
+            v-for="(item, index) in clockInList"
+          >
+            <van-checkbox :name="item.id" ref="checkboxes" slot="right-icon"></van-checkbox>
+          </van-cell>
+        </van-cell-group>
+      </van-checkbox-group>
+      <van-row>
+        <van-col span="12">
+          <van-button @click="_controlClockInPopup">取消</van-button>
+        </van-col>
+        <van-col span="12">
+          <van-button @click="_pickClockIn" type="primary">确定</van-button>
+        </van-col>
+      </van-row>
+    </van-popup>
   </div>
 </template>
 
@@ -323,6 +367,7 @@ export default {
         condition_price: '',
         minus_price: '',
         context: '',
+        clock_in_type: [],
       },
       // 默认数据
       shop_logo: [],
@@ -353,11 +398,14 @@ export default {
       showEndTimePicker: false,
       showStoreFrontCategory: false,
       showDisCount: false,
+      showClockInPopup: false,
       // 锁
       loading: false,
       // 后续需要后台更改的字段
       businessValue: '',
       defaultArea: null,
+      clockInList: [],
+      cache: [],
     }
   },
 
@@ -462,6 +510,17 @@ export default {
     _controlDisCountPicker() {
       this.showDisCount = !this.showDisCount
     },
+    _controlClockInPopup() {
+      this.showClockInPopup = !this.showClockInPopup
+    },
+    _pickClockIn() {
+      const arr = []
+      this.cache.forEach(item => {
+        arr.push(item)
+      })
+      this.formData.clock_in_type = arr
+      this._controlClockInPopup()
+    },
     // 生成店铺业务第二行数据
     _changeStoreFrontCategory(picker, values) {
       if (values[0].children) {
@@ -538,6 +597,16 @@ export default {
     _changeHtml(data) {
       this.formData.context = data.html
     },
+    // 获取打卡名称
+    _clockLabel(id) {
+      const item = this.clockInList.find(item => item.id === id)
+      return item && item.name
+    },
+    // 打卡checkbox选中状态切换
+    _toggle(index, flag) {
+      // 判断是否选可选
+      !flag && this.$refs.checkboxes[index].toggle()
+    },
     // 获取平台店铺分类
     _getPlatformStoreFrontCategory(fid, id) {
       this.getPlatformStoreFrontCategory().then(res => {
@@ -592,6 +661,16 @@ export default {
             url: res.qrcode_backgroup,
           },
         ]
+
+        this.clockInList = res.clock_in_type_arr
+
+        // 设置默认选中的打卡
+        const cache = []
+        res.clock_in_type.forEach(item => {
+          const result = this.clockInList.find(i => i.id === item)
+          result && cache.push(result.id)
+        })
+        this.cache = cache
 
         // { label: '标准', value: 'have_service' },
         // { label: '外卖', value: 'have_peisong' },
@@ -693,5 +772,15 @@ export default {
 .submit {
   margin: 10px 0;
   width: 100%;
+}
+
+.van-popup {
+  .cache-list {
+    height: 65vh;
+    overflow: scroll;
+  }
+  .van-button {
+    width: 100%;
+  }
 }
 </style>

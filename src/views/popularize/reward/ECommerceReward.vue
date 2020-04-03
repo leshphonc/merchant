@@ -10,7 +10,7 @@
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
-      <van-cell-group title="分销设置">
+      <van-cell-group title="分销设置" v-if="goodsType !== '2'">
         <van-cell title="发布到分销市场">
           <van-switch active-value="1" inactive-value="0" v-model="formData.is_fx" />
         </van-cell>
@@ -198,6 +198,7 @@ export default {
       ],
       showTypePicker: false,
       loading: false,
+      goodsType: '0',
     }
   },
 
@@ -239,6 +240,7 @@ export default {
     })
     const { id } = this.$route.params
     await this.readECommerceDetail(id).then(res => {
+      this.goodsType = res.goods_type
       const keys = Object.keys(this.formData)
       keys.forEach(item => {
         if (item === 'spread') return

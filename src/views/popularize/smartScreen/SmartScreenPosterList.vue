@@ -49,7 +49,9 @@
                 </div>
                 <div slot="footer" v-if="item.is_shelves === '1'">
                   <!-- <van-button disabled size="small" v-if="item.audit === '2'">同城审核中</van-button> -->
-                  <van-button @click="_changeRelease(item.id)" size="small" type="danger" v-if="item.audit !== '2'">取消发布</van-button>
+                  <van-button @click="_changeRelease(item.id)" size="small" type="danger" v-if="item.audit !== '2'"
+                    >取消发布</van-button
+                  >
                   <van-button @click="_openPopup(item)" size="small">智能屏推广</van-button>
                 </div>
                 <div slot="footer" v-else-if="item.is_shelves === '2'">
@@ -164,7 +166,12 @@
       </div>
       <van-collapse v-model="activeNames" v-show="curStep === 2">
         <van-collapse-item name="1" title="推广角色">
-          <van-icon @click.stop="$toast('收到此条推广的角色身份')" class="question-icon" name="question-o" slot="icon" />
+          <van-icon
+            @click.stop="$toast('收到此条推广的角色身份')"
+            class="question-icon"
+            name="question-o"
+            slot="icon"
+          />
           <van-checkbox-group v-model="formData.role">
             <van-cell-group>
               <van-cell
@@ -179,8 +186,13 @@
             </van-cell-group>
           </van-checkbox-group>
         </van-collapse-item>
-        <van-collapse-item name="2" title="推广会员">
-          <van-icon @click.stop="$toast('收到此条推广的会员身份')" class="question-icon" name="question-o" slot="icon" />
+        <van-collapse-item name="2" title="推广会员" v-if="formData.role.indexOf('4') > -1">
+          <van-icon
+            @click.stop="$toast('收到此条推广的会员身份')"
+            class="question-icon"
+            name="question-o"
+            slot="icon"
+          />
           <van-checkbox-group v-model="formData.promotion_role_member">
             <van-cell-group>
               <van-cell
@@ -195,9 +207,14 @@
             </van-cell-group>
           </van-checkbox-group>
         </van-collapse-item>
-        <van-collapse-item name="3" title="推广店员">
-          <van-icon @click.stop="$toast('收到此条推广的店员身份')" class="question-icon" name="question-o" slot="icon" />
-          <van-checkbox-group v-model="formData.promotion_role">
+        <van-collapse-item name="3" title="推广店员" v-if="formData.role.indexOf('5') > -1">
+          <van-icon
+            @click.stop="$toast('收到此条推广的店员身份')"
+            class="question-icon"
+            name="question-o"
+            slot="icon"
+          />
+          <van-checkbox-group v-model="formData.promotion_role_staff">
             <van-cell-group>
               <van-cell
                 :key="index"
@@ -295,7 +312,7 @@ export default {
         screen: [],
         start_time: '07:00',
         end_time: '20:59',
-        promotion_role: [],
+        promotion_role_staff: [],
         promotion_role_member: [],
         guest_num: '',
         guest_num_type: '0',
@@ -305,7 +322,7 @@ export default {
       },
       curStep: 0,
       active: 0,
-      activeNames: [],
+      activeNames: ['1'],
       screenList: [],
       roleList: [],
       memberList: [],
@@ -412,7 +429,7 @@ export default {
       this.formData.ad_id = item.id
       this.formData.guest_num = item.guest_num
       this.formData.role = item.to_user_ids // 角色
-      this.formData.promotion_role = item.promotion_role ? item.promotion_role.split(',') : [] // 店员
+      this.formData.promotion_role_staff = item.promotion_role_staff ? item.promotion_role_staff.split(',') : [] // 店员
       this.formData.promotion_role_member = item.promotion_role_member ? item.promotion_role_member.split(',') : [] // 会员
       this.formData.guest_num = item.guest_num
       this.formData.guest_num_type = item.guest_num_type
@@ -436,7 +453,7 @@ export default {
         screen: [],
         start_time: '07:00',
         end_time: '20:59',
-        promotion_role: [],
+        promotion_role_staff: [],
         promotion_role_member: [],
         guest_num: '',
         guest_num_type: '0',
@@ -656,7 +673,7 @@ export default {
         role_ids: this.formData.role.join(),
         time_start: this.formData.start_time,
         time_end: this.formData.end_time,
-        promotion_role: this.formData.promotion_role.join(),
+        promotion_role_staff: this.formData.promotion_role_staff.join(),
         promotion_role_member: this.formData.promotion_role_member.join(),
         guest_num: this.formData.guest_num,
         guest_num_type: this.formData.guest_num_type,
@@ -698,6 +715,16 @@ export default {
         } else {
           this.curStep += 1
         }
+      } else if (this.curStep === 2) {
+        if (this.formData.role.indexOf('5') > -1 && this.formData.promotion_role_member.length === 0) {
+          this.$toast('请选择推广会员身份')
+          return
+        }
+        if (this.formData.role.indexOf('6') > -1 && this.formData.promotion_role_staff.length === 0) {
+          this.$toast('请选择推广店员身份')
+          return
+        }
+        this.curStep += 1
       } else {
         this.curStep += 1
       }

@@ -12,7 +12,7 @@ export default {
     },
     {
       // 零售商品编辑
-      path: 'eCommerceCRU/:id?',
+      path: 'eCommerceCRU/:type/:id?',
       component: () => import('@/views/management/commodity/ECommerceCRU'),
     },
     {

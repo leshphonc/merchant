@@ -168,7 +168,6 @@ export default {
       arr.unshift({
         cat_id: '0',
         cat_name: '无',
-        children: [],
       })
       return arr
     },
@@ -200,7 +199,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.observer.reset()
         this.categoryLabel = '无'
-        this.$refs.catePicker.setIndexes([0])
+        this.$refs.catePicker && this.$refs.catePicker.setIndexes([0])
       })
     },
     // 分类归属开关

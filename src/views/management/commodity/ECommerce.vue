@@ -8,7 +8,7 @@
             :num="item.stock_num === '-1' ? '∞' : item.stock_num - item.sell_count"
             :origin-price="item.old_price"
             :price="item.price"
-            :tag="item.statusstr"
+            :tag="_goodsType(item.goods_type)"
             :thumb="item.list_pic"
             :title="item.s_name"
             lazy-load
@@ -20,10 +20,12 @@
             <div slot="footer" v-if="$route.fullPath === '/commodity'">
               <!-- <van-button @click="_deleteCommodity(item.store_id, item.goods_id)" size="small" type="danger"
                 >删除</van-button
-              > -->
+              >-->
               <van-button :to="`/commodity/serviceSalesRecord/${item.appoint_id}`" size="small">销售记录</van-button>
               <van-button :to="`/commodity/eCommercePreferential/${item.goods_id}`" size="small">优惠</van-button>
-              <van-button :to="`/commodity/eCommerceCRU/${item.goods_id}`" size="small">编辑</van-button>
+              <van-button :to="`/commodity/eCommerceCRU/${item.goods_type}/${item.goods_id}`" size="small"
+                >编辑</van-button
+              >
             </div>
             <div slot="footer" v-else>
               <van-button :to="`/reward/eCommerceReward/${item.goods_id}`" size="small" type="primary"
@@ -103,9 +105,9 @@
           </van-cell>
           <van-cell v-if="formData.is_week === '1'">
             <van-checkbox-group :max="2" v-model="formData.week">
-              <van-checkbox :key="item.value" :name="index + 1" shape="square" v-for="(item, index) in week">{{
-                item.label
-              }}</van-checkbox>
+              <van-checkbox :key="item.value" :name="index + 1" shape="square" v-for="(item, index) in week">
+                {{ item.label }}
+              </van-checkbox>
             </van-checkbox-group>
           </van-cell>
         </van-cell-group>
@@ -119,9 +121,9 @@
     <!-- 选择分类归属 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showCategoryPicker">
       <van-picker
-        ref="catePicker"
         :columns="firstCategoryListAddNull"
         @change="_changeCategory"
+        ref="catePicker"
         value-key="sort_name"
       />
     </van-popup>
@@ -198,7 +200,6 @@ export default {
       arr.unshift({
         sort_id: '0',
         sort_name: '无',
-        children: [],
       })
       return arr
     },
@@ -230,7 +231,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.observer.reset()
         this.categoryLabel = '无'
-        this.$refs.catePicker.setIndexes([0])
+        this.$refs.catePicker && this.$refs.catePicker.setIndexes([0])
       })
     },
     // 分类归属开关
@@ -321,6 +322,15 @@ export default {
           },
         })
         .catch(() => {})
+    },
+    _goodsType(type) {
+      if (type === '0') {
+        return '配送'
+      } else if (type === '1') {
+        return '虚拟'
+      } else {
+        return '到店'
+      }
     },
     // 更改vuex中的变量，判断当前分类是不是管理状态
     _changeTab(tabIndex) {

@@ -66,6 +66,15 @@
             v-model.trim="formData.price"
           />
         </ValidationProvider>
+        <ValidationProvider name="查询关键字" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="查询关键字"
+            placeholder="查询关键字"
+            required
+            v-model.trim="formData.keyword"
+          />
+        </ValidationProvider>
         <time-picker
           :data="[formData.begin_time, formData.end_time]"
           :pickEndTime="_pickEndTime"
@@ -384,6 +393,7 @@ export default {
         success_num: 1,
         status: '',
         is_recommend: '0',
+        keyword: '',
       },
       groupBuyColumns: [
         {

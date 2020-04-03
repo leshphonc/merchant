@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-nav-bar
-      :title="`${type}零售商品`"
+      :title="`${type}${goodsType}商品`"
       @click-left="$goBack"
       @click-right="_submit"
       fixed
@@ -15,12 +15,12 @@
           <van-field
             :error-message="errors[0]"
             label="商品名称"
-            placeholder="零售商品名称"
+            :placeholder="`${goodsType}商品名称`"
             required
             v-model.trim="formData.name"
           />
         </ValidationProvider>
-        <ValidationProvider name="条形码" rules="alpha_num" slim v-slot="{ errors }">
+        <ValidationProvider name="条形码" rules="alpha_num" slim v-if="$route.params.type !== '1'" v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             label="条形码"
@@ -57,6 +57,47 @@
             v-model.trim="formData.price"
           />
         </ValidationProvider>
+        <ValidationProvider
+          name="进价"
+          rules="required|decimal-max2"
+          slim
+          v-if="$route.params.type !== '1'"
+          v-slot="{ errors }"
+        >
+          <van-field
+            :error-message="errors[0]"
+            label="进价"
+            placeholder="用户看不到进价"
+            required
+            type="number"
+            v-model.trim="formData.cost_price"
+          />
+        </ValidationProvider>
+        <ValidationProvider name="查询关键字" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="查询关键字"
+            placeholder="查询关键字"
+            required
+            v-model.trim="formData.keyword"
+          ></van-field>
+        </ValidationProvider>
+        <ValidationProvider
+          name="打包费"
+          rules="required|decimal-max2"
+          slim
+          v-if="$route.params.type === '0'"
+          v-slot="{ errors }"
+        >
+          <van-field
+            :error-message="errors[0]"
+            label="打包费"
+            placeholder="请输入打包费用"
+            required
+            type="number"
+            v-model.trim="formData.packing_charge"
+          />
+        </ValidationProvider>
         <ValidationProvider name="库存" rules="required|gte-1" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -82,6 +123,7 @@
           readonly
         />
         <van-field
+          :disabled="$route.params.id"
           :value="typesLabel"
           @click="_controlTypesPicker"
           error-message-align="right"
@@ -90,7 +132,7 @@
           label="类型"
           readonly
         />
-        <ValidationProvider name="商家零售分类" rules="required" slim v-slot="{ errors }">
+        <ValidationProvider name="商家分类" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             :value="categoryLabel"
@@ -106,7 +148,7 @@
             required
           />
         </ValidationProvider>
-        <ValidationProvider name="商城分类" rules="required" slim v-slot="{ errors }">
+        <ValidationProvider name="商城分类" rules="required" slim v-if="$route.params.type === '0'" v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             :value="platformCategoryLabel"
@@ -122,7 +164,7 @@
             required
           />
         </ValidationProvider>
-        <ValidationProvider name="运费模版" rules="required" slim v-slot="{ errors }">
+        <ValidationProvider name="运费模版" rules="required" slim v-if="$route.params.type === '0'" v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             :value="freightTemplateLabel"
@@ -136,7 +178,13 @@
             required
           />
         </ValidationProvider>
-        <ValidationProvider name="其他区域运费" rules="required|decimal-max2" slim v-slot="{ errors }">
+        <ValidationProvider
+          name="其他区域运费"
+          rules="required|decimal-max2"
+          slim
+          v-if="$route.params.type === '0'"
+          v-slot="{ errors }"
+        >
           <van-field
             :error-message="errors[0]"
             label="其他区域运费"
@@ -154,6 +202,7 @@
           is-link
           label="运费计算方式"
           readonly
+          v-if="$route.params.type === '0'"
         />
         <img-cropper :confirm="_pickPic" :list="pic" field="商品图片" title="商品图片"></img-cropper>
         <ValidationProvider name="商品描述" rules="required" slim v-slot="{ errors }">
@@ -162,7 +211,7 @@
             autosize
             label="商品描述"
             maxlength="100"
-            placeholder="零售商品描述"
+            placeholder="商品描述"
             required
             rows="3"
             show-word-limit
@@ -271,6 +320,8 @@ export default {
         unit: '',
         old_price: '',
         price: '',
+        cost_price: '',
+        packing_charge: '0',
         stock_num: '',
         status: '1',
         goods_type: '0',
@@ -285,14 +336,16 @@ export default {
         description: '',
         need_table: '0',
         need_service_personnel: '0',
+        keyword: '',
       },
       statusColumns: [
         { label: '在售', value: '1' },
         { label: '停售', value: '0' },
       ],
       typesColumns: [
-        { label: '实体商品', value: '0' },
-        { label: '虚拟商品', value: '1' },
+        { label: '配送产品', value: '0' },
+        { label: '虚拟产品', value: '1' },
+        { label: '到店消费产品', value: '2' },
       ],
       freightTemplateColumns: [],
       freightTypeColumns: [
@@ -321,6 +374,17 @@ export default {
     // 页面类型
     type() {
       return this.$route.params.id ? '编辑' : '创建'
+    },
+    goodsType() {
+      let label = ''
+      if (this.$route.params.type === '0') {
+        label = '配送'
+      } else if (this.$route.params.type === '1') {
+        label = '虚拟'
+      } else if (this.$route.params.type === '2') {
+        label = '到店消费'
+      }
+      return label
     },
     // 商品状态
     statusLabel() {
@@ -435,6 +499,7 @@ export default {
     },
     // 商品类型开关
     _controlTypesPicker() {
+      if (this.$route.params.id) return
       this.showTypesPicker = !this.showTypesPicker
     },
     // 商品分类选择开关
