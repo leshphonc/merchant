@@ -3,10 +3,10 @@
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
       <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
         <van-panel
-          :desc="$moment(item.settlement_time * 1000).format('YYYY-MM-DD HH:mm')"
+          :desc="$moment(item.time * 1000).format('YYYY-MM-DD HH:mm')"
           :icon="item.avatar"
           :key="index"
-          :status="`¥${item.order_money}`"
+          :status="`¥${item.money}`"
           :title="item.nickname || '未知'"
           v-for="(item, index) in list"
         ></van-panel>

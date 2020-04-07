@@ -6,10 +6,10 @@
       <van-tab title="扫码记录">
         <ScanCodeRecord></ScanCodeRecord>
       </van-tab>
-      <van-tab title="绑粉人数">
+      <van-tab title="绑粉记录">
         <BindingFansRecord></BindingFansRecord>
       </van-tab>
-      <van-tab title="购买人数">
+      <van-tab title="购买记录">
         <BuyersRecord></BuyersRecord>
       </van-tab>
     </van-tabs>
