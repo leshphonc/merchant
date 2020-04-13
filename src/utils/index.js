@@ -14,7 +14,11 @@ export default {
     const reg = new RegExp(`(^|&)${name}=([^&]*)`)
     let result = null
     if (url) {
-      result = new URL(url).search.substr(1).match(reg)
+      try {
+        result = new URL(url).search.substr(1).match(reg)
+      } catch (error) {
+        result = null
+      }
     } else {
       result = window.location.search.substr(1).match(reg)
     }
