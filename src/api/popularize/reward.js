@@ -27,6 +27,12 @@ export default {
     }),
   // 套餐商品分销分佣修改
   updatePackageReward: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=packageSpread', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 组合卡分销分佣修改
+  updateCombinationCardReward: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=meal_spread', {
       ...payload,
       ticket: localStorage.getItem('ticket'),

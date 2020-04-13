@@ -28,6 +28,9 @@
       <van-tab title="套餐">
         <package></package>
       </van-tab>
+      <van-tab title="组合卡">
+        <CombinationCard></CombinationCard>
+      </van-tab>
     </van-tabs>
     <van-action-sheet
       :actions="actions"
@@ -48,6 +51,7 @@ import GroupBuy from './GroupBuy'
 // import TakeAway from './TakeAway'
 import Service from './Service'
 import Package from './Package'
+import CombinationCard from './CombinationCard'
 
 export default {
   name: 'commodityList',
@@ -61,6 +65,7 @@ export default {
     // TakeAway,
     Service,
     Package,
+    CombinationCard,
   },
 
   props: {},
@@ -120,6 +125,9 @@ export default {
             break
           case 4:
             this.$router.push('/commodity/packageCRU')
+            break
+          case 5:
+            this.$router.push('/commodity/combinationCardCRU')
             break
           default:
             break

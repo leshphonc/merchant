@@ -186,7 +186,7 @@ export default {
     this._getMemberGroupList()
     // 优惠详情
     const id = this.$route.params.id
-    id && this._readPackageDetail(id)
+    id && this._readCombinationCardDetail(id)
   },
 
   destroyed() {},
@@ -194,7 +194,7 @@ export default {
   methods: {
     ...mapActions(['getCouponList']),
     ...mapActions('member', ['getMemberGroupList']),
-    ...mapActions('commodity', ['updatePackagePreferential', 'readPackageDetail']),
+    ...mapActions('commodity', ['updateCombinationCardPreferential', 'readCombinationCardDetail']),
     // 优惠券开关
     _controlCouponPicker(index) {
       if (typeof index === 'number') this.curCoupon = index
@@ -277,11 +277,11 @@ export default {
       return item ? item.label : ''
     },
     // 页面默认数据
-    _readPackageDetail(id) {
-      this.readPackageDetail(id).then(res => {
+    _readCombinationCardDetail(id) {
+      this.readCombinationCardDetail(id).then(res => {
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
-          this.formData[item] = res[item]
+          this.formData[item] = res[0][item]
         })
       })
     },
@@ -299,9 +299,9 @@ export default {
         // 加锁
         this.loading = true
         const params = JSON.parse(JSON.stringify(this.formData))
-        params.id = this.$route.params.id
+        params.meal_id = this.$route.params.id
         // 表单完整，进行数据修改并提交
-        this.updatePackagePreferential(params)
+        this.updateCombinationCardPreferential(params)
           .then(() => {
             this.$toast.success({
               message: '操作成功',

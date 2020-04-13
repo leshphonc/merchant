@@ -49,13 +49,35 @@
             v-model.trim="formData.keyword"
           ></van-field>
         </ValidationProvider>
+        <ValidationProvider name="有效天数" rules="required|numeric" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            @click-right-icon="$toast('有效天数，超出后套餐内项目一并失效')"
+            label="有效天数"
+            placeholder="开卡后，可使用的天数"
+            required
+            right-icon="question-o"
+            type="number"
+            v-model.trim="formData.day_num"
+          ></van-field>
+        </ValidationProvider>
         <ValidationProvider name="套餐库存" rules="required|gte-1" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             label="库存"
             placeholder="套餐库存"
             required
-            v-model.trim="formData.stock"
+            v-model.trim="formData.total_num"
+          ></van-field>
+        </ValidationProvider>
+        <ValidationProvider name="限购数量" rules="required|numeric" slim v-if="false" v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="每人限购"
+            placeholder="限购数量"
+            required
+            type="number"
+            v-model.trim="formData.person_num"
           ></van-field>
         </ValidationProvider>
         <ValidationProvider name="商家服务分类" rules="required" slim v-slot="{ errors }">
@@ -96,32 +118,42 @@
         :border="false"
         :key="item.appoint_id"
         title="服务"
-        v-for="(item, index) in service_data"
+        v-for="(item, index) in formData.project_data"
       >
         <van-cell center>
           <span class="delete-icon" slot="icon">
             <van-icon @click="_deletePro(item.appoint_id, index)" name="close" />
-            <img :src="item.image" alt />
+            <img :src="item.img" alt />
           </span>
           <div slot="title">
             {{ item.name }}
             <van-tag type="warning">服务</van-tag>
           </div>
-          <van-stepper min="1" v-model="item.goods_num" />
+          <van-stepper min="0" v-model="item.meal_num" />
         </van-cell>
+        <ValidationProvider name="有效天数" rules="required|numeric" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="有效天数"
+            placeholder="开卡后，可使用的天数"
+            required
+            type="number"
+            v-model.trim="item.day_num"
+          ></van-field>
+        </ValidationProvider>
       </van-cell-group>
       <!-- 选择出的商品列表 -->
       <van-cell-group :key="item.appoint_id" title="商品" v-for="(item, index) in eCommerce_data">
         <van-cell center>
           <span class="delete-icon" slot="icon">
             <van-icon @click="_deleteProE(item.appoint_id, index)" class="delete-icon" name="close" slot="icon" />
-            <img :src="item.image" alt />
+            <img :src="item.img" alt />
           </span>
           <div slot="title">
             {{ item.name }}
             <van-tag type="danger">商品</van-tag>
           </div>
-          <van-stepper min="1" v-model="item.goods_num" />
+          <van-stepper min="1" v-model="item.meal_num" />
         </van-cell>
       </van-cell-group>
     </ValidationObserver>
@@ -210,7 +242,7 @@ import { mapActions } from 'vuex'
 import ImgCropper from '@/components/ImgCropper'
 
 export default {
-  name: 'packageCRU',
+  name: 'combinationCardCRU',
 
   mixins: [],
 
@@ -226,9 +258,11 @@ export default {
         name: '',
         price: '',
         old_price: '',
+        day_num: '',
         pic: '',
-        stock: '',
-        goods: [],
+        total_num: '',
+        person_num: '',
+        project_data: [],
         cat_fid: '',
         cat_id: '',
         description: '',
@@ -238,7 +272,6 @@ export default {
       pic: [],
       active: 0,
       showServicePicker: false,
-      service_data: [],
       eCommerce_data: [],
       // 服务项目数据
       list: [],
@@ -291,10 +324,10 @@ export default {
   mounted() {
     const { id } = this.$route.params
     if (id) {
-      this._readPackageDetail(id)
+      this._readCombinationCardDetail(id)
     } else {
       // 读取套餐分类
-      this._getPackageCategoryList()
+      this._getCombinationCardCategoryList()
     }
   },
 
@@ -304,11 +337,11 @@ export default {
     ...mapActions('commodity', [
       'getServiceList',
       'getECommerceList',
-      'createPackage',
-      'updatePackage',
-      'readPackageDetail',
-      'readServiceOfPackage',
-      'getPackageCategoryList',
+      'createCombinationCard',
+      'updateCombinationCard',
+      'readCombinationCardDetail',
+      'readServiceOfCombinationCard',
+      'getCombinationCardCategoryList',
     ]),
     // 服务商品选择开关
     _controlCommodityPicker() {
@@ -340,11 +373,11 @@ export default {
         const { id } = this.$route.params
         if (id) {
           const arr = []
-          this.service_data.forEach(item => {
-            arr.push(item.goods_id)
+          this.formData.project_data.forEach(item => {
+            arr.push(item.appoint_id)
           })
           res.forEach(item => {
-            const index = arr.indexOf(item.goods_id)
+            const index = arr.indexOf(item.appoint_id)
             if (index > -1) {
               item.disabled = true
               this.cache.push(item)
@@ -367,7 +400,7 @@ export default {
         if (id) {
           const arr = []
           this.eCommerce_data.forEach(item => {
-            arr.push(item.goods_id)
+            arr.push(item.appoint_id)
           })
           res.lists.forEach(item => {
             const index = arr.indexOf(item.goods_id)
@@ -386,11 +419,13 @@ export default {
         this.list.find(item2 => {
           if (item2.appoint_id === item.appoint_id) {
             if (!item2.disabled) {
-              this.service_data.push({
-                goods_id: item.appoint_id,
-                goods_num: item.goods_num,
+              this.formData.project_data.push({
+                appoint_id: item.appoint_id,
+                name: item.appoint_name,
+                day_num: '',
+                meal_num: '',
+                img: item.list_pic,
                 type: 0,
-                image: item.list_pic,
               })
             }
             item2.disabled = true
@@ -402,10 +437,12 @@ export default {
           if (item2.goods_id === item.goods_id) {
             if (!item2.disabled) {
               this.eCommerce_data.push({
-                goods_id: item.goods_id,
-                goods_num: '',
+                appoint_id: item.goods_id,
+                name: item.name,
+                day_num: 0,
+                meal_num: '',
+                img: item.list_pic,
                 type: 1,
-                image: item.list_pic,
               })
             }
             item2.disabled = true
@@ -422,7 +459,8 @@ export default {
       })
       this.$forceUpdate()
       // 删除选中项
-      this.service_data.splice(index, 1)
+      this.formData.project_data.splice(index, 1)
+
       // 将不是灰色且选中的 变为 未选中
       this.$nextTick(() => {
         this.$refs.checkboxes.forEach(item => {
@@ -467,8 +505,8 @@ export default {
       picker.setColumnValues(1, values[0].children || [])
     },
     // 读取套餐分类
-    _getPackageCategoryList(fid, id) {
-      this.getPackageCategoryList().then(res => {
+    _getCombinationCardCategoryList(fid, id) {
+      this.getCombinationCardCategoryList().then(res => {
         this.categoryColumnsOrigin = res
         this._serializationECommerceCategory(fid, id)
       })
@@ -499,32 +537,35 @@ export default {
       ]
     },
     // 读取套餐详情
-    _readPackageDetail(id) {
-      this.readPackageDetail(id).then(res => {
+    _readCombinationCardDetail(id) {
+      this.readCombinationCardDetail(id).then(res => {
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
-          this.formData[item] = res[item]
+          this.formData[item] = res[0][item]
         })
-        this.pic = [{ url: res.pic }]
-        const service = []
-        const eCommerce = []
-        res.goods.forEach(item => {
-          if (item.type === '0') {
-            service.push(item)
-          } else if (item.type === '1') {
-            eCommerce.push(item)
+        this.formData.name = res[0].meal_name
+        this.pic = [{ url: res[0].pic }]
+        this.readServiceOfCombinationCard(id).then(res2 => {
+          const service = []
+          const eCommerce = []
+          res2.forEach(item => {
+            if (item.type === '0') {
+              service.push(item)
+            } else if (item.type === '1') {
+              eCommerce.push(item)
+            }
+          })
+          this.formData.project_data = service
+          this.eCommerce_data = eCommerce
+          this._onLoad()
+          this._onLoadE()
+          this.formData.cat_fid = res[0].cat_parent_id
+          if (res[0].cat_parent_id !== '0') {
+            this._getCombinationCardCategoryList(res[0].cat_parent_id, res[0].cat_id)
+          } else {
+            this._getCombinationCardCategoryList(res[0].cat_id)
           }
         })
-        this.service_data = service
-        this.eCommerce_data = eCommerce
-        this._onLoad()
-        this._onLoadE()
-        this.formData.cat_fid = res.cat_parent_id
-        if (res.cat_parent_id !== '0') {
-          this._getPackageCategoryList(res.cat_parent_id, res.cat_id)
-        } else {
-          this._getPackageCategoryList(res.cat_id)
-        }
       })
     },
     // 选择图片
@@ -543,7 +584,7 @@ export default {
           message: '请填写完整信息',
         })
       } else {
-        if (!this.service_data.length && !this.eCommerce_data.length) {
+        if (!this.formData.project_data.length && !this.eCommerce_data.length) {
           this.$notify({
             type: 'warning',
             message: '请选择套餐内容',
@@ -553,22 +594,22 @@ export default {
         // 加锁
         this.loading = true
         // 表单完整，进行数据修改并提交
-        let method = 'createPackage'
+        let method = 'createCombinationCard'
         const { id } = this.$route.params
         const params = JSON.parse(JSON.stringify(this.formData))
         if (id) {
-          method = 'updatePackage'
-          params.package_id = id
+          method = 'updateCombinationCard'
+          params.meal_id = id
         }
         // 姚欢要求。。。编辑不要带id
-        this.service_data.forEach(item => {
+        params.project_data.forEach(item => {
           item.id && delete item.id
         })
         this.eCommerce_data.forEach(item => {
           item.id && delete item.id
         })
 
-        params.goods = [...this.service_data, ...this.eCommerce_data]
+        params.project_data = JSON.stringify([...params.project_data, ...this.eCommerce_data])
         this[method](params)
           .then(() => {
             this.$toast.success({

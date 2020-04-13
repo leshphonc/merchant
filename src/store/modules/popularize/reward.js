@@ -43,6 +43,13 @@ const actions = {
       data ? resolve() : reject()
     })
   },
+  // 组合卡分销分佣修改
+  updateCombinationCardReward(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await rewardAPI.updateCombinationCardReward(payload)
+      data ? resolve() : reject()
+    })
+  },
 }
 
 // mutations

@@ -42,7 +42,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'packageSalesRecord',
+  name: 'combinationCardSalesRecord',
 
   mixins: [],
 
@@ -75,18 +75,18 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('commodity', ['readPackageSalesRecord']),
+    ...mapActions('commodity', ['readCombinationCardSalesRecord']),
     // 刷新零售商品列表
     _onRefresh() {
       const { id } = this.$route.params
-      this.readPackageSalesRecord({
+      this.readCombinationCardSalesRecord({
         page: 1,
-        id: id,
+        meal_id: id,
       }).then(res => {
         this.page = 2
-        this.list = res
+        this.list = res.list
         this.refreshing = false
-        if (res.length < 10) {
+        if (res.list.length < 10) {
           this.finished = true
         } else {
           this.finished = false
@@ -96,17 +96,17 @@ export default {
     // 异步更新零售商品数据
     _onLoad() {
       const { id } = this.$route.params
-      this.readPackageSalesRecord({
+      this.readCombinationCardSalesRecord({
         page: this.page,
-        id: id,
+        meal_id: id,
       }).then(res => {
         this.loading = false
-        if (res.length < 10) {
+        if (res.list.length < 10) {
           this.finished = true
         } else {
           this.page += 1
         }
-        this.push(...res)
+        this.list.push(...res.list)
       })
     },
   },

@@ -34,5 +34,10 @@ export default {
       path: 'packageReward/:id',
       component: () => import('@/views/popularize/reward/PackageReward'),
     },
+    {
+      // 组合卡佣金分佣设置
+      path: 'combinationCardReward/:id',
+      component: () => import('@/views/popularize/reward/CombinationCardReward'),
+    },
   ],
 }

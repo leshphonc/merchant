@@ -70,5 +70,20 @@ export default {
       path: 'packageSalesRecord/:id',
       component: () => import('@/views/management/commodity/PackageSalesRecord'),
     },
+    {
+      // 组合卡编辑
+      path: 'combinationCardCRU/:id?',
+      component: () => import('@/views/management/commodity/CombinationCardCRU'),
+    },
+    {
+      // 组合卡优惠编辑
+      path: 'combinationCardPreferential/:id',
+      component: () => import('@/views/management/commodity/CombinationCardPreferential'),
+    },
+    {
+      // 组合卡销售记录
+      path: 'combinationCardSalesRecord/:id',
+      component: () => import('@/views/management/commodity/CombinationCardSalesRecord'),
+    },
   ],
 }

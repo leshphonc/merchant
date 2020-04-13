@@ -4,12 +4,12 @@
       <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
         <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
           <van-card
-            :key="item.meal_id"
-            :num="item.total_num"
+            :key="item.package_id"
+            :num="item.stock"
             :origin-price="item.old_price"
             :price="item.price"
-            :thumb="item.list_pic"
-            :title="item.meal_name"
+            :thumb="item.pic"
+            :title="item.name"
             lazy-load
             v-for="item in list"
           >
@@ -20,13 +20,13 @@
               <div>创建时间：{{ $moment(item.create_time * 1000).format('YYYY-MM-DD') }}</div>
             </div>
             <div slot="footer" v-if="$route.fullPath === '/commodity'">
-              <!-- <van-button @click="_deleteCommodity(item.meal_id)" size="small" type="danger">删除</van-button> -->
-              <van-button :to="`/commodity/packageSalesRecord/${item.meal_id}`" size="small">销售记录</van-button>
-              <van-button :to="`/commodity/packagePreferential/${item.meal_id}`" size="small">优惠</van-button>
-              <van-button :to="`/commodity/packageCRU/${item.meal_id}`" size="small" v-if="!item.type">编辑</van-button>
+              <!-- <van-button @click="_deleteCommodity(item.package_id)" size="small" type="danger">删除</van-button> -->
+              <van-button :to="`/commodity/packageSalesRecord/${item.package_id}`" size="small">销售记录</van-button>
+              <van-button :to="`/commodity/packagePreferential/${item.package_id}`" size="small">优惠</van-button>
+              <van-button :to="`/commodity/packageCRU/${item.package_id}`" size="small" v-if="!item.type">编辑</van-button>
             </div>
             <div slot="footer" v-else>
-              <van-button :to="`/reward/packageReward/${item.meal_id}`" size="small" type="primary"
+              <van-button :to="`/reward/packageReward/${item.package_id}`" size="small" type="primary"
                 >推广分佣设置</van-button
               >
             </div>

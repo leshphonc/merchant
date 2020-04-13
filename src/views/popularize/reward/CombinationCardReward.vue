@@ -165,7 +165,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
-  name: 'packageReward',
+  name: 'CombinationCardReward',
 
   mixins: [],
 
@@ -238,16 +238,16 @@ export default {
       this.formData.spread = spread
     })
     const { id } = this.$route.params
-    await this.readPackageDetail(id).then(res => {
+    await this.readCombinationCardDetail(id).then(res => {
       const keys = Object.keys(this.formData)
       keys.forEach(item => {
         if (item === 'spread') return
-        this.formData[item] = res[item]
+        this.formData[item] = res[0][item]
       })
-      this.formData.level_set = res.level_set
-      if (res.level_set === '1' && res.spread.length !== 0) {
-        this.formData.spread = res.spread
-        res.spread.forEach((item, index) => {
+      this.formData.level_set = res[0].level_set
+      if (res[0].level_set === '1' && res[0].spread.length !== 0) {
+        this.formData.spread = res[0].spread
+        res[0].spread.forEach((item, index) => {
           this.formData.spread[index].spread_sale = item.spread_sale
           this.formData.spread[index].spread_rate = item.spread_rate
           item.sub_spread_rate && (this.formData.spread[index].sub_spread_rate = item.sub_spread_rate)
@@ -261,8 +261,8 @@ export default {
 
   methods: {
     ...mapActions(['getUserLevel']),
-    ...mapActions('reward', ['updatePackageReward']),
-    ...mapActions('commodity', ['readPackageDetail']),
+    ...mapActions('reward', ['updateCombinationCardReward']),
+    ...mapActions('commodity', ['readCombinationCardDetail']),
     _controlTypePicker() {
       this.showTypePicker = !this.showTypePicker
     },
@@ -285,8 +285,9 @@ export default {
         this.loading = true
         const { id } = this.$route.params
         const params = JSON.parse(JSON.stringify(this.formData))
-        params.id = id
-        this.updatePackageReward(params)
+        params.meal_id = id
+        console.log(params)
+        this.updateCombinationCardReward(params)
           .then(() => {
             this.$toast.success({
               message: '操作成功',

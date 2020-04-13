@@ -4,10 +4,11 @@ import groupBuyActions from './groupBuy'
 import takeAwayActions from './takeAway'
 import serviceActions from './service'
 import packageActions from './package'
+import combinationCardActions from './combinationCard'
 
 // initial state
 const state = {
-  navText: ['创建', '创建', '创建', '创建', '创建'],
+  navText: ['创建', '创建', '创建', '创建', '创建', '创建'],
   activeTab: 0,
 }
 
@@ -22,6 +23,7 @@ const actions = {
   ...takeAwayActions,
   ...serviceActions,
   ...packageActions,
+  ...combinationCardActions,
 }
 
 // mutations

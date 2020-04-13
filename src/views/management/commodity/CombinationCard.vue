@@ -4,31 +4,29 @@
       <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
         <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
           <van-card
-            :key="item.goods_id"
-            :num="item.stock_num === '-1' ? '∞' : item.stock_num - item.sell_count"
+            :key="item.meal_id"
+            :num="item.total_num"
             :origin-price="item.old_price"
             :price="item.price"
-            :tag="_goodsType(item.goods_type)"
             :thumb="item.list_pic"
-            :title="item.s_name"
+            :title="item.meal_name"
             lazy-load
             v-for="item in list"
           >
-            <div slot="tags">
-              <van-tag plain type="danger">{{ item.freight_type === '1' ? '运费单独计算' : '运费最大值' }}</van-tag>
+            <!-- <div slot="tags">
+            <van-tag plain type="danger">每人限购：{{ item.person_num }}</van-tag>
+            </div>-->
+            <div slot="bottom">
+              <div>创建时间：{{ $moment(item.create_time * 1000).format('YYYY-MM-DD') }}</div>
             </div>
             <div slot="footer" v-if="$route.fullPath === '/commodity'">
-              <!-- <van-button @click="_deleteCommodity(item.store_id, item.goods_id)" size="small" type="danger"
-                >删除</van-button
-              >-->
-              <van-button :to="`/commodity/serviceSalesRecord/${item.goods_id}`" size="small">销售记录</van-button>
-              <van-button :to="`/commodity/eCommercePreferential/${item.goods_id}`" size="small">优惠</van-button>
-              <van-button :to="`/commodity/eCommerceCRU/${item.goods_type}/${item.goods_id}`" size="small"
-                >编辑</van-button
-              >
+              <!-- <van-button @click="_deleteCommodity(item.meal_id)" size="small" type="danger">删除</van-button> -->
+              <van-button :to="`/commodity/combinationCardSalesRecord/${item.meal_id}`" size="small">销售记录</van-button>
+              <van-button :to="`/commodity/combinationCardPreferential/${item.meal_id}`" size="small">优惠</van-button>
+              <van-button :to="`/commodity/combinationCardCRU/${item.meal_id}`" size="small" v-if="!item.type">编辑</van-button>
             </div>
             <div slot="footer" v-else>
-              <van-button :to="`/reward/eCommerceReward/${item.goods_id}`" size="small" type="primary"
+              <van-button :to="`/reward/combinationCardReward/${item.meal_id}`" size="small" type="primary"
                 >推广分佣设置</van-button
               >
             </div>
@@ -36,7 +34,7 @@
         </van-list>
       </van-pull-refresh>
       <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'"
-        >点击右上角创建商品</van-divider
+        >点击右上角创建套餐</van-divider
       >
     </div>
     <div v-if="active === 1">
@@ -51,35 +49,33 @@
       </van-sticky>
       <van-collapse accordion v-model="activeCategory">
         <van-collapse-item
-          :key="item.sort_id"
-          :name="item.sort_id"
-          :title="item.sort_name"
+          :key="item.cat_id"
+          :name="item.cat_id"
+          :title="item.cat_name"
           v-for="item in firstCategoryList"
         >
-          <div @click.stop="_deleteCategory(item.sort_id, 1)" slot="icon" v-show="navText[0] === '取消'">
+          <div @click.stop="_deleteCategory(item.cat_id, 1)" slot="icon" v-show="navText[5] === '取消'">
             <van-icon class="delete-icon" name="close" />
           </div>
-          <div v-if="!item.children.length">暂无分类</div>
+          <div v-if="!item.children">暂无分类</div>
           <van-tag
-            :closeable="navText[0] === '取消'"
-            :key="child.sort_id"
-            @close="_deleteCategory(child.sort_id, 2)"
+            :closeable="navText[5] === '取消'"
+            :key="child.cat_id"
+            @close="_deleteCategory(child.cat_id, 2)"
             size="medium"
             type="primary"
             v-for="child in item.children"
           >
-            <div>{{ child.sort_name }}</div>
+            <div>{{ child.cat_name }}</div>
           </van-tag>
         </van-collapse-item>
       </van-collapse>
     </div>
     <div class="tab-bar-holder-sp" v-if="$route.fullPath === '/commodity'"></div>
     <van-tabbar @change="_changeTab" fixed v-if="$route.fullPath === '/commodity'" v-model="active">
-      <van-tabbar-item icon="apps-o">商品</van-tabbar-item>
+      <van-tabbar-item icon="apps-o">套餐</van-tabbar-item>
       <van-tabbar-item icon="label-o">分类</van-tabbar-item>
     </van-tabbar>
-    <!-- 弹出层 -->
-    <!-- 编辑分类 -->
     <van-popup class="category-cru-popup" position="bottom" safe-area-inset-bottom v-model="showCategoryCRUPopup">
       <ValidationObserver @submit.prevent="_submit" ref="observer" tag="form" v-slot="{ invalid }">
         <van-cell-group>
@@ -89,7 +85,7 @@
               label="分类名称"
               placeholder="请填写分类名称"
               required
-              v-model="formData.name"
+              v-model="formData.cat_name"
             ></van-field>
           </ValidationProvider>
           <van-field
@@ -100,16 +96,6 @@
             label="分类归属"
             readonly
           ></van-field>
-          <van-cell title="开启周几显示">
-            <van-switch active-value="1" inactive-value="0" v-model="formData.is_week" />
-          </van-cell>
-          <van-cell v-if="formData.is_week === '1'">
-            <van-checkbox-group :max="2" v-model="formData.week">
-              <van-checkbox :key="item.value" :name="index + 1" shape="square" v-for="(item, index) in week">
-                {{ item.label }}
-              </van-checkbox>
-            </van-checkbox-group>
-          </van-cell>
         </van-cell-group>
         <div class="white-space-lg"></div>
         <div class="wing-blank-lg">
@@ -118,22 +104,17 @@
         </div>
       </ValidationObserver>
     </van-popup>
-    <!-- 选择分类归属 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showCategoryPicker">
-      <van-picker
-        :columns="firstCategoryListAddNull"
-        @change="_changeCategory"
-        ref="catePicker"
-        value-key="sort_name"
-      />
+      <van-picker ref="catePicker" :columns="firstCategoryListAddNull" @change="_changeCategory" value-key="cat_name" />
     </van-popup>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
+
 export default {
-  name: 'eCommerce',
+  name: 'combinationCard',
 
   mixins: [],
 
@@ -144,46 +125,20 @@ export default {
   data() {
     return {
       formData: {
-        name: '',
-        sort: 1,
-        week: [],
-        is_week: '0',
-        fid: '0',
+        cat_name: '',
+        cat_fid: '0',
       },
       list: [],
       page: 1,
       active: 0,
-      activeCategory: '',
-      categoryLabel: '无',
       loading: false,
       finished: false,
       refreshing: false,
+      activeCategory: '',
+      categoryLabel: '无',
       firstCategoryList: [],
       showCategoryCRUPopup: false,
       showCategoryPicker: false,
-      week: [
-        {
-          label: '周一',
-        },
-        {
-          label: '周二',
-        },
-        {
-          label: '周三',
-        },
-        {
-          label: '周四',
-        },
-        {
-          label: '周五',
-        },
-        {
-          label: '周六',
-        },
-        {
-          label: '周日',
-        },
-      ],
     }
   },
 
@@ -198,8 +153,8 @@ export default {
     firstCategoryListAddNull() {
       const arr = JSON.parse(JSON.stringify(this.firstCategoryList))
       arr.unshift({
-        sort_id: '0',
-        sort_name: '无',
+        cat_id: '0',
+        cat_name: '无',
       })
       return arr
     },
@@ -210,8 +165,8 @@ export default {
   created() {},
 
   mounted() {
-    // 零售商品一级分类
-    this._getECommerceFirstCategoryList()
+    // 套餐商品一级分类
+    this._getCombinationCardCategoryList()
   },
 
   destroyed() {},
@@ -219,11 +174,11 @@ export default {
   methods: {
     ...mapMutations('commodity', ['changeRightText']),
     ...mapActions('commodity', [
-      'getECommerceList',
-      'deleteECommerce',
-      'getECommerceFirstCategoryList',
-      'createECommerceCategory',
-      'deleteECommerceCategory',
+      'getCombinationCardList',
+      'deleteCombinationCard',
+      'getCombinationCardCategoryList',
+      'createCombinationCardCategory',
+      'deleteCombinationCardCategory',
     ]),
     // 分类编辑开关
     _controlCategoryCRUPopup() {
@@ -238,13 +193,13 @@ export default {
     _controlCategoryPicker() {
       this.showCategoryPicker = !this.showCategoryPicker
     },
-    // 刷新零售商品列表
+    // 刷新套餐列表
     _onRefresh() {
-      this.getECommerceList().then(res => {
+      this.getCombinationCardList().then(res => {
         this.page = 2
-        this.list = res.lists
+        this.list = res
         this.refreshing = false
-        if (res.lists.length < 10) {
+        if (res.length < 10) {
           this.finished = true
         } else {
           this.finished = false
@@ -253,25 +208,25 @@ export default {
     },
     // 异步更新零售商品数据
     _onLoad() {
-      this.getECommerceList(this.page).then(res => {
+      this.getCombinationCardList(this.page).then(res => {
         this.loading = false
-        if (res.lists.length < 10) {
+        if (res.length < 10) {
           this.finished = true
         } else {
           this.page += 1
         }
-        this.list.push(...res.lists)
+        this.list.push(...res)
       })
     },
-    // 删除零售产品
-    _deleteCommodity(store_id, goods_id) {
+    // 删除套餐
+    _deleteCommodity(id) {
       this.$dialog
         .confirm({
           title: '删除',
           message: '删除后无法恢复，是否继续',
           beforeClose: (action, done) => {
             if (action === 'confirm') {
-              this.deleteECommerce({ store_id, goods_id })
+              this.deleteCombinationCard(id)
                 .then(() => {
                   this.$toast.success({
                     message: '删除成功',
@@ -302,13 +257,13 @@ export default {
           message: '删除后无法恢复，是否继续',
           beforeClose: (action, done) => {
             if (action === 'confirm') {
-              this.deleteECommerceCategory({ sort_id: id, type })
+              this.deleteCombinationCardCategory({ cat_id: id, type })
                 .then(() => {
                   this.$toast.success({
                     message: '删除成功',
                     duration: 800,
                     onClose: () => {
-                      this._getECommerceFirstCategoryList()
+                      this._getCombinationCardCategoryList()
                     },
                   })
                   done()
@@ -323,32 +278,23 @@ export default {
         })
         .catch(() => {})
     },
-    _goodsType(type) {
-      if (type === '0') {
-        return '配送'
-      } else if (type === '1') {
-        return '虚拟'
-      } else {
-        return '到店'
-      }
-    },
     // 更改vuex中的变量，判断当前分类是不是管理状态
     _changeTab(tabIndex) {
       this.changeRightText({
-        index: 0,
+        index: 4,
         text: tabIndex ? '管理' : '创建',
       })
     },
-    // 获取零售商品一级分类
-    _getECommerceFirstCategoryList() {
-      this.getECommerceFirstCategoryList().then(res => {
+    // 获取套餐商品一级分类
+    _getCombinationCardCategoryList() {
+      this.getCombinationCardCategoryList().then(res => {
         this.firstCategoryList = res
       })
     },
     // 分类归属变更
     _changeCategory(picker, item) {
-      this.formData.fid = item.sort_id
-      this.categoryLabel = item.sort_name
+      this.formData.cat_fid = item.cat_id
+      this.categoryLabel = item.cat_name
     },
     // 提交表单
     async _submit() {
@@ -365,17 +311,7 @@ export default {
       } else {
         // 加锁
         this.loading = true
-        const params = JSON.parse(JSON.stringify(this.formData))
-        params.week = params.week.join()
-        if (params.is_week === '1' && !params.week) {
-          this.$notify({
-            type: 'warning',
-            message: '请勾选要显示的日期',
-          })
-          this.loading = false
-          return false
-        }
-        this.createECommerceCategory(params)
+        this.createCombinationCardCategory(this.formData)
           .then(() => {
             this.$toast.success({
               message: '操作成功',
@@ -384,15 +320,15 @@ export default {
               onClose: () => {
                 // 解锁
                 this.loading = false
-                this._getECommerceFirstCategoryList()
+                this._getCombinationCardCategoryList()
                 this._controlCategoryCRUPopup()
                 this.formData = {
-                  name: '',
-                  sort: 1,
-                  week: [],
-                  is_week: '0',
-                  fid: '0',
+                  cat_name: '',
+                  cat_fid: '0',
                 }
+                this.$nextTick(() => {
+                  this.$refs.observer.reset()
+                })
               },
             })
           })
@@ -406,6 +342,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.van-tag {
+  .van-icon {
+    margin-right: 4px;
+  }
+}
+
 .add-icon {
   margin-right: 10px;
   font-size: 18px;
@@ -424,17 +366,6 @@ export default {
   .van-button {
     width: 50%;
     margin: 0;
-  }
-}
-
-.van-checkbox {
-  display: inline-block;
-  /deep/ .van-checkbox__icon {
-    display: inline-block;
-  }
-  /deep/.van-checkbox__label {
-    vertical-align: 3px;
-    margin-right: 29px;
   }
 }
 </style>
