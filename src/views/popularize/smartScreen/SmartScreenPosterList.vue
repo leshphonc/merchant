@@ -49,9 +49,7 @@
                 </div>
                 <div slot="footer" v-if="item.is_shelves === '1'">
                   <!-- <van-button disabled size="small" v-if="item.audit === '2'">同城审核中</van-button> -->
-                  <van-button @click="_changeRelease(item.id)" size="small" type="danger" v-if="item.audit !== '2'"
-                    >取消发布</van-button
-                  >
+                  <van-button @click="_changeRelease(item.id)" size="small" type="danger" v-if="item.audit !== '2'">取消发布</van-button>
                   <van-button @click="_openPopup(item)" size="small">智能屏推广</van-button>
                 </div>
                 <div slot="footer" v-else-if="item.is_shelves === '2'">
@@ -166,12 +164,7 @@
       </div>
       <van-collapse v-model="activeNames" v-show="curStep === 2">
         <van-collapse-item name="1" title="推广角色">
-          <van-icon
-            @click.stop="$toast('收到此条推广的角色身份')"
-            class="question-icon"
-            name="question-o"
-            slot="icon"
-          />
+          <van-icon @click.stop="$toast('收到此条推广的角色身份')" class="question-icon" name="question-o" slot="icon" />
           <van-checkbox-group v-model="formData.role">
             <van-cell-group>
               <van-cell
@@ -186,13 +179,8 @@
             </van-cell-group>
           </van-checkbox-group>
         </van-collapse-item>
-        <van-collapse-item name="2" title="推广会员" v-if="formData.role.indexOf('4') > -1">
-          <van-icon
-            @click.stop="$toast('收到此条推广的会员身份')"
-            class="question-icon"
-            name="question-o"
-            slot="icon"
-          />
+        <van-collapse-item name="2" title="推广会员" v-if="formData.role.indexOf(4) > -1">
+          <van-icon @click.stop="$toast('收到此条推广的会员身份')" class="question-icon" name="question-o" slot="icon" />
           <van-checkbox-group v-model="formData.promotion_role_member">
             <van-cell-group>
               <van-cell
@@ -207,13 +195,8 @@
             </van-cell-group>
           </van-checkbox-group>
         </van-collapse-item>
-        <van-collapse-item name="3" title="推广店员" v-if="formData.role.indexOf('5') > -1">
-          <van-icon
-            @click.stop="$toast('收到此条推广的店员身份')"
-            class="question-icon"
-            name="question-o"
-            slot="icon"
-          />
+        <van-collapse-item name="3" title="推广店员" v-if="formData.role.indexOf(5) > -1">
+          <van-icon @click.stop="$toast('收到此条推广的店员身份')" class="question-icon" name="question-o" slot="icon" />
           <van-checkbox-group v-model="formData.promotion_role_staff">
             <van-cell-group>
               <van-cell
@@ -428,9 +411,19 @@ export default {
     async _openPopup(item) {
       this.formData.ad_id = item.id
       this.formData.guest_num = item.guest_num
-      this.formData.role = item.to_user_ids // 角色
-      this.formData.promotion_role_staff = item.promotion_role_staff ? item.promotion_role_staff.split(',') : [] // 店员
-      this.formData.promotion_role_member = item.promotion_role_member ? item.promotion_role_member.split(',') : [] // 会员
+      this.formData.role = item.to_user_ids.map(i => {
+        return i - 0
+      }) // 角色
+      this.formData.promotion_role_staff = item.promotion_role_staff
+        ? item.promotion_role_staff.split(',').map(i => {
+            return i - 0
+          })
+        : [] // 店员
+      this.formData.promotion_role_member = item.promotion_role_member
+        ? item.promotion_role_member.split(',').map(i => {
+            return i - 0
+          })
+        : [] // 会员
       this.formData.guest_num = item.guest_num
       this.formData.guest_num_type = item.guest_num_type
       this.formData.guest_num_min = item.guest_num_min
@@ -538,6 +531,7 @@ export default {
     // 角色选择
     _rToggle(index) {
       this.$refs.checkboxesR[index].toggle()
+      console.log(this.formData.role)
     },
     // 角色选择
     _mToggle(index) {
@@ -716,11 +710,11 @@ export default {
           this.curStep += 1
         }
       } else if (this.curStep === 2) {
-        if (this.formData.role.indexOf('5') > -1 && this.formData.promotion_role_member.length === 0) {
+        if (this.formData.role.indexOf(5) > -1 && this.formData.promotion_role_member.length === 0) {
           this.$toast('请选择推广会员身份')
           return
         }
-        if (this.formData.role.indexOf('6') > -1 && this.formData.promotion_role_staff.length === 0) {
+        if (this.formData.role.indexOf(6) > -1 && this.formData.promotion_role_staff.length === 0) {
           this.$toast('请选择推广店员身份')
           return
         }
