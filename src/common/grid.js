@@ -78,6 +78,12 @@ const PopularizeGrid = {
       enable: require('../assets/image/dytg2.png'),
       disable: require('../assets/image/dytg_gray.png'),
     },
+    {
+      name: '套餐卡过户',
+      path: '/transfer',
+      enable: require('../assets/image/zhk.png'),
+      disable: require('../assets/image/zhk.png'),
+    },
   ],
 }
 
