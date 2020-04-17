@@ -64,6 +64,36 @@ body {
   }
 }
 
+//iphoneX、iphoneXs
+@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+  .tab-bar-holder {
+    height: 90px;
+    &-sp {
+      height: 98px;
+    }
+  }
+}
+
+//iphone Xs Max
+@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
+  .tab-bar-holder {
+    height: 90px;
+    &-sp {
+      height: 98px;
+    }
+  }
+}
+
+//iphone XR
+@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) {
+  .tab-bar-holder {
+    height: 90px;
+    &-sp {
+      height: 98px;
+    }
+  }
+}
+
 .card-panel {
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
     0px 2px 1px -1px rgba(0, 0, 0, 0.12);
