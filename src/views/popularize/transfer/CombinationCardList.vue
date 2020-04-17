@@ -18,7 +18,7 @@
             <van-tag plain type="danger">有效天数：{{ item.meal_day_num }}</van-tag>
           </template>
           <template #footer v-if="item.is_activate !== '0'">
-            <van-button @click="_controlTransfer(item.id)" size="mini">过户</van-button>
+            <van-button @click="_controlTransfer(item.id)" size="small">过户</van-button>
           </template>
         </van-card>
       </van-list>
