@@ -6,7 +6,7 @@
       <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
         <van-card
           :class="item.is_activate !== '0' ? 'active' : ''"
-          :desc="`所属用户：${item.nickname || '未知用户'}`"
+          :desc="`${item.nickname || '未知用户'} - ${item.phone || '暂无号码'}`"
           :key="item.id"
           :price="item.meal_price"
           :tag="item.is_activate !== '0' ? '已激活' : '未激活'"
