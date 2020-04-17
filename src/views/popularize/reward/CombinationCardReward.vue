@@ -286,7 +286,6 @@ export default {
         const { id } = this.$route.params
         const params = JSON.parse(JSON.stringify(this.formData))
         params.meal_id = id
-        console.log(params)
         this.updateCombinationCardReward(params)
           .then(() => {
             this.$toast.success({

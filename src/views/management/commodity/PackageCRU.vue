@@ -92,12 +92,7 @@
         <van-icon name="point-gift-o" slot="right-icon" style="line-height: inherit;" />
       </van-cell>
       <!-- 选择出的服务列表 -->
-      <van-cell-group
-        :border="false"
-        :key="item.appoint_id"
-        title="服务"
-        v-for="(item, index) in service_data"
-      >
+      <van-cell-group :border="false" :key="item.appoint_id" title="服务" v-for="(item, index) in service_data">
         <van-cell center>
           <span class="delete-icon" slot="icon">
             <van-icon @click="_deletePro(item.appoint_id, index)" name="close" />

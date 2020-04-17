@@ -21,9 +21,13 @@
             </div>
             <div slot="footer" v-if="$route.fullPath === '/commodity'">
               <!-- <van-button @click="_deleteCommodity(item.meal_id)" size="small" type="danger">删除</van-button> -->
-              <van-button :to="`/commodity/combinationCardSalesRecord/${item.meal_id}`" size="small">销售记录</van-button>
+              <van-button :to="`/commodity/combinationCardSalesRecord/${item.meal_id}`" size="small"
+                >销售记录</van-button
+              >
               <van-button :to="`/commodity/combinationCardPreferential/${item.meal_id}`" size="small">优惠</van-button>
-              <van-button :to="`/commodity/combinationCardCRU/${item.meal_id}`" size="small" v-if="!item.type">编辑</van-button>
+              <van-button :to="`/commodity/combinationCardCRU/${item.meal_id}`" size="small" v-if="!item.type"
+                >编辑</van-button
+              >
             </div>
             <div slot="footer" v-else>
               <van-button :to="`/reward/combinationCardReward/${item.meal_id}`" size="small" type="primary"

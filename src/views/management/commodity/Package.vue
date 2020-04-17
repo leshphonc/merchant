@@ -23,7 +23,9 @@
               <!-- <van-button @click="_deleteCommodity(item.package_id)" size="small" type="danger">删除</van-button> -->
               <van-button :to="`/commodity/packageSalesRecord/${item.package_id}`" size="small">销售记录</van-button>
               <van-button :to="`/commodity/packagePreferential/${item.package_id}`" size="small">优惠</van-button>
-              <van-button :to="`/commodity/packageCRU/${item.package_id}`" size="small" v-if="!item.type">编辑</van-button>
+              <van-button :to="`/commodity/packageCRU/${item.package_id}`" size="small" v-if="!item.type"
+                >编辑</van-button
+              >
             </div>
             <div slot="footer" v-else>
               <van-button :to="`/reward/packageReward/${item.package_id}`" size="small" type="primary"

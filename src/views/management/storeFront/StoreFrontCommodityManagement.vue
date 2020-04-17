@@ -19,6 +19,9 @@
       <van-tab title="套餐">
         <package-list ref="package"></package-list>
       </van-tab>
+      <van-tab title="组合卡">
+        <combination-card-list ref="combinationCard"></combination-card-list>
+      </van-tab>
     </van-tabs>
     <!-- 弹出层 -->
     <!-- 绑定产品列表 -->
@@ -87,13 +90,38 @@
               <van-cell-group>
                 <van-cell
                   :icon="item.pic"
-                  :key="item.meal_id"
-                  :title="item.meal_name"
+                  :key="item.package_id"
+                  :title="item.name"
                   @click="toggleP(index)"
                   clickable
                   v-for="(item, index) in pList"
                 >
-                  <van-checkbox :name="item.meal_id" ref="checkboxesP" slot="right-icon" />
+                  <van-checkbox :name="item.package_id" ref="checkboxesP" slot="right-icon" />
+                </van-cell>
+              </van-cell-group>
+            </van-checkbox-group>
+          </van-list>
+        </van-tab>
+        <van-tab title="组合卡">
+          <!-- 组合卡 -->
+          <van-list
+            :finished="pFinished"
+            :finished-text="pFinishText"
+            :immediate-check="false"
+            @load="_pOnLoad"
+            v-model="loading"
+          >
+            <van-checkbox-group v-model="pResult">
+              <van-cell-group>
+                <van-cell
+                  :icon="item.pic"
+                  :key="item.meal_id"
+                  :title="item.meal_name"
+                  @click="toggleC(index)"
+                  clickable
+                  v-for="(item, index) in cList"
+                >
+                  <van-checkbox :name="item.meal_id" ref="checkboxesC" slot="right-icon" />
                 </van-cell>
               </van-cell-group>
             </van-checkbox-group>
@@ -111,6 +139,7 @@ import { mapActions } from 'vuex'
 import ECommerceList from './components/ECommerceBindList'
 import ServiceList from './components/ServiceBindList'
 import PackageList from './components/PackageBindList'
+import CombinationCardList from './components/CombinationCardList'
 
 export default {
   name: 'storeFrontCommodityManagement',
@@ -121,6 +150,7 @@ export default {
     ECommerceList,
     ServiceList,
     PackageList,
+    CombinationCardList,
   },
 
   props: {},
@@ -141,6 +171,10 @@ export default {
       pPage: 1,
       pFinished: false,
       pResult: [],
+      cList: [],
+      cPage: 1,
+      cFinished: false,
+      cResult: [],
       loading: false,
     }
   },
@@ -158,6 +192,9 @@ export default {
     pFinishText() {
       return this.pList.length ? '没有更多了' : '暂无商品'
     },
+    cFinishText() {
+      return this.cList.length ? '没有更多了' : '暂无商品'
+    },
   },
 
   watch: {},
@@ -173,19 +210,23 @@ export default {
       'getStoreFrontUnBindECommerceList',
       'getStoreFrontUnBindServiceList',
       'getStoreFrontUnBindPackageList',
+      'getStoreFrontUnBindCombinationCardList',
       'bindECommerceToStoreFront',
       'bindServiceToStoreFront',
       'bindPackageToStoreFront',
+      'bindCombinationCardToStoreFront',
     ]),
     _controlCommodityPopup(flag) {
       if (flag) {
         this._eOnRefresh()
         this._sOnRefresh()
         this._pOnRefresh()
+        this._cOnRefresh()
       }
       this.eResult = []
       this.sResult = []
       this.pResult = []
+      this.cResult = []
       this.showCommodityPopup = !this.showCommodityPopup
     },
     _eOnRefresh() {
@@ -290,6 +331,40 @@ export default {
     toggleP(index) {
       this.$refs.checkboxesP[index].toggle()
     },
+    _cOnRefresh() {
+      const { id } = this.$route.params
+      this.getStoreFrontUnBindCombinationCardList({
+        store_id: id,
+        page: 1,
+      }).then(res => {
+        this.cPage = 2
+        this.cList = res
+        this.cResult = []
+        if (res.length < 10) {
+          this.cFinished = true
+        } else {
+          this.cFinished = false
+        }
+      })
+    },
+    _cOnLoad() {
+      const { id } = this.$route.params
+      this.getStoreFrontUnBindCombinationCardList({
+        store_id: id,
+        page: this.cPage,
+      }).then(res => {
+        this.loading = false
+        if (res.length < 10) {
+          this.cFinished = true
+        } else {
+          this.cPage += 1
+        }
+        this.cList.push(...res)
+      })
+    },
+    toggleC(index) {
+      this.$refs.checkboxesC[index].toggle()
+    },
     _submit() {
       if (!this.eResult.length && !this.sResult.length && !this.pResult.length) return
       if (this.loading) return
@@ -316,7 +391,15 @@ export default {
         promiseArr.push(
           this.bindPackageToStoreFront({
             store_id: id,
-            meal_ids: JSON.stringify(this.pResult),
+            package_ids: JSON.stringify(this.pResult),
+          })
+        )
+      }
+      if (this.cResult.length) {
+        promiseArr.push(
+          this.bindCombinationCardToStoreFront({
+            store_id: id,
+            meal_ids: JSON.stringify(this.cResult),
           })
         )
       }
@@ -337,6 +420,9 @@ export default {
               }
               if (this.$refs.package) {
                 this.$refs.package._onRefresh()
+              }
+              if (this.$refs.combinationCard) {
+                this.$refs.combinationCard._onRefresh()
               }
               this.loading = false
             },

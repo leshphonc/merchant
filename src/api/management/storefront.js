@@ -53,6 +53,13 @@ export default {
     }),
   // 读取店铺下绑定的套餐商品列表
   getStoreFrontBindPackageList: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=getStoreBindPackage', {
+      ...payload,
+      size: 10,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 读取店铺下绑定的组合卡列表
+  getStoreFrontBindCombinationCardList: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getStoreBindMeal', {
       ...payload,
       size: 10,
@@ -74,6 +81,13 @@ export default {
     }),
   // 读取店铺下未绑定的套餐商品列表
   getStoreFrontUnBindPackageList: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=getNoBindPackage', {
+      ...payload,
+      size: 10,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 读取店铺下未绑定的套餐商品列表
+  getStoreFrontUnBindCombinationCardList: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getNoBindMeal', {
       ...payload,
       size: 10,
@@ -93,6 +107,12 @@ export default {
     }),
   // 绑定套餐商品到店铺下
   bindPackageToStoreFront: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=storeBindPackage', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 绑定组合卡到店铺下
+  bindCombinationCardToStoreFront: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=storeBindMeal', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
@@ -111,6 +131,12 @@ export default {
     }),
   // 解绑店铺下的套餐商品
   unBindPackage: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=delBindPackage', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 解绑店铺下的组合卡
+  unBindCombinationCard: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=delBindMeal', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
@@ -129,6 +155,12 @@ export default {
     }),
   // 将套餐产品加入店铺首页推荐
   addPackageToRecommend: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=recommendPackage', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 将组合卡加入店铺首页推荐
+  addCombinationCardToRecommend: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=recommendMealGoods', {
       ...payload,
       ticket: localStorage.getItem('ticket'),

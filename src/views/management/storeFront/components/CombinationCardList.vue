@@ -18,10 +18,8 @@
             <div>创建时间：{{ $moment(item.create_time * 1000).format('YYYY-MM-DD') }}</div>
           </div>
           <div slot="footer">
-            <van-button @click="_recommend(item.package_id)" v-if="item.is_recommend === '0'" size="mini"
-              >推荐</van-button
-            >
-            <van-button @click="_recommend(item.package_id)" v-else size="mini">取消推荐</van-button>
+            <van-button @click="_recommend(item.meal_id)" size="mini" v-if="item.is_recommend === '0'">推荐</van-button>
+            <van-button @click="_recommend(item.meal_id)" size="mini" v-else>取消推荐</van-button>
             <van-button @click="_unbind(item.id)" size="mini" type="danger">解绑</van-button>
           </div>
         </van-card>
@@ -34,7 +32,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'packageList',
+  name: 'combinationCardList',
 
   mixins: [],
 
@@ -67,11 +65,15 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('storeFront', ['getStoreFrontBindPackageList', 'unBindPackage', 'addPackageToRecommend']),
+    ...mapActions('storeFront', [
+      'getStoreFrontBindCombinationCardList',
+      'unBindCombinationCard',
+      'addCombinationCardToRecommend',
+    ]),
     // 刷新套餐列表
     _onRefresh() {
       const { id } = this.$route.params
-      this.getStoreFrontBindPackageList({
+      this.getStoreFrontBindCombinationCardList({
         store_id: id,
         page: 1,
       }).then(res => {
@@ -88,7 +90,7 @@ export default {
     // 异步更新零售商品数据
     _onLoad() {
       const { id } = this.$route.params
-      this.getStoreFrontBindPackageList({
+      this.getStoreFrontBindCombinationCardList({
         store_id: id,
         page: this.page,
       }).then(res => {
@@ -105,9 +107,9 @@ export default {
       if (this.loading) return
       this.loading = true
       const { id } = this.$route.params
-      this.addPackageToRecommend({
+      this.addCombinationCardToRecommend({
         store_id: id,
-        package_id: gid,
+        meal_id: gid,
       })
         .then(() => {
           this.$toast.success({
@@ -129,7 +131,7 @@ export default {
       if (this.loading) return
       this.loading = true
       const { id } = this.$route.params
-      this.unBindPackage({
+      this.unBindCombinationCard({
         store_id: id,
         id: gid,
       })

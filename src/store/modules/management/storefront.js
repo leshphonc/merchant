@@ -71,6 +71,13 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 读取店铺下绑定的套餐商品列表
+  getStoreFrontBindCombinationCardList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.getStoreFrontBindCombinationCardList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
   // 读取店铺下未绑定的零售商品列表
   getStoreFrontUnBindECommerceList(context, payload) {
     return new Promise(async (resolve, reject) => {
@@ -89,6 +96,13 @@ const actions = {
   getStoreFrontUnBindPackageList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.getStoreFrontUnBindPackageList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 读取店铺下未绑定的套餐商品列表
+  getStoreFrontUnBindCombinationCardList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.getStoreFrontUnBindCombinationCardList(payload)
       data ? resolve(data) : reject()
     })
   },
@@ -113,6 +127,13 @@ const actions = {
       data ? resolve() : reject()
     })
   },
+  // 绑定套餐商品到店铺下
+  bindCombinationCardToStoreFront(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.bindCombinationCardToStoreFront(payload)
+      data ? resolve() : reject()
+    })
+  },
   // 解绑店铺下的零售商品
   unBindECommerce(context, payload) {
     return new Promise(async (resolve, reject) => {
@@ -134,6 +155,13 @@ const actions = {
       data ? resolve() : reject()
     })
   },
+  // 解绑店铺下的套餐商品
+  unBindCombinationCard(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.unBindCombinationCard(payload)
+      data ? resolve() : reject()
+    })
+  },
   // 将零售产品加入店铺首页推荐
   addECommerceToRecommend(context, payload) {
     return new Promise(async (resolve, reject) => {
@@ -152,6 +180,13 @@ const actions = {
   addPackageToRecommend(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.addPackageToRecommend(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 将产品加入店铺首页推荐
+  addCombinationCardToRecommend(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.addCombinationCardToRecommend(payload)
       data ? resolve() : reject()
     })
   },
