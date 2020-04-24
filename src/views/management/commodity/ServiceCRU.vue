@@ -1,13 +1,6 @@
 <template>
   <div>
-    <van-nav-bar
-      :title="`${type}服务项目`"
-      @click-left="$goBack"
-      @click-right="_submit"
-      fixed
-      left-arrow
-      right-text="保存"
-    ></van-nav-bar>
+    <van-nav-bar :title="`${type}服务项目`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
@@ -59,7 +52,7 @@
           ></van-field>
         </ValidationProvider>
         <van-cell title="日期多选">
-          <van-switch v-model="formData.appoint_date_type"></van-switch>
+          <van-switch active-value="1" inactive-value="0" v-model="formData.appoint_date_type"></van-switch>
         </van-cell>
         <ValidationProvider name="预约天数" rules="required|numeric" slim v-slot="{ errors }">
           <van-field
@@ -88,11 +81,32 @@
           </van-field>
         </ValidationProvider>
         <van-cell title="车型选择">
-          <van-switch v-model="formData.car_type"></van-switch>
+          <van-switch active-value="1" inactive-value="0" v-model="formData.car_type"></van-switch>
         </van-cell>
         <van-cell title="车牌选择">
-          <van-switch v-model="formData.car_no"></van-switch>
+          <van-switch active-value="1" inactive-value="0" v-model="formData.car_no"></van-switch>
         </van-cell>
+        <van-cell title="需要服务人员">
+          <van-switch active-value="1" inactive-value="0" v-model="formData.need_service_personnel"></van-switch>
+        </van-cell>
+        <div v-if="formData.need_service_personnel === '1'">
+          <ValidationProvider
+            :key="index"
+            :name="`${item.name}服务费用`"
+            rules="required|decimal-max2"
+            slim
+            v-for="(item, index) in staffLevelList"
+            v-slot="{ errors }"
+          >
+            <van-field
+              :error-message="errors[0]"
+              :label="item.name"
+              placeholder="请输入服务费用"
+              required
+              v-model.trim="formData.need_service_fee[index].fee"
+            ></van-field>
+          </ValidationProvider>
+        </div>
         <ValidationProvider name="预约开始时间" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -238,11 +252,13 @@ export default {
         old_price: '',
         payment_status: '0',
         payment_money: '',
-        appoint_date_type: false,
+        appoint_date_type: '0',
         appoint_date_num: '',
         expend_time: '',
-        car_type: false,
-        car_no: false,
+        car_type: '0',
+        car_no: '0',
+        need_service_personnel: '0',
+        need_service_fee: [],
         start_time: '',
         end_time: '',
         appoint_type: '',
@@ -254,6 +270,7 @@ export default {
         keyword: '',
       },
       pic: [],
+      staffLevelList: [],
       showStartTimePicker: false,
       showEndTimePicker: false,
       showServiceTypePicker: false,
@@ -313,19 +330,29 @@ export default {
   created() {},
 
   mounted() {
-    const { id } = this.$route.params
-    if (id) {
-      this._readServiceDetail(id)
-    } else {
-      // 读取服务项目分类
-      this._getServiceCategoryList()
-    }
+    this.getStaffLevelList().then(res => {
+      this.formData.need_service_fee = res.map(item => {
+        return {
+          technician_grade_id: item.id,
+          fee: 0,
+        }
+      })
+      this.staffLevelList = res
+      const { id } = this.$route.params
+      if (id) {
+        this._readServiceDetail(id)
+      } else {
+        // 读取服务项目分类
+        this._getServiceCategoryList()
+      }
+    })
   },
 
   destroyed() {},
 
   methods: {
     ...mapActions('commodity', ['getServiceCategoryList', 'createService', 'readServiceDetail']),
+    ...mapActions('staff', ['getStaffLevelList']),
     // 预约开始时间开关
     _controlStartTimePicker() {
       this.showStartTimePicker = !this.showStartTimePicker
@@ -418,11 +445,21 @@ export default {
         this.$refs.editor.$refs.quillEditor.quill.enable(false)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
+          // 判断是否为技师等级数据
+          if (item === 'need_service_fee') {
+            // 循环初始化数据和res数据，进行对比和赋值
+            this.formData[item].forEach(i => {
+              res.need_service_fee.forEach(ii => {
+                if (i.technician_grade_id === ii.technician_grade_id) {
+                  i.fee = ii.fee
+                }
+              })
+            })
+            return false
+          }
+
           this.formData[item] = res[item]
         })
-        this.formData.appoint_date_type = res.appoint_date_type === '1'
-        this.formData.car_no = res.car_no === '1'
-        this.formData.car_type = res.car_type === '1'
         if (res.start_time !== '0') {
           this.formData.start_time = this.$moment(res.start_time * 1000)
         }
@@ -472,9 +509,6 @@ export default {
           if (id) {
             params.appoint_id = id
           }
-          params.appoint_date_type = this.formData.appoint_date_type ? 1 : 0
-          params.car_no = this.formData.car_no ? 1 : 0
-          params.car_type = this.formData.car_type ? 1 : 0
           params.start_time = this.$moment(this.formData.start_time).valueOf() / 1000
           params.end_time = this.$moment(this.formData.end_time).valueOf() / 1000
           params.pic = this.formData.pic[0]

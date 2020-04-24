@@ -40,5 +40,10 @@ export default {
       path: 'serviceSetting/:id',
       component: () => import('@/views/management/storeFront/components/ServiceSetting'),
     },
+    {
+      // 商品绑定配置
+      path: 'recommendedBinding/:id',
+      component: () => import('@/views/management/storeFront/components/RecommendedBinding'),
+    },
   ],
 }

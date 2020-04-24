@@ -93,10 +93,10 @@
             >
           </div>
         </van-panel>
-        <div class="white-space"></div>
+        <!-- <div class="white-space"></div> -->
       </div>
     </div>
-    <van-button @click="_staffLogin" class="staff-login" type="primary">店员登录</van-button>
+    <!-- <van-button @click="_staffLogin" class="staff-login" type="primary">店员登录</van-button> -->
     <!-- 弹出层 -->
     <!-- 店员权限 -->
     <van-popup class="permission-popup" position="bottom" safe-area-inset-bottom v-model="showPermissionPicker">
@@ -516,9 +516,9 @@ img {
   margin-left: 4px;
 }
 
-.bottom-space:last-child {
-  margin-bottom: 48px;
-}
+// .bottom-space:last-child {
+//    margin-bottom: 48px;
+// }
 
 .staff-login {
   width: 100%;

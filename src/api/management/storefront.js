@@ -237,4 +237,30 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 获取店铺下产生绑定关系的零售商品
+  getBindingCommodityList: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=goodsPromotionRelation', {
+      ...payload,
+      size: 10,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取店铺下产生绑定关系的零售商品
+  getBindingServiceList: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=servicePromotionRelation', {
+      ...payload,
+      size: 10,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 零售商品绑定推荐服务
+  commodityBindService: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=servicePromotionRelationEdit', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 服务商品绑定推荐零售
+  serviceBindCommodity: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=goodsPromotionRelationEdit', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

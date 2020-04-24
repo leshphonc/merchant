@@ -102,4 +102,21 @@ export default {
       size: 10,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 技师等级列表
+  getStaffLevelList: () =>
+    axios.post('/appapi.php?c=Merchantapp&a=getTechnicianGradeList', {
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 创建或修改技师等级
+  modifyStaffLevel: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=EditTechnicianGrade', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 删除技师等级
+  deleteStaffLevel: id =>
+    axios.post('/appapi.php?c=Merchantapp&a=DeleteTechnicianGrade', {
+      id,
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

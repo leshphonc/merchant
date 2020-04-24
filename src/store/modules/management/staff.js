@@ -113,6 +113,27 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 技师等级列表
+  async getStaffLevelList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await staffAPI.getStaffLevelList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 创建或修改技师等级
+  async modifyStaffLevel(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await staffAPI.modifyStaffLevel(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 删除技师等级
+  async deleteStaffLevel(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await staffAPI.deleteStaffLevel(id)
+      data ? resolve(data) : reject()
+    })
+  },
 }
 
 // mutations

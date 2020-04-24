@@ -267,6 +267,34 @@ const actions = {
       data ? resolve() : reject()
     })
   },
+  // 获取店铺下产生绑定关系的零售商品
+  getBindingCommodityList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.getBindingCommodityList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取店铺下产生绑定关系的服务项目
+  getBindingServiceList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.getBindingServiceList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 零售商品绑定推荐服务
+  commodityBindService(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.commodityBindService(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 服务商品绑定推荐零售
+  serviceBindCommodity(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.serviceBindCommodity(payload)
+      data ? resolve(data) : reject()
+    })
+  },
 }
 
 // mutations

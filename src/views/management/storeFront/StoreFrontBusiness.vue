@@ -13,6 +13,9 @@
     <van-cell-group title="服务配置" v-if="detail.have_service === '1'">
       <van-cell :to="`/storeFront/serviceSetting/${detail.store_id}`" is-link title="配置编辑"></van-cell>
     </van-cell-group>
+    <van-cell-group title="商品推荐绑定">
+      <van-cell :to="`/storeFront/recommendedBinding/${detail.store_id}`" is-link title="配置编辑"></van-cell>
+    </van-cell-group>
   </div>
 </template>
 

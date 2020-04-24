@@ -14,19 +14,14 @@
         <ValidationProvider name="商品名称" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
-            label="商品名称"
             :placeholder="`${goodsType}商品名称`"
+            label="商品名称"
             required
             v-model.trim="formData.name"
           />
         </ValidationProvider>
         <ValidationProvider name="条形码" rules="alpha_num" slim v-if="$route.params.type !== '1'" v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            label="条形码"
-            placeholder="条形码数字（选填）"
-            v-model.trim="formData.number"
-          />
+          <van-field :error-message="errors[0]" label="条形码" placeholder="条形码数字（选填）" v-model.trim="formData.number" />
         </ValidationProvider>
         <ValidationProvider name="计数单位" rules="required" slim v-slot="{ errors }">
           <van-field
@@ -123,9 +118,8 @@
           readonly
         />
         <van-field
-          :disabled="$route.params.id"
           :value="typesLabel"
-          @click="_controlTypesPicker"
+          disabled
           error-message-align="right"
           input-align="right"
           is-link
@@ -236,6 +230,7 @@
       ></van-picker>
     </van-popup>
     <!-- 商品类型 -->
+    <!-- 商品类型无法修改，暂时不需要 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showTypesPicker">
       <van-picker
         :columns="typesColumns"
@@ -480,6 +475,7 @@ export default {
       // 零售分类
       this._getECommerceFirstCategoryList()
     }
+    this.formData.goods_type = this.$route.params.type
   },
 
   destroyed() {},

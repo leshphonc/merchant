@@ -1,5 +1,4 @@
 import Index from '@/views/management/staff'
-import StaffList from '@/views/management/staff/StaffList'
 
 export default {
   path: '/staff',
@@ -8,7 +7,7 @@ export default {
     {
       // 店员列表
       path: '',
-      component: StaffList,
+      component: () => import('@/views/management/staff/StaffDashboard'),
     },
     {
       // 店员编辑

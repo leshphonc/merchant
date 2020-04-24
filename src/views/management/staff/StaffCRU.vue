@@ -1,24 +1,11 @@
 <template>
   <div>
-    <van-nav-bar
-      :title="`${type}店员`"
-      @click-left="$goBack"
-      @click-right="_submit"
-      fixed
-      left-arrow
-      right-text="保存"
-    ></van-nav-bar>
+    <van-nav-bar :title="`${type}店员`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
         <ValidationProvider name="店员姓名" rules="required" slim v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            label="姓名"
-            placeholder="店员姓名"
-            required
-            v-model.trim="formData.name"
-          ></van-field>
+          <van-field :error-message="errors[0]" label="姓名" placeholder="店员姓名" required v-model.trim="formData.name"></van-field>
         </ValidationProvider>
         <ValidationProvider name="店员类型" rules="required" slim v-slot="{ errors }">
           <van-field
@@ -55,13 +42,7 @@
           ></van-field>
         </ValidationProvider>
         <ValidationProvider name="手机号" rules="required|phone" slim v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            label="手机号"
-            placeholder="店员手机号"
-            required
-            v-model.trim="formData.tel"
-          ></van-field>
+          <van-field :error-message="errors[0]" label="手机号" placeholder="店员手机号" required v-model.trim="formData.tel"></van-field>
         </ValidationProvider>
         <ValidationProvider name="分佣比例" rules="required|numeric|min_value:0|max_value:100" slim v-slot="{ errors }">
           <van-field
@@ -90,6 +71,20 @@
           ></van-field>
         </ValidationProvider>
       </van-cell-group>
+      <van-cell-group title="技师等级（非必选）">
+        <ValidationProvider name="技师等级" slim v-slot="{ errors }">
+          <van-field
+            :value="staffLevelLabel"
+            @click="_controlStaffLevelPicker"
+            error-message-align="right"
+            input-align="right"
+            is-link
+            label="技师等级"
+            placeholder="请选择"
+            readonly
+          ></van-field>
+        </ValidationProvider>
+      </van-cell-group>
     </ValidationObserver>
     <!-- 弹出层 -->
     <!-- 店员类型 -->
@@ -112,6 +107,17 @@
         @confirm="_pickStore"
         show-toolbar
         value-key="label"
+      ></van-picker>
+    </van-popup>
+    <!-- 技师等级列表 -->
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showStaffLevelPicker">
+      <van-picker
+        :columns="staffLevelColumns"
+        :default-index="staffLevelIndex"
+        @cancel="_controlStaffLevelPicker"
+        @confirm="_pickStaffLevel"
+        show-toolbar
+        value-key="name"
       ></van-picker>
     </van-popup>
   </div>
@@ -138,12 +144,15 @@ export default {
         tel: '',
         spread_rato: '',
         store_id: '',
+        technician_grade_id: '0',
       },
       loading: false,
       showStaffTypePicker: false,
       showStorePicker: false,
+      showStaffLevelPicker: false,
       staffTypeColumns: [],
       storeColumns: [],
+      staffLevelColumns: [],
     }
   },
 
@@ -169,6 +178,14 @@ export default {
       const index = this.storeColumns.findIndex(item => item.value === this.formData.store_id)
       return index
     },
+    staffLevelLabel() {
+      const item = this.staffLevelColumns.find(item => item.id === this.formData.technician_grade_id)
+      return item && item.name
+    },
+    staffLevelIndex() {
+      const index = this.staffLevelColumns.findIndex(item => item.id === this.formData.technician_grade_id)
+      return index
+    },
   },
 
   watch: {},
@@ -176,6 +193,9 @@ export default {
   created() {},
 
   mounted() {
+    this.getStaffLevelList().then(res => {
+      this.staffLevelColumns = [{ id: '0', name: '无等级' }, ...res]
+    })
     this._getStoreList()
     this._getStaffType()
     const { id, sid } = this.$route.params
@@ -186,7 +206,7 @@ export default {
 
   methods: {
     ...mapActions(['getStoreList']),
-    ...mapActions('staff', ['getStaffType', 'createStaff', 'updateStaff', 'readStaffDetail']),
+    ...mapActions('staff', ['getStaffType', 'createStaff', 'updateStaff', 'readStaffDetail', 'getStaffLevelList']),
     // 店员类型开关
     _controlStaffTypePicker() {
       this.showStaffTypePicker = !this.showStaffTypePicker
@@ -194,6 +214,10 @@ export default {
     // 店铺选择开关
     _controlStorePicker() {
       this.showStorePicker = !this.showStorePicker
+    },
+    // 技师等级开关
+    _controlStaffLevelPicker() {
+      this.showStaffLevelPicker = !this.showStaffLevelPicker
     },
     // 店员类型选择
     _pickStaffType(data) {
@@ -204,6 +228,11 @@ export default {
     _pickStore(data) {
       this.formData.store_id = data.value
       this._controlStorePicker()
+    },
+    // 技师等级选择
+    _pickStaffLevel(data) {
+      this.formData.technician_grade_id = data.id
+      this._controlStaffLevelPicker()
     },
     // 获取店员类型
     _getStaffType() {

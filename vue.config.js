@@ -3,8 +3,8 @@ const pxtoviewport = require('postcss-px-to-viewport')
 module.exports = {
   devServer: {
     // proxy: 'http://cs.7youke.com',
-    // proxy: 'https://www.9youke.com',
-    proxy: 'http://cs.czg365.cn',
+    proxy: 'https://www.9youke.com',
+    // proxy: 'http://cs.czg365.cn',
   },
   css: {
     loaderOptions: {
