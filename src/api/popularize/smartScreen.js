@@ -35,9 +35,9 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 智能屏布局菜单选择
+  // 智能屏布局菜单选择   setImaxMenuIsSelected
   selectSmartScreenMenu: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=setImaxMenuIsSelected', {
+    axios.post('/appapi.php?c=Merchantimax&a=setAiMenu', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),

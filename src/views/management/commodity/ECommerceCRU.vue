@@ -21,7 +21,12 @@
           />
         </ValidationProvider>
         <ValidationProvider name="条形码" rules="alpha_num" slim v-if="$route.params.type !== '1'" v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="条形码" placeholder="条形码数字（选填）" v-model.trim="formData.number" />
+          <van-field
+            :error-message="errors[0]"
+            label="条形码"
+            placeholder="条形码数字（选填）"
+            v-model.trim="formData.number"
+          />
         </ValidationProvider>
         <ValidationProvider name="计数单位" rules="required" slim v-slot="{ errors }">
           <van-field
@@ -105,9 +110,9 @@
         <van-cell title="需要桌台/房间">
           <van-switch active-value="1" inactive-value="0" v-model="formData.need_table" />
         </van-cell>
-        <van-cell title="需要服务人员">
+        <!-- <van-cell title="需要服务人员">
           <van-switch active-value="1" inactive-value="0" v-model="formData.need_service_personnel" />
-        </van-cell>
+        </van-cell> -->
         <van-field
           :value="statusLabel"
           @click="_controlStatusPicker"
@@ -330,7 +335,7 @@ export default {
         des: '',
         description: '',
         need_table: '0',
-        need_service_personnel: '0',
+        // need_service_personnel: '0',
         keyword: '',
       },
       statusColumns: [

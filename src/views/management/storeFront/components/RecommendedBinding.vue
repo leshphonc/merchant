@@ -8,7 +8,9 @@
           <div :key="index2" v-for="(item2, index2) in item.bind_list">{{ item2.name }}</div>
           <div v-if="item.bind_list.length === 0">暂未绑定任何推广服务</div>
           <template #footer>
-            <van-button @click="_controlServicePopup(item.goods_id, item.bind_list)" size="small" type="primary">绑定服务项目</van-button>
+            <van-button @click="_controlServicePopup(item.goods_id, item.bind_list)" size="small" type="primary"
+              >绑定服务项目</van-button
+            >
           </template>
         </van-panel>
       </van-tab>
@@ -17,11 +19,9 @@
           <div :key="index2" v-for="(item2, index2) in item.bind_list">{{ item2.name }}</div>
           <div v-if="item.bind_list.length === 0">暂未绑定任何推广商品</div>
           <template #footer>
-            <van-button
-              @click="_controlCommodityPopup(item.appoint_id, item.bind_list)"
-              size="small"
-              type="primary"
-            >绑定零售商品</van-button>
+            <van-button @click="_controlCommodityPopup(item.appoint_id, item.bind_list)" size="small" type="primary"
+              >绑定零售商品</van-button
+            >
           </template>
         </van-panel>
       </van-tab>
@@ -46,7 +46,7 @@
         </van-checkbox-group>
       </van-list>
       <van-button @click="_controlCommodityPopup()" class="close-btn">关闭</van-button>
-      <van-button @click="_bindCommodity" class="add-btn" type="primary">绑定</van-button>
+      <van-button @click="_bindCommodity" class="add-btn" type="primary">确认</van-button>
     </van-popup>
     <!-- 绑定服务商品列表 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showServicePopup">
@@ -67,7 +67,7 @@
         </van-checkbox-group>
       </van-list>
       <van-button @click="_controlServicePopup()" class="close-btn">关闭</van-button>
-      <van-button @click="_bindService" class="add-btn" type="primary">绑定</van-button>
+      <van-button @click="_bindService" class="add-btn" type="primary">确认</van-button>
     </van-popup>
   </div>
 </template>
@@ -257,7 +257,6 @@ export default {
     _bindService() {
       if (this.loading) return
       this.loading = true
-      console.log(this.sResult)
       const { id } = this.$route.params
       this.serviceBindCommodity({
         store_id: id,

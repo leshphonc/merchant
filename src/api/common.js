@@ -1,6 +1,8 @@
 import axios from 'axios'
 
 export default {
+  // 获取logo
+  getLogo: () => axios.get('/xcxapi.php?c=Config&a=get_bgimage&type=login_bgimg_wx_staff'),
   // 登录
   login: payload =>
     axios.post('/appapi.php?c=Merchantapp&a=login', {

@@ -28,6 +28,10 @@ axios.interceptors.response.use(
       if (config.data.error === errorcode.SUCCESS) {
         return config.data.msg
       }
+      // 兼容获取logo
+      if (config.data.code == 200) {
+        return config.data.wap_merchant_logo
+      }
       // 是否为登录验证过期
       if (config.data.errorCode === errorcode.NOTICKET || config.data.errorCode === errorcode.TIMEOUT) {
         Toast({

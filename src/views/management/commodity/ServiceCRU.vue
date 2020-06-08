@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}服务项目`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}服务项目`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
@@ -80,11 +87,14 @@
             <div slot="right-icon">分钟</div>
           </van-field>
         </ValidationProvider>
-        <van-cell title="车型选择">
+        <van-cell title="开启车型选择">
           <van-switch active-value="1" inactive-value="0" v-model="formData.car_type"></van-switch>
         </van-cell>
-        <van-cell title="车牌选择">
+        <van-cell title="开启车牌选择">
           <van-switch active-value="1" inactive-value="0" v-model="formData.car_no"></van-switch>
+        </van-cell>
+        <van-cell title="需要桌台/房间">
+          <van-switch active-value="1" inactive-value="0" v-model="formData.need_table" />
         </van-cell>
         <van-cell title="需要服务人员">
           <van-switch active-value="1" inactive-value="0" v-model="formData.need_service_personnel"></van-switch>
@@ -257,6 +267,7 @@ export default {
         expend_time: '',
         car_type: '0',
         car_no: '0',
+        need_table: '0',
         need_service_personnel: '0',
         need_service_fee: [],
         start_time: '',

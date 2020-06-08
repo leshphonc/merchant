@@ -59,13 +59,16 @@ export default {
 
   mounted() {
     let logo = ''
-    if (window.location.href.indexOf('9youke') > -1) {
-      logo = require('@/assets/image/logo.jpg')
-    } else if (window.location.href.indexOf('czg365.com') > -1) {
-      logo = require('@/assets/image/czg_logo2.png')
-    } else if (window.location.href.indexOf('czg365.cn') > -1) {
-      logo = require('@/assets/image/xyzg_logo.png')
-    }
+    // if (window.location.href.indexOf('9youke') > -1) {
+    //   logo = require('@/assets/image/logo.jpg')
+    // } else if (window.location.href.indexOf('czg365.com') > -1) {
+    //   logo = require('@/assets/image/czg_logo2.png')
+    // } else if (window.location.href.indexOf('czg365.cn') > -1) {
+    //   logo = require('@/assets/image/xyzg_logo.png')
+    // }
+    this.getLogo().then(res => {
+      this.logo = res
+    })
     this.logo = logo
     // 判断是否已经登录
     const ticket = localStorage.getItem('ticket')
@@ -82,7 +85,7 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions(['login', 'getAlias', 'getPlatFormInfo', 'getWxConfig']),
+    ...mapActions(['login', 'getAlias', 'getPlatFormInfo', 'getWxConfig', 'getLogo']),
     ...mapActions('basicInformation', ['readMerchantInfo']),
     _login() {
       this.login({ account: this.account, pwd: this.pwd }).then(() => {

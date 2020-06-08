@@ -1,11 +1,24 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}店员`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}店员`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
         <ValidationProvider name="店员姓名" rules="required" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="姓名" placeholder="店员姓名" required v-model.trim="formData.name"></van-field>
+          <van-field
+            :error-message="errors[0]"
+            label="姓名"
+            placeholder="店员姓名"
+            required
+            v-model.trim="formData.name"
+          ></van-field>
         </ValidationProvider>
         <ValidationProvider name="店员类型" rules="required" slim v-slot="{ errors }">
           <van-field
@@ -42,7 +55,13 @@
           ></van-field>
         </ValidationProvider>
         <ValidationProvider name="手机号" rules="required|phone" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="手机号" placeholder="店员手机号" required v-model.trim="formData.tel"></van-field>
+          <van-field
+            :error-message="errors[0]"
+            label="手机号"
+            placeholder="店员手机号"
+            required
+            v-model.trim="formData.tel"
+          ></van-field>
         </ValidationProvider>
         <ValidationProvider name="分佣比例" rules="required|numeric|min_value:0|max_value:100" slim v-slot="{ errors }">
           <van-field
@@ -70,6 +89,7 @@
             required
           ></van-field>
         </ValidationProvider>
+        <img-cropper :confirm="_pickAvatar" :list="avatar" field="店员头像" title="店员头像"></img-cropper>
       </van-cell-group>
       <van-cell-group title="技师等级（非必选）">
         <ValidationProvider name="技师等级" slim v-slot="{ errors }">
@@ -125,12 +145,16 @@
 
 <script>
 import { mapActions } from 'vuex'
+import ImgCropper from '@/components/ImgCropper'
+
 export default {
   name: 'staffCRU',
 
   mixins: [],
 
-  components: {},
+  components: {
+    ImgCropper,
+  },
 
   props: {},
 
@@ -145,6 +169,7 @@ export default {
         spread_rato: '',
         store_id: '',
         technician_grade_id: '0',
+        avatar: '',
       },
       loading: false,
       showStaffTypePicker: false,
@@ -153,6 +178,7 @@ export default {
       staffTypeColumns: [],
       storeColumns: [],
       staffLevelColumns: [],
+      avatar: [],
     }
   },
 
@@ -255,8 +281,12 @@ export default {
         keys.forEach(item => {
           this.formData[item] = res[item]
         })
+        this.avatar = [{ url: res.avatar }]
         this.formData.password = ''
       })
+    },
+    _pickAvatar(data) {
+      this.formData.avatar = data[0].url
     },
     async _submit() {
       // 锁

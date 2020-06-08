@@ -1,6 +1,14 @@
 import common from '@/api/common'
 
 export default {
+  // 获取logo
+  getLogo() {
+    return new Promise((resolve, reject) => {
+      common.getLogo().then(data => {
+        data ? resolve(data) : reject()
+      })
+    })
+  },
   // 登录
   login(context, payload) {
     return new Promise(async (resolve, reject) => {
