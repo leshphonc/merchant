@@ -19,8 +19,9 @@
         <div slot="footer">
           <van-button :to="`/smartScreen/smartScreenLayout/${item.imax_id}`" size="small">布局内容</van-button>
           <van-button :to="`/smartScreen/smartScreenSalesRecord/${item.imax_id}`" size="small">销售记录</van-button>
-          <van-button :to="`/smartScreen/customerMeetGreetingList/${item.imax_id}`" size="small">顾客见面语</van-button>
-          <van-button :to="`/smartScreen/staffMeetGreetingList/${item.imax_id}`" size="small">员工见面语</van-button>
+          <van-button :to="`/smartScreen/sameCityAdvisory/${item.imax_id}`" size="small">同城咨询</van-button>
+          <!--<van-button :to="`/smartScreen/customerMeetGreetingList/${item.imax_id}`" size="small">顾客见面语</van-button>-->
+          <!--<van-button :to="`/smartScreen/staffMeetGreetingList/${item.imax_id}`" size="small">员工见面语</van-button>-->
         </div>
       </van-panel>
       <div class="white-space"></div>

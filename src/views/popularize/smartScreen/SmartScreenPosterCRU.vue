@@ -378,7 +378,14 @@ export default {
         this.loading = true
         // 表单完整，进行数据修改并提交
         const params = JSON.parse(JSON.stringify(this.formData))
-        params.keywords = this.keywords.join()
+        // 去除空的关键词
+        let keyArr = []
+        this.keywords.forEach(item => {
+          if (item != null && item != '' && item != undefined) {
+            keyArr.push(item)
+          }
+        })
+        params.keywords = keyArr.join()
         let method = 'createPoster'
         const { imax, id } = this.$route.params
         params.imax_id = imax

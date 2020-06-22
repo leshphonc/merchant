@@ -3,9 +3,9 @@
     <van-cell
       @click="_controlCommodityPopup"
       arrow-direction="down"
-      value="点击选择"
       is-link
       title="推广商品"
+      value="点击选择"
     ></van-cell>
     <van-cell :icon="_commodityImg" :title="_commodityLabel" :value="_commodityType" center v-if="result_id"></van-cell>
     <!-- 弹出层 -->
@@ -107,13 +107,13 @@
                 <van-cell-group>
                   <van-cell
                     :key="index"
-                    :title="item.meal_name"
-                    @click="_selectCommodity(item.meal_id, 3)"
+                    :title="item.name"
+                    @click="_selectCommodity(item.package_id, 4)"
                     clickable
                     v-for="(item, index) in pList"
                   >
-                    <van-image :src="item.list_pic" lazy-load slot="icon" />
-                    <van-radio :name="item.meal_id" slot="right-icon" />
+                    <van-image :src="item.pic" lazy-load slot="icon" />
+                    <van-radio :name="item.package_id" slot="right-icon" />
                   </van-cell>
                 </van-cell-group>
               </van-radio-group>
@@ -216,9 +216,13 @@ export default {
           let s = this.sList.find(item => item.appoint_id === this.result_id)
           name = s && s.appoint_name
           break
-        case 3:
-          let p = this.pList.find(item => item.meal_id === this.result_id)
-          name = p && p.meal_name
+        // case 3:
+        //   let p = this.pList.find(item => item.meal_id === this.result_id)
+        //   img = p && p.pic
+        //   break
+        case 4:
+          let p = this.pList.find(item => item.package_id === this.result_id)
+          name = p && p.name
           break
       }
       return name
@@ -238,8 +242,12 @@ export default {
           let s = this.sList.find(item => item.appoint_id === this.result_id)
           img = s && s.pic
           break
-        case 3:
-          let p = this.pList.find(item => item.meal_id === this.result_id)
+        // case 3:
+        //   let p = this.pList.find(item => item.meal_id === this.result_id)
+        //   img = p && p.pic
+        //   break
+        case 4:
+          let p = this.pList.find(item => item.package_id === this.result_id)
           img = p && p.pic
           break
       }
@@ -257,7 +265,10 @@ export default {
         case 2:
           type = '服务'
           break
-        case 3:
+        // case 3:
+        //   type = '次卡'
+        //   break
+        case 4:
           type = '套餐'
           break
       }

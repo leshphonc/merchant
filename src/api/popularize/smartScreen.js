@@ -212,4 +212,16 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
+  // 获取同城商家列表
+  getSameCityMerchant: payload =>
+    axios.post('/appapi.php?c=Merchant&a=getSameCityList', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 保存同城商家咨询
+  saveSameCityAdvisory: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=setSameCityQuestionMer', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

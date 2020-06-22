@@ -239,6 +239,20 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 获取同城商家列表
+  getSameCityMerchant(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getSameCityMerchant(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 保存同城商家咨询
+  saveSameCityAdvisory(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.saveSameCityAdvisory(payload)
+      data ? resolve(data) : reject()
+    })
+  },
 }
 
 // mutations

@@ -4,7 +4,13 @@
     <div class="nav-bar-holder"></div>
     <van-cell-group title="轮播图">
       <van-swipe-cell :key="index" v-for="(item, index) in swipeList">
-        <van-field @click="_controlCarouselPopup(index + '')" input-align="right" is-link placeholder="点击配置" readonly>
+        <van-field
+          @click="_controlCarouselPopup(index + '')"
+          input-align="right"
+          is-link
+          placeholder="点击配置"
+          readonly
+        >
           <van-image :src="item.pic" slot="left-icon" />
         </van-field>
         <template slot="right">
@@ -14,7 +20,14 @@
       <van-button @click="_controlCarouselPopup()" icon="plus" style="width: 100%">添加轮播图</van-button>
     </van-cell-group>
     <van-cell-group title="菜单">
-      <van-field @click="showMenuPicker = true" input-align="right" is-link label="已选功能" placeholder="点击勾选" readonly>
+      <van-field
+        @click="showMenuPicker = true"
+        input-align="right"
+        is-link
+        label="已选功能"
+        placeholder="点击勾选"
+        readonly
+      >
         <div slot="input" v-if="menu.length > 0">
           <van-tag :key="index" type="primary" v-for="(item, index) in menu">{{ _getMenuName(item) }}</van-tag>
         </div>
@@ -34,7 +47,13 @@
     <!-- 弹出层 -->
     <!-- 轮播图配置 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showCarouselPopup">
-      <img-cropper :compression="1" :confirm="_pickPic" :list="picList" :ratio="[675, 252]" title="轮播海报图"></img-cropper>
+      <img-cropper
+        :compression="1"
+        :confirm="_pickPic"
+        :list="picList"
+        :ratio="[675, 252]"
+        title="轮播海报图"
+      ></img-cropper>
       <van-field label="跳转地址" placeholder="点击海报跳转的地址" v-model="formData.pic_url"></van-field>
       <div class="btn-group">
         <van-button @click="_controlCarouselPopup()">取消</van-button>
@@ -266,7 +285,7 @@ export default {
         this.menuID = res.menu.site_id
         let m = []
         res.menu.itemList.forEach(item => {
-          if (item.is_selected === '1') {
+          if (item.choose == '1') {
             m.push(item.id)
           }
         })
@@ -310,7 +329,6 @@ export default {
         })
     },
     _selectSmartScreenMenu(id) {
-      console.log(id)
       const { imax } = this.$route.params
       this.loading = true
       this.selectSmartScreenMenu({

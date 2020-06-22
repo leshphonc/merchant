@@ -30,31 +30,6 @@ export default {
       component: () => import('@/views/popularize/smartScreen/SmartScreenSalesRecord'),
     },
     {
-      // 顾客见面语列表
-      path: 'customerMeetGreetingList/:imax',
-      component: () => import('@/views/popularize/smartScreen/CustomerMeetGreetingList'),
-    },
-    {
-      // 顾客见面语编辑
-      path: 'customerMeetGreetingCRU/:imax/:id?',
-      component: () => import('@/views/popularize/smartScreen/CustomerMeetGreetingCRU'),
-    },
-    {
-      // 员工见面语列表
-      path: 'staffMeetGreetingList/:imax',
-      component: () => import('@/views/popularize/smartScreen/StaffMeetGreetingList'),
-    },
-    {
-      // 员工见面语编辑
-      path: 'staffMeetGreetingCRU/:imax/:id?',
-      component: () => import('@/views/popularize/smartScreen/StaffMeetGreetingCRU'),
-    },
-    {
-      // 员工特殊见面语列表
-      path: 'staffMeetGreetingSpecifyList/:imax/:id',
-      component: () => import('@/views/popularize/smartScreen/StaffMeetGreetingSpecifyList'),
-    },
-    {
       // 屏幕推广海报列表
       path: 'smartScreenPosterList',
       component: () => import('@/views/popularize/smartScreen/SmartScreenPosterList'),
@@ -64,5 +39,35 @@ export default {
       path: 'smartScreenPosterCRU/:id?',
       component: () => import('@/views/popularize/smartScreen/SmartScreenPosterCRU'),
     },
+    {
+      // 同城咨询
+      path: 'sameCityAdvisory/:imax?',
+      component: () => import('@/views/popularize/smartScreen/SameCityAdvisory'),
+    },
+    // {
+    //   // 顾客见面语列表
+    //   path: 'customerMeetGreetingList/:imax',
+    //   component: () => import('@/views/popularize/smartScreen/CustomerMeetGreetingList'),
+    // },
+    // {
+    //   // 顾客见面语编辑
+    //   path: 'customerMeetGreetingCRU/:imax/:id?',
+    //   component: () => import('@/views/popularize/smartScreen/CustomerMeetGreetingCRU'),
+    // },
+    // {
+    //   // 员工见面语列表
+    //   path: 'staffMeetGreetingList/:imax',
+    //   component: () => import('@/views/popularize/smartScreen/StaffMeetGreetingList'),
+    // },
+    // {
+    //   // 员工见面语编辑
+    //   path: 'staffMeetGreetingCRU/:imax/:id?',
+    //   component: () => import('@/views/popularize/smartScreen/StaffMeetGreetingCRU'),
+    // },
+    // {
+    //   // 员工特殊见面语列表
+    //   path: 'staffMeetGreetingSpecifyList/:imax/:id',
+    //   component: () => import('@/views/popularize/smartScreen/StaffMeetGreetingSpecifyList'),
+    // },
   ],
 }

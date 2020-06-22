@@ -638,7 +638,10 @@ export default {
           case '2':
             str = '服务商品'
             break
-          case '3':
+          // case '3':
+          //   str = '次卡'
+          //   break
+          case '4':
             str = '套餐商品'
             break
           default:
