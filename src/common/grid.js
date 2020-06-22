@@ -172,6 +172,12 @@ const SettingGrid = {
       enable: require('../assets/image/sbgl.png'),
       disable: require('../assets/image/sbgl_gray.png'),
     },
+    {
+      name: '意见反馈',
+      path: '/feedback',
+      enable: require('../assets/image/sbgl.png'),
+      disable: require('../assets/image/sbgl_gray.png'),
+    },
   ],
 }
 
