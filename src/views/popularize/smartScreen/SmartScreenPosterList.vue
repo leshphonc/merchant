@@ -14,14 +14,9 @@
         <van-pull-refresh @refresh="_eOnRefresh" v-model="eRefreshing">
           <van-list :finished="eFinished" :finished-text="eFinishText" @load="_eOnLoad" v-model="loading">
             <div :key="item.id" v-for="item in eList">
-              <van-panel
-                :desc="_currentDesc(item)"
-                :icon="item.data_type === '0' ? item.ad_img : item.goods_info.goods_icon"
-                :status="_currentStatus(item)"
-                :title="item.data_type === '0' ? item.title : item.goods_info.goods_name"
-              >
+              <van-panel>
                 <div>
-                  <van-row>
+                  <!-- <van-row>
                     <van-col span="10">触达人数：{{ item.reach || 111 }}</van-col>
                     <van-col span="10">播报次数：{{ item.scan || 111 }}</van-col>
                   </van-row>
@@ -29,17 +24,22 @@
                   <van-row>
                     <van-col span="10">浏览人数：{{ item.wait || 111 }}</van-col>
                     <van-col span="10">下单人数：{{ item.buy || 111 }}</van-col>
-                  </van-row>
+                  </van-row>-->
                   <div class="white-space"></div>
                   <van-row>
                     <van-col span="5">关键词：</van-col>
                     <van-col span="19">{{ item.keywords }}</van-col>
                   </van-row>
                   <div class="white-space"></div>
-                  <van-row>
-                    <van-col span="10">推广分类：{{ item.cate_name }}</van-col>
-                    <van-col span="10">推广标签：{{ item.label_names.join() }}</van-col>
+                  <!-- <van-row>
+                    <van-col span="5">推广分类：</van-col>
+                    <van-col span="19">{{ item.cate_name }}</van-col>
                   </van-row>
+                  <div class="white-space"></div>
+                  <van-row>
+                    <van-col span="5">推广标签：</van-col>
+                    <van-col span="19">{{ item.label_names.join() }}</van-col>
+                  </van-row> -->
                   <div class="white-space"></div>
                   <van-row>
                     <van-col span="5">播报语音：</van-col>
@@ -47,17 +47,43 @@
                   </van-row>
                   <div class="white-space"></div>
                 </div>
+                <template #header>
+                  <van-row class="panel-row">
+                    <van-col span="6">
+                      <van-image :src="item.data_type === '0' ? item.ad_img : item.goods_info.goods_icon" />
+                    </van-col>
+                    <van-col span="12">
+                      <div>{{ item.data_type === '0' ? item.title : item.goods_info.goods_name }}</div>
+                      <div>{{ _currentDesc(item) }}</div>
+                    </van-col>
+                    <van-col span="6">
+                      <div>{{ _currentStatus(item) }}</div>
+                      <div>{{ item.local_push === 1 ? '本店已推' : '本店未推' }}</div>
+                    </van-col>
+                  </van-row>
+                </template>
                 <div slot="footer" v-if="item.is_shelves === '1'">
                   <!-- <van-button disabled size="small" v-if="item.audit === '2'">同城审核中</van-button> -->
-                  <van-button @click="_changeRelease(item.id)" size="small" type="danger" v-if="item.audit !== '2'"
-                    >取消发布</van-button
-                  >
-                  <van-button @click="_openPopup(item)" size="small">智能屏推广</van-button>
+                  <van-button
+                    @click="_cancelRelease(item.id)"
+                    size="small"
+                    type="danger"
+                    v-if="item.audit !== '2'"
+                  >取消同城发布</van-button>
+                  <van-button @click="_openPopup(item)" size="small" type="primary">本店发布</van-button>
+                  <van-button
+                    @click="$router.push(`/smartScreen/smartScreenPromotionStatistics/${item.id}`)"
+                    size="small"
+                  >推广统计</van-button>
                 </div>
                 <div slot="footer" v-else-if="item.is_shelves === '2'">
                   <van-button @click="_changeStatus(item.id)" size="small" type="danger">禁用</van-button>
                   <van-button @click="_needCheckStore(item)" size="small" type="primary">同城发布</van-button>
-                  <van-button @click="_openPopup(item)" size="small">智能屏推广</van-button>
+                  <van-button @click="_openPopup(item)" size="small" type="primary">本店发布</van-button>
+                  <van-button
+                    @click="$router.push(`/smartScreen/smartScreenPromotionStatistics/${item.id}`)"
+                    size="small"
+                  >推广统计</van-button>
                   <van-button :to="`/smartScreen/smartScreenPosterCRU/${item.id}`" size="small">编辑</van-button>
                 </div>
               </van-panel>
@@ -77,7 +103,7 @@
                 :title="item.data_type === '0' ? item.title : item.goods_info.goods_name"
               >
                 <div>
-                  <van-row>
+                  <!-- <van-row>
                     <van-col span="10">触达人数：{{ item.reach || 111 }}</van-col>
                     <van-col span="10">播报次数：{{ item.scan || 111 }}</van-col>
                   </van-row>
@@ -85,7 +111,7 @@
                   <van-row>
                     <van-col span="10">浏览人数：{{ item.wait || 111 }}</van-col>
                     <van-col span="10">下单人数：{{ item.buy || 111 }}</van-col>
-                  </van-row>
+                  </van-row>-->
                   <div class="white-space"></div>
                   <van-row>
                     <van-col span="5">关键词：</van-col>
@@ -113,7 +139,7 @@
     <van-popup class="full-popup" position="bottom" safe-area-inset-bottom v-model="showPopup">
       <van-steps :active="curStep">
         <van-step>选择屏幕</van-step>
-        <van-step>选择需求</van-step>
+        <!-- <van-step>选择需求</van-step> -->
         <van-step>推广角色</van-step>
         <van-step>推广时间</van-step>
       </van-steps>
@@ -131,7 +157,7 @@
           </van-cell>
         </van-cell-group>
       </van-checkbox-group>
-      <div v-show="curStep === 1">
+      <!-- <div v-show="curStep === 1">
         <van-checkbox-group v-model="formData.guest_demand_ids">
           <van-cell-group>
             <van-cell
@@ -158,20 +184,15 @@
           <van-stepper slot="input" v-model="formData.guest_num" />
         </van-field>
         <van-field input-align="right" label="最少人数" v-if="formData.guest_num_type === '2'">
-          <van-stepper :max="formData.guest_num_max" slot="input" v-model="formData.guest_num_min" />
+          <van-stepper :max="formData.guest_num_max - 0" slot="input" v-model="formData.guest_num_min" />
         </van-field>
         <van-field input-align="right" label="最多人数" v-if="formData.guest_num_type === '2'">
-          <van-stepper :min="formData.guest_num_min + 1" slot="input" v-model="formData.guest_num_max" />
+          <van-stepper :min="formData.guest_num_min - 0 + 1" slot="input" v-model="formData.guest_num_max" />
         </van-field>
-      </div>
-      <van-collapse v-model="activeNames" v-show="curStep === 2">
+      </div>-->
+      <van-collapse v-model="activeNames" v-show="curStep === 1">
         <van-collapse-item name="1" title="推广角色">
-          <van-icon
-            @click.stop="$toast('收到此条推广的角色身份')"
-            class="question-icon"
-            name="question-o"
-            slot="icon"
-          />
+          <van-icon @click.stop="$toast('收到此条推广的角色身份')" class="question-icon" name="question-o" slot="icon" />
           <van-checkbox-group v-model="formData.role">
             <van-cell-group>
               <van-cell
@@ -187,12 +208,7 @@
           </van-checkbox-group>
         </van-collapse-item>
         <van-collapse-item name="2" title="推广会员" v-if="formData.role.indexOf(5) > -1">
-          <van-icon
-            @click.stop="$toast('收到此条推广的会员身份')"
-            class="question-icon"
-            name="question-o"
-            slot="icon"
-          />
+          <van-icon @click.stop="$toast('收到此条推广的会员身份')" class="question-icon" name="question-o" slot="icon" />
           <van-checkbox-group v-model="formData.promotion_role_member">
             <van-cell-group>
               <van-cell
@@ -208,12 +224,7 @@
           </van-checkbox-group>
         </van-collapse-item>
         <van-collapse-item name="3" title="推广店员" v-if="formData.role.indexOf(6) > -1">
-          <van-icon
-            @click.stop="$toast('收到此条推广的店员身份')"
-            class="question-icon"
-            name="question-o"
-            slot="icon"
-          />
+          <van-icon @click.stop="$toast('收到此条推广的店员身份')" class="question-icon" name="question-o" slot="icon" />
           <van-checkbox-group v-model="formData.promotion_role_staff">
             <van-cell-group>
               <van-cell
@@ -239,25 +250,25 @@
         startField="开始时间"
         startLabel="开始时间"
         type="time"
-        v-show="curStep === 3"
+        v-show="curStep === 2"
       ></time-picker>
       <div class="btn-group">
         <van-button @click="_closePopup" native-type="button" v-show="curStep === 0">取消</van-button>
         <van-button @click="curStep -= 1" v-show="curStep > 0">上一步</van-button>
-        <van-button @click="_nextStep" type="primary" v-show="curStep < 3">下一步</van-button>
-        <van-button @click="_submit" type="primary" v-show="curStep === 3">发布到屏幕</van-button>
+        <van-button @click="_nextStep" type="primary" v-show="curStep < 2">下一步</van-button>
+        <van-button @click="_submit" type="primary" v-show="curStep === 2">发布到屏幕</van-button>
       </div>
     </van-popup>
     <!-- 同城发布店铺选择 -->
     <van-popup
       :lazy-render="false"
-      class="full-popup"
+      class="cus-popup"
       position="bottom"
       safe-area-inset-bottom
       v-model="showStorePicker"
     >
-      <van-checkbox-group v-model="store">
-        <van-cell-group>
+      <van-checkbox-group v-model="serviceScope">
+        <!-- <van-cell-group title="请选择提供此商品的店铺">
           <van-cell
             :key="index"
             :label="item.adress"
@@ -267,6 +278,17 @@
             v-for="(item, index) in storeColumns"
           >
             <van-checkbox :name="item.value" ref="checkboxesStore" slot="right-icon" />
+          </van-cell>
+        </van-cell-group>-->
+        <van-cell-group>
+          <van-cell
+            :key="index"
+            :title="item.name"
+            @click="_ssToggle(index)"
+            clickable
+            v-for="(item, index) in demandList"
+          >
+            <van-checkbox :name="item.id" ref="checkboxesSS" slot="right-icon" />
           </van-cell>
         </van-cell-group>
       </van-checkbox-group>
@@ -341,7 +363,7 @@ export default {
       showStorePicker: false,
       storeColumns: [],
       lastAd: '',
-      store: [],
+      serviceScope: [],
       guestTypeColumns: [
         {
           label: '不限',
@@ -419,7 +441,7 @@ export default {
       this.showStorePicker = !this.showStorePicker
       if (id) {
         this.lastAd = id
-        this.store = []
+        this.serviceScope = []
       } else {
         this.lastAd = ''
       }
@@ -561,14 +583,17 @@ export default {
     _storeToggle(index) {
       this.$refs.checkboxesStore[index].toggle()
     },
+    _ssToggle(index) {
+      this.$refs.checkboxesSS[index].toggle()
+    },
     // 同城发布
-    _changeRelease(id, store_ids) {
+    _changeRelease(id) {
       if (this.loading) return
       this.loading = true
-      this.changePosterRelease({ id, store_ids })
+      this.changePosterRelease({ id, status: 1 })
         .then(() => {
           this.$toast.success({
-            message: '操作成功',
+            message: '同城发布成功，待审核',
             forbidClick: true,
             duration: 1500,
             onClose: () => {
@@ -582,6 +607,41 @@ export default {
           })
         })
         .catch(() => {
+          this.loading = false
+        })
+    },
+    _cancelRelease(id) {
+      if (this.loading) return
+      this.loading = true
+      this.$dialog
+        .confirm({
+          title: '提示',
+          message: '确认取消同城发布吗',
+        })
+        .then(() => {
+          // on confirm
+          this.changePosterRelease({ id, status: 0 })
+            .then(() => {
+              this.$toast.success({
+                message: '已取消同城发布成功',
+                forbidClick: true,
+                duration: 1500,
+                onClose: () => {
+                  // 解锁
+                  this.loading = false
+                  this._eOnRefresh()
+                  if (this.showStorePicker) {
+                    this._controlStorePicker()
+                  }
+                },
+              })
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        })
+        .catch(() => {
+          // on cancel
           this.loading = false
         })
     },
@@ -657,27 +717,45 @@ export default {
       this.formData.end_time = data
     },
     _needCheckStore(item) {
-      if (item.data_type === '1') {
-        this.getFilterStoreList({
-          goods_type: item.goods_type,
-          goods_id: item.goods_id,
-        }).then(res => {
-          const arr = res.map(item => {
-            return {
-              label: item.name,
-              value: item.store_id,
-              adress: item.adress,
-            }
-          })
-          this.storeColumns = arr
-          this._controlStorePicker(item.id)
+      this.$dialog
+        .confirm({
+          title: '提示',
+          message: '确认发布同城吗',
         })
-      } else {
-        this.getStoreList().then(res => {
-          this.storeColumns = res.store_list
-          this._controlStorePicker(item.id)
+        .then(() => {
+          // on confirm
+          this._changeRelease(item.id)
         })
-      }
+        .catch(() => {
+          // on cancel
+        })
+      // 1 商品
+      // if (item.data_type === '1') {
+      //   this.getSmartScreenDemandList(this.formData.screen).then(res => {
+      //     this.demandList = res
+      //   })
+      //   this.getFilterStoreList({
+      //     goods_type: item.goods_type,
+      //     goods_id: item.goods_id,
+      //   }).then(res => {
+      //     const arr = res.map(item => {
+      //       return {
+      //         label: item.name,
+      //         value: item.store_id,
+      //         adress: item.adress,
+      //       }
+      //     })
+      //     this.storeColumns = arr
+      //     this._controlStorePicker(item.id)
+      //   })
+      // } else {
+      // 2 海报 （废弃）
+      // this.getStoreList().then(res => {
+      // this.storeColumns = res.store_list
+      // this._controlStorePicker(item.id)
+      // })
+      // }
+      // this._submitSameCity()
     },
     _submit() {
       const params = {
@@ -710,7 +788,7 @@ export default {
     },
     // 选择店铺且将海报同城发布
     _submitSameCity() {
-      this._changeRelease(this.lastAd, this.store.join())
+      this._changeRelease(this.lastAd)
     },
     _nextStep() {
       if (this.curStep === 0) {
@@ -754,12 +832,32 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.van-cell__left-icon {
-  font-size: 80px;
-  height: 80px;
-  margin-right: 10px;
+.panel-row {
+  padding: 10px 16px;
+  .van-col:nth-child(2) {
+    padding-left: 10px;
+    div:nth-child(1) {
+      font-size: 14px;
+      color: @black-light-c;
+    }
+    div:nth-child(2) {
+      color: @gray-deep-c;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+  }
+  .van-col:nth-child(3) {
+    div:nth-child(1) {
+      font-size: 14px;
+      color: @red-c;
+    }
+    div:nth-child(2) {
+      color: @gray-deep-c;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+  }
 }
-
 .van-panel__content {
   padding: 10px 16px;
   font-size: 13px;
@@ -786,6 +884,20 @@ export default {
 
   /deep/.van-collapse-item__content {
     padding: 0;
+  }
+}
+
+.cus-popup {
+  max-height: 100vh;
+  padding-bottom: 44px;
+  .btn-group {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    .van-button {
+      width: 50%;
+      margin: 0;
+    }
   }
 }
 

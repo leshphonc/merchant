@@ -84,6 +84,12 @@ const PopularizeGrid = {
       enable: require('../assets/image/zhk.png'),
       disable: require('../assets/image/zhk.png'),
     },
+    {
+      name: '广告订单',
+      path: '/advert',
+      enable: require('../assets/image/advert.png'),
+      disable: require('../assets/image/advert.png'),
+    },
   ],
 }
 
@@ -175,8 +181,8 @@ const SettingGrid = {
     {
       name: '意见反馈',
       path: '/feedback',
-      enable: require('../assets/image/sbgl.png'),
-      disable: require('../assets/image/sbgl_gray.png'),
+      enable: require('../assets/image/eva.png'),
+      disable: require('../assets/image/eva.png'),
     },
   ],
 }

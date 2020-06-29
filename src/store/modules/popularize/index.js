@@ -4,6 +4,7 @@ import gift from './gift'
 import reward from './reward'
 import smartScreen from './smartScreen'
 import transfer from './transfer'
+import advert from './advert'
 
 export default {
   staffPromotion,
@@ -12,4 +13,5 @@ export default {
   reward,
   smartScreen,
   transfer,
+  advert,
 }

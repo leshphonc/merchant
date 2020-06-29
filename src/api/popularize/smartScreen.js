@@ -224,4 +224,16 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 获取绑定了屏幕的店铺列表(可传推广商品id)
+  getStoreAndScreen: payload =>
+    axios.post('/appapi.php?c=Tracking&a=deviceStoreList', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 筛选屏幕统计数据
+  getPromotionStatistics: payload =>
+    axios.post('/appapi.php?c=Tracking&a=spreadTracking', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

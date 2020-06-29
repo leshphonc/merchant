@@ -1,31 +1,9 @@
 <template>
   <div>
-    <van-nav-bar
-      :title="`${type}智能屏推广`"
-      @click-left="$goBack"
-      @click-right="_submit"
-      fixed
-      left-arrow
-      right-text="保存"
-    ></van-nav-bar>
+    <van-nav-bar :title="`${type}智能屏推广`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
-        <ValidationProvider name="关键词1" rules="required|min:2|max:6" slim v-slot="{ errors }">
-          <van-field
-            :error-message="errors[0]"
-            label="对话关键词1"
-            placeholder="关键词1"
-            required
-            v-model.trim="keywords[0]"
-          />
-        </ValidationProvider>
-        <ValidationProvider name="关键词2" rules="min:2|max:6" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="对话关键词2" placeholder="关键词2" v-model.trim="keywords[1]" />
-        </ValidationProvider>
-        <ValidationProvider name="关键词3" rules="min:2|max:6" slim v-slot="{ errors }">
-          <van-field :error-message="errors[0]" label="对话关键词3" placeholder="关键词3" v-model.trim="keywords[2]" />
-        </ValidationProvider>
         <ValidationProvider name="排序" rules="required|numeric" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -36,20 +14,45 @@
             v-model.trim="formData.sort"
           />
         </ValidationProvider>
-        <ValidationProvider name="播报语音" rules="required" slim v-slot="{ errors }">
+        <ValidationProvider name="服务范围" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
-            label="播报语音"
-            maxlength="200"
-            placeholder="请填写播报语音"
+            :value="formData.guest_demand_ids.length ? '1' : ''"
+            @click="_controlServiceScopePopup"
+            error-message-align="right"
+            input-align="right"
+            is-link
+            label="选择服务范围"
+            placeholder="请选择"
+            readonly
             required
-            rows="3"
-            show-word-limit
-            type="textarea"
-            v-model.trim="formData.read_txt"
-          />
+          >
+            <div slot="input" v-if="formData.guest_demand_ids.length">
+              <div :key="item" v-for="item in formData.guest_demand_ids">
+                <van-tag type="primary">{{ _serviceScopeLabel(item) }}</van-tag>
+              </div>
+            </div>
+          </van-field>
         </ValidationProvider>
-        <ValidationProvider name="标签" rules="required" slim v-slot="{ errors }">
+        <van-field
+          :value="guestType"
+          @click="_controlGuestTypePicker"
+          clickable
+          input-align="right"
+          label="客人数量"
+          placeholder="点击选择"
+          readonly
+        />
+        <van-field input-align="right" label="人数" v-if="formData.guest_num_type === '1'">
+          <van-stepper slot="input" v-model="formData.guest_num" />
+        </van-field>
+        <van-field input-align="right" label="最少人数" v-if="formData.guest_num_type === '2'">
+          <van-stepper :max="formData.guest_num_max - 0" slot="input" v-model="formData.guest_num_min" />
+        </van-field>
+        <van-field input-align="right" label="最多人数" v-if="formData.guest_num_type === '2'">
+          <van-stepper :min="formData.guest_num_min - 0 + 1" slot="input" v-model="formData.guest_num_max" />
+        </van-field>
+        <!-- <ValidationProvider name="标签" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             :value="formData.label_ids.length ? '1' : ''"
@@ -68,8 +71,8 @@
               <van-tag type="primary">{{ _tagLabel(item, index) }}</van-tag>
             </div>
           </van-field>
-        </ValidationProvider>
-        <ValidationProvider name="分类" rules="required" slim v-slot="{ errors }">
+        </ValidationProvider>-->
+        <!-- <ValidationProvider name="分类" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             :value="cateLabel"
@@ -84,7 +87,7 @@
             readonly
             required
           />
-        </ValidationProvider>
+        </ValidationProvider>-->
         <!-- <van-cell title="选择商品">
           <van-switch active-value="1" inactive-value="0" v-model="formData.data_type"></van-switch>
         </van-cell>-->
@@ -92,13 +95,7 @@
       <van-cell-group title="选择推广内容">
         <van-tabs :lazy-render="false" v-model="formData.data_type">
           <van-tab title="海报">
-            <ValidationProvider
-              name="海报标题"
-              rules="required"
-              slim
-              v-if="formData.data_type === 0"
-              v-slot="{ errors }"
-            >
+            <ValidationProvider name="海报标题" rules="required" slim v-if="formData.data_type === 0" v-slot="{ errors }">
               <van-field
                 :error-message="errors[0]"
                 label="海报标题"
@@ -108,21 +105,50 @@
               />
             </ValidationProvider>
             <ValidationProvider
-              name="海报网址"
-              rules="required"
+              name="关键词1"
+              rules="required|min:2|max:6"
               slim
               v-if="formData.data_type === 0"
               v-slot="{ errors }"
             >
               <van-field
                 :error-message="errors[0]"
+                label="关键词1"
+                placeholder="关键词1"
+                required
+                v-model.trim="keywords[0]"
+              />
+            </ValidationProvider>
+            <ValidationProvider name="关键词2" rules="min:2|max:6" slim v-slot="{ errors }">
+              <van-field :error-message="errors[0]" label="关键词2" placeholder="关键词2" v-model.trim="keywords[1]" />
+            </ValidationProvider>
+            <ValidationProvider name="关键词3" rules="min:2|max:6" slim v-slot="{ errors }">
+              <van-field :error-message="errors[0]" label="关键词3" placeholder="关键词3" v-model.trim="keywords[2]" />
+            </ValidationProvider>
+            <ValidationProvider name="海报网址" rules="required" slim v-if="formData.data_type === 0" v-slot="{ errors }">
+              <van-field
+                :error-message="errors[0]"
+                clearable
                 label="海报网址"
                 placeholder="请填写海报网址"
                 required
                 v-model.trim="formData.url"
               />
             </ValidationProvider>
-            <ValidationProvider
+            <ValidationProvider name="播报语音" rules="required" slim v-if="formData.data_type === 0" v-slot="{ errors }">
+              <van-field
+                :error-message="errors[0]"
+                label="播报语音"
+                maxlength="200"
+                placeholder="请填写播报语音"
+                required
+                rows="3"
+                show-word-limit
+                type="textarea"
+                v-model.trim="formData.read_txt"
+              />
+            </ValidationProvider>
+            <!-- <ValidationProvider
               name="商品原价"
               rules="required|decimal-max2"
               slim
@@ -153,9 +179,10 @@
                 type="number"
                 v-model.trim="formData.price"
               />
-            </ValidationProvider>
+            </ValidationProvider>-->
             <img-cropper
               :confirm="_pickPoster"
+              :delete="_deletePoster"
               :list="posterList"
               field="海报图片"
               title="海报图片"
@@ -167,6 +194,7 @@
             <commodity-radio
               :cacheImg="radioImg"
               :id="formData.goods_id"
+              :name="goods_name"
               :pickCommodity="_pickCommodity"
               :type="formData.goods_type"
               v-show="formData.data_type === 1"
@@ -176,7 +204,7 @@
       </van-cell-group>
     </ValidationObserver>
     <!-- 标签选择 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showTagPicker">
+    <van-popup class="normal-popup" position="bottom" safe-area-inset-bottom v-model="showTagPicker">
       <van-list :finished="tFinished" :finished-text="tFinishText" @load="_tOnLoad" v-model="loading">
         <van-checkbox-group :max="3" v-model="formData.label_ids">
           <van-cell-group>
@@ -189,7 +217,7 @@
       <van-button @click="_controlTagPicker">关闭</van-button>
     </van-popup>
     <!-- 分类选择 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showCatePicker">
+    <van-popup class="normal-popup" position="bottom" safe-area-inset-bottom v-model="showCatePicker">
       <van-list :finished="cFinished" :finished-text="cFinishText" @load="_cOnLoad" v-model="loading">
         <van-radio-group v-model="formData.cate_id">
           <van-cell-group>
@@ -200,6 +228,41 @@
         </van-radio-group>
       </van-list>
       <van-button @click="_controlCatePicker">关闭</van-button>
+    </van-popup>
+    <!-- 选择服务范围 -->
+    <van-popup class="service-popup" position="top" safe-area-inset-bottom v-model="showServiceScopePopup">
+      <van-checkbox-group class="cache-list" v-model="cache">
+        <van-cell-group>
+          <van-cell
+            :key="index"
+            :title="item.name"
+            @click="_toggle(index)"
+            clickable
+            v-for="(item, index) in serviceScopeList"
+          >
+            <van-checkbox :name="item.id" ref="checkboxes" slot="right-icon"></van-checkbox>
+          </van-cell>
+        </van-cell-group>
+      </van-checkbox-group>
+      <van-row>
+        <van-col span="12">
+          <van-button @click="_controlServiceScopePopup">取消</van-button>
+        </van-col>
+        <van-col span="12">
+          <van-button @click="_pickServiceScope" type="primary">确定</van-button>
+        </van-col>
+      </van-row>
+    </van-popup>
+    <!-- 客人数量类型选则 -->
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showGuestTypePicker">
+      <van-picker
+        :columns="guestTypeColumns"
+        :default-index="statusIndex"
+        @cancel="_controlGuestTypePicker"
+        @confirm="_pickGuestType"
+        show-toolbar
+        value-key="label"
+      ></van-picker>
     </van-popup>
   </div>
 </template>
@@ -236,13 +299,19 @@ export default {
         goods_type: '',
         cate_id: '',
         label_ids: [],
-        price: '',
-        old_price: '',
+        guest_demand_ids: [],
+        guest_num: '',
+        guest_num_type: '0',
+        guest_num_min: '',
+        guest_num_max: '',
+        // price: '',
+        // old_price: '',
       },
       keywords: [],
       posterList: [],
       showCatePicker: false,
       showTagPicker: false,
+      showServiceScopePopup: false,
       cPage: 1,
       cList: [],
       cFinished: false,
@@ -253,6 +322,24 @@ export default {
       cateName: '',
       tagName: [],
       radioImg: '',
+      goods_name: '',
+      cache: [],
+      serviceScopeList: [],
+      guestTypeColumns: [
+        {
+          label: '不限',
+          value: '0',
+        },
+        {
+          label: '固定人数',
+          value: '1',
+        },
+        {
+          label: '人数区间',
+          value: '2',
+        },
+      ],
+      showGuestTypePicker: false,
     }
   },
 
@@ -271,6 +358,10 @@ export default {
       const item = this.cList.find(item => item.cat_id === this.formData.cate_id)
       return (item && item.name) || this.cateName
     },
+    guestType() {
+      const item = this.guestTypeColumns.find(item => item.value === this.formData.guest_num_type)
+      return item && item.label
+    },
   },
 
   watch: {},
@@ -278,8 +369,11 @@ export default {
   created() {},
 
   mounted() {
-    const { id } = this.$route.params
-    id && this._getPosterDetail(id)
+    this.getSmartScreenDemandList().then(res => {
+      this.serviceScopeList = res
+      const { id } = this.$route.params
+      id && this._getPosterDetail(id)
+    })
   },
 
   destroyed() {},
@@ -290,6 +384,7 @@ export default {
       'getPosterDetail',
       'updatePoster',
       'getSmartScreenPosterTagAndCateList',
+      'getSmartScreenDemandList',
     ]),
     _controlTagPicker() {
       this.showTagPicker = !this.showTagPicker
@@ -297,8 +392,34 @@ export default {
     _controlCatePicker() {
       this.showCatePicker = !this.showCatePicker
     },
+    // 服务范围选择开关
+    _controlServiceScopePopup() {
+      this.showServiceScopePopup = !this.showServiceScopePopup
+    },
+    _controlGuestTypePicker() {
+      this.showGuestTypePicker = !this.showGuestTypePicker
+    },
+    _pickGuestType(item) {
+      console.log(item)
+      this.formData.guest_num_type = item.value
+      this._controlGuestTypePicker()
+    },
     _pickPoster(data) {
       this.formData.ad_img = data[0].url
+    },
+    _deletePoster(data) {
+      console.log(data)
+      this.formData.ad_img = ''
+      this.posterList = []
+    },
+    // 获取店铺名称
+    _serviceScopeLabel(id) {
+      const item = this.serviceScopeList.find(item => item.id === id)
+      if (item) {
+        return `${item.name}`
+      } else {
+        return 'index'
+      }
     },
     _tOnLoad() {
       const { id } = this.$route.params
@@ -337,7 +458,22 @@ export default {
           this.formData[item] = res[item]
         })
         this.formData.data_type = res.data_type - 0
-        this.posterList = [{ url: res.ad_img }]
+        let demand_ids_arr = res.guest_demand_ids.split(',')
+        let demand_ids_arr_real = []
+        demand_ids_arr.forEach(item => {
+          let s = this.serviceScopeList.find(s => {
+            if (s.id === item) return s
+          })
+          if (s) {
+            demand_ids_arr_real.push(item)
+          }
+        })
+        this.formData.guest_demand_ids = demand_ids_arr_real
+        this.goods_name = res.goods_info.goods_name
+        this.cache = demand_ids_arr_real
+        if (res.ad_img) {
+          this.posterList = [{ url: res.ad_img }]
+        }
         this.formData.width = '0.32'
         this.keywords = res.keywords.split(',')
         this.tagName = res.label_names
@@ -349,7 +485,14 @@ export default {
       this.formData.goods_id = id
       this.formData.goods_type = type
     },
-
+    _pickServiceScope() {
+      const arr = []
+      this.cache.forEach(item => {
+        arr.push(item)
+      })
+      this.formData.guest_demand_ids = arr
+      this._controlServiceScopePopup()
+    },
     _tagLabel(id, index) {
       const item = this.tList.find(item => item.cat_id === id)
       return (item && item.name) || this.tagName[index]
@@ -361,6 +504,11 @@ export default {
     // 角色选择
     _tToggle(index) {
       this.$refs.checkboxesT[index].toggle()
+    },
+    // 服务范围选中状态切换
+    _toggle(index) {
+      // 判断是否选可选
+      this.$refs.checkboxes[index].toggle()
     },
     // 提交表单
     async _submit() {
@@ -396,15 +544,29 @@ export default {
           params.isnew = 1
         }
         // 判断是否选择商品
-        if (params.data_type === '1' && !params.goods_id) {
-          this.$toast.info({
-            message: '请选择推广商品',
-            forbidClick: true,
-            duration: 1000,
-          })
-          this.loading = false
-          return
+        if (params.data_type == '1') {
+          if (!params.goods_id) {
+            this.$toast.info({
+              message: '请选择推广商品',
+              forbidClick: true,
+              duration: 1000,
+            })
+            this.loading = false
+            return
+          } else {
+            params.title = ''
+            params.url = ''
+            params.keywords = ''
+            params.read_txt = ''
+            params.ad_img = ''
+          }
+        } else {
+          params.goods_id = ''
+          params.goods_type = ''
         }
+        params.guest_demand_ids = params.guest_demand_ids.join()
+        console.log(params)
+
         // 修改label_ids为字符串
         params.label_ids = params.label_ids.join()
         this[method](params)
@@ -436,7 +598,7 @@ export default {
   color: @gray-deep-c;
 }
 
-.van-popup {
+.normal-popup {
   height: 100vh;
   .van-list {
     padding-bottom: 44px;
@@ -445,6 +607,16 @@ export default {
     position: fixed;
     width: 100%;
     bottom: 0;
+  }
+}
+
+.service-popup {
+  .cache-list {
+    height: 65vh;
+    overflow: scroll;
+  }
+  .van-button {
+    width: 100%;
   }
 }
 </style>

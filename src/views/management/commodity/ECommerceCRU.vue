@@ -654,7 +654,7 @@ export default {
         this.$refs.editor.$refs.quillEditor.quill.enable(false)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
-          this.formData[item] = res[item]
+          this.formData[item] = res[item] || ''
         })
         this.formData.pic = [res.pic[0].url]
         this.pic = res.pic

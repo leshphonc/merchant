@@ -253,6 +253,20 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 获取绑定了屏幕的店铺列表(可传推广商品id)
+  getStoreAndScreen(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getStoreAndScreen(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 筛选屏幕统计数据
+  getPromotionStatistics(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getPromotionStatistics(payload)
+      data ? resolve(data) : reject()
+    })
+  },
 }
 
 // mutations

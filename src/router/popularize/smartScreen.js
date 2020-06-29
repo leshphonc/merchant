@@ -40,6 +40,11 @@ export default {
       component: () => import('@/views/popularize/smartScreen/SmartScreenPosterCRU'),
     },
     {
+      // 屏幕推广数据统计
+      path: 'smartScreenPromotionStatistics/:id',
+      component: () => import('@/views/popularize/smartScreen/SmartScreenPromotionStatistics'),
+    },
+    {
       // 同城咨询
       path: 'sameCityAdvisory/:imax?',
       component: () => import('@/views/popularize/smartScreen/SameCityAdvisory'),

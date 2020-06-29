@@ -59,7 +59,7 @@
     </div>
     <div class="chart-box" v-if="showAI">
       <div class="chart-box-title">门店AI助手</div>
-      <echart-for-AI :storeColumns="storeColumns"></echart-for-AI>
+      <echart-for-AI :storeColumns="storeAndScreenColumns"></echart-for-AI>
     </div>
     <div class="white-space"></div>
     <grid-map :data="pdata"></grid-map>
@@ -173,6 +173,7 @@ export default {
       showTimeTypePicker: false,
       showTimePicker: false,
       storeColumns: [],
+      storeAndScreenColumns: [],
       timeTypeColumns: [
         { label: '日', value: '1' },
         { label: '月', value: '2' },
@@ -322,6 +323,7 @@ export default {
       if (res.length) this.showAI = true
     })
     this._getStoreList()
+    this._getStoreAndScreen()
     this.$refs.echart.showLoading()
     this.getIncomeEchartData({
       store_id: this.storeValue,
@@ -345,7 +347,7 @@ export default {
 
   methods: {
     ...mapActions(['getStoreList']),
-    ...mapActions('smartScreen', ['getSmartScreenList']),
+    ...mapActions('smartScreen', ['getSmartScreenList', 'getStoreAndScreen']),
     ...mapActions('home', [
       'getIncomeEchartData',
       'getOrderEchartData',
@@ -392,9 +394,29 @@ export default {
       this._controlTimePicker()
     },
     // 店铺列表
-    _getStoreList() {
+    _getStoreList(picker, value, index) {
       this.getStoreList(1).then(res => {
         this.storeColumns = res.store_list
+      })
+    },
+    // 获取绑定了屏幕的店铺列表
+    _getStoreAndScreen() {
+      this.getStoreAndScreen().then(res => {
+        this.storeAndScreenColumns = res.map(item => {
+          return {
+            label: item.name,
+            value: item.id,
+            children: [
+              { label: '全部', value: 0 },
+              ...item.devices.map(d => {
+                return {
+                  label: d.imax_name,
+                  value: d.id,
+                }
+              }),
+            ],
+          }
+        })
       })
     },
     // 跳转广告页面

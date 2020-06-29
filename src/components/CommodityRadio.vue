@@ -1,12 +1,6 @@
 <template>
   <div>
-    <van-cell
-      @click="_controlCommodityPopup"
-      arrow-direction="down"
-      is-link
-      title="推广商品"
-      value="点击选择"
-    ></van-cell>
+    <van-cell @click="_controlCommodityPopup" arrow-direction="down" is-link title="推广商品" value="点击选择"></van-cell>
     <van-cell :icon="_commodityImg" :title="_commodityLabel" :value="_commodityType" center v-if="result_id"></van-cell>
     <!-- 弹出层 -->
     <!-- 绑定产品列表 -->
@@ -149,6 +143,10 @@ export default {
       required: true,
       type: String,
     },
+    name: {
+      required: true,
+      type: String,
+    },
     cacheImg: {
       required: true,
       type: String,
@@ -206,15 +204,17 @@ export default {
       switch (this.result_type - 0) {
         case 0:
           let e = this.eList.find(item => item.goods_id === this.result_id)
-          name = e && e.name
+          console.log(e)
+          name = e ? e.name : this.name
+          console.log(name)
           break
         case 1:
           let g = this.gList.find(item => item.group_id === this.result_id)
-          name = g && g.name
+          name = g ? g.name : this.name
           break
         case 2:
           let s = this.sList.find(item => item.appoint_id === this.result_id)
-          name = s && s.appoint_name
+          name = s ? s.appoint_name : this.name
           break
         // case 3:
         //   let p = this.pList.find(item => item.meal_id === this.result_id)
@@ -222,7 +222,7 @@ export default {
         //   break
         case 4:
           let p = this.pList.find(item => item.package_id === this.result_id)
-          name = p && p.name
+          name = p ? p.name : this.name
           break
       }
       return name
@@ -292,6 +292,7 @@ export default {
     this._gOnRefresh()
     this._sOnRefresh()
     this._pOnRefresh()
+    console.log(this.name)
   },
 
   destroyed() {},

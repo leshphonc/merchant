@@ -25,7 +25,14 @@
     <van-cell-group title="商家描述">
       <van-cell :value="merchant.txt_info" @click="_controlDescDialog" is-link title="商户描述" />
       <img-cropper :confirm="_pickLogo" :list="logoList" title="商户LOGO" />
-      <img-cropper :confirm="_pickPicture" :list="pictureList" :ratio="[2, 1]" title="商户图片" />
+      <img-cropper
+        :confirm="_pickPicture"
+        :delete="_deletePic"
+        :list="pictureList"
+        :ratio="[2, 1]"
+        count="10"
+        title="商户图片"
+      />
       <van-cell @click="_controlDetailEditor" is-link title="商户详情" />
     </van-cell-group>
     <van-cell-group title="绑定微信">
@@ -53,11 +60,7 @@
       ></van-picker>
     </van-popup>
     <!-- 经纬度 -->
-    <coordinate-picker
-      :cancel="_controlCoordinatePicker"
-      :confirm="_pickCoordinate"
-      :show="showCoordinatePicker"
-    ></coordinate-picker>
+    <coordinate-picker :cancel="_controlCoordinatePicker" :confirm="_pickCoordinate" :show="showCoordinatePicker"></coordinate-picker>
     <!-- 详细地址 -->
     <van-dialog :before-close="_editAddress" show-cancel-button title="商户详细地址" v-model="showAddressDialog">
       <van-field autosize placeholder="请填写商户详细地址" type="textarea" v-model="info.address"></van-field>
@@ -320,7 +323,11 @@ export default {
     },
     _pickPicture(data) {
       this.updateMerchantInfo({
-        pic_info: data[0].url,
+        pic_info: this.pictureList
+          .map(item => {
+            return item.url
+          })
+          .join(';'),
       }).then(() => {
         this.$toast.success({
           message: '操作成功',
@@ -331,6 +338,34 @@ export default {
           },
         })
       })
+    },
+    _deletePic(data) {
+      let index = this.pictureList.findIndex(item => {
+        if (item.url === data.url) {
+          return item
+        }
+      })
+      this.pictureList.splice(index, 1)
+      console.log(index)
+      console.log(this.pictureList)
+      if (this.pictureList.length > 0) {
+        this.updateMerchantInfo({
+          pic_info: this.pictureList
+            .map(item => {
+              return item.url
+            })
+            .join(';'),
+        }).then(() => {
+          this.$toast.success({
+            message: '操作成功',
+            forbidClick: true,
+            duration: 1000,
+            onClose: () => {
+              this._readMerchantInfo()
+            },
+          })
+        })
+      }
     },
     _changeTimeOut(checked) {
       this.updateMerchantInfo({
@@ -390,6 +425,7 @@ export default {
     // 读取商户信息
     _readMerchantInfo() {
       this.readMerchantInfo().then(res => {
+        this.pictureList = []
         this.merchant = res.now_merchant
         this.wx = res.bind_wxlist
         this.info.phone = res.now_merchant.phone
@@ -398,7 +434,12 @@ export default {
         this.info.txt_info = res.now_merchant.txt_info
         this.info.content = res.now_merchant.content
         res.now_merchant.service_ico && (this.logoList = [{ url: res.now_merchant.service_ico }])
-        res.now_merchant.pic_info && (this.pictureList = [{ url: res.now_merchant.pic_info }])
+        if (res.now_merchant.pic_info) {
+          let arr = res.now_merchant.pic_info.split(';')
+          arr.forEach(item => {
+            this.pictureList.push({ url: item })
+          })
+        }
 
         this._getPlatformStoreFrontCategory(res.now_merchant.cat_fid, res.now_merchant.cat_id)
       })

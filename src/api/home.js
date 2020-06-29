@@ -48,9 +48,17 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
-  // echart进店人数
+  // // echart进店人数（老）
+  // getVisitsFaceEchartData: payload =>
+  //   axios.get('/appapi.php?c=Merchantapp&a=all_face_visit', {
+  //     params: {
+  //       ...payload,
+  //       ticket: localStorage.getItem('ticket'),
+  //     },
+  //   }),
+  // echart进店人数（新）
   getVisitsFaceEchartData: payload =>
-    axios.get('/appapi.php?c=Merchantapp&a=all_face_visit', {
+    axios.get('/appapi.php?c=Tracking&a=peopleStream', {
       params: {
         ...payload,
         ticket: localStorage.getItem('ticket'),

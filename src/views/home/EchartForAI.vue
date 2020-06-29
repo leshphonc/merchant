@@ -97,6 +97,7 @@ export default {
       echartData: [],
       storeLabel: '全部店铺',
       storeValue: '',
+      screenValue: '',
       timeTypeLabel: '日',
       timeTypeValue: '1',
       timeValue: new Date(),
@@ -263,8 +264,20 @@ export default {
     },
     // 店铺选择
     _pickStore(data) {
-      this.storeLabel = data.label
-      this.storeValue = data.value
+      this.storeLabel = data[1]
+      let store = this.storeColumns.find(item => {
+        if (item.label === data[0]) {
+          return item
+        }
+      })
+      this.storeValue = store.value
+      let screen = store.children.find(item => {
+        if (item.label === data[1]) {
+          return item
+        }
+      })
+      this.screenValue = screen.value
+      // this.storeValue = data.value
       this._getVisitsFaceEchartData()
       this._controlStorePicker()
     },
@@ -289,7 +302,12 @@ export default {
     },
     // 获取进店人数
     _getVisitsFaceEchartData() {
-      const obj = { store_id: this.storeValue, date_type: this.timeTypeValue, date: this.timeLabel }
+      const obj = {
+        store_id: this.storeValue,
+        device_id: this.screenValue,
+        date_type: this.timeTypeValue,
+        date: this.timeLabel,
+      }
       this.getVisitsFaceEchartData(obj).then(res => {
         this.echartData = res
       })
