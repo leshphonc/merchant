@@ -350,8 +350,6 @@ export default {
         }
       })
       this.pictureList.splice(index, 1)
-      console.log(index)
-      console.log(this.pictureList)
       if (this.pictureList.length > 0) {
         this.updateMerchantInfo({
           pic_info: this.pictureList

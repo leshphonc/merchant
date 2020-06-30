@@ -423,7 +423,6 @@ export default {
     },
     _getPosterDetail(id) {
       this.getPosterDetail(id).then(res => {
-        console.log(res)
         this.detail = res
       })
     },

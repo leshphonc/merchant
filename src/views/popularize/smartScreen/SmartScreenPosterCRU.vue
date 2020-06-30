@@ -425,7 +425,6 @@ export default {
       this.showGuestTypePicker = !this.showGuestTypePicker
     },
     _pickGuestType(item) {
-      console.log(item)
       this.formData.guest_num_type = item.value
       this._controlGuestTypePicker()
     },
@@ -433,7 +432,6 @@ export default {
       this.formData.ad_img = data[0].url
     },
     _deletePoster(data) {
-      console.log(data)
       this.formData.ad_img = ''
       this.posterList = []
     },
@@ -590,7 +588,6 @@ export default {
           params.goods_type = ''
         }
         params.guest_demand_ids = params.guest_demand_ids.join()
-        console.log(params)
 
         // 修改label_ids为字符串
         params.label_ids = params.label_ids.join()

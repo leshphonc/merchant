@@ -210,9 +210,7 @@ export default {
       switch (this.result_type - 0) {
         case 0:
           let e = this.eList.find(item => item.goods_id === this.result_id)
-          console.log(e)
           name = e ? e.name : this.name
-          console.log(name)
           break
         case 1:
           let g = this.gList.find(item => item.group_id === this.result_id)
@@ -298,7 +296,6 @@ export default {
     this._gOnRefresh()
     this._sOnRefresh()
     this._pOnRefresh()
-    console.log(this.name)
   },
 
   destroyed() {},
