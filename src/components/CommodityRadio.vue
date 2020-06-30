@@ -1,6 +1,12 @@
 <template>
   <div>
-    <van-cell @click="_controlCommodityPopup" arrow-direction="down" is-link title="推广商品" value="点击选择"></van-cell>
+    <van-cell
+      @click="_controlCommodityPopup"
+      arrow-direction="down"
+      is-link
+      title="推广商品"
+      value="点击选择"
+    ></van-cell>
     <van-cell :icon="_commodityImg" :title="_commodityLabel" :value="_commodityType" center v-if="result_id"></van-cell>
     <!-- 弹出层 -->
     <!-- 绑定产品列表 -->

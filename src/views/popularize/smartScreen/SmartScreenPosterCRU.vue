@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}智能屏推广`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}智能屏推广`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
@@ -95,7 +102,13 @@
       <van-cell-group title="选择推广内容">
         <van-tabs :lazy-render="false" v-model="formData.data_type">
           <van-tab title="海报">
-            <ValidationProvider name="海报标题" rules="required" slim v-if="formData.data_type === 0" v-slot="{ errors }">
+            <ValidationProvider
+              name="海报标题"
+              rules="required"
+              slim
+              v-if="formData.data_type === 0"
+              v-slot="{ errors }"
+            >
               <van-field
                 :error-message="errors[0]"
                 label="海报标题"
@@ -125,7 +138,13 @@
             <ValidationProvider name="关键词3" rules="min:2|max:6" slim v-slot="{ errors }">
               <van-field :error-message="errors[0]" label="关键词3" placeholder="关键词3" v-model.trim="keywords[2]" />
             </ValidationProvider>
-            <ValidationProvider name="海报网址" rules="required" slim v-if="formData.data_type === 0" v-slot="{ errors }">
+            <ValidationProvider
+              name="海报网址"
+              rules="required"
+              slim
+              v-if="formData.data_type === 0"
+              v-slot="{ errors }"
+            >
               <van-field
                 :error-message="errors[0]"
                 clearable
@@ -135,7 +154,13 @@
                 v-model.trim="formData.url"
               />
             </ValidationProvider>
-            <ValidationProvider name="播报语音" rules="required" slim v-if="formData.data_type === 0" v-slot="{ errors }">
+            <ValidationProvider
+              name="播报语音"
+              rules="required"
+              slim
+              v-if="formData.data_type === 0"
+              v-slot="{ errors }"
+            >
               <van-field
                 :error-message="errors[0]"
                 label="播报语音"

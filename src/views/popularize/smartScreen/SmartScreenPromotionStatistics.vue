@@ -16,7 +16,7 @@
             <van-image :src="detail.goods_info ? detail.goods_info.goods_icon : ''" />
           </van-col>
           <van-col span="12">
-            <div>{{ detail.goods_info ? detail.goods_info.goods_name : ''}}</div>
+            <div>{{ detail.goods_info ? detail.goods_info.goods_name : '' }}</div>
             <div>{{ _currentDesc(detail) }}</div>
           </van-col>
           <van-col span="6">
