@@ -26,7 +26,7 @@ export default {
     },
     {
       // 智能屏销售记录
-      path: 'smartScreenSalesRecord/:imax',
+      path: 'smartScreenSalesRecord/:id/:imax',
       component: () => import('@/views/popularize/smartScreen/SmartScreenSalesRecord'),
     },
     {

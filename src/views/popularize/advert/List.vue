@@ -17,16 +17,24 @@
               <div>卖家地址：{{ item.address || '暂无' }}</div>
               <div>
                 屏幕地址：{{
-                  item.province_name +
-                    item.city_name +
-                    item.area_name +
-                    item.circle_name +
-                    item.market_name +
-                    item.address
+                item.province_name +
+                item.city_name +
+                item.area_name +
+                item.circle_name +
+                item.market_name +
+                item.address
                 }}
               </div>
               <div>购买时间：{{ $moment(item.buy_time * 1000).format('YYYY-MM-DD HH:mm:ss') }}</div>
               <div>请购日期：{{ item.start_time }} - {{ item.end_time }}</div>
+              <van-row>
+                <van-col span="12">
+                  <div>扫码次数：{{ item.all_scan }}</div>
+                </van-col>
+                <van-col span="12">
+                  <div>播放次数：{{ item.all_show }}</div>
+                </van-col>
+              </van-row>
             </div>
             <!-- <template #footer v-if="item.is_status">
               <van-button size="small" type="danger">取消订单</van-button>

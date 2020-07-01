@@ -21,11 +21,11 @@
       <van-datetime-picker
         :formatter="$timeFormatter"
         :max-date="endTime"
+        :type="timeType"
         :value="startTime"
         @cancel="_controlStartTimePicker"
         @confirm="_pickStartTime"
         show-toolbar
-        type="date"
       />
     </van-popup>
     <!-- 结束时间 -->
@@ -33,11 +33,11 @@
       <van-datetime-picker
         :formatter="$timeFormatter"
         :min-date="startTime"
+        :type="timeType"
         :value="endTime"
         @cancel="_controlEndTimePicker"
         @confirm="_pickEndTime"
         show-toolbar
-        type="date"
       />
     </van-popup>
   </div>
@@ -60,6 +60,10 @@ export default {
       type: Function,
       required: true,
     },
+    timeType: {
+      type: String,
+      default: 'date',
+    },
   },
 
   data() {
@@ -73,10 +77,28 @@ export default {
 
   computed: {
     startTimeLabel() {
-      return this.$moment(this.startTime).format('YYYY-MM-DD')
+      let time = ''
+      switch (this.timeType) {
+        case 'date':
+          time = this.$moment(this.startTime).format('YYYY-MM-DD')
+          break
+        case 'datetime':
+          time = this.$moment(this.startTime).format('YYYY-MM-DD HH:mm')
+          break
+      }
+      return time
     },
     endTimeLabel() {
-      return this.$moment(this.endTime).format('YYYY-MM-DD')
+      let time = ''
+      switch (this.timeType) {
+        case 'date':
+          time = this.$moment(this.endTime).format('YYYY-MM-DD')
+          break
+        case 'datetime':
+          time = this.$moment(this.endTime).format('YYYY-MM-DD HH:mm')
+          break
+      }
+      return time
     },
   },
 

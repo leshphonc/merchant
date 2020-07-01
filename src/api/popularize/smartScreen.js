@@ -174,7 +174,7 @@ export default {
     }),
   // 获取智能屏销售列表
   getSmartScreenSalesRecord: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=...', {
+    axios.post('/appapi.php?c=Merchantimax&a=placeOrderList', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),

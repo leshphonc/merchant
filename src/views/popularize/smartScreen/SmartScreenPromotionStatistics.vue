@@ -46,14 +46,15 @@
         </div>
       </van-col>
     </van-row>
-    <div style="display:flex;justify-content: flex-end;margin-top: 14px;">
+    <!-- <div style="display:flex;justify-content: flex-end;margin-top: 14px;">
       <van-tabs @change="_changeTab" type="card">
-        <van-tab :disabled="loading" title="本店"></van-tab>
-        <van-tab :disabled="loading" title="同城"></van-tab>
+        <van-tab :disabled="loading" title="下单数"></van-tab>
+        <van-tab :disabled="loading" title="扫码数"></van-tab>
+        <van-tab :disabled="loading" title="触达数"></van-tab>
+        <van-tab :disabled="loading" title="播报数"></van-tab>
       </van-tabs>
-    </div>
+    </div>-->
     <v-chart :options="polar" autoresize ref="echart"></v-chart>
-    <v-chart :options="polar2" autoresize ref="echart"></v-chart>
     <!-- 弹出层 -->
     <!-- 店铺筛选 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showStorePicker">
@@ -113,8 +114,10 @@ export default {
     return {
       loading: false,
       detail: {},
-      echartData: [],
-      echartData2: [],
+      orderData: [],
+      scanData: [],
+      reachData: [],
+      detailsData: [],
       storeValue: '0',
       screenValue: '0',
       storeLabel: '全部店铺',
@@ -140,11 +143,11 @@ export default {
     xData() {
       let xData = []
       if (this.timeTypeValue === '1') {
-        xData = this.echartData.map((item, index) => `${(index + 1) * 2}点`)
+        xData = this.orderData.map((item, index) => `${(index + 1) * 2}点`)
       } else if (this.timeTypeValue === '2') {
-        xData = this.echartData.map((item, index) => `${index + 1}号`)
+        xData = this.orderData.map((item, index) => `${index + 1}号`)
       } else if (this.timeTypeValue === '3') {
-        xData = this.echartData.map((item, index) => `${index + 1}月`)
+        xData = this.orderData.map((item, index) => `${index + 1}月`)
       }
       return xData
     },
@@ -155,22 +158,24 @@ export default {
         format = params => {
           const str = params[0].axisValue.substr(0, params[0].axisValue.length - 1)
           const result = `${str - 2}点 - ${str}点<br />
-        <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#00A29A;"></span>${
-          params[0].seriesName
-        }: ${params[0].data}`
+          <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${
+            params[0].color
+          };"></span>${params[0].seriesName}: ${params[0].data}<br />
+          <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${
+            params[1].color
+          };"></span>${params[1].seriesName}: ${params[1].data}<br />
+          <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${
+            params[2].color
+          };"></span>${params[2].seriesName}: ${params[2].data}<br />
+          <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${
+            params[3].color
+          };"></span>${params[3].seriesName}: ${params[3].data}<br />
+          `
           return result
         }
       }
       return {
-        title: {
-          text: '下单数',
-          left: 'center',
-          textStyle: {
-            fontSize: 14,
-          },
-          padding: [15, 0, 0, 0],
-        },
-        color: ['#86CACD'],
+        color: ['#86CACD', '#5793f3', '#d14a61', '#675bba'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -178,8 +183,12 @@ export default {
           },
           formatter: format,
         },
+        legend: {
+          top: 20,
+          data: ['下单人数', '扫码人数', '触达人数', '详情展示'],
+        },
         grid: {
-          top: '20%',
+          top: '25%',
           bottom: 30,
           right: 20,
           left: '13%',
@@ -201,7 +210,7 @@ export default {
         yAxis: [
           {
             type: 'value',
-            name: '个',
+            // name: '人',
             axisLabel: {
               color: '#9E9E9E',
             },
@@ -222,106 +231,56 @@ export default {
         ],
         series: [
           {
-            name: this.seriesLabel,
-            type: 'bar',
-            data: this.echartData,
-            itemStyle: {
-              barBorderRadius: [10000, 10000, 0, 0],
-            },
-            emphasis: {
-              itemStyle: {
-                color: '#00A29A',
-              },
-            },
+            name: '下单人数',
+            type: 'line',
+            data: this.orderData,
+            // itemStyle: {
+            //   barBorderRadius: [10000, 10000, 0, 0],
+            // },
+            // emphasis: {
+            //   itemStyle: {
+            //     color: '#00A29A',
+            //   },
+            // },
           },
-        ],
-      }
-    },
-    // echart人流量数据
-    polar2() {
-      let format = null
-      if (this.timeTypeValue === '1') {
-        format = params => {
-          const str = params[0].axisValue.substr(0, params[0].axisValue.length - 1)
-          const result = `${str - 2}点 - ${str}点<br />
-        <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#00A29A;"></span>${
-          params[0].seriesName
-        }: ${params[0].data}`
-          return result
-        }
-      }
-      return {
-        title: {
-          text: this.echartType,
-          left: 'center',
-          textStyle: {
-            fontSize: 14,
-          },
-          padding: [15, 0, 0, 0],
-        },
-        color: ['#86CACD'],
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'none',
-          },
-          formatter: format,
-        },
-        grid: {
-          top: '20%',
-          bottom: 30,
-          right: 20,
-          left: '13%',
-        },
-        xAxis: [
           {
-            type: 'category',
-            data: this.xData,
-            axisLabel: {
-              color: '#9E9E9E',
-            },
-            axisLine: {
-              lineStyle: {
-                color: '#DFDFDF',
-              },
-            },
+            name: '扫码人数',
+            type: 'line',
+            data: this.scanData,
+            // itemStyle: {
+            //   barBorderRadius: [10000, 10000, 0, 0],
+            // },
+            // emphasis: {
+            //   itemStyle: {
+            //     color: '#00A29A',
+            //   },
+            // },
           },
-        ],
-        yAxis: [
           {
-            type: 'value',
-            name: '个',
-            axisLabel: {
-              color: '#9E9E9E',
-            },
-            splitLine: {
-              lineStyle: {
-                color: ['#DFDFDF'],
-              },
-            },
-            axisLine: {
-              lineStyle: {
-                color: '#DFDFDF',
-              },
-            },
-            max: function(value) {
-              return parseInt(value.max + 10)
-            },
+            name: '触达人数',
+            type: 'line',
+            data: this.reachData,
+            // itemStyle: {
+            //   barBorderRadius: [10000, 10000, 0, 0],
+            // },
+            // emphasis: {
+            //   itemStyle: {
+            //     color: '#00A29A',
+            //   },
+            // },
           },
-        ],
-        series: [
           {
-            name: this.seriesLabel,
-            type: 'bar',
-            data: this.echartData2,
-            itemStyle: {
-              barBorderRadius: [10000, 10000, 0, 0],
-            },
-            emphasis: {
-              itemStyle: {
-                color: '#00A29A',
-              },
-            },
+            name: '详情展示',
+            type: 'line',
+            data: this.detailsData,
+            // itemStyle: {
+            //   barBorderRadius: [10000, 10000, 0, 0],
+            // },
+            // emphasis: {
+            //   itemStyle: {
+            //     color: '#00A29A',
+            //   },
+            // },
           },
         ],
       }
@@ -482,8 +441,10 @@ export default {
         ad_id: this.$route.params.id,
       }).then(res => {
         this.loading = false
-        this.echartData = res.order
-        this.echartData2 = res.spread
+        this.orderData = res.order
+        this.scanData = res.scan
+        this.reachData = res.reach
+        this.detailsData = res.details
       })
     },
     // 获取绑定了屏幕的店铺列表
@@ -506,15 +467,15 @@ export default {
         })
       })
     },
-    _changeTab(name, title) {
-      if (name === 0) {
-        this._getVisitsFaceEchartData(0)
-        this.echartType = '触达'
-      } else {
-        this._getVisitsFaceEchartData(1)
-        this.echartType = '播报'
-      }
-    },
+    // _changeTab(name, title) {
+    //   if (name === 0) {
+    //     this._getVisitsFaceEchartData(0)
+    //     this.echartType = '触达'
+    //   } else {
+    //     this._getVisitsFaceEchartData(1)
+    //     this.echartType = '播报'
+    //   }
+    // },
   },
 }
 </script>
@@ -556,7 +517,7 @@ export default {
   margin-top: 4px;
   background: #fff;
   width: 100%;
-  height: 200px;
+  height: 300px;
   z-index: 1;
 }
 
