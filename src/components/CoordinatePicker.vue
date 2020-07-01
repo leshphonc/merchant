@@ -17,19 +17,17 @@
   <van-popup position="bottom" safe-area-inset-bottom v-model="show">
     <div class="container">
       <div class="cur-adress">
-        <div class="van-hairline--right">
-          <i class="iconfont">&#xe61f;</i>
-        </div>
-        <div class="van-ellipsis">{{ address }}</div>
+        <van-search @search="_searchAddress" placeholder="请输入搜索关键词" show-action v-model="address">
+          <template #action>
+            <div @click="_searchAddress">搜索</div>
+          </template>
+          <template #left-icon>
+            <i class="iconfont">&#xe61f;</i>
+          </template>
+        </van-search>
       </div>
       <i class="iconfont pointer">&#xe61f;</i>
-      <baidu-map
-        :zoom="15"
-        @ready="_mapReady"
-        ak="PnrYhOtqMcvwyLsv0F0ln4hUFQ00NWMY"
-        center="杭州"
-        class="map"
-      ></baidu-map>
+      <baidu-map :zoom="15" @ready="_mapReady" ak="PnrYhOtqMcvwyLsv0F0ln4hUFQ00NWMY" center="杭州" class="map"></baidu-map>
       <van-row>
         <van-col span="12">
           <van-button @click="cancel" native-type="button">取消</van-button>
@@ -74,6 +72,8 @@ export default {
       lng: '',
       lat: '',
       address: '',
+      map: '',
+      geoc: '',
     }
   },
 
@@ -93,6 +93,8 @@ export default {
       const geolocation = new BMap.Geolocation()
       // Geocoder类用于用户地址解析
       const geoc = new BMap.Geocoder()
+      this.geoc = geoc
+      this.map = map
       geolocation.getCurrentPosition(
         r => {
           if (geolocation.getStatus() === 0) {
@@ -123,6 +125,20 @@ export default {
     _confirm() {
       this.confirm(this.lng, this.lat, this.address)
     },
+    _searchAddress() {
+      let that = this
+      this.geoc.getPoint(
+        that.address,
+        function(point) {
+          if (point) {
+            that.map.centerAndZoom(point, 16)
+          } else {
+            alert('您选择地址没有解析到结果!')
+          }
+        },
+        '杭州市'
+      )
+    },
   },
 }
 </script>
@@ -135,7 +151,6 @@ export default {
   flex-direction: column;
 
   .cur-adress {
-    display: flex;
     position: absolute;
     top: 15px;
     width: 90vw;
@@ -151,14 +166,12 @@ export default {
     box-shadow: 0 0 5px 1px #ccc;
     color: #888;
 
-    div:nth-child(1) {
-      text-align: center;
-      flex: 1;
-    }
-    div:nth-child(2) {
-      flex: 9;
-      font-size: 14px;
-      padding-left: 10px;
+    .van-search {
+      height: 100%;
+      padding: 0;
+      .van-search__content {
+        background: #fff;
+      }
     }
   }
 
@@ -169,7 +182,7 @@ export default {
     color: red;
     font-size: 24px;
     z-index: 999;
-    transform: translate(-12px, -27px);
+    transform: translate(-12px, -46px);
   }
 
   .map {
