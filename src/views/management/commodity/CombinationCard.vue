@@ -285,7 +285,7 @@ export default {
     // 更改vuex中的变量，判断当前分类是不是管理状态
     _changeTab(tabIndex) {
       this.changeRightText({
-        index: 4,
+        index: 5,
         text: tabIndex ? '管理' : '创建',
       })
     },

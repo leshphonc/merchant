@@ -39,7 +39,7 @@
                   <van-row>
                     <van-col span="5">推广标签：</van-col>
                     <van-col span="19">{{ item.label_names.join() }}</van-col>
-                  </van-row> -->
+                  </van-row>-->
                   <div class="white-space"></div>
                   <van-row>
                     <van-col span="5">播报语音：</van-col>
@@ -354,7 +354,7 @@ export default {
         guest_num_type: '0',
         guest_num_min: '',
         guest_num_max: '',
-        guest_demand_ids: [],
+        // guest_demand_ids: [],
       },
       curStep: 0,
       active: 0,
@@ -481,7 +481,7 @@ export default {
       this.formData.guest_num_type = item.guest_num_type
       this.formData.guest_num_min = item.guest_num_min
       this.formData.guest_num_max = item.guest_num_max
-      this.formData.guest_demand_ids = item.guest_demand_ids ? item.guest_demand_ids.split(',') : []
+      // this.formData.guest_demand_ids = item.guest_demand_ids ? item.guest_demand_ids.split(',') : []
 
       item.time_start && (this.formData.start_time = item.time_start)
       if (item.time_end && item.time_start !== item.time_end) {
@@ -505,7 +505,7 @@ export default {
         guest_num_type: '0',
         guest_num_min: '',
         guest_num_max: '',
-        guest_demand_ids: [],
+        // guest_demand_ids: [],
       }
       this.curStep = 0
       this.showPopup = false
@@ -784,7 +784,7 @@ export default {
         guest_num_type: this.formData.guest_num_type,
         guest_num_min: this.formData.guest_num_min,
         guest_num_max: this.formData.guest_num_max,
-        guest_demand_ids: this.formData.guest_demand_ids.join(),
+        // guest_demand_ids: this.formData.guest_demand_ids.join(),
       }
       this.bindPosterToSmartScreen(params).then(res => {
         this.$toast.success({
@@ -815,12 +815,11 @@ export default {
           })
         }
       } else if (this.curStep === 1) {
-        if (this.formData.guest_demand_ids.length === 0) {
-          this.$toast('请选择用户需求')
-        } else {
-          this.curStep += 1
-        }
-      } else if (this.curStep === 2) {
+        // if (this.formData.guest_demand_ids.length === 0) {
+        //   this.$toast('请选择用户需求')
+        // } else {
+        //   this.curStep += 1
+        // }
         if (this.formData.role.indexOf(5) > -1 && this.formData.promotion_role_member.length === 0) {
           this.$toast('请选择推广会员身份')
           return
@@ -829,6 +828,8 @@ export default {
           this.$toast('请选择推广店员身份')
           return
         }
+        this.curStep += 1
+      } else if (this.curStep === 2) {
         this.curStep += 1
       } else {
         this.curStep += 1

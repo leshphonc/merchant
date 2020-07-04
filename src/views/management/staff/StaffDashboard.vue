@@ -1,11 +1,13 @@
 <template>
   <div>
     <staff-list v-if="active == 0"></staff-list>
-    <staff-level v-else></staff-level>
+    <staff-level v-else-if="active == 1"></staff-level>
+    <staff-work-record v-else></staff-work-record>
     <div class="tab-bar-holder-sp"></div>
     <van-tabbar fixed v-model="active">
       <van-tabbar-item icon="apps-o">店员</van-tabbar-item>
       <van-tabbar-item icon="label-o">技师等级</van-tabbar-item>
+      <van-tabbar-item icon="label-o">工作记录</van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
@@ -13,6 +15,7 @@
 <script>
 import StaffList from './StaffList'
 import StaffLevel from './StaffLevel'
+import StaffWorkRecord from './StaffWorkRecord'
 export default {
   name: 'staffDashboard',
 
@@ -21,6 +24,7 @@ export default {
   components: {
     StaffList,
     StaffLevel,
+    StaffWorkRecord,
   },
 
   props: {},

@@ -7,16 +7,16 @@
     </van-sticky>
     <van-tabs :offset-top="offsetTop" sticky type="card">
       <van-tab title="到岗记录">
-        <arrival-record :storeColumns="storeColumns" />
+        <arrival-record :staffColumns="staffColumns" />
       </van-tab>
       <van-tab title="开单记录">
-        <billing-record :storeColumns="storeColumns" />
+        <billing-record :staffColumns="staffColumns" :storeColumns="storeColumns" />
       </van-tab>
       <van-tab title="服务记录">
-        <service-record :storeColumns="storeColumns" />
+        <service-record :staffColumns="staffColumns" :storeColumns="storeColumns" />
       </van-tab>
       <van-tab title="销售记录">
-        <sales-record :storeColumns="storeColumns" />
+        <sales-record :staffColumns="staffColumns" :storeColumns="storeColumns" />
       </van-tab>
     </van-tabs>
   </div>
@@ -45,6 +45,8 @@ export default {
   data() {
     return {
       storeColumns: [{ text: '全部店铺', value: '' }],
+      clockInColumns: [],
+      staffColumns: [],
     }
   },
 
@@ -70,12 +72,16 @@ export default {
         }
       })
     })
+    this.getStaffList({ is_work: '1', status: '1' }).then(staffList => {
+      this.staffColumns = staffList
+    })
   },
 
   destroyed() {},
 
   methods: {
     ...mapActions(['getStoreList']),
+    ...mapActions('staff', ['getStaffList']),
   },
 }
 </script>

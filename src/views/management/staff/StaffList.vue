@@ -76,9 +76,8 @@
                 type="primary"
                 >权限</van-button
               >
-              <van-button :to="`/staff/staffWorkRecord/${item.staff_id}`" size="small" type="primary"
-                >工作记录</van-button
-              >
+              <!-- <van-button :to="`/staff/staffWorkRecord/${item.staff_id}`" size="small" type="primary"
+                >工作记录</van-button> -->
               <van-button @click="_staffStatusChange(item.staff_id)" size="small" type="danger">禁用</van-button>
             </div>
             <div style="text-align: right;">

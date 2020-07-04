@@ -134,6 +134,13 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 获取店铺和打卡类型
+  async getStoreAndClockInType(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await staffAPI.getStoreAndClockInType(id)
+      data ? resolve(data) : reject()
+    })
+  },
 }
 
 // mutations

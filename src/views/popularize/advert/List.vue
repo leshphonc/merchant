@@ -17,12 +17,12 @@
               <div>卖家地址：{{ item.address || '暂无' }}</div>
               <div>
                 屏幕地址：{{
-                item.province_name +
-                item.city_name +
-                item.area_name +
-                item.circle_name +
-                item.market_name +
-                item.address
+                  item.province_name +
+                    item.city_name +
+                    item.area_name +
+                    item.circle_name +
+                    item.market_name +
+                    item.address
                 }}
               </div>
               <div>购买时间：{{ $moment(item.buy_time * 1000).format('YYYY-MM-DD HH:mm:ss') }}</div>

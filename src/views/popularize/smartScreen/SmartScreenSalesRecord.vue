@@ -4,7 +4,11 @@
     <div class="nav-bar-holder"></div>
     <van-sticky :offset-top="offsetTop">
       <div class="white-space"></div>
-      <time-picker-box :pickEndTime="_pickEndTime" :pickStartTime="_pickStartTime" timeType="datetime"></time-picker-box>
+      <time-picker-box
+        :pickEndTime="_pickEndTime"
+        :pickStartTime="_pickStartTime"
+        timeType="datetime"
+      ></time-picker-box>
       <div class="white-space"></div>
     </van-sticky>
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">

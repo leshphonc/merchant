@@ -27,7 +27,13 @@
         </van-search>
       </div>
       <i class="iconfont pointer">&#xe61f;</i>
-      <baidu-map :zoom="15" @ready="_mapReady" ak="PnrYhOtqMcvwyLsv0F0ln4hUFQ00NWMY" center="杭州" class="map"></baidu-map>
+      <baidu-map
+        :zoom="15"
+        @ready="_mapReady"
+        ak="PnrYhOtqMcvwyLsv0F0ln4hUFQ00NWMY"
+        center="杭州"
+        class="map"
+      ></baidu-map>
       <van-row>
         <van-col span="12">
           <van-button @click="cancel" native-type="button">取消</van-button>

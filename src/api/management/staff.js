@@ -74,7 +74,7 @@ export default {
     }),
   // 店员到岗记录
   staffArrivalRecord: payload =>
-    axios.get('/appapi.php?c=Merchantapp&a=work', {
+    axios.get('/appapi.php?c=Merchantapp&a=clockList', {
       params: {
         ...payload,
         size: 10,
@@ -117,6 +117,12 @@ export default {
   deleteStaffLevel: id =>
     axios.post('/appapi.php?c=Merchantapp&a=DeleteTechnicianGrade', {
       id,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取店铺和打卡类型
+  getStoreAndClockInType: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=clockType', {
+      ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
 }
