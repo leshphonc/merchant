@@ -9,9 +9,9 @@ const getters = {}
 // actions
 const actions = {
   // 获取评价列表
-  async getFeedbackList() {
+  async getFeedbackTypeList() {
     return new Promise(async (resolve, reject) => {
-      const data = await feedbackAPI.getFeedbackList()
+      const data = await feedbackAPI.getFeedbackTypeList()
       data ? resolve(data) : reject()
     })
   },
@@ -33,6 +33,27 @@ const actions = {
   async deleteFeedbackType(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await feedbackAPI.deleteFeedbackType(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取用户评价列表
+  async getFeedbackList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await feedbackAPI.getFeedbackList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取评价意图列表
+  async getFeedbackIntentList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await feedbackAPI.getFeedbackIntentList(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取评价类型列表
+  async getFeedbackTypeList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await feedbackAPI.getFeedbackTypeList(payload)
       data ? resolve(data) : reject()
     })
   },

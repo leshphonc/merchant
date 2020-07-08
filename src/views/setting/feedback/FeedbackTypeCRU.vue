@@ -1,14 +1,5 @@
 <template>
   <div>
-    <van-nav-bar
-      @click-left="$goBack"
-      @click-right="_create"
-      fixed
-      left-arrow
-      right-text="创建"
-      title="评价类型"
-    ></van-nav-bar>
-    <div class="nav-bar-holder"></div>
     <van-swipe-cell :key="index" v-for="(item, index) in list">
       <van-cell :border="false" :title="item.name" @click="_modifyType(item)" is-link />
       <template #right>
@@ -48,15 +39,20 @@ export default {
   created() {},
 
   mounted() {
-    this._getFeedbackList()
+    this._getFeedbackTypeList()
   },
 
   destroyed() {},
 
   methods: {
-    ...mapActions('feedback', ['getFeedbackList', 'createFeedbackType', 'updateFeedbackType', 'deleteFeedbackType']),
-    _getFeedbackList() {
-      this.getFeedbackList().then(res => {
+    ...mapActions('feedback', [
+      'getFeedbackTypeList',
+      'createFeedbackType',
+      'updateFeedbackType',
+      'deleteFeedbackType',
+    ]),
+    _getFeedbackTypeList() {
+      this.getFeedbackTypeList().then(res => {
         this.list = res
       })
     },
@@ -86,7 +82,7 @@ export default {
             duration: 1000,
             onClose: () => {
               // 解锁
-              this._getFeedbackList()
+              this._getFeedbackTypeList()
             },
           })
         })
@@ -100,7 +96,7 @@ export default {
             duration: 1000,
             onClose: () => {
               // 解锁
-              this._getFeedbackList()
+              this._getFeedbackTypeList()
             },
           })
         })
@@ -114,7 +110,7 @@ export default {
           duration: 1000,
           onClose: () => {
             // 解锁
-            this._getFeedbackList()
+            this._getFeedbackTypeList()
           },
         })
       })

@@ -17,6 +17,7 @@ import {
   Picker,
   Radio,
   RadioGroup,
+  Rate,
   Search,
   Stepper,
   Switch,
@@ -73,6 +74,7 @@ Vue.use(Form)
 Vue.use(NumberKeyboard)
 Vue.use(Picker)
 Vue.use(Radio).use(RadioGroup)
+Vue.use(Rate)
 Vue.use(Search)
 Vue.use(Stepper)
 Vue.use(Switch).use(SwitchCell)

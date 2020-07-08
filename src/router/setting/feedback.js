@@ -5,7 +5,7 @@ export default {
     {
       // 自提点列表
       path: '',
-      component: () => import('@/views/setting/feedback/typeCRU'),
+      component: () => import('@/views/setting/feedback/FeedbackDashBoard'),
     },
   ],
 }
