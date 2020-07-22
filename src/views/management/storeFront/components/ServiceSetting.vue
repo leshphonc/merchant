@@ -25,6 +25,26 @@
         value-key="label"
       ></van-picker>
     </van-popup>
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showTagPicker">
+      <van-picker
+        :columns="tagColumns"
+        :default-index="tagIndex"
+        @cancel="_controlTagPicker"
+        @confirm="_pickTag"
+        show-toolbar
+        value-key="label"
+      ></van-picker>
+    </van-popup>
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showDevicePicker">
+      <van-picker
+        :columns="deviceColumns"
+        :default-index="deviceIndex"
+        @cancel="_controlDevicePicker"
+        @confirm="_pickDevice"
+        show-toolbar
+        value-key="imax_name"
+      ></van-picker>
+    </van-popup>
     <van-popup class="popup" position="bottom" safe-area-inset-bottom v-model="showFlagPopup">
       <div :key="index" v-for="(item, index) in list">
         <van-cell :title="item.s_name" center>
@@ -61,6 +81,28 @@
           placeholder="请填写内部地址"
           v-model="formData.detailed_address"
         />
+        <van-field
+          :rules="[{ required: true, message: '标识类型' }]"
+          :value="tagLabel"
+          @click="_controlTagPicker"
+          input-align="right"
+          is-link
+          label="标识类型"
+          name="tag"
+          placeholder="请选择"
+          readonly
+        />
+        <van-field
+          :rules="[{ required: false, message: '绑定屏幕' }]"
+          :value="deviceLabel"
+          @click="_controlDevicePicker"
+          input-align="right"
+          is-link
+          label="绑定屏幕"
+          name="device_id"
+          placeholder="请选择（非必选）"
+          readonly
+        />
         <img-cropper :confirm="_pickPic" :count="5" :list="pic" name="env_img" title="环境图片"></img-cropper>
         <div class="btn-group">
           <van-button @click="_controlFlagEditor()" class="close-btn" native-type="button">关闭</van-button>
@@ -94,6 +136,8 @@ export default {
       showFlagPicker: false,
       showFlagPopup: false,
       showFlagEditor: false,
+      showTagPicker: false,
+      showDevicePicker: false,
       flagColumns: [
         {
           label: '自定义买单标识',
@@ -104,16 +148,35 @@ export default {
           value: 2,
         },
       ],
+      tagColumns: [
+        {
+          label: '个人标识',
+          value: '1',
+        },
+        {
+          label: '多人标识',
+          value: '2',
+        },
+        {
+          label: '公共标识',
+          value: '3',
+        },
+      ],
+      deviceColumns: [],
       flag: 1,
+      tag: '1',
+      device: '0',
+      device_name: '',
       loading: false,
       list: [],
-      deviceList: [],
       lastId: '',
       formData: {
         name: '',
         person_num: '',
         env_img: [],
         detailed_address: '',
+        tag: '',
+        device_id: '0',
       },
       pic: [],
     }
@@ -126,6 +189,23 @@ export default {
     },
     flagIndex() {
       const index = this.flagColumns.findIndex(item => item.value === this.flag)
+      return index
+    },
+    tagLabel() {
+      const item = this.tagColumns.find(item => item.value === this.tag)
+      return item && item.label
+    },
+    tagIndex() {
+      const index = this.tagColumns.findIndex(item => item.value === this.tag)
+      return index
+    },
+    deviceLabel() {
+      const item = this.deviceColumns.find(item => item.id === this.device)
+      console.log(item)
+      return (item && item.imax_name) || this.device_name
+    },
+    deviceIndex() {
+      const index = this.deviceColumns.findIndex(item => item.id === this.device)
       return index
     },
   },
@@ -156,27 +236,44 @@ export default {
     _controlFlagPopup() {
       this.showFlagPopup = !this.showFlagPopup
     },
+    _controlTagPicker() {
+      this.showTagPicker = !this.showTagPicker
+    },
+    _controlDevicePicker() {
+      this.showDevicePicker = !this.showDevicePicker
+    },
     _controlFlagEditor(data) {
       if (data) {
+        console.log(data)
         this.lastId = data.id
         this.formData = {
           name: data.s_name,
           person_num: data.person_num,
           env_img: data.env_img,
           detailed_address: data.detailed_address,
+          tag: data.tag,
+          device_id: data.device_id,
         }
         this.pic = data.env_img.map(item => {
           return {
             url: item,
           }
         })
+        this.tag = data.tag
+        this.device = data.device_id
+        this.device_name = data.imax_name
       } else {
         this.lastId = ''
+        this.tag = '1'
+        this.device = '0'
+        this.device_name = ''
         this.formData = {
           name: '',
           person_num: '',
           env_img: [],
           detailed_address: '',
+          tag: '',
+          device_id: '0',
         }
       }
       this.showFlagEditor = !this.showFlagEditor
@@ -191,10 +288,27 @@ export default {
         this._controlFlagPicker()
       })
     },
+    _pickTag(data) {
+      this.formData.tag = data.value
+      this.tag = data.value
+      this._controlTagPicker()
+    },
+    _pickDevice(data) {
+      console.log(data)
+      this.formData.device_id = data.id
+      this.device = data.id
+      this._controlDevicePicker()
+    },
     _getStoreFrontFlagList(id) {
       this.getStoreFrontFlagList({ store_id: id }).then(res => {
         this.list = res.station_list
-        this.deviceList = res.device_list
+        this.deviceColumns = [
+          {
+            id: '0',
+            imax_name: '无',
+          },
+          ...res.device_list,
+        ]
       })
     },
     _getStoreFrontCurrentFlag(id) {
@@ -210,12 +324,16 @@ export default {
       if (this.loading) return
       this.loading = true
       const { id } = this.$route.params
+      console.log(values)
       let params = {
         type: '1',
         store_id: id,
         ...values,
         env_img: values.env_img.map(item => item.url),
       }
+      params.tag = this.formData.tag
+      params.device_id = this.formData.device_id
+      console.log(params)
       let methods = 'createStoreFrontFlag'
       if (this.lastId) {
         methods = 'updateStoreFrontFlag'
@@ -228,10 +346,10 @@ export default {
             duration: 1000,
             onClose: () => {
               this._getStoreFrontFlagList(id)
+              this._controlFlagEditor()
+              this.loading = false
             },
           })
-          this._controlFlagEditor()
-          this.loading = false
         })
         .catch(() => {
           this._controlFlagEditor()
