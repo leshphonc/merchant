@@ -2,16 +2,16 @@ import axios from 'axios'
 
 export default {
   // 读取零售商品列表
-  getECommerceList: page =>
+  getECommerceList: payload =>
     axios.get('/appapi.php?c=SpaceMerchant&a=spro', {
       params: {
-        page,
+        ...payload,
         size: 10,
         good_type: 1,
         ticket: localStorage.getItem('ticket'),
       },
     }),
-  // 删除零售商品
+  // 删除零售商品（真删除，暂时不用）
   deleteECommerce: ({ store_id, goods_id }) =>
     axios.post('/appapi.php?c=SpaceMerchant&a=goods_del', {
       store_id,

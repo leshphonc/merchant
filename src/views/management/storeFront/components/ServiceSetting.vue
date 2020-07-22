@@ -107,6 +107,7 @@ export default {
       flag: 1,
       loading: false,
       list: [],
+      deviceList: [],
       lastId: '',
       formData: {
         name: '',
@@ -191,8 +192,9 @@ export default {
       })
     },
     _getStoreFrontFlagList(id) {
-      this.getStoreFrontFlagList(id).then(res => {
-        this.list = res
+      this.getStoreFrontFlagList({ store_id: id }).then(res => {
+        this.list = res.station_list
+        this.deviceList = res.device_list
       })
     },
     _getStoreFrontCurrentFlag(id) {

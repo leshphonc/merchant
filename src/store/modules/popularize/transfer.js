@@ -9,9 +9,9 @@ const getters = {}
 // actions
 const actions = {
   // 查询可以过户的组合卡列表
-  async getCombinationCardList(context, page = 1) {
+  async getCombinationCardList(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await transferAPI.getCombinationCardList(page)
+      const data = await transferAPI.getCombinationCardList(payload)
       data ? resolve(data) : reject()
     })
   },

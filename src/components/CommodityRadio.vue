@@ -304,7 +304,7 @@ export default {
     ...mapActions('commodity', ['getECommerceList', 'getGroupBuyList', 'getServiceList', 'getPackageList']),
     _eOnRefresh() {
       const { id } = this.$route.params
-      this.getECommerceList(1).then(res => {
+      this.getECommerceList({ page: 1 }).then(res => {
         this.ePage = 2
         this.eList = res.lists
         this.eRefreshing = false
@@ -317,7 +317,7 @@ export default {
     },
     _eOnLoad() {
       const { id } = this.$route.params
-      this.getECommerceList(this.ePage).then(res => {
+      this.getECommerceList({ page: this.ePage }).then(res => {
         this.loading = false
         if (res.lists.length < 10) {
           this.eFinished = true
@@ -354,7 +354,7 @@ export default {
     },
     _sOnRefresh() {
       const { id } = this.$route.params
-      this.getServiceList().then(res => {
+      this.getServiceList({ page: 1 }).then(res => {
         this.sPage = 2
         this.sList = res
         this.sRefreshing = false
@@ -367,7 +367,7 @@ export default {
     },
     _sOnLoad() {
       const { id } = this.$route.params
-      this.getServiceList(this.sPage).then(res => {
+      this.getServiceList({ page: this.sPage }).then(res => {
         this.loading = false
         if (res.length < 10) {
           this.sFinished = true
@@ -379,7 +379,7 @@ export default {
     },
     _pOnRefresh() {
       const { id } = this.$route.params
-      this.getPackageList().then(res => {
+      this.getPackageList({ page: 1 }).then(res => {
         this.pPage = 2
         this.pList = res
         this.pRefreshing = false
@@ -392,7 +392,7 @@ export default {
     },
     _pOnLoad() {
       const { id } = this.$route.params
-      this.getPackageList(this.pPage).then(res => {
+      this.getPackageList({ page: this.pPage }).then(res => {
         this.loading = false
         if (res.length < 10) {
           this.pFinished = true

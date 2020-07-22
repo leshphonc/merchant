@@ -21,6 +21,16 @@
             </div>
             <div slot="footer" v-if="$route.fullPath === '/commodity'">
               <!-- <van-button @click="_deleteCommodity(item.meal_id)" size="small" type="danger">删除</van-button> -->
+              <van-button
+                @click="_changeGoodStatus(item.meal_id, item.status)"
+                size="small"
+                type="danger"
+                v-if="item.status == 0"
+                >停售</van-button
+              >
+              <van-button @click="_changeGoodStatus(item.meal_id, item.status)" size="small" type="primary" v-else
+                >启售</van-button
+              >
               <van-button :to="`/commodity/combinationCardSalesRecord/${item.meal_id}`" size="small"
                 >销售记录</van-button
               >
@@ -183,6 +193,7 @@ export default {
       'getCombinationCardCategoryList',
       'createCombinationCardCategory',
       'deleteCombinationCardCategory',
+      'changeCommodityStatus',
     ]),
     // 分类编辑开关
     _controlCategoryCRUPopup() {
@@ -197,9 +208,25 @@ export default {
     _controlCategoryPicker() {
       this.showCategoryPicker = !this.showCategoryPicker
     },
+    // 切换产品状态
+    _changeGoodStatus(id, status) {
+      let s = 0
+      if (status == 0) {
+        s = 1
+      }
+      this.changeCommodityStatus({ id: id, status: s, model: 'space_meal' }).then(() => {
+        this.$toast.success({
+          message: '操作成功',
+          duration: 800,
+          onClose: () => {
+            this._onRefresh()
+          },
+        })
+      })
+    },
     // 刷新套餐列表
     _onRefresh() {
-      this.getCombinationCardList().then(res => {
+      this.getCombinationCardList({ page: 1, all: 1 }).then(res => {
         this.page = 2
         this.list = res
         this.refreshing = false
@@ -212,7 +239,7 @@ export default {
     },
     // 异步更新零售商品数据
     _onLoad() {
-      this.getCombinationCardList(this.page).then(res => {
+      this.getCombinationCardList({ page: this.page, all: 1 }).then(res => {
         this.loading = false
         if (res.length < 10) {
           this.finished = true
@@ -371,5 +398,9 @@ export default {
     width: 50%;
     margin: 0;
   }
+}
+
+.van-card__footer {
+  margin-top: 8px;
 }
 </style>

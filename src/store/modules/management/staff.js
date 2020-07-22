@@ -141,6 +141,13 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
+  // 查询岗位与岗位下等级
+  getPostAndLevel(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await staffAPI.getPostAndLevel(payload)
+      data ? resolve(data) : reject()
+    })
+  },
 }
 
 // mutations

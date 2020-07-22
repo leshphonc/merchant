@@ -107,12 +107,12 @@
             v-model.trim="formData.stock_num"
           />
         </ValidationProvider>
-        <van-cell title="需要桌台/房间">
+        <van-cell title="需要桌台/房间" v-if="$route.params.type === '2'">
           <van-switch active-value="1" inactive-value="0" v-model="formData.need_table" />
         </van-cell>
         <!-- <van-cell title="需要服务人员">
           <van-switch active-value="1" inactive-value="0" v-model="formData.need_service_personnel" />
-        </van-cell> -->
+        </van-cell>-->
         <van-field
           :value="statusLabel"
           @click="_controlStatusPicker"
@@ -218,7 +218,7 @@
             v-model.trim="formData.description"
           />
         </ValidationProvider>
-        <van-cell required title="商品详情"></van-cell>
+        <van-cell title="商品详情"></van-cell>
         <quill-editor :changeHtml="_changeHtml" :context="formData.des" ref="editor"></quill-editor>
       </van-cell-group>
     </ValidationObserver>
@@ -683,38 +683,37 @@ export default {
           message: '请填写完整信息',
         })
       } else {
-        if (!this.$refs.editor.editorHtml) {
-          this.$notify({
-            type: 'warning',
-            message: '请填写完整信息',
-          })
-        } else {
-          // 加锁
-          this.loading = true
-          // 表单完整，进行数据修改并提交
-          let method = 'createECommerce'
-          const { id } = this.$route.params
-          if (id) {
-            method = 'updateECommerce'
-            this.formData.goods_id = id
-          }
-          this[method](this.formData)
-            .then(() => {
-              this.$toast.success({
-                message: '操作成功',
-                forbidClick: true,
-                duration: 1500,
-                onClose: () => {
-                  // 解锁
-                  this.loading = false
-                  this.$goBack()
-                },
-              })
-            })
-            .catch(() => {
-              this.loading = false
-            })
+        // 加锁
+        this.loading = true
+        // 表单完整，进行数据修改并提交
+        let method = 'createECommerce'
+        const { id } = this.$route.params
+        if (id) {
+          method = 'updateECommerce'
+          this.formData.goods_id = id
         }
+        const toast = this.$toast.loading({
+          message: '加载中...',
+          forbidClick: true,
+        })
+        this[method](this.formData)
+          .then(() => {
+            toast.clear()
+            this.$toast.success({
+              message: '操作成功',
+              forbidClick: true,
+              duration: 1000,
+              onClose: () => {
+                // 解锁
+                this.loading = false
+                this.$goBack()
+              },
+            })
+          })
+          .catch(() => {
+            toast.clear()
+            this.loading = false
+          })
       }
     },
   },

@@ -5,6 +5,7 @@ import takeAwayActions from './takeAway'
 import serviceActions from './service'
 import packageActions from './package'
 import combinationCardActions from './combinationCard'
+import commodityAPI from '@/api/management/commodity/index'
 
 // initial state
 const state = {
@@ -24,6 +25,13 @@ const actions = {
   ...serviceActions,
   ...packageActions,
   ...combinationCardActions,
+  // 更改商品售卖状态
+  async changeCommodityStatus(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await commodityAPI.changeCommodityStatus(payload)
+      data ? resolve() : reject()
+    })
+  },
 }
 
 // mutations

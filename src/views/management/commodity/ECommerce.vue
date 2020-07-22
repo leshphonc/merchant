@@ -21,6 +21,16 @@
               <!-- <van-button @click="_deleteCommodity(item.store_id, item.goods_id)" size="small" type="danger"
                 >删除</van-button
               >-->
+              <van-button
+                @click="_changeGoodStatus(item.goods_id, item.status)"
+                size="small"
+                type="danger"
+                v-if="item.status == 1"
+                >停售</van-button
+              >
+              <van-button @click="_changeGoodStatus(item.goods_id, item.status)" size="small" type="primary" v-else
+                >启售</van-button
+              >
               <van-button :to="`/commodity/serviceSalesRecord/${item.goods_id}`" size="small">销售记录</van-button>
               <van-button :to="`/commodity/eCommercePreferential/${item.goods_id}`" size="small">优惠</van-button>
               <van-button :to="`/commodity/eCommerceCRU/${item.goods_type}/${item.goods_id}`" size="small"
@@ -105,9 +115,9 @@
           </van-cell>
           <van-cell v-if="formData.is_week === '1'">
             <van-checkbox-group :max="2" v-model="formData.week">
-              <van-checkbox :key="item.value" :name="index + 1" shape="square" v-for="(item, index) in week">
-                {{ item.label }}
-              </van-checkbox>
+              <van-checkbox :key="item.value" :name="index + 1" shape="square" v-for="(item, index) in week">{{
+                item.label
+              }}</van-checkbox>
             </van-checkbox-group>
           </van-cell>
         </van-cell-group>
@@ -224,6 +234,7 @@ export default {
       'getECommerceFirstCategoryList',
       'createECommerceCategory',
       'deleteECommerceCategory',
+      'changeCommodityStatus',
     ]),
     // 分类编辑开关
     _controlCategoryCRUPopup() {
@@ -238,9 +249,21 @@ export default {
     _controlCategoryPicker() {
       this.showCategoryPicker = !this.showCategoryPicker
     },
+    // 切换产品状态
+    _changeGoodStatus(id, status) {
+      this.changeCommodityStatus({ id: id, status: status, model: 'shop_online' }).then(() => {
+        this.$toast.success({
+          message: '操作成功',
+          duration: 800,
+          onClose: () => {
+            this._onRefresh()
+          },
+        })
+      })
+    },
     // 刷新零售商品列表
     _onRefresh() {
-      this.getECommerceList().then(res => {
+      this.getECommerceList({ page: 1, all: 1 }).then(res => {
         this.page = 2
         this.list = res.lists
         this.refreshing = false
@@ -253,7 +276,7 @@ export default {
     },
     // 异步更新零售商品数据
     _onLoad() {
-      this.getECommerceList(this.page).then(res => {
+      this.getECommerceList({ page: this.page, all: 1 }).then(res => {
         this.loading = false
         if (res.lists.length < 10) {
           this.finished = true
@@ -425,6 +448,10 @@ export default {
     width: 50%;
     margin: 0;
   }
+}
+
+.van-card__footer {
+  margin-top: 8px;
 }
 
 .van-checkbox {

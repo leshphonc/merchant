@@ -103,8 +103,9 @@ export default {
       ticket: localStorage.getItem('ticket'),
     }),
   // 技师等级列表
-  getStaffLevelList: () =>
+  getStaffLevelList: payload =>
     axios.post('/appapi.php?c=Merchantapp&a=getTechnicianGradeList', {
+      ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
   // 创建或修改技师等级
@@ -122,6 +123,12 @@ export default {
   // 获取店铺和打卡类型
   getStoreAndClockInType: payload =>
     axios.post('/appapi.php?c=Merchantapp&a=clockType', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 查询岗位与岗位下等级
+  getPostAndLevel: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=merchantPostAndGrade', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),

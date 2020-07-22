@@ -174,7 +174,7 @@ export default {
     },
     _cOnRefresh() {
       const { id } = this.$route.params
-      this.getECommerceList(1).then(res => {
+      this.getECommerceList({ page: 1 }).then(res => {
         this.cPage = 2
         this.cList = res.lists
         this.cResult = []
@@ -187,7 +187,7 @@ export default {
     },
     _cOnLoad() {
       const { id } = this.$route.params
-      this.getECommerceList(this.cPage).then(res => {
+      this.getECommerceList({ page: this.cPage }).then(res => {
         this.loading = false
         if (res.lists.length < 10) {
           this.cFinished = true
@@ -202,7 +202,7 @@ export default {
     },
     _sOnRefresh() {
       const { id } = this.$route.params
-      this.getServiceList(1).then(res => {
+      this.getServiceList({ page: 1 }).then(res => {
         this.sPage = 2
         this.sList = res
         this.sResult = []
@@ -215,7 +215,7 @@ export default {
     },
     _sOnLoad() {
       const { id } = this.$route.params
-      this.getServiceList(this.sPage).then(res => {
+      this.getServiceList({ page: this.sPage }).then(res => {
         this.loading = false
         if (res.length < 10) {
           this.sFinished = true

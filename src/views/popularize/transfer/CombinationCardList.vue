@@ -81,7 +81,7 @@ export default {
       this.showTransfer = true
     },
     _onRefresh() {
-      this.getCombinationCardList(1).then(res => {
+      this.getCombinationCardList({ page: 1 }).then(res => {
         this.page = 2
         this.list = res.list
         this.refreshing = false
@@ -93,7 +93,7 @@ export default {
       })
     },
     _onLoad() {
-      this.getCombinationCardList(this.page).then(res => {
+      this.getCombinationCardList({ page: this.page }).then(res => {
         this.loading = false
         if (res.list.length < 10) {
           this.finished = true

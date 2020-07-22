@@ -2,9 +2,9 @@ import axios from 'axios'
 
 export default {
   // 读取服务商品列表
-  getServiceList: page =>
+  getServiceList: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=selProList', {
-      page,
+      ...payload,
       size: 10,
       ticket: localStorage.getItem('ticket'),
     }),

@@ -659,12 +659,17 @@ export default {
             params[key] ? params[key].push(item[key]) : (params[key] = [item[key]])
           }
         })
+        const toast = this.$toast.loading({
+          message: '加载中...',
+          forbidClick: true,
+        })
         this[method](params)
           .then(() => {
+            toast.clear()
             this.$toast.success({
               message: '操作成功',
               forbidClick: true,
-              duration: 1500,
+              duration: 1000,
               onClose: () => {
                 // 解锁
                 this.loading = false
@@ -673,6 +678,7 @@ export default {
             })
           })
           .catch(() => {
+            toast.clear()
             this.loading = false
           })
       }

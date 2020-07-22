@@ -472,6 +472,9 @@ export default {
       this._readStoreFrontDetail(id)
     } else {
       this._getPlatformStoreFrontCategory()
+      this.getClockInList().then(res => {
+        this.clockInList = res
+      })
     }
   },
 
@@ -483,6 +486,7 @@ export default {
       'readStoreFrontDetail',
       'updateStoreFront',
       'getPlatformStoreFrontCategory',
+      'getClockInList',
     ]),
     // 坐标拾取
     _controlCoordinatePicker() {
@@ -745,12 +749,17 @@ export default {
             method = 'updateStoreFront'
             params.store_id = id
           }
+          const toast = this.$toast.loading({
+            message: '加载中...',
+            forbidClick: true,
+          })
           this[method](params)
             .then(() => {
+              toast.clear()
               this.$toast.success({
                 message: '操作成功',
                 forbidClick: true,
-                duration: 1500,
+                duration: 1000,
                 onClose: () => {
                   // 解锁
                   this.loading = false
@@ -759,6 +768,7 @@ export default {
               })
             })
             .catch(() => {
+              toast.clear()
               this.loading = false
             })
         }

@@ -2,10 +2,10 @@ import axios from 'axios'
 
 export default {
   // 查询可以过户的组合卡列表
-  getCombinationCardList: page =>
+  getCombinationCardList: payload =>
     axios.get('/appapi.php?c=Merchantapp&a=service_card_give_lists', {
       params: {
-        page,
+        ...payload,
         size: 10,
         ticket: localStorage.getItem('ticket'),
       },

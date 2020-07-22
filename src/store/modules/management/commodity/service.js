@@ -2,9 +2,9 @@ import commodityAPI from '@/api/management/commodity/index'
 
 export default {
   // 读取服务商品列表
-  getServiceList(context, page = 1) {
+  getServiceList(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getServiceList(page)
+      const data = await commodityAPI.getServiceList(payload)
       data ? resolve(data) : reject()
     })
   },

@@ -27,7 +27,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { Dialog } from 'vant'
 export default {
   name: 'selfMentionPointList',
 
@@ -67,10 +66,11 @@ export default {
     _del(id) {
       if (this.loading) return
       this.loading = true
-      Dialog.confirm({
-        title: '提示',
-        message: '确认要删除该自提点地址？',
-      })
+      this.$dialog
+        .confirm({
+          title: '提示',
+          message: '确认要删除该自提点地址？',
+        })
         .then(() => {
           this.delSelfMentionPoint(id)
             .then(() => {

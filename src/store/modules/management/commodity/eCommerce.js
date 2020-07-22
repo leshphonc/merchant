@@ -2,9 +2,9 @@ import commodityAPI from '@/api/management/commodity/index'
 
 export default {
   // 读取零售商品列表
-  async getECommerceList(context, page = 1) {
+  async getECommerceList(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getECommerceList(page)
+      const data = await commodityAPI.getECommerceList(payload)
       data ? resolve(data) : reject()
     })
   },

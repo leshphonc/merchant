@@ -363,7 +363,7 @@ export default {
     },
     // 更新服务项目商品数据
     _onLoad() {
-      this.getServiceList(this.page).then(res => {
+      this.getServiceList({ page: 1 }).then(res => {
         this.loading = false
         if (res.length < 10) {
           this.finished = true
@@ -389,7 +389,7 @@ export default {
     },
     // 更新零售商品数据
     _onLoadE() {
-      this.getECommerceList(this.pageE).then(res => {
+      this.getECommerceList({ page: this.pageE }).then(res => {
         this.loading = false
         if (res.lists.length < 10) {
           this.finishedE = true
@@ -610,12 +610,17 @@ export default {
         })
 
         params.project_data = JSON.stringify([...params.project_data, ...this.eCommerce_data])
+        const toast = this.$toast.loading({
+          message: '加载中...',
+          forbidClick: true,
+        })
         this[method](params)
           .then(() => {
+            toast.clear()
             this.$toast.success({
               message: '操作成功',
               forbidClick: true,
-              duration: 1500,
+              duration: 1000,
               onClose: () => {
                 // 解锁
                 this.loading = false
@@ -624,6 +629,7 @@ export default {
             })
           })
           .catch(() => {
+            toast.clear()
             this.loading = false
           })
       }

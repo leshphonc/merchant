@@ -2,9 +2,9 @@ import axios from 'axios'
 
 export default {
   // 读取组合卡列表
-  getCombinationCardList: page =>
+  getCombinationCardList: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getMealList', {
-      page,
+      ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
   // 创建组合卡

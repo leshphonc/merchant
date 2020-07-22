@@ -191,9 +191,9 @@ const actions = {
     })
   },
   // 获取店铺下的自定义标识位
-  getStoreFrontFlagList(context, id) {
+  getStoreFrontFlagList(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await storeFrontAPI.getStoreFrontFlagList(id)
+      const data = await storeFrontAPI.getStoreFrontFlagList(payload)
       data ? resolve(data) : reject()
     })
   },
@@ -292,6 +292,13 @@ const actions = {
   serviceBindCommodity(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.serviceBindCommodity(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 获取店铺打卡列表
+  getClockInList(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.getClockInList(payload)
       data ? resolve(data) : reject()
     })
   },

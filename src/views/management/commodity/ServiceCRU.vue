@@ -96,21 +96,22 @@
         <van-cell title="需要桌台/房间">
           <van-switch active-value="1" inactive-value="0" v-model="formData.need_table" />
         </van-cell>
-        <van-cell title="需要服务人员">
+        <!-- <van-cell title="需要服务人员">
           <van-switch active-value="1" inactive-value="0" v-model="formData.need_service_personnel"></van-switch>
-        </van-cell>
-        <div v-if="formData.need_service_personnel === '1'">
+        </van-cell>-->
+        <van-cell @click="_controlStaffLevelPopup" title="设置服务技师和服务费用" is-link></van-cell>
+        <div v-if="activeIds.length">
           <ValidationProvider
             :key="index"
-            :name="`${item.name}服务费用`"
+            :name="`服务费用${index + 1}`"
             rules="required|decimal-max2"
             slim
-            v-for="(item, index) in staffLevelList"
+            v-for="(item, index) in activeIds"
             v-slot="{ errors }"
           >
             <van-field
               :error-message="errors[0]"
-              :label="item.name"
+              :label="_getLevelLabel(item)"
               placeholder="请输入服务费用"
               required
               v-model.trim="formData.need_service_fee[index].fee"
@@ -188,7 +189,7 @@
             v-model.trim="formData.description"
           />
         </ValidationProvider>
-        <van-cell required title="服务项目详情"></van-cell>
+        <van-cell title="服务项目详情"></van-cell>
         <quill-editor :changeHtml="_changeHtml" :context="formData.appoint_pic_content" ref="editor"></quill-editor>
       </van-cell-group>
     </ValidationObserver>
@@ -232,6 +233,16 @@
         show-toolbar
         value-key="cat_name"
       ></van-picker>
+    </van-popup>
+    <van-popup class="staff-level" position="bottom" safe-area-inset-bottom v-model="showStaffLevelPopup">
+      <van-tree-select
+        :active-id.sync="activeIds"
+        :height="450"
+        :items="items"
+        :main-active-index.sync="activeIndex"
+        @click-item="_selectLevel"
+      />
+      <van-button @click="_controlStaffLevelPopup">关闭</van-button>
     </van-popup>
   </div>
 </template>
@@ -281,16 +292,19 @@ export default {
         keyword: '',
       },
       pic: [],
-      staffLevelList: [],
       showStartTimePicker: false,
       showEndTimePicker: false,
       showServiceTypePicker: false,
       showCategoryPicker: false,
+      showStaffLevelPopup: false,
       serviceTypeColumns: ['到店', '上门'],
       categoryColumnsOrigin: [],
       categoryColumns: [],
       // submit锁
       loading: false,
+      items: [],
+      activeIds: [],
+      activeIndex: 0,
     }
   },
 
@@ -341,21 +355,37 @@ export default {
   created() {},
 
   mounted() {
-    this.getStaffLevelList().then(res => {
-      this.formData.need_service_fee = res.map(item => {
+    const { id } = this.$route.params
+    if (id) {
+      this._readServiceDetail(id)
+    } else {
+      // 读取服务项目分类
+      this._getServiceCategoryList()
+    }
+    this.getPostAndLevel({ appoint_id: id }).then(res => {
+      this.items = res.map(item => {
         return {
-          technician_grade_id: item.id,
-          fee: 0,
+          id: item.id,
+          text: item.name,
+          children: item.grade
+            ? item.grade.map(item2 => {
+                if (item2.select) {
+                  this.activeIds.push(item2.id)
+                  this.formData.need_service_fee.push({
+                    fee: item2.fee,
+                    post_id: item.id,
+                    technician_grade_id: item2.id,
+                  })
+                }
+                return {
+                  id: item2.id,
+                  text: item2.name,
+                  post_id: item.id,
+                }
+              })
+            : [],
         }
       })
-      this.staffLevelList = res
-      const { id } = this.$route.params
-      if (id) {
-        this._readServiceDetail(id)
-      } else {
-        // 读取服务项目分类
-        this._getServiceCategoryList()
-      }
     })
   },
 
@@ -363,7 +393,7 @@ export default {
 
   methods: {
     ...mapActions('commodity', ['getServiceCategoryList', 'createService', 'readServiceDetail']),
-    ...mapActions('staff', ['getStaffLevelList']),
+    ...mapActions('staff', ['getPostAndLevel']),
     // 预约开始时间开关
     _controlStartTimePicker() {
       this.showStartTimePicker = !this.showStartTimePicker
@@ -379,6 +409,9 @@ export default {
     // 服务商品分类开关
     _controlCategoryPicker() {
       this.showCategoryPicker = !this.showCategoryPicker
+    },
+    _controlStaffLevelPopup() {
+      this.showStaffLevelPopup = !this.showStaffLevelPopup
     },
     // 预约开始时间选择
     _pickStartTime(data) {
@@ -424,6 +457,34 @@ export default {
         this._serializationECommerceCategory(fid, id)
       })
     },
+    _selectLevel(data) {
+      const index = this.activeIds.indexOf(data.id)
+      if (index === -1) {
+        const index2 = this.formData.need_service_fee.findIndex(item => {
+          if (item.technician_grade_id === data.id) {
+            return item
+          }
+        })
+        this.formData.need_service_fee.splice(index2, 1)
+      } else {
+        this.formData.need_service_fee.push({
+          technician_grade_id: data.id,
+          fee: '',
+          post_id: data.post_id,
+        })
+      }
+    },
+    _getLevelLabel(id) {
+      let result = {}
+      this.items.forEach(item => {
+        item.children.forEach(item2 => {
+          if (item2.id == id) {
+            result = item2
+          }
+        })
+      })
+      return result.text
+    },
     // 根据columns原始数据序列化服务商品分类
     _serializationECommerceCategory(fid, id) {
       const data = this.categoryColumnsOrigin
@@ -456,19 +517,9 @@ export default {
         this.$refs.editor.$refs.quillEditor.quill.enable(false)
         const keys = Object.keys(this.formData)
         keys.forEach(item => {
-          // 判断是否为技师等级数据
           if (item === 'need_service_fee') {
-            // 循环初始化数据和res数据，进行对比和赋值
-            this.formData[item].forEach(i => {
-              res.need_service_fee.forEach(ii => {
-                if (i.technician_grade_id === ii.technician_grade_id) {
-                  i.fee = ii.fee
-                }
-              })
-            })
             return false
           }
-
           this.formData[item] = res[item]
         })
         if (res.start_time !== '0') {
@@ -506,44 +557,54 @@ export default {
           message: '请填写完整信息',
         })
       } else {
-        if (!this.$refs.editor.editorHtml) {
-          this.$notify({
-            type: 'warning',
-            message: '请填写完整信息',
-          })
-        } else {
-          // 加锁
-          this.loading = true
-          // 表单完整，进行数据修改并提交
-          const { id } = this.$route.params
-          const params = JSON.parse(JSON.stringify(this.formData))
-          if (id) {
-            params.appoint_id = id
-          }
-          params.start_time = this.$moment(this.formData.start_time).valueOf() / 1000
-          params.end_time = this.$moment(this.formData.end_time).valueOf() / 1000
-          params.pic = this.formData.pic[0]
-          this.createService(params)
-            .then(() => {
-              this.$toast.success({
-                message: '操作成功',
-                forbidClick: true,
-                duration: 1500,
-                onClose: () => {
-                  // 解锁
-                  this.loading = false
-                  this.$goBack()
-                },
-              })
-            })
-            .catch(() => {
-              this.loading = false
-            })
+        // 加锁
+        this.loading = true
+        // 表单完整，进行数据修改并提交
+        const { id } = this.$route.params
+        const params = JSON.parse(JSON.stringify(this.formData))
+        if (id) {
+          params.appoint_id = id
         }
+        params.start_time = this.$moment(this.formData.start_time).valueOf() / 1000
+        params.end_time = this.$moment(this.formData.end_time).valueOf() / 1000
+        params.pic = this.formData.pic[0]
+        if (params.need_service_fee.length) {
+          params.need_service_personnel = 1
+        } else {
+          params.need_service_personnel = 0
+        }
+        const toast = this.$toast.loading({
+          message: '加载中...',
+          forbidClick: true,
+        })
+        this.createService(params)
+          .then(() => {
+            toast.clear()
+            this.$toast.success({
+              message: '操作成功',
+              forbidClick: true,
+              duration: 1000,
+              onClose: () => {
+                // 解锁
+                this.loading = false
+                this.$goBack()
+              },
+            })
+          })
+          .catch(() => {
+            toast.clear()
+            this.loading = false
+          })
       }
     },
   },
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.staff-level {
+  .van-button {
+    width: 100%;
+  }
+}
+</style>

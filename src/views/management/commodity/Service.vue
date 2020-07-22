@@ -35,6 +35,16 @@
             </div>
             <div slot="footer" v-if="$route.fullPath === '/commodity'">
               <!-- <van-button @click="_deleteCommodity(item.appoint_id)" size="small" type="danger">删除</van-button> -->
+              <van-button
+                @click="_changeGoodStatus(item.appoint_id, item.status)"
+                size="small"
+                type="danger"
+                v-if="item.status == 0"
+                >停售</van-button
+              >
+              <van-button @click="_changeGoodStatus(item.appoint_id, item.status)" size="small" type="primary" v-else
+                >启售</van-button
+              >
               <van-button :to="`/commodity/serviceSalesRecord/${item.appoint_id}`" size="small">销售记录</van-button>
               <van-button :to="`/commodity/servicePreferential/${item.appoint_id}`" size="small">优惠</van-button>
               <van-button :to="`/commodity/serviceCRU/${item.appoint_id}`" size="small">编辑</van-button>
@@ -192,6 +202,7 @@ export default {
       'getServiceCategoryList',
       'createServiceCategory',
       'deleteServiceCategory',
+      'changeCommodityStatus',
     ]),
     // 分类编辑开关
     _controlCategoryCRUPopup() {
@@ -206,9 +217,25 @@ export default {
     _controlCategoryPicker() {
       this.showCategoryPicker = !this.showCategoryPicker
     },
+    // 切换产品状态
+    _changeGoodStatus(id, status) {
+      let s = 0
+      if (status == 0) {
+        s = 1
+      }
+      this.changeCommodityStatus({ id: id, status: s, model: 'space_appoint' }).then(() => {
+        this.$toast.success({
+          message: '操作成功',
+          duration: 800,
+          onClose: () => {
+            this._onRefresh()
+          },
+        })
+      })
+    },
     // 刷新服务商品列表
     _onRefresh() {
-      this.getServiceList().then(res => {
+      this.getServiceList({ page: 1, all: 1 }).then(res => {
         this.page = 2
         this.list = res
         this.refreshing = false
@@ -221,7 +248,7 @@ export default {
     },
     // 异步更新服务商品数据
     _onLoad() {
-      this.getServiceList(this.page).then(res => {
+      this.getServiceList({ page: this.page, all: 1 }).then(res => {
         this.loading = false
         if (res.length < 10) {
           this.finished = true

@@ -2,9 +2,9 @@ import commodityAPI from '@/api/management/commodity/index'
 
 export default {
   // 读取组合卡列表
-  getCombinationCardList(context, page = 1) {
+  getCombinationCardList(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await commodityAPI.getCombinationCardList(page)
+      const data = await commodityAPI.getCombinationCardList(payload)
       data ? resolve(data) : reject()
     })
   },

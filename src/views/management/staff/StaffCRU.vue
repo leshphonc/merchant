@@ -115,7 +115,7 @@
         @cancel="_controlStaffTypePicker"
         @confirm="_pickStaffType"
         show-toolbar
-        value-key="label"
+        value-key="name"
       ></van-picker>
     </van-popup>
     <!-- 店铺列表 -->
@@ -177,7 +177,7 @@ export default {
       showStaffLevelPicker: false,
       staffTypeColumns: [],
       storeColumns: [],
-      staffLevelColumns: [],
+      staffLevelColumns: [{ id: '0', name: '无等级' }],
       avatar: [],
     }
   },
@@ -189,11 +189,11 @@ export default {
       return id ? '编辑' : '创建'
     },
     staffTypeLabel() {
-      const item = this.staffTypeColumns.find(item => item.value === this.formData.type)
-      return item && item.label
+      const item = this.staffTypeColumns.find(item => item.id === this.formData.type)
+      return item && item.name
     },
     staffTypeIndex() {
-      const index = this.staffTypeColumns.findIndex(item => item.value === this.formData.type)
+      const index = this.staffTypeColumns.findIndex(item => item.id === this.formData.type)
       return index
     },
     storeLabel() {
@@ -219,9 +219,6 @@ export default {
   created() {},
 
   mounted() {
-    this.getStaffLevelList().then(res => {
-      this.staffLevelColumns = [{ id: '0', name: '无等级' }, ...res]
-    })
     this._getStoreList()
     this._getStaffType()
     const { id, sid } = this.$route.params
@@ -247,7 +244,10 @@ export default {
     },
     // 店员类型选择
     _pickStaffType(data) {
-      this.formData.type = data.value
+      this.formData.type = data.id
+      this.getStaffLevelList({ post_id: data.id }).then(res => {
+        this.staffLevelColumns = [{ id: '0', name: '无等级' }, ...res]
+      })
       this._controlStaffTypePicker()
     },
     // 店铺选择
@@ -273,17 +273,31 @@ export default {
       })
     },
     _readStaffDetail(id, sid) {
+      const toast = this.$toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+      })
       this.readStaffDetail({
         store_id: sid,
         staff_id: id,
-      }).then(res => {
-        const keys = Object.keys(this.formData)
-        keys.forEach(item => {
-          this.formData[item] = res[item]
-        })
-        this.avatar = [{ url: res.avatar }]
-        this.formData.password = ''
       })
+        .then(res => {
+          toast.clear()
+          this.getStaffLevelList({ post_id: res.type }).then(list => {
+            this.staffLevelColumns = [{ id: '0', name: '无等级' }, ...list]
+            const keys = Object.keys(this.formData)
+            keys.forEach(item => {
+              this.formData[item] = res[item]
+            })
+            if (res.avatar) {
+              this.avatar = [{ url: res.avatar }]
+            }
+            this.formData.password = ''
+          })
+        })
+        .catch(() => {
+          toast.clear()
+        })
     },
     _pickAvatar(data) {
       this.formData.avatar = data[0].url

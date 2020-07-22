@@ -2,9 +2,9 @@ import axios from 'axios'
 
 export default {
   // 读取套餐商品列表
-  getPackageList: page =>
+  getPackageList: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getPackageList', {
-      page,
+      ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
   // 创建套餐商品

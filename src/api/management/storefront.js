@@ -166,9 +166,9 @@ export default {
       ticket: localStorage.getItem('ticket'),
     }),
   // 获取店铺下的自定义标识位
-  getStoreFrontFlagList: id =>
+  getStoreFrontFlagList: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getNowStation', {
-      store_id: id,
+      ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
   // 创建店铺下的自定义标识位
@@ -260,6 +260,12 @@ export default {
   // 服务商品绑定推荐零售
   serviceBindCommodity: payload =>
     axios.post('/appapi.php?c=Merchantapp&a=goodsPromotionRelationEdit', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取店铺打卡列表
+  getClockInList: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=clock_type_list', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
