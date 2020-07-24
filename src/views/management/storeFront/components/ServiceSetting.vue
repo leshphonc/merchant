@@ -201,7 +201,6 @@ export default {
     },
     deviceLabel() {
       const item = this.deviceColumns.find(item => item.id === this.device)
-      console.log(item)
       return (item && item.imax_name) || this.device_name
     },
     deviceIndex() {
@@ -244,7 +243,6 @@ export default {
     },
     _controlFlagEditor(data) {
       if (data) {
-        console.log(data)
         this.lastId = data.id
         this.formData = {
           name: data.s_name,
@@ -294,7 +292,6 @@ export default {
       this._controlTagPicker()
     },
     _pickDevice(data) {
-      console.log(data)
       this.formData.device_id = data.id
       this.device = data.id
       this._controlDevicePicker()
@@ -324,7 +321,6 @@ export default {
       if (this.loading) return
       this.loading = true
       const { id } = this.$route.params
-      console.log(values)
       let params = {
         type: '1',
         store_id: id,
@@ -333,7 +329,6 @@ export default {
       }
       params.tag = this.formData.tag
       params.device_id = this.formData.device_id
-      console.log(params)
       let methods = 'createStoreFrontFlag'
       if (this.lastId) {
         methods = 'updateStoreFrontFlag'
@@ -359,7 +354,7 @@ export default {
     _preView(sid) {
       const { id } = this.$route.params
       const url = `/appapi.php?g=Appapi&c=Imax2&a=geth5Qrcode&url=${encodeURIComponent(
-        window.location.origin + '/wap.php?g=Wap&c=UserOrder&a=userOrderSheet&store_id=' + id + '&s_id=' + sid
+        window.location.origin + '/neworder/order/' + id + '/' + sid
       )}`
       ImagePreview({
         images: [url],
