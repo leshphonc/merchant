@@ -69,13 +69,13 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
-  // echart进店人数
-  async getVisitsFaceEchartData(context, payload) {
-    return new Promise(async (resolve, reject) => {
-      const data = await homeAPI.getVisitsFaceEchartData(payload)
-      data ? resolve(data) : reject()
-    })
-  },
+  // // echart进店人数
+  // async getVisitsFaceEchartData(context, payload) {
+  //   return new Promise(async (resolve, reject) => {
+  //     const data = await homeAPI.getVisitsFaceEchartData(payload)
+  //     data ? resolve(data) : reject()
+  //   })
+  // },
 }
 
 // mutations

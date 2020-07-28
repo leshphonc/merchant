@@ -55,6 +55,8 @@ module.exports = {
       'vue-baidu-map': 'BaiduMap',
       moment: 'moment',
       quill: 'Quill',
+      echarts: 'echarts',
+      'vue-echarts': 'VueECharts',
     },
   },
 }

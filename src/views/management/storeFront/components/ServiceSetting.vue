@@ -221,6 +221,27 @@ export default {
 
   destroyed() {},
 
+  beforeRouteLeave(to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    if (
+      this.showFlagPicker ||
+      this.showFlagPopup ||
+      this.showFlagEditor ||
+      this.showTagPicker ||
+      this.showDevicePicker
+    ) {
+      this.showFlagPicker = false
+      this.showFlagPopup = false
+      this.showFlagEditor = false
+      this.showTagPicker = false
+      this.showDevicePicker = false
+      next(false)
+    } else {
+      next()
+    }
+  },
+
   methods: {
     ...mapActions('storeFront', [
       'getStoreFrontFlagList',
@@ -273,6 +294,7 @@ export default {
           tag: '',
           device_id: '0',
         }
+        this.pic = []
       }
       this.showFlagEditor = !this.showFlagEditor
     },

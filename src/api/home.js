@@ -57,11 +57,15 @@ export default {
   //     },
   //   }),
   // echart进店人数（新）
-  getVisitsFaceEchartData: payload =>
-    axios.get('/appapi.php?c=Tracking&a=peopleStream', {
-      params: {
-        ...payload,
-        ticket: localStorage.getItem('ticket'),
-      },
-    }),
+  getVisitsFaceEchartData: payload => {
+    return new Promise(async (resolve, reject) => {
+      const data = axios.get('/appapi.php?c=Tracking&a=peopleStream', {
+        params: {
+          ...payload,
+          ticket: localStorage.getItem('ticket'),
+        },
+      })
+      data ? resolve(data) : reject()
+    })
+  },
 }

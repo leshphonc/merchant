@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import home from '@/api/home.js'
 
 export default {
   name: 'echartForAI',
@@ -249,7 +249,6 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('home', ['getVisitsFaceEchartData']),
     // 店铺筛选开关
     _controlStorePicker() {
       this.showStorePicker = !this.showStorePicker
@@ -308,7 +307,7 @@ export default {
         date_type: this.timeTypeValue,
         date: this.timeLabel,
       }
-      this.getVisitsFaceEchartData(obj).then(res => {
+      home.getVisitsFaceEchartData(obj).then(res => {
         this.echartData = res
       })
     },

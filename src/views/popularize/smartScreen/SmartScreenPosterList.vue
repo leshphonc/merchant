@@ -147,7 +147,7 @@
           <van-cell
             :key="index"
             :label="item.address"
-            :title="item.store_name"
+            :title="`${item.remark} - ${item.store_name}`"
             @click="_sToggle(index)"
             clickable
             v-for="(item, index) in screenList"
@@ -189,71 +189,49 @@
           <van-stepper :min="formData.guest_num_min - 0 + 1" slot="input" v-model="formData.guest_num_max" />
         </van-field>
       </div>-->
-      <van-collapse v-model="activeNames" v-show="curStep === 1">
-        <van-collapse-item name="1" title="推广角色">
-          <van-icon
-            @click.stop="$toast('收到此条推广的角色身份')"
-            class="question-icon"
-            name="question-o"
-            slot="icon"
-          />
-          <van-checkbox-group v-model="formData.role">
-            <van-cell-group>
-              <van-cell
-                :key="index"
-                :title="item.name"
-                @click="_rToggle(index)"
-                clickable
-                v-for="(item, index) in roleList"
-              >
-                <van-checkbox :name="item.id" ref="checkboxesR" slot="right-icon" />
-              </van-cell>
-            </van-cell-group>
-          </van-checkbox-group>
-        </van-collapse-item>
-        <van-collapse-item name="2" title="推广会员" v-if="formData.role.indexOf(5) > -1">
-          <van-icon
-            @click.stop="$toast('收到此条推广的会员身份')"
-            class="question-icon"
-            name="question-o"
-            slot="icon"
-          />
-          <van-checkbox-group v-model="formData.promotion_role_member">
-            <van-cell-group>
-              <van-cell
-                :key="index"
-                :title="item.name"
-                @click="_mToggle(index)"
-                clickable
-                v-for="(item, index) in memberList"
-              >
-                <van-checkbox :name="item.id" ref="checkboxesM" slot="right-icon" />
-              </van-cell>
-            </van-cell-group>
-          </van-checkbox-group>
-        </van-collapse-item>
-        <van-collapse-item name="3" title="推广店员" v-if="formData.role.indexOf(6) > -1">
-          <van-icon
-            @click.stop="$toast('收到此条推广的店员身份')"
-            class="question-icon"
-            name="question-o"
-            slot="icon"
-          />
-          <van-checkbox-group v-model="formData.promotion_role_staff">
-            <van-cell-group>
-              <van-cell
-                :key="index"
-                :title="item.name"
-                @click="_stToggle(index)"
-                clickable
-                v-for="(item, index) in staffList"
-              >
-                <van-checkbox :name="item.id" ref="checkboxesST" slot="right-icon" />
-              </van-cell>
-            </van-cell-group>
-          </van-checkbox-group>
-        </van-collapse-item>
-      </van-collapse>
+      <div v-show="curStep === 1">
+        <van-field label="推广角色" name="role">
+          <template #input>
+            <van-checkbox-group direction="horizontal" v-model="formData.role">
+              <van-checkbox :key="index" :name="item.id" v-for="(item, index) in roleList">{{
+                item.name
+              }}</van-checkbox>
+            </van-checkbox-group>
+          </template>
+        </van-field>
+        <van-field label="推广会员" name="promotion_role_member" v-if="formData.role.indexOf(5) > -1">
+          <template #input>
+            <van-checkbox-group direction="horizontal" v-model="formData.promotion_role_member">
+              <van-checkbox :key="index" :name="item.id" v-for="(item, index) in memberList">{{
+                item.name
+              }}</van-checkbox>
+            </van-checkbox-group>
+          </template>
+        </van-field>
+        <van-field label="推广店员" name="promotion_role_staff" v-if="formData.role.indexOf(6) > -1">
+          <template #input>
+            <van-checkbox-group direction="horizontal" ref="checkboxGroup" v-model="formData.promotion_role_staff">
+              <van-checkbox :key="index" :name="item.id" v-for="(item, index) in staffList">{{
+                item.name
+              }}</van-checkbox>
+            </van-checkbox-group>
+          </template>
+        </van-field>
+        <van-button
+          @click="_toggleAll"
+          size="small"
+          style="float: right; margin-right: 8px;margin-top: 4px;"
+          type="info"
+          >店员取消</van-button
+        >
+        <van-button
+          @click="_checkAll"
+          size="small"
+          style="float: right; margin-right: 8px;margin-top: 4px;"
+          type="primary"
+          >店员全选</van-button
+        >
+      </div>
       <time-picker
         :data="[formData.start_time, formData.end_time]"
         :pickEndTime="_pickCloseTime"
@@ -358,7 +336,6 @@ export default {
       },
       curStep: 0,
       active: 0,
-      activeNames: ['1'],
       screenList: [],
       roleList: [],
       memberList: [],
@@ -460,6 +437,12 @@ export default {
         this.lastAd = ''
       }
     },
+    _checkAll() {
+      this.$refs.checkboxGroup.toggleAll(true)
+    },
+    _toggleAll() {
+      this.$refs.checkboxGroup.toggleAll(false)
+    },
     // 选择推广屏幕
     async _openPopup(item) {
       this.formData.ad_id = item.id
@@ -469,12 +452,12 @@ export default {
       }) // 角色
       this.formData.promotion_role_staff = item.promotion_role_staff
         ? item.promotion_role_staff.split(',').map(i => {
-            return i - 0
+            return i
           })
         : [] // 店员
       this.formData.promotion_role_member = item.promotion_role_member
         ? item.promotion_role_member.split(',').map(i => {
-            return i - 0
+            return i
           })
         : [] // 会员
       this.formData.guest_num = item.guest_num
@@ -891,6 +874,8 @@ export default {
     position: fixed;
     bottom: 0;
     width: 100%;
+    z-index: 10;
+
     .van-button {
       width: 50%;
       margin: 0;
@@ -920,5 +905,9 @@ export default {
   height: 24px;
   line-height: 24px;
   margin-right: 6px;
+}
+
+.van-checkbox--horizontal {
+  margin-bottom: 4px;
 }
 </style>

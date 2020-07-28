@@ -47,7 +47,7 @@
       </van-col>
     </van-row>
     <!-- <div style="display:flex;justify-content: flex-end;margin-top: 14px;">
-      <van-tabs @change="_changeTab" type="card">
+      <van-tabs @change="_changeTab" type="card"  >
         <van-tab :disabled="loading" title="下单数"></van-tab>
         <van-tab :disabled="loading" title="扫码数"></van-tab>
         <van-tab :disabled="loading" title="触达数"></van-tab>
@@ -429,11 +429,10 @@ export default {
       }
       return str
     },
-    _getVisitsFaceEchartData(type = '0') {
+    _getVisitsFaceEchartData() {
       if (this.loading) return
       this.loading = true
       this.getPromotionStatistics({
-        type: type,
         store_id: this.storeValue,
         device_id: this.screenValue,
         date_type: this.timeTypeValue,

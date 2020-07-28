@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div v-if="active === 0">
       <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
         <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
@@ -84,7 +84,13 @@
       </van-collapse>
     </div>
     <div class="tab-bar-holder-sp" v-if="$route.fullPath === '/commodity'"></div>
-    <van-tabbar @change="_changeTab" fixed v-if="$route.fullPath === '/commodity'" v-model="active">
+    <van-tabbar
+      @change="_changeTab"
+      fixed
+      v-if="$route.fullPath === '/commodity'"
+      v-model="active"
+      safe-area-inset-bottom
+    >
       <van-tabbar-item icon="apps-o">商品</van-tabbar-item>
       <van-tabbar-item icon="label-o">分类</van-tabbar-item>
     </van-tabbar>

@@ -4,7 +4,7 @@
     <staff-level v-else-if="active == 1"></staff-level>
     <staff-work-record v-else></staff-work-record>
     <div class="tab-bar-holder-sp"></div>
-    <van-tabbar fixed v-model="active">
+    <van-tabbar fixed v-model="active" safe-area-inset-bottom>
       <van-tabbar-item icon="apps-o">店员</van-tabbar-item>
       <van-tabbar-item icon="label-o">技师等级</van-tabbar-item>
       <van-tabbar-item icon="label-o">工作记录</van-tabbar-item>
