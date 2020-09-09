@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-nav-bar
-      :title="`${type}智能屏推广`"
+      :title="`${type}机器人推广`"
       @click-left="$goBack"
       @click-right="_submit"
       fixed

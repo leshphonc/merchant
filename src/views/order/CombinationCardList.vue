@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" fixed left-arrow title="套餐订单"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" fixed left-arrow title="组合卡订单"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-sticky :offset-top="offsetTop">
       <van-search @search="_onSearch" placeholder="请填写搜索关键词" v-model="keyword" />
@@ -17,8 +17,8 @@
           <van-panel
             :desc="$moment(item.create_time * 1000).format('YYYY-MM-DD HH:mm')"
             :icon="item.pic"
-            :status="item.paid === '0' ? '未支付' : '已支付'"
-            :title="item.name"
+            :status="`${item.day_num}天有效期`"
+            :title="item.meal_name"
             @click="_goDetail(item.id)"
           >
             <van-row>
@@ -38,7 +38,7 @@
             <div class="white-space"></div>
             <van-row>
               <van-col span="6">购买数量：</van-col>
-              <van-col span="18">{{ item.package_num }}</van-col>
+              <van-col span="18">{{ item.meal_num }}</van-col>
             </van-row>
             <div class="white-space"></div>
             <van-row>
@@ -59,7 +59,7 @@ import { mapActions } from 'vuex'
 import TimePickerBox from '@/components/TimePickerBox'
 
 export default {
-  name: 'packageList',
+  name: 'CombinationCardList',
 
   mixins: [],
 
@@ -135,7 +135,7 @@ export default {
       this.keyword = value
       this._onRefresh()
     },
-    // 刷新套餐列表
+    // 刷新组合卡列表
     _onRefresh() {
       this.getPackageList({
         page: 1,

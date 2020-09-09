@@ -3,7 +3,9 @@
     <van-nav-bar @click-left="$goBack" fixed left-arrow title="智能屏设备列表"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <div :key="index" v-for="(item, index) in list">
-      <van-panel :desc="item.address" :title="item.store_name">
+      <van-panel :desc="item.store_name" :title="item.remark">
+        <div>地址：{{ item.address }}</div>
+        <div class="white-space"></div>
         <div>管理员：{{ item.contact }}</div>
         <div class="white-space"></div>
         <div>
@@ -14,13 +16,13 @@
             <van-icon color="#1989fa" name="phone-o" />
           </a>
         </div>
-        <div class="white-space"></div>
-        <div>销售金额：{{ item.contact }}</div>
         <div slot="footer">
+          <van-button v-if="$_isApp && item.imax_type == 3" size="small" @click="makeMap">店铺建图</van-button>
+          <van-button v-if="$_isApp && item.imax_type == 3" size="small" @click="makeMap">巡航路线</van-button>
           <van-button :to="`/smartScreen/smartScreenLayout/${item.imax_id}`" size="small">布局内容</van-button>
-          <van-button :to="`/smartScreen/smartScreenSalesRecord/${item.store_id}/${item.imax_id}`" size="small"
-            >销售记录</van-button
-          >
+          <van-button :to="`/smartScreen/smartScreenSalesRecord/${item.store_id}/${item.imax_id}`" size="small">
+            销售记录
+          </van-button>
           <van-button :to="`/smartScreen/sameCityAdvisory/${item.imax_id}`" size="small">同城咨询</van-button>
           <!--<van-button :to="`/smartScreen/customerMeetGreetingList/${item.imax_id}`" size="small">顾客见面语</van-button>-->
           <!--<van-button :to="`/smartScreen/staffMeetGreetingList/${item.imax_id}`" size="small">员工见面语</van-button>-->
@@ -65,6 +67,11 @@ export default {
 
   methods: {
     ...mapActions('smartScreen', ['getSmartScreenList']),
+    makeMap() {
+      // console.log('makeMap')
+      // const json = { callback: '_writeOffCoupon', action: 'ScanQRCode' }
+      // this.$invokeAndroid(json)
+    },
   },
 }
 </script>

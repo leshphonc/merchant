@@ -27,11 +27,11 @@
   <div>
     <ValidationProvider :name="field" :rules="field ? 'required' : null" slim v-slot="{ errors }">
       <van-field
-        :rules="[{ required: !!name, message: '请上传图片' }]"
         :error-message="errors[0]"
         :label="title"
         :name="name"
         :required="field ? true : false"
+        :rules="[{ required: !!name, message: '请上传图片' }]"
         class="upload-field"
         v-model="validate"
       >
@@ -46,11 +46,15 @@
     </ValidationProvider>
     <van-popup class="upload-popup" get-container="body" position="bottom" safe-area-inset-bottom v-model="showPopup">
       <vue-cropper
+        :canMove="false"
         :fixed="fixedRatio"
         :fixedNumber="ratio"
         :img="img"
         :outputSize="compression"
         autoCrop
+        :canScale="false"
+        autoCropHeight="500"
+        autoCropWidth="500"
         centerBox
         class="cropper"
         ref="cropper"

@@ -10,7 +10,7 @@
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-checkbox-group v-model="result">
-      <van-cell-group title="选中的商家会出现在智能屏咨询列表内">
+      <van-cell-group title="选中的商家会出现在机器人咨询列表内">
         <van-cell
           center
           v-for="(item, index) in list"

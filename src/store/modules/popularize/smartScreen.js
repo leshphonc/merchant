@@ -8,42 +8,42 @@ const getters = {}
 
 // actions
 const actions = {
-  // 获取智能屏设备列表
+  // 获取机器人设备列表
   getSmartScreenList(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.getSmartScreenList(id)
       data ? resolve(data) : reject()
     })
   },
-  // 获取智能屏布局
+  // 获取机器人布局
   getSmartScreenLayout(context, imax) {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.getSmartScreenLayout(imax)
       data ? resolve(data) : reject()
     })
   },
-  // 创建智能屏布局轮播图
+  // 创建机器人布局轮播图
   createCarousel(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.createCarousel(payload)
       data ? resolve() : reject()
     })
   },
-  // 修改智能屏布局轮播图
+  // 修改机器人布局轮播图
   updateCarousel(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.updateCarousel(payload)
       data ? resolve() : reject()
     })
   },
-  // 删除智能屏布局轮播图
+  // 删除机器人布局轮播图
   deleteCarousel(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.deleteCarousel(payload)
       data ? resolve() : reject()
     })
   },
-  // 智能屏布局菜单选择
+  // 机器人布局菜单选择
   selectSmartScreenMenu(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.selectSmartScreenMenu(payload)
@@ -57,14 +57,14 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
-  // 智能屏抽奖活动选择
+  // 机器人抽奖活动选择
   updateMenuLotteryUrl(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.updateMenuLotteryUrl(payload)
       data ? resolve() : reject()
     })
   },
-  // 获取智能屏对话记录
+  // 获取机器人对话记录
   getSmartScreenDialogueRecord(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.getSmartScreenDialogueRecord(payload)
@@ -197,7 +197,7 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
-  // 获取智能屏销售列表
+  // 获取机器人销售列表
   getSmartScreenSalesRecord(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.getSmartScreenSalesRecord(payload)

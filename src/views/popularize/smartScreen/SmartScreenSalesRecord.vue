@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" fixed left-arrow title="智能屏销售列表"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" fixed left-arrow title="机器人销售列表"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-sticky :offset-top="offsetTop">
       <div class="white-space"></div>

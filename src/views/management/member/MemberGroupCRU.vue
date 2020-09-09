@@ -1,13 +1,6 @@
 <template>
   <div>
-    <van-nav-bar
-      :title="`${type}会员卡分组`"
-      @click-left="$goBack"
-      @click-right="_submit"
-      fixed
-      left-arrow
-      right-text="保存"
-    ></van-nav-bar>
+    <van-nav-bar :title="`${type}会员卡分组`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
@@ -44,6 +37,7 @@
             v-model.trim="formData.effdays"
           />
         </ValidationProvider>
+        <img-cropper :confirm="_pickPic" :list="pic" field="分组图片" title="分组图片"></img-cropper>
         <van-cell @click="_addGive" clickable title="赠送礼品券">
           <van-icon name="add-o" slot="right-icon" style="line-height: inherit;" />
         </van-cell>
@@ -77,7 +71,7 @@
             />
           </ValidationProvider>
         </div>
-        <van-field label="注释" placeholder="分组注释" v-model.trim="formData.des" />
+        <van-field label="备注" placeholder="分组备注" v-model.trim="formData.des" />
       </van-cell-group>
     </ValidationObserver>
     <!-- 弹出层 -->
@@ -96,12 +90,16 @@
 
 <script>
 import { mapActions } from 'vuex'
+import ImgCropper from '@/components/ImgCropper'
+
 export default {
   name: 'memberGroupCRU',
 
   mixins: [],
 
-  components: {},
+  components: {
+    ImgCropper,
+  },
 
   props: {},
 
@@ -113,11 +111,13 @@ export default {
         effdays: '',
         give: [],
         des: '',
+        img: '',
       },
       couponColumns: [],
       showCouponPicker: false,
       curCoupon: '',
       selectedCoupon: [],
+      pic: [],
     }
   },
 
@@ -218,6 +218,10 @@ export default {
       const item = this.couponColumns.find(item => item.value === this.formData.give[index].goods)
       return item ? item.label : ''
     },
+    // 截取店铺图片
+    _pickPic(data) {
+      this.formData.img = data.map(item => item.url)
+    },
     // 会员卡详情
     _readMemberGroupDetail(id) {
       this.readMemberGroupDetail(id).then(res => {
@@ -225,6 +229,7 @@ export default {
         keys.forEach(item => {
           this.formData[item] = res[item]
         })
+        this.pic = [{ url: res.img }]
       })
     },
     async _submit() {
@@ -247,6 +252,7 @@ export default {
           method = 'updateMemberGroup'
           params.gid = id
         }
+        params.img = params.img[0]
         this[method](params)
           .then(() => {
             this.$toast.success({

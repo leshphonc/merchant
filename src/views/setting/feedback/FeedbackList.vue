@@ -87,7 +87,21 @@ export default {
 
   mounted() {
     this._getFeedbackList()
-    this.getFeedbackIntentList().then(res => {
+    // this.getFeedbackIntentList().then(res => {
+    //   this.intentColumns = [
+    //     {
+    //       text: '全部意图',
+    //       value: '0',
+    //     },
+    //     ...res.map(item => {
+    //       return {
+    //         value: item.id,
+    //         text: item.name,
+    //       }
+    //     }),
+    //   ]
+    // })
+    this.getFeedbackTypeList().then(res => {
       this.intentColumns = [
         {
           text: '全部意图',
@@ -97,22 +111,15 @@ export default {
           return {
             value: item.id,
             text: item.name,
+            children: item.type_list,
           }
         }),
       ]
-    })
-    this.getFeedbackTypeList().then(res => {
       this.typeColumns = [
         {
           text: '全部类型',
           value: '0',
         },
-        ...res.map(item => {
-          return {
-            value: item.id,
-            text: item.name,
-          }
-        }),
       ]
     })
     this.getStoreFrontList().then(res => {
@@ -134,7 +141,7 @@ export default {
   destroyed() {},
 
   methods: {
-    ...mapActions('feedback', ['getFeedbackList', 'getFeedbackIntentList', 'getFeedbackTypeList']),
+    ...mapActions('feedback', ['getFeedbackList', 'getFeedbackTypeList']),
     ...mapActions('storeFront', ['getStoreFrontList']),
     _onRefresh() {
       // 清空列表数据
@@ -177,7 +184,32 @@ export default {
     _changeStore() {
       this._onRefresh()
     },
-    _changeIntent() {
+    _changeIntent(value) {
+      const item = this.intentColumns.find(item => {
+        if (item.value == value) {
+          return item
+        }
+      })
+      let children = []
+      if (item.children) {
+        children = [
+          ...item.children.map(item => {
+            return {
+              value: item.id,
+              text: item.name,
+            }
+          }),
+        ]
+      }
+
+      this.typeColumns = [
+        {
+          text: '全部类型',
+          value: '0',
+        },
+        ...children,
+      ]
+      this.type_id = '0'
       this._onRefresh()
     },
     _changeType() {

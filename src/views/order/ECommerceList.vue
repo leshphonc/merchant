@@ -24,7 +24,7 @@
           >
             <van-row>
               <van-col span="6">订单编号：</van-col>
-              <van-col span="18">{{ item.order_id }}</van-col>
+              <van-col span="18">{{ item.orderid }}</van-col>
             </van-row>
             <div class="white-space"></div>
             <van-row v-if="item.fetch_number !== '0'">
@@ -52,7 +52,7 @@
               <van-col span="18">{{ deliverType[item.is_pick_in_store] }}</van-col>
             </van-row>
             <div class="white-space"></div>
-            <van-row>
+            <van-row v-if="item.is_pick_in_store !== '2'">
               <van-col span="6">配送地址：</van-col>
               <van-col span="18">{{ item.address }}</van-col>
             </van-row>
@@ -236,6 +236,9 @@ export default {
       })
     },
     _curStatus(item) {
+      if (item.is_pick_in_store === '2') {
+        return '自提'
+      }
       if (item.status === '0') {
         return '可接单'
       }

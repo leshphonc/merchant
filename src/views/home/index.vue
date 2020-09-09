@@ -205,14 +205,14 @@ export default {
         format = params => {
           const str = params[0].axisValue.substr(0, params[0].axisValue.length - 1)
           const result = `${str - 2}点 - ${str}点<br />
-        <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#00A29A;"></span>${
+        <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#D7834A;"></span>${
           params[0].seriesName
         }: ${params[0].data}`
           return result
         }
       }
       return {
-        color: ['#86CACD'],
+        color: ['#F2995D'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -272,7 +272,7 @@ export default {
             },
             emphasis: {
               itemStyle: {
-                color: '#00A29A',
+                color: '#D7834A',
               },
             },
           },

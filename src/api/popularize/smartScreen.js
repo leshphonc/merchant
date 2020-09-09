@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default {
-  // 获取智能屏设备列表
+  // 获取机器人设备列表
   getSmartScreenList: id =>
     axios.get('/appapi.php?c=Merchantimax&a=setting', {
       params: {
@@ -9,7 +9,7 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
-  // 获取智能屏布局
+  // 获取机器人布局
   getSmartScreenLayout: imax =>
     axios.get('/appapi.php?c=Merchantimax&a=getImaxLayout', {
       params: {
@@ -17,25 +17,25 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
-  // 创建智能屏布局轮播图
+  // 创建机器人布局轮播图
   createCarousel: payload =>
     axios.post('/appapi.php?c=Merchantimax&a=createImaxSite', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 修改智能屏布局轮播图
+  // 修改机器人布局轮播图
   updateCarousel: payload =>
     axios.post('/appapi.php?c=Merchantimax&a=updateImaxSite', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 删除智能屏布局轮播图
+  // 删除机器人布局轮播图
   deleteCarousel: payload =>
     axios.post('/appapi.php?c=Merchantimax&a=deleteImaxSite', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 智能屏布局菜单选择   setImaxMenuIsSelected
+  // 机器人布局菜单选择   setImaxMenuIsSelected
   selectSmartScreenMenu: payload =>
     axios.post('/appapi.php?c=Merchantimax&a=setAiMenu', {
       ...payload,
@@ -46,13 +46,13 @@ export default {
     axios.post('/appapi.php?c=Merchantimax&a=lotteryList', {
       ticket: localStorage.getItem('ticket'),
     }),
-  // 智能屏抽奖活动选择
+  // 机器人抽奖活动选择
   updateMenuLotteryUrl: payload =>
     axios.post('/appapi.php?c=Merchantimax&a=updateImaxSiteLotteryLink', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 获取智能屏对话记录
+  // 获取机器人对话记录
   getSmartScreenDialogueRecord: payload =>
     axios.get('/appapi.php?c=Merchantapp&a=getTalkLogList', {
       params: {
@@ -172,7 +172,7 @@ export default {
         ticket: localStorage.getItem('ticket'),
       },
     }),
-  // 获取智能屏销售列表
+  // 获取机器人销售列表
   getSmartScreenSalesRecord: payload =>
     axios.post('/appapi.php?c=Merchantimax&a=placeOrderList', {
       ...payload,

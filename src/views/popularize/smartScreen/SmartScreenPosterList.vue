@@ -6,7 +6,7 @@
       fixed
       left-arrow
       right-text="创建"
-      title="智能屏推广列表"
+      title="机器人推广列表"
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-tabs :offset-top="offsetTop" sticky v-model="active">
@@ -193,27 +193,27 @@
         <van-field label="推广角色" name="role">
           <template #input>
             <van-checkbox-group direction="horizontal" v-model="formData.role">
-              <van-checkbox :key="index" :name="item.id" v-for="(item, index) in roleList">{{
-                item.name
-              }}</van-checkbox>
+              <van-checkbox :key="index" :name="item.id" v-for="(item, index) in roleList">
+                {{ item.name }}
+              </van-checkbox>
             </van-checkbox-group>
           </template>
         </van-field>
         <van-field label="推广会员" name="promotion_role_member" v-if="formData.role.indexOf(5) > -1">
           <template #input>
             <van-checkbox-group direction="horizontal" v-model="formData.promotion_role_member">
-              <van-checkbox :key="index" :name="item.id" v-for="(item, index) in memberList">{{
-                item.name
-              }}</van-checkbox>
+              <van-checkbox :key="index" :name="item.id" v-for="(item, index) in memberList">
+                {{ item.name }}
+              </van-checkbox>
             </van-checkbox-group>
           </template>
         </van-field>
         <van-field label="推广店员" name="promotion_role_staff" v-if="formData.role.indexOf(6) > -1">
           <template #input>
             <van-checkbox-group direction="horizontal" ref="checkboxGroup" v-model="formData.promotion_role_staff">
-              <van-checkbox :key="index" :name="item.id" v-for="(item, index) in staffList">{{
-                item.name
-              }}</van-checkbox>
+              <van-checkbox :key="index" :name="item.id" v-for="(item, index) in staffList">
+                {{ item.name }}
+              </van-checkbox>
             </van-checkbox-group>
           </template>
         </van-field>
@@ -222,6 +222,7 @@
           size="small"
           style="float: right; margin-right: 8px;margin-top: 4px;"
           type="info"
+          v-if="formData.role.indexOf(6) > -1"
           >店员取消</van-button
         >
         <van-button
@@ -229,6 +230,7 @@
           size="small"
           style="float: right; margin-right: 8px;margin-top: 4px;"
           type="primary"
+          v-if="formData.role.indexOf(6) > -1"
           >店员全选</van-button
         >
       </div>

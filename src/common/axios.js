@@ -4,9 +4,9 @@ import router from '@/router'
 import { Notify, Toast } from 'vant'
 import errorcode from '@/common/errorcode'
 
-axios.defaults.timeout = 4000
-axios.defaults.retry = 4
-axios.defaults.retryDelay = 1000
+// axios.defaults.timeout = 4000
+// axios.defaults.retry = 4
+// axios.defaults.retryDelay = 1000
 
 // axios全局请求拦截
 axios.interceptors.request.use(
@@ -21,33 +21,34 @@ axios.interceptors.request.use(
     return config
   },
   err => {
-    var config = err.config
-    // If config does not exist or the retry option is not set, reject
-    if (!config || !config.retry) return Promise.reject(err)
+    return Promise.reject(err)
+    // var config = err.config
+    // // If config does not exist or the retry option is not set, reject
+    // if (!config || !config.retry) return Promise.reject(err)
 
-    // Set the variable for keeping track of the retry count
-    config.__retryCount = config.__retryCount || 0
+    // // Set the variable for keeping track of the retry count
+    // config.__retryCount = config.__retryCount || 0
 
-    // Check if we've maxed out the total number of retries
-    if (config.__retryCount >= config.retry) {
-      // Reject with the error
-      return Promise.reject(err)
-    }
+    // // Check if we've maxed out the total number of retries
+    // if (config.__retryCount >= config.retry) {
+    //   // Reject with the error
+    //   return Promise.reject(err)
+    // }
 
-    // Increase the retry count
-    config.__retryCount += 1
+    // // Increase the retry count
+    // config.__retryCount += 1
 
-    // Create new promise to handle exponential backoff
-    var backoff = new Promise(function(resolve) {
-      setTimeout(function() {
-        resolve()
-      }, config.retryDelay || 1)
-    })
+    // // Create new promise to handle exponential backoff
+    // var backoff = new Promise(function(resolve) {
+    //   setTimeout(function() {
+    //     resolve()
+    //   }, config.retryDelay || 1)
+    // })
 
-    // Return the promise in which recalls axios to retry the request
-    return backoff.then(function() {
-      return axios(config)
-    })
+    // // Return the promise in which recalls axios to retry the request
+    // return backoff.then(function() {
+    //   return axios(config)
+    // })
   }
 )
 axios.interceptors.response.use(
@@ -92,5 +93,6 @@ axios.interceptors.response.use(
   },
   error => {
     Toast.fail(error.message)
+    return Promise.reject(error)
   }
 )

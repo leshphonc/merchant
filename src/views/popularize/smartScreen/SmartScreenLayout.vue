@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" fixed left-arrow title="智能屏布局内容"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" fixed left-arrow title="机器人布局内容"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-cell-group title="轮播图">
       <van-swipe-cell :key="index" v-for="(item, index) in swipeList">

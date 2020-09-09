@@ -8661,10 +8661,10 @@ vue-baidu-map@^0.21.22:
     bmaplib.markerclusterer "^1.0.13"
     markdown-it "^8.4.0"
 
-vue-cropper@^0.5.4:
-  version "0.5.4"
-  resolved "https://registry.npm.taobao.org/vue-cropper/download/vue-cropper-0.5.4.tgz#0db3776894eea8673a3203a1513882a0eb4558ad"
-  integrity sha1-DbN3aJTuqGc6MgOhUTiCoOtFWK0=
+vue-cropper@^0.5.5:
+  version "0.5.5"
+  resolved "https://registry.npm.taobao.org/vue-cropper/download/vue-cropper-0.5.5.tgz#9bd1ba563c7faa268abd52fb2af4c6c28d33c962"
+  integrity sha1-m9G6Vjx/qiaKvVL7KvTGwo0zyWI=
 
 vue-eslint-parser@^5.0.0:
   version "5.0.0"

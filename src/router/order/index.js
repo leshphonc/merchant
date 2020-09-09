@@ -51,6 +51,15 @@ export default {
       path: 'packageOrderDetail/:id',
       component: () => import('@/views/order/PackageOrderDetail'),
     },
+    // 组合卡
+    {
+      path: 'combinationCardList/:id?',
+      component: () => import('@/views/order/CombinationCardList'),
+    },
+    {
+      path: 'combinationCardOrderDetail/:id',
+      component: () => import('@/views/order/CombinationCardOrderDetail'),
+    },
     // 零售
     {
       path: 'eCommerceList/:id?',

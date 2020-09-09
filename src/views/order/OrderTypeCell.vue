@@ -78,6 +78,10 @@ export default {
               item.url = '/order/packageList'
               item.icon = require('@/assets/image/taocan.png')
               break
+            case 'zuheka':
+              item.url = '/order/combinationCardList'
+              item.icon = require('@/assets/image/zhk.png')
+              break
             case 'dianshang':
               item.url = '/order/eCommerceList'
               item.icon = require('@/assets/image/dianshang.png')

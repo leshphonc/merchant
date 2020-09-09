@@ -4,6 +4,7 @@ import takeAwayActions from './takeAway'
 import reserveActions from './reserve'
 import serviceActions from './service'
 import packageActions from './package'
+import combinationActions from './combination'
 import eCommerceActions from './eCommerce'
 import arrivalActions from './arrival'
 
@@ -34,6 +35,7 @@ const actions = {
   ...reserveActions,
   ...serviceActions,
   ...packageActions,
+  ...combinationActions,
   ...eCommerceActions,
   ...arrivalActions,
 }

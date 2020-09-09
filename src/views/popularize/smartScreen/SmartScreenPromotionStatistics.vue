@@ -175,7 +175,7 @@ export default {
         }
       }
       return {
-        color: ['#86CACD', '#5793f3', '#d14a61', '#675bba'],
+        color: ['#F2995D', '#5793f3', '#d14a61', '#675bba'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -239,7 +239,7 @@ export default {
             // },
             // emphasis: {
             //   itemStyle: {
-            //     color: '#00A29A',
+            //     color: '#D7834A',
             //   },
             // },
           },
@@ -252,7 +252,7 @@ export default {
             // },
             // emphasis: {
             //   itemStyle: {
-            //     color: '#00A29A',
+            //     color: '#D7834A',
             //   },
             // },
           },
@@ -265,7 +265,7 @@ export default {
             // },
             // emphasis: {
             //   itemStyle: {
-            //     color: '#00A29A',
+            //     color: '#D7834A',
             //   },
             // },
           },
@@ -278,7 +278,7 @@ export default {
             // },
             // emphasis: {
             //   itemStyle: {
-            //     color: '#00A29A',
+            //     color: '#D7834A',
             //   },
             // },
           },

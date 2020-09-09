@@ -1,10 +1,10 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" fixed left-arrow title="智能屏推广"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" fixed left-arrow title="机器人&推广"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-cell-group>
-      <van-cell center is-link label="屏幕详情" title="智能屏列表" to="/smartScreen/smartScreenList" />
-      <van-cell center is-link label="推广内容" title="推广列表" to="/smartScreen/smartScreenPosterList" />
+      <van-cell center is-link label="机器人管理" title="机器人" to="/smartScreen/smartScreenList" />
+      <van-cell center is-link label="机器人推广内容" title="推广列表" to="/smartScreen/smartScreenPosterList" />
     </van-cell-group>
   </div>
 </template>

@@ -93,7 +93,7 @@
       </van-cell>
       <!-- 选择出的服务列表 -->
       <van-cell-group :border="false" :key="item.appoint_id" title="服务" v-for="(item, index) in service_data">
-        <van-cell center>
+        <van-cell center class="sp-cell">
           <span class="delete-icon" slot="icon">
             <van-icon @click="_deletePro(item.appoint_id, index)" name="close" />
             <img :src="item.image" alt />
@@ -107,7 +107,7 @@
       </van-cell-group>
       <!-- 选择出的商品列表 -->
       <van-cell-group :key="item.appoint_id" title="商品" v-for="(item, index) in eCommerce_data">
-        <van-cell center>
+        <van-cell center class="sp-cell">
           <span class="delete-icon" slot="icon">
             <van-icon @click="_deleteProE(item.appoint_id, index)" class="delete-icon" name="close" slot="icon" />
             <img :src="item.image" alt />
@@ -388,6 +388,7 @@ export default {
                 goods_num: item.goods_num,
                 type: 0,
                 image: item.list_pic,
+                name: item.appoint_name,
               })
             }
             item2.disabled = true
@@ -403,6 +404,7 @@ export default {
                 goods_num: '',
                 type: 1,
                 image: item.list_pic,
+                name: item.name,
               })
             }
             item2.disabled = true
@@ -625,6 +627,12 @@ img {
     height: 30px;
     vertical-align: -9px;
     margin: 0 10px;
+  }
+}
+
+.sp-cell {
+  .van-cell__title {
+    flex: 2;
   }
 }
 </style>

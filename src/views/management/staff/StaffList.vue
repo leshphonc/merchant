@@ -100,7 +100,7 @@
     <!-- 店员权限 -->
     <van-popup class="permission-popup" position="bottom" safe-area-inset-bottom v-model="showPermissionPicker">
       <van-loading v-show="!permissionList.length" />
-      <van-cell :key="item.id" :title="customPermissionList[item.id].name" v-for="item in permissionList">
+      <van-cell :key="item.id" :title="item.name" v-for="item in permissionList">
         <van-switch :value="checked(item.id)" @change="_changePermission(item.id)" />
       </van-cell>
       <div class="btn-group">
@@ -214,6 +214,10 @@ export default {
         18: {
           page: 'retail.html',
           name: '卖场收银',
+        },
+        19: {
+          page: '',
+          name: '任务管理',
         },
       },
       lastStaff: '',

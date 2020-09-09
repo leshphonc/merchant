@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" fixed left-arrow title="智能屏广告订单"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" fixed left-arrow title="机器人广告订单"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
       <van-list :finished="finished" @load="_onLoad" finished-text="没有更多了" v-model="loading">

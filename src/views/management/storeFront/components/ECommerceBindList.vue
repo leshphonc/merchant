@@ -17,9 +17,9 @@
             <van-tag plain type="danger">{{ item.freight_type === '1' ? '运费单独计算' : '运费最大值' }}</van-tag>
           </div>
           <div slot="footer">
-            <van-button @click="_recommend(item.goods_id)" v-if="item.is_recommend === '0'" size="mini"
-              >推荐</van-button
-            >
+            <van-button @click="_recommend(item.goods_id)" v-if="item.is_recommend === '0'" size="mini">
+              推荐
+            </van-button>
             <van-button @click="_recommend(item.goods_id)" v-else size="mini">取消推荐</van-button>
             <van-button @click="_unbind(item.goods_id)" size="mini" type="danger">解绑</van-button>
           </div>

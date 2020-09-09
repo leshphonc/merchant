@@ -4,6 +4,7 @@ import takeAwayAPI from './takeAway'
 import groupBuyAPI from './groupBuy'
 import serviceAPI from './service'
 import packageAPI from './package'
+import combinationCardAPI from './combinationCard'
 import eCommerceAPI from './eCommerce'
 import arrivalAPI from './arrival'
 
@@ -26,6 +27,7 @@ export default {
   ...groupBuyAPI,
   ...serviceAPI,
   ...packageAPI,
+  ...combinationCardAPI,
   ...eCommerceAPI,
   ...arrivalAPI,
 }

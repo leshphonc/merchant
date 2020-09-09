@@ -27,7 +27,7 @@
     <v-chart :options="polar" autoresize ref="echart"></v-chart>
     <van-row class="row-box" justify="space-around" type="flex">
       <van-col @click="() => $router.push('/smartScreen/smartScreenChatRecord')" span="11">对话记录</van-col>
-      <van-col @click="() => $router.push('/smartScreen')" span="11">智能屏&推广</van-col>
+      <van-col @click="() => $router.push('/smartScreen')" span="11">机器人&推广</van-col>
     </van-row>
     <div class="white-space"></div>
 
@@ -134,14 +134,14 @@ export default {
         format = params => {
           const str = params[0].axisValue.substr(0, params[0].axisValue.length - 1)
           const result = `${str - 2}点 - ${str}点<br />
-        <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#00A29A;"></span>${
+        <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#D7834A;"></span>${
           params[0].seriesName
         }: ${params[0].data}`
           return result
         }
       }
       return {
-        color: ['#86CACD'],
+        color: ['#F2995D'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -201,7 +201,7 @@ export default {
             },
             emphasis: {
               itemStyle: {
-                color: '#00A29A',
+                color: '#D7834A',
               },
             },
           },

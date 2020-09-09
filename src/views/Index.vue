@@ -49,19 +49,19 @@ export default {
       active: 0,
       icons: {
         home: {
-          active: require('@/assets/image/home.png'),
+          active: require('@/assets/image/home_1.png'),
           unactive: require('@/assets/image/home_gray.png'),
         },
         order: {
-          active: require('@/assets/image/order.png'),
+          active: require('@/assets/image/order_1.png'),
           unactive: require('@/assets/image/order_gray.png'),
         },
         marketing: {
-          active: require('@/assets/image/marketing.png'),
+          active: require('@/assets/image/marketing_1.png'),
           unactive: require('@/assets/image/marketing_gray.png'),
         },
         mine: {
-          active: require('@/assets/image/mine.png'),
+          active: require('@/assets/image/mine_1.png'),
           unactive: require('@/assets/image/mine_gray.png'),
         },
       },
