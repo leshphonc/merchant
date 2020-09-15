@@ -40,13 +40,29 @@
             v-model.trim="formData.price"
           ></van-field>
         </ValidationProvider>
-        <ValidationProvider name="查询关键字" rules="required" slim v-slot="{ errors }">
+        <ValidationProvider name="查询关键字1" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
-            label="查询关键字"
-            placeholder="查询关键字"
+            label="查询关键字1"
+            placeholder="查询关键字1"
             required
-            v-model.trim="formData.keyword"
+            v-model.trim="keyword1"
+          ></van-field>
+        </ValidationProvider>
+        <ValidationProvider name="查询关键字2" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="查询关键字2"
+            placeholder="查询关键字2"
+            v-model.trim="keyword2"
+          ></van-field>
+        </ValidationProvider>
+        <ValidationProvider name="查询关键字3" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            label="查询关键字3"
+            placeholder="查询关键字3"
+            v-model.trim="keyword3"
           ></van-field>
         </ValidationProvider>
         <ValidationProvider name="有效天数" rules="required|numeric" slim v-slot="{ errors }">
@@ -286,6 +302,9 @@ export default {
       categoryColumnsOrigin: [],
       categoryColumns: [],
       showCategoryPicker: false,
+      keyword1: '',
+      keyword2: '',
+      keyword3: '',
     }
   },
 
@@ -540,6 +559,10 @@ export default {
     _readCombinationCardDetail(id) {
       this.readCombinationCardDetail(id).then(res => {
         const keys = Object.keys(this.formData)
+        let arr = res[0]['keyword'].split(',')
+        this.keyword1 = arr[0]
+        this.keyword2 = arr[1]
+        this.keyword3 = arr[2]
         keys.forEach(item => {
           this.formData[item] = res[0][item]
         })
@@ -610,6 +633,13 @@ export default {
         })
 
         params.project_data = JSON.stringify([...params.project_data, ...this.eCommerce_data])
+        params.keyword = this.keyword1
+        if (this.keyword2) {
+          params.keyword += ',' + this.keyword2
+        }
+        if (this.keyword3) {
+          params.keyword += ',' + this.keyword3
+        }
         const toast = this.$toast.loading({
           message: '加载中...',
           forbidClick: true,

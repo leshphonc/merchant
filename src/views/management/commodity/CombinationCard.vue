@@ -26,30 +26,31 @@
                 size="small"
                 type="danger"
                 v-if="item.status == 0"
-                >停售</van-button
               >
-              <van-button @click="_changeGoodStatus(item.meal_id, item.status)" size="small" type="primary" v-else
-                >启售</van-button
-              >
-              <van-button :to="`/commodity/combinationCardSalesRecord/${item.meal_id}`" size="small"
-                >销售记录</van-button
-              >
+                停售
+              </van-button>
+              <van-button @click="_changeGoodStatus(item.meal_id, item.status)" size="small" type="primary" v-else>
+                启售
+              </van-button>
+              <van-button :to="`/commodity/combinationCardSalesRecord/${item.meal_id}`" size="small">
+                销售记录
+              </van-button>
               <van-button :to="`/commodity/combinationCardPreferential/${item.meal_id}`" size="small">优惠</van-button>
-              <van-button :to="`/commodity/combinationCardCRU/${item.meal_id}`" size="small" v-if="!item.type"
-                >编辑</van-button
-              >
+              <van-button :to="`/commodity/combinationCardCRU/${item.meal_id}`" size="small" v-if="!item.type">
+                编辑
+              </van-button>
             </div>
             <div slot="footer" v-else>
-              <van-button :to="`/reward/combinationCardReward/${item.meal_id}`" size="small" type="primary"
-                >推广分佣设置</van-button
-              >
+              <van-button :to="`/reward/combinationCardReward/${item.meal_id}`" size="small" type="primary">
+                推广分佣设置
+              </van-button>
             </div>
           </van-card>
         </van-list>
       </van-pull-refresh>
-      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'"
-        >点击右上角创建套餐</van-divider
-      >
+      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'">
+        点击右上角创建套餐
+      </van-divider>
     </div>
     <div v-if="active === 1">
       <van-sticky :offset-top="offsetTop">

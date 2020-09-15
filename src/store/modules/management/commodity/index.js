@@ -43,7 +43,7 @@ const mutations = {
     })
   },
   resetRightText(state) {
-    state.navText = ['创建', '创建', '创建', '创建', '创建']
+    state.navText = ['创建', '创建', '创建', '创建', '创建', '创建']
   },
   changeRightText(state, { index, text }) {
     const arr = state.navText
