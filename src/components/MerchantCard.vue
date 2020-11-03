@@ -137,7 +137,7 @@ export default {
   height: 94px;
   margin: 6px 10px 0;
   border-radius: 8px;
-  box-shadow: 0 3px 6px 0 @primary-deep-c;
+  // box-shadow: 0 3px 6px 0 @primary-deep-c;
   padding: 10px 20px;
   box-sizing: border-box;
 
@@ -162,7 +162,7 @@ export default {
       font-weight: 400;
 
       .with-draw {
-        background-color: @primary-deep-c;
+        // background-color: @primary-c;
         padding: 2px 10px;
         border-radius: 10px;
         margin-left: 22px;

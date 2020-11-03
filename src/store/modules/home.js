@@ -69,7 +69,7 @@ const actions = {
       data ? resolve(data) : reject()
     })
   },
-  // // echart进店人数
+  // // echart客流统计
   // async getVisitsFaceEchartData(context, payload) {
   //   return new Promise(async (resolve, reject) => {
   //     const data = await homeAPI.getVisitsFaceEchartData(payload)

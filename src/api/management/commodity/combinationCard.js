@@ -43,12 +43,20 @@ export default {
       ticket: localStorage.getItem('ticket'),
     }),
   // 创建组合卡分类
-  createCombinationCardCategory: ({ cat_name, cat_fid }) => {
-    return axios.post('/appapi.php?c=SpaceMerchant&a=createMealCategory', {
-      name: cat_name,
-      parent_id: cat_fid,
-      ticket: localStorage.getItem('ticket'),
-    })
+  createCombinationCardCategory: ({ cat_name, cat_fid, id }) => {
+    if (id) {
+      return axios.post('/appapi.php?c=SpaceMerchant&a=updateMealCategory', {
+        id,
+        name: cat_name,
+        ticket: localStorage.getItem('ticket'),
+      })
+    } else {
+      return axios.post('/appapi.php?c=SpaceMerchant&a=createMealCategory', {
+        name: cat_name,
+        parent_id: cat_fid,
+        ticket: localStorage.getItem('ticket'),
+      })
+    }
   },
   // 删除组合卡分类
   deleteCombinationCardCategory: ({ cat_id }) => {

@@ -132,16 +132,6 @@ export default {
           default:
             break
         }
-      } else {
-        this.rightText === '管理'
-          ? this.changeRightText({
-              index: this.activeTab,
-              text: '取消',
-            })
-          : this.changeRightText({
-              index: this.activeTab,
-              text: '管理',
-            })
       }
     },
     onSelect(item) {

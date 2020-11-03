@@ -63,20 +63,17 @@
         </div>
       </van-sticky>
       <van-collapse accordion v-model="activeCategory">
-        <van-collapse-item
-          :key="item.cat_id"
-          :name="item.cat_id"
-          :title="item.cat_name"
-          v-for="item in firstCategoryList"
-        >
-          <div @click.stop="_deleteCategory(item.cat_id, 1)" slot="icon" v-show="navText[5] === '取消'">
-            <van-icon class="delete-icon" name="close" />
+        <van-collapse-item :key="item.cat_id" :name="item.cat_id" v-for="item in firstCategoryList">
+          <div slot="title">
+            {{ item.cat_name }}
+            <van-button @click.stop="modifyCategory(item)" size="mini" style="margin-left: 10px;">
+              编辑
+            </van-button>
           </div>
           <div v-if="!item.children">暂无分类</div>
           <van-tag
-            :closeable="navText[5] === '取消'"
             :key="child.cat_id"
-            @close="_deleteCategory(child.cat_id, 2)"
+            @click="modifyCategory(child)"
             size="medium"
             type="primary"
             v-for="child in item.children"
@@ -87,13 +84,7 @@
       </van-collapse>
     </div>
     <div class="tab-bar-holder-sp" v-if="$route.fullPath === '/commodity'"></div>
-    <van-tabbar
-      @change="_changeTab"
-      fixed
-      v-if="$route.fullPath === '/commodity'"
-      v-model="active"
-      safe-area-inset-bottom
-    >
+    <van-tabbar fixed v-if="$route.fullPath === '/commodity'" v-model="active" safe-area-inset-bottom>
       <van-tabbar-item icon="apps-o">套餐</van-tabbar-item>
       <van-tabbar-item icon="label-o">分类</van-tabbar-item>
     </van-tabbar>
@@ -110,6 +101,7 @@
             ></van-field>
           </ValidationProvider>
           <van-field
+            v-if="curId == ''"
             :placeholder="categoryLabel"
             @click="_controlCategoryPicker"
             input-align="right"
@@ -119,6 +111,15 @@
           ></van-field>
         </van-cell-group>
         <div class="white-space-lg"></div>
+        <van-button
+          style="position:absolute; bottom: 0px; width: 100%;"
+          v-if="curId"
+          @click="_deleteCategory"
+          native-type="button"
+          type="danger"
+        >
+          删除
+        </van-button>
         <div class="wing-blank-lg">
           <van-button @click="_controlCategoryCRUPopup" native-type="button">取消</van-button>
           <van-button native-type="submit" type="primary">保存</van-button>
@@ -160,11 +161,12 @@ export default {
       firstCategoryList: [],
       showCategoryCRUPopup: false,
       showCategoryPicker: false,
+      curId: '',
     }
   },
 
   computed: {
-    ...mapState('commodity', ['navText']),
+    ...mapState('commodity'),
     finishText() {
       return this.list.length ? '没有更多了' : ''
     },
@@ -210,6 +212,24 @@ export default {
         this.categoryLabel = '无'
         this.$refs.catePicker && this.$refs.catePicker.setIndexes([0])
       })
+      this.curId = ''
+      this.formData = {
+        cat_name: '',
+        cat_fid: '0',
+      }
+    },
+    modifyCategory(item) {
+      this.showCategoryCRUPopup = !this.showCategoryCRUPopup
+      this.$nextTick(() => {
+        this.$refs.observer.reset()
+        this.categoryLabel = '无'
+        this.$refs.catePicker && this.$refs.catePicker.setIndexes([0])
+      })
+      this.curId = item.cat_id
+      this.formData = {
+        cat_name: item.cat_name,
+        cat_fid: item.cat_fid,
+      }
     },
     // 分类归属开关
     _controlCategoryPicker() {
@@ -286,7 +306,7 @@ export default {
         .catch(() => {})
     },
     // 删除分类
-    _deleteCategory(id, type) {
+    _deleteCategory() {
       // type：1<Number> 1级分类
       // type：2<Number> 2级分类
       this.$dialog
@@ -295,13 +315,14 @@ export default {
           message: '删除后无法恢复，是否继续',
           beforeClose: (action, done) => {
             if (action === 'confirm') {
-              this.deleteCombinationCardCategory({ cat_id: id, type })
+              this.deleteCombinationCardCategory({ cat_id: this.curId })
                 .then(() => {
                   this.$toast.success({
                     message: '删除成功',
                     duration: 800,
                     onClose: () => {
                       this._getCombinationCardCategoryList()
+                      this._controlCategoryCRUPopup()
                     },
                   })
                   done()
@@ -315,13 +336,6 @@ export default {
           },
         })
         .catch(() => {})
-    },
-    // 更改vuex中的变量，判断当前分类是不是管理状态
-    _changeTab(tabIndex) {
-      this.changeRightText({
-        index: 5,
-        text: tabIndex ? '管理' : '创建',
-      })
     },
     // 获取套餐商品一级分类
     _getCombinationCardCategoryList() {
@@ -349,6 +363,9 @@ export default {
       } else {
         // 加锁
         this.loading = true
+        if (this.curId) {
+          this.formData.id = this.curId
+        }
         this.createCombinationCardCategory(this.formData)
           .then(() => {
             this.$toast.success({

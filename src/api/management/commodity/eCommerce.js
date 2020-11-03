@@ -39,12 +39,13 @@ export default {
       },
     }),
   // 创建零售分类
-  createECommerceCategory: ({ name, sort, is_week, week, discount, fid }) => {
+  createECommerceCategory: ({ name, sort, is_week, week, discount, fid, id }) => {
     let method = 'addEditShopCate'
     if (fid !== '0') {
       method = 'addEditShopTwo'
     }
     return axios.post(`/appapi.php?c=SpaceMerchant&a=${method}`, {
+      id,
       fid,
       name,
       sort,

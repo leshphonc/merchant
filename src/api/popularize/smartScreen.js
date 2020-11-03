@@ -52,7 +52,7 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 获取机器人对话记录
+  // 获取机器人机器人管理
   getSmartScreenDialogueRecord: payload =>
     axios.get('/appapi.php?c=Merchantapp&a=getTalkLogList', {
       params: {

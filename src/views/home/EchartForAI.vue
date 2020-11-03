@@ -26,8 +26,8 @@
     <div class="white-space"></div>
     <v-chart :options="polar" autoresize ref="echart"></v-chart>
     <van-row class="row-box" justify="space-around" type="flex">
-      <van-col @click="() => $router.push('/smartScreen/smartScreenChatRecord')" span="11">对话记录</van-col>
-      <van-col @click="() => $router.push('/smartScreen')" span="11">机器人&推广</van-col>
+      <van-col @click="() => $router.push('/smartScreen/smartScreenChatRecord')" span="11">机器人管理</van-col>
+      <van-col @click="() => $router.push('/smartScreen')" span="11">推广管理</van-col>
     </van-row>
     <div class="white-space"></div>
 
@@ -101,7 +101,7 @@ export default {
       timeTypeLabel: '日',
       timeTypeValue: '1',
       timeValue: new Date(),
-      seriesLabel: '进店人数',
+      seriesLabel: '客流统计',
       showStorePicker: false,
       showTimeTypePicker: false,
       showTimePicker: false,
@@ -134,14 +134,18 @@ export default {
         format = params => {
           const str = params[0].axisValue.substr(0, params[0].axisValue.length - 1)
           const result = `${str - 2}点 - ${str}点<br />
-        <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#D7834A;"></span>${
+        <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFD344;"></span>${
           params[0].seriesName
         }: ${params[0].data}`
           return result
         }
       }
       return {
-        color: ['#F2995D'],
+        title: {
+          text: '客流统计',
+          left: 'center',
+        },
+        color: ['#FFD344'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -150,7 +154,7 @@ export default {
           formatter: format,
         },
         grid: {
-          top: 10,
+          top: '18%',
           bottom: 30,
           right: 20,
           left: '13%',
@@ -172,7 +176,7 @@ export default {
         yAxis: [
           {
             type: 'value',
-            name: '元',
+            name: '人',
             axisLabel: {
               color: '#9E9E9E',
             },
@@ -201,7 +205,7 @@ export default {
             },
             emphasis: {
               itemStyle: {
-                color: '#D7834A',
+                color: '#FFB744',
               },
             },
           },
@@ -299,7 +303,7 @@ export default {
       this._getVisitsFaceEchartData()
       this._controlTimePicker()
     },
-    // 获取进店人数
+    // 获取客流统计
     _getVisitsFaceEchartData() {
       const obj = {
         store_id: this.storeValue,
@@ -318,7 +322,7 @@ export default {
 <style lang="less" scoped>
 .echarts {
   width: 100%;
-  height: 180px;
+  height: 220px;
   z-index: 1;
 }
 

@@ -33,7 +33,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { Toast } from '../../../common/vant'
+import { Toast } from '@/common/vant'
 
 export default {
   name: 'sameCityAdvisory',
@@ -73,7 +73,16 @@ export default {
         let merchant_user = JSON.parse(localStorage.getItem('merchant_user'))
         this.getSameCityMerchant({ imei: imax, mer_id: merchant_user.mer_id }).then(res => {
           this.list = res.list
-          this.result = res.mer_ids.split(',')
+          var arr = res.mer_ids.split(',')
+          var result = []
+          arr.forEach(item => {
+            res.list.find(item2 => {
+              if (item == item2.mer_id) {
+                result.push(item)
+              }
+            })
+          })
+          this.result = result
         })
       } else {
         this.$reLogin()

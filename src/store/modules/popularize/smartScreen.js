@@ -64,7 +64,7 @@ const actions = {
       data ? resolve() : reject()
     })
   },
-  // 获取机器人对话记录
+  // 获取机器人机器人管理
   getSmartScreenDialogueRecord(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.getSmartScreenDialogueRecord(payload)

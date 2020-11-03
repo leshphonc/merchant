@@ -38,16 +38,26 @@ export default {
       ticket: localStorage.getItem('ticket'),
     }),
   // 创建服务商品分类
-  createServiceCategory: ({ cat_name, cat_fid }) => {
+  createServiceCategory: ({ cat_name, cat_fid, id }) => {
     let method = 'addEditAppCate'
     if (cat_fid !== '0') {
       method = 'addTwoCate'
+      if (id) {
+        method = 'editTwoCate'
+        return axios.post(`/appapi.php?c=SpaceMerchant&a=${method}`, {
+          cat_id: id,
+          cat_name,
+          ticket: localStorage.getItem('ticket'),
+        })
+      }
       return axios.post(`/appapi.php?c=SpaceMerchant&a=${method}`, {
-        data: JSON.stringify([{ cat_name, cat_fid }]),
+        cat_fid,
+        cat_name,
         ticket: localStorage.getItem('ticket'),
       })
     }
     return axios.post(`/appapi.php?c=SpaceMerchant&a=${method}`, {
+      id,
       cat_fid,
       cat_name,
       ticket: localStorage.getItem('ticket'),

@@ -344,7 +344,11 @@ export default {
     },
     // 店铺选择
     _pickStore(data) {
-      this.storeLabel = data[1]
+      if (data[1] == '全部') {
+        this.storeLabel = data[0]
+      } else {
+        this.storeLabel = data[1]
+      }
       let store = this.storeAndScreenColumns.find(item => {
         if (item.label === data[0]) {
           return item
@@ -432,19 +436,30 @@ export default {
     _getVisitsFaceEchartData() {
       if (this.loading) return
       this.loading = true
+      const toast = this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: '正在拉取数据...',
+      })
       this.getPromotionStatistics({
         store_id: this.storeValue,
         device_id: this.screenValue,
         date_type: this.timeTypeValue,
         date: this.timeLabel,
         ad_id: this.$route.params.id,
-      }).then(res => {
-        this.loading = false
-        this.orderData = res.order
-        this.scanData = res.scan
-        this.reachData = res.reach
-        this.detailsData = res.details
       })
+        .then(res => {
+          toast.clear()
+          this.loading = false
+          this.orderData = res.order
+          this.scanData = res.scan
+          this.reachData = res.reach
+          this.detailsData = res.details
+        })
+        .catch(() => {
+          toast.clear()
+          this.loading = false
+        })
     },
     // 获取绑定了屏幕的店铺列表
     _getStoreAndScreen() {

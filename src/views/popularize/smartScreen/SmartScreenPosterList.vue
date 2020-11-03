@@ -64,15 +64,16 @@
                 </template>
                 <div slot="footer" v-if="item.is_shelves === '1'">
                   <!-- <van-button disabled size="small" v-if="item.audit === '2'">同城审核中</van-button> -->
-                  <van-button @click="_cancelRelease(item.id)" size="small" type="danger" v-if="item.audit !== '2'"
-                    >取消同城发布</van-button
-                  >
+                  <van-button @click="_cancelRelease(item.id)" size="small" type="danger" v-if="item.audit !== '2'">
+                    取消同城发布
+                  </van-button>
                   <van-button @click="_openPopup(item)" size="small" type="primary">本店发布</van-button>
                   <van-button
                     @click="$router.push(`/smartScreen/smartScreenPromotionStatistics/${item.id}`)"
                     size="small"
-                    >推广统计</van-button
                   >
+                    推广统计
+                  </van-button>
                 </div>
                 <div slot="footer" v-else-if="item.is_shelves === '2'">
                   <van-button @click="_changeStatus(item.id)" size="small" type="danger">禁用</van-button>
@@ -81,8 +82,9 @@
                   <van-button
                     @click="$router.push(`/smartScreen/smartScreenPromotionStatistics/${item.id}`)"
                     size="small"
-                    >推广统计</van-button
                   >
+                    推广统计
+                  </van-button>
                   <van-button :to="`/smartScreen/smartScreenPosterCRU/${item.id}`" size="small">编辑</van-button>
                 </div>
               </van-panel>
@@ -96,6 +98,7 @@
           <van-list :finished="dFinished" :finished-text="dFinishText" @load="_dOnLoad" v-model="loading">
             <div :key="item.id" v-for="item in dList">
               <van-panel
+                class="disable-panel"
                 :desc="_currentDesc(item)"
                 :icon="item.data_type === '0' ? item.ad_img : item.goods_info.goods_icon"
                 :status="_currentStatus(item)"
@@ -136,27 +139,28 @@
     <!-- 弹出层 -->
     <!-- 选择推广屏幕 -->
     <van-popup class="full-popup" position="bottom" safe-area-inset-bottom v-model="showPopup">
-      <van-steps :active="curStep">
-        <van-step>选择屏幕</van-step>
-        <!-- <van-step>选择需求</van-step> -->
-        <van-step>推广角色</van-step>
-        <van-step>推广时间</van-step>
-      </van-steps>
-      <van-checkbox-group v-model="formData.screen" v-show="curStep === 0">
-        <van-cell-group>
-          <van-cell
-            :key="index"
-            :label="item.address"
-            :title="`${item.remark} - ${item.store_name}`"
-            @click="_sToggle(index)"
-            clickable
-            v-for="(item, index) in screenList"
-          >
-            <van-checkbox :name="item.imax_id" ref="checkboxesS" slot="right-icon" />
-          </van-cell>
-        </van-cell-group>
-      </van-checkbox-group>
-      <!-- <div v-show="curStep === 1">
+      <div>
+        <van-steps :active="curStep">
+          <van-step>选择屏幕</van-step>
+          <!-- <van-step>选择需求</van-step> -->
+          <van-step>推广角色</van-step>
+          <van-step>推广时间</van-step>
+        </van-steps>
+        <van-checkbox-group v-model="formData.screen" v-show="curStep === 0">
+          <van-cell-group>
+            <van-cell
+              :key="index"
+              :label="item.address"
+              :title="`${item.remark} - ${item.store_name}`"
+              @click="_sToggle(index)"
+              clickable
+              v-for="(item, index) in screenList"
+            >
+              <van-checkbox :name="item.imax_id" ref="checkboxesS" slot="right-icon" />
+            </van-cell>
+          </van-cell-group>
+        </van-checkbox-group>
+        <!-- <div v-show="curStep === 1">
         <van-checkbox-group v-model="formData.guest_demand_ids">
           <van-cell-group>
             <van-cell
@@ -189,63 +193,66 @@
           <van-stepper :min="formData.guest_num_min - 0 + 1" slot="input" v-model="formData.guest_num_max" />
         </van-field>
       </div>-->
-      <div v-show="curStep === 1">
-        <van-field label="推广角色" name="role">
-          <template #input>
-            <van-checkbox-group direction="horizontal" v-model="formData.role">
-              <van-checkbox :key="index" :name="item.id" v-for="(item, index) in roleList">
-                {{ item.name }}
-              </van-checkbox>
-            </van-checkbox-group>
-          </template>
-        </van-field>
-        <van-field label="推广会员" name="promotion_role_member" v-if="formData.role.indexOf(5) > -1">
-          <template #input>
-            <van-checkbox-group direction="horizontal" v-model="formData.promotion_role_member">
-              <van-checkbox :key="index" :name="item.id" v-for="(item, index) in memberList">
-                {{ item.name }}
-              </van-checkbox>
-            </van-checkbox-group>
-          </template>
-        </van-field>
-        <van-field label="推广店员" name="promotion_role_staff" v-if="formData.role.indexOf(6) > -1">
-          <template #input>
-            <van-checkbox-group direction="horizontal" ref="checkboxGroup" v-model="formData.promotion_role_staff">
-              <van-checkbox :key="index" :name="item.id" v-for="(item, index) in staffList">
-                {{ item.name }}
-              </van-checkbox>
-            </van-checkbox-group>
-          </template>
-        </van-field>
-        <van-button
-          @click="_toggleAll"
-          size="small"
-          style="float: right; margin-right: 8px;margin-top: 4px;"
-          type="info"
-          v-if="formData.role.indexOf(6) > -1"
-          >店员取消</van-button
-        >
-        <van-button
-          @click="_checkAll"
-          size="small"
-          style="float: right; margin-right: 8px;margin-top: 4px;"
-          type="primary"
-          v-if="formData.role.indexOf(6) > -1"
-          >店员全选</van-button
-        >
+        <div v-show="curStep === 1">
+          <van-field label="推广角色" name="role">
+            <template #input>
+              <van-checkbox-group direction="horizontal" v-model="formData.role">
+                <van-checkbox :key="index" :name="item.id" v-for="(item, index) in roleList">
+                  {{ item.name }}
+                </van-checkbox>
+              </van-checkbox-group>
+            </template>
+          </van-field>
+          <van-field label="推广会员" name="promotion_role_member" v-if="formData.role.indexOf(5) > -1">
+            <template #input>
+              <van-checkbox-group direction="horizontal" v-model="formData.promotion_role_member">
+                <van-checkbox :key="index" :name="item.id" v-for="(item, index) in memberList">
+                  {{ item.name }}
+                </van-checkbox>
+              </van-checkbox-group>
+            </template>
+          </van-field>
+          <van-field label="推广店员" name="promotion_role_staff" v-if="formData.role.indexOf(6) > -1">
+            <template #input>
+              <van-checkbox-group direction="horizontal" ref="checkboxGroup" v-model="formData.promotion_role_staff">
+                <van-checkbox :key="index" :name="item.id" v-for="(item, index) in staffList">
+                  {{ item.name }}
+                </van-checkbox>
+              </van-checkbox-group>
+            </template>
+          </van-field>
+          <van-button
+            @click="_toggleAll"
+            size="small"
+            style="float: right; margin-right: 8px;margin-top: 4px;"
+            type="info"
+            v-if="formData.role.indexOf(6) > -1"
+          >
+            店员取消
+          </van-button>
+          <van-button
+            @click="_checkAll"
+            size="small"
+            style="float: right; margin-right: 8px;margin-top: 4px;"
+            type="primary"
+            v-if="formData.role.indexOf(6) > -1"
+          >
+            店员全选
+          </van-button>
+        </div>
+        <time-picker
+          :data="[formData.start_time, formData.end_time]"
+          :pickEndTime="_pickCloseTime"
+          :pickStartTime="_pickOpenTime"
+          endField="结束时间"
+          endLabel="结束时间"
+          showDefault
+          startField="开始时间"
+          startLabel="开始时间"
+          type="time"
+          v-show="curStep === 2"
+        ></time-picker>
       </div>
-      <time-picker
-        :data="[formData.start_time, formData.end_time]"
-        :pickEndTime="_pickCloseTime"
-        :pickStartTime="_pickOpenTime"
-        endField="结束时间"
-        endLabel="结束时间"
-        showDefault
-        startField="开始时间"
-        startLabel="开始时间"
-        type="time"
-        v-show="curStep === 2"
-      ></time-picker>
       <div class="btn-group">
         <van-button @click="_closePopup" native-type="button" v-show="curStep === 0">取消</van-button>
         <van-button @click="curStep -= 1" v-show="curStep > 0">上一步</van-button>
@@ -869,12 +876,13 @@ export default {
 }
 
 .full-popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 100vh;
   box-sizing: border-box;
   padding-bottom: 44px;
   .btn-group {
-    position: fixed;
-    bottom: 0;
     width: 100%;
     z-index: 10;
 
@@ -911,5 +919,16 @@ export default {
 
 .van-checkbox--horizontal {
   margin-bottom: 4px;
+}
+
+.disable-panel {
+  .van-icon {
+    width: 100px;
+    height: 100px;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

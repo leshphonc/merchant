@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" fixed left-arrow title="机器人&推广"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" fixed left-arrow title="推广管理"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-cell-group>
       <van-cell center is-link label="机器人管理" title="机器人" to="/smartScreen/smartScreenList" />

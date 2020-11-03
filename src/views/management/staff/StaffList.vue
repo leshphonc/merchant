@@ -60,7 +60,7 @@
               </div>
             </div>
             <div class="white-space"></div>
-            <div style="text-align: right;" v-if="item.name !== '门店AI助手-小由' && status === '1'">
+            <div style="text-align: right;" v-if="item.name !== '智能机器人-小由' && status === '1'">
               <van-button @click="_changeKF(item)" size="small" v-if="item.is_kefu === '1'">取消客服身份</van-button>
               <van-button @click="_changeKF(item)" size="small" v-else>设为客服</van-button>
               <van-button
@@ -68,28 +68,36 @@
                 size="small"
                 type="primary"
                 v-if="item.is_kefu === '0'"
-                >调岗</van-button
               >
+                调岗
+              </van-button>
               <van-button
                 @click="_controlPermissionPicker(item.store_id, item.mer_id, item.staff_id)"
                 size="small"
                 type="primary"
-                >权限</van-button
               >
+                权限
+              </van-button>
               <!-- <van-button :to="`/staff/staffWorkRecord/${item.staff_id}`" size="small" type="primary"
                 >工作记录</van-button> -->
               <van-button @click="_staffStatusChange(item.staff_id)" size="small" type="danger">禁用</van-button>
             </div>
             <div style="text-align: right;">
-              <van-button @click="_staffStatusChange(item.staff_id)" size="small" type="primary" v-show="status === '2'"
-                >启用</van-button
+              <van-button
+                @click="_staffStatusChange(item.staff_id)"
+                size="small"
+                type="primary"
+                v-show="status === '2'"
               >
+                启用
+              </van-button>
             </div>
             <i
               @click="() => $router.push(`/staff/staffCRU/${item.staff_id}/${item.store_id}`)"
               class="iconfont icon-edit"
-              >&#xe634;</i
             >
+              &#xe634;
+            </i>
           </div>
         </van-panel>
         <!-- <div class="white-space"></div> -->

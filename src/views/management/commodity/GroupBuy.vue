@@ -24,16 +24,16 @@
               <van-button :to="`/commodity/groupBuyCRU/${item.group_id}`" size="small">编辑</van-button>
             </div>
             <div slot="footer" v-else>
-              <van-button :to="`/reward/groupBuyReward/${item.group_id}`" size="small" type="primary"
-                >推广分佣设置</van-button
-              >
+              <van-button :to="`/reward/groupBuyReward/${item.group_id}`" size="small" type="primary">
+                推广分佣设置
+              </van-button>
             </div>
           </van-card>
         </van-list>
       </van-pull-refresh>
-      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'"
-        >点击右上角创建商品</van-divider
-      >
+      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'">
+        点击右上角创建商品
+      </van-divider>
     </div>
     <div v-if="active === 1">
       <van-sticky :offset-top="offsetTop">
@@ -46,10 +46,10 @@
         </div>
       </van-sticky>
       <van-cell :key="item.value" v-for="item in groupBuyPackageList">
-        <div @click.stop="_deletePackage(item.value)" slot="icon" v-show="navText[2] === '取消'">
-          <van-icon class="delete-icon" name="close" />
-        </div>
         {{ item.label }}
+        <van-button @click.stop="modifyCategory(item)" size="mini" style="margin-left: 10px;">
+          编辑
+        </van-button>
       </van-cell>
     </div>
     <div class="tab-bar-holder-sp" v-if="$route.fullPath === '/commodity'"></div>
@@ -93,6 +93,15 @@
           </ValidationProvider>
         </van-cell-group>
         <div class="white-space-lg"></div>
+        <van-button
+          style="position:absolute; bottom: 0px; width: 100%;"
+          v-if="curId"
+          @click="_deletePackage"
+          native-type="button"
+          type="danger"
+        >
+          删除
+        </van-button>
         <div class="wing-blank-lg">
           <van-button @click="_controlPackageCRUPopup" native-type="button">取消</van-button>
           <van-button native-type="submit" type="primary">保存</van-button>
@@ -128,11 +137,12 @@ export default {
       refreshing: false,
       groupBuyPackageList: [],
       showPackageCRUPopup: false,
+      curId: '',
     }
   },
 
   computed: {
-    ...mapState('commodity', ['navText']),
+    ...mapState('commodity'),
     finishText() {
       return this.list.length ? '没有更多了' : ''
     },
@@ -230,20 +240,21 @@ export default {
           message: '删除后无法恢复，是否继续',
           beforeClose: (action, done) => {
             if (action === 'confirm') {
-              // this.deleteGroupBuyCategory({ sort_id: id, type })
-              //   .then(() => {
-              //     this.$toast.success({
-              //       message: '删除成功',
-              //       duration: 800,
-              //       onClose: () => {
-              //         this._getGroupBuyPackageList()
-              //       },
-              //     })
-              //     done()
-              //   })
-              //   .catch(() => {
-              //     done()
-              //   })
+              this.deleteGroupBuyCategory({ sort_id: this.curId, type: 1 })
+                .then(() => {
+                  this.$toast.success({
+                    message: '删除成功',
+                    duration: 800,
+                    onClose: () => {
+                      this._getGroupBuyPackageList()
+                      this._controlPackageCRUPopup()
+                    },
+                  })
+                  done()
+                })
+                .catch(() => {
+                  done()
+                })
               done()
             } else {
               done()
@@ -281,6 +292,17 @@ export default {
         statusText = '进行中'
       }
       return statusText
+    },
+    modifyCategory(item) {
+      this.showPackageCRUPopup = !this.showPackageCRUPopup
+      this.$nextTick(() => {
+        this.$refs.observer.reset()
+      })
+      this.curId = item.value
+      this.formData = {
+        title: item.label,
+        description: '',
+      }
     },
     // 提交表单
     async _submit() {

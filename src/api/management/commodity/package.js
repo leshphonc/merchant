@@ -43,12 +43,21 @@ export default {
       ticket: localStorage.getItem('ticket'),
     }),
   // 创建套餐商品分类
-  createPackageCategory: ({ cat_name, cat_fid }) => {
-    return axios.post('/appapi.php?c=SpaceMerchant&a=createPackageCategory', {
-      name: cat_name,
-      parent_id: cat_fid,
-      ticket: localStorage.getItem('ticket'),
-    })
+  createPackageCategory: ({ cat_name, cat_fid, id }) => {
+    if (id) {
+      return axios.post('/appapi.php?c=SpaceMerchant&a=updatePackageCategory', {
+        id,
+        name: cat_name,
+        ticket: localStorage.getItem('ticket'),
+      })
+    } else {
+      return axios.post('/appapi.php?c=SpaceMerchant&a=createPackageCategory', {
+        id,
+        name: cat_name,
+        parent_id: cat_fid,
+        ticket: localStorage.getItem('ticket'),
+      })
+    }
   },
   // 删除套餐商品分类
   deletePackageCategory: ({ cat_id }) => {

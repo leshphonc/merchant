@@ -8,9 +8,9 @@
           <div :key="index2" v-for="(item2, index2) in item.bind_list">{{ item2.name }}</div>
           <div v-if="item.bind_list.length === 0">暂未绑定任何推广服务</div>
           <template #footer>
-            <van-button @click="_controlServicePopup(item.goods_id, item.bind_list)" size="small" type="primary"
-              >绑定服务项目</van-button
-            >
+            <van-button @click="_controlServicePopup(item.goods_id, item.bind_list)" size="small" type="primary">
+              绑定服务项目
+            </van-button>
           </template>
         </van-panel>
       </van-tab>
@@ -19,9 +19,9 @@
           <div :key="index2" v-for="(item2, index2) in item.bind_list">{{ item2.name }}</div>
           <div v-if="item.bind_list.length === 0">暂未绑定任何推广商品</div>
           <template #footer>
-            <van-button @click="_controlCommodityPopup(item.appoint_id, item.bind_list)" size="small" type="primary"
-              >绑定零售商品</van-button
-            >
+            <van-button @click="_controlCommodityPopup(item.appoint_id, item.bind_list)" size="small" type="primary">
+              绑定零售商品
+            </van-button>
           </template>
         </van-panel>
       </van-tab>

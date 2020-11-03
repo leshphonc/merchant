@@ -201,12 +201,8 @@ a {
   z-index: 2 !important;
 }
 
-.van-nav-bar__text:active {
-  background-color: @primary-deep-c !important;
-}
-
 // van-tab-bar
 .van-tabbar-item--active {
-  color: @primary-c !important;
+  color: @primary-deep-c !important;
 }
 </style>

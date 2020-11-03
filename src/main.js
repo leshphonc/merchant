@@ -11,7 +11,7 @@ import '@/common/global'
 import '@/assets/iconfont/iconfont.css'
 import moment from 'moment'
 import axios from 'axios'
-import { Toast } from './common/vant'
+import { Toast } from 'vant'
 
 Vue.config.productionTip = false
 

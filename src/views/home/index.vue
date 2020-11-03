@@ -58,7 +58,7 @@
       <div class="white-space"></div>
     </div>
     <div class="chart-box" v-if="showAI">
-      <div class="chart-box-title">门店AI助手</div>
+      <div class="chart-box-title">智能机器人</div>
       <echart-for-AI :storeColumns="storeAndScreenColumns"></echart-for-AI>
     </div>
     <div class="white-space"></div>
@@ -205,14 +205,14 @@ export default {
         format = params => {
           const str = params[0].axisValue.substr(0, params[0].axisValue.length - 1)
           const result = `${str - 2}点 - ${str}点<br />
-        <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#D7834A;"></span>${
+        <span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFD344;"></span>${
           params[0].seriesName
         }: ${params[0].data}`
           return result
         }
       }
       return {
-        color: ['#F2995D'],
+        color: ['#FFD344'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -272,7 +272,7 @@ export default {
             },
             emphasis: {
               itemStyle: {
-                color: '#D7834A',
+                color: '#FFB744',
               },
             },
           },

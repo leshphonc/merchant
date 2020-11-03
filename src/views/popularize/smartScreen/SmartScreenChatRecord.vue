@@ -1,11 +1,22 @@
 <template>
   <div>
-    <van-nav-bar @click-left="$goBack" fixed left-arrow title="机器人对话记录"></van-nav-bar>
+    <van-nav-bar @click-left="$goBack" fixed left-arrow title="机器人管理"></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <van-sticky :offset-top="offsetTop">
       <van-dropdown-menu>
         <van-dropdown-item :options="storeOption" @change="_onChangeStore" v-model="store" />
         <van-dropdown-item :options="imaxOption" @change="_onRefresh" v-model="imax" />
+        <van-dropdown-item ref="item" title="时间筛选">
+          <time-picker
+            :data="[startTime, endTime]"
+            :pickEndTime="_pickEndTime"
+            :pickStartTime="_pickStartTime"
+            endLabel="结束时间"
+            showDefault
+            startLabel="开始时间"
+          ></time-picker>
+          <van-button @click="_onRefresh" block type="primary">确认</van-button>
+        </van-dropdown-item>
       </van-dropdown-menu>
     </van-sticky>
     <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
@@ -32,18 +43,26 @@
 </template>
 
 <script>
+import TimePicker from '@/components/TimePicker'
+
 import { mapActions } from 'vuex'
 export default {
   name: 'smartScreenChatRecord',
 
   mixins: [],
 
-  components: {},
+  components: {
+    TimePicker,
+  },
 
   props: {},
 
   data() {
     return {
+      startTime: this.$moment()
+        .subtract(30, 'days')
+        .format('YYYY-MM-DD'),
+      endTime: this.$moment().format('YYYY-MM-DD'),
       storeOption: [{ text: '全部店铺', value: '' }],
       store: '',
       imaxOption: [{ text: '全部机器人', value: '' }],
@@ -93,6 +112,8 @@ export default {
         page: 1,
         store_id: this.store,
         imax_id: this.imax,
+        s_time: this.$moment(this.startTime).valueOf() / 1000,
+        e_time: this.$moment(this.endTime).valueOf() / 1000,
       }).then(res => {
         this.page = 2
         this.list = res.lists
@@ -104,12 +125,20 @@ export default {
         }
       })
     },
+    _pickStartTime(data) {
+      this.startTime = this.$moment(data).format('YYYY-MM-DD')
+    },
+    _pickEndTime(data) {
+      this.endTime = this.$moment(data).format('YYYY-MM-DD')
+    },
     // 异步更新商品数据
     _onLoad() {
       this.getSmartScreenDialogueRecord({
         page: this.page,
         store_id: this.store,
         imax_id: this.imax,
+        s_time: this.$moment(this.startTime).valueOf() / 1000,
+        e_time: this.$moment(this.endTime).valueOf() / 1000,
       }).then(res => {
         this.loading = false
         if (res.lists.length < 10) {

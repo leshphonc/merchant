@@ -67,10 +67,20 @@
           v-model="formData.name"
         />
         <van-field
-          :rules="[{ required: true, message: '最大容纳人数是必须的' }]"
-          label="容纳人数"
+          v-if="formData.tag == '2'"
+          :rules="[{ required: true, message: '最少容纳人数是必须的' }]"
+          label="最少容纳人数"
+          name="low_person_num"
+          placeholder="请填写最少容纳人数"
+          type="digit"
+          v-model="formData.low_person_num"
+        />
+        <van-field
+          v-if="formData.tag == '2'"
+          :rules="[{ required: true, message: '最多容纳人数是必须的' }]"
+          label="最多容纳人数"
           name="person_num"
-          placeholder="请填写最大容纳人数"
+          placeholder="请填写最多容纳人数"
           type="digit"
           v-model="formData.person_num"
         />
@@ -172,10 +182,11 @@ export default {
       lastId: '',
       formData: {
         name: '',
+        low_person_num: '',
         person_num: '',
         env_img: [],
         detailed_address: '',
-        tag: '',
+        tag: '1',
         device_id: '0',
       },
       pic: [],
@@ -267,6 +278,7 @@ export default {
         this.lastId = data.id
         this.formData = {
           name: data.s_name,
+          low_person_num: data.low_person_num,
           person_num: data.person_num,
           env_img: data.env_img,
           detailed_address: data.detailed_address,
@@ -288,10 +300,11 @@ export default {
         this.device_name = ''
         this.formData = {
           name: '',
+          low_person_num: '',
           person_num: '',
           env_img: [],
           detailed_address: '',
-          tag: '',
+          tag: '1',
           device_id: '0',
         }
         this.pic = []
@@ -376,7 +389,7 @@ export default {
     _preView(sid) {
       const { id } = this.$route.params
       const url = `/appapi.php?g=Appapi&c=Imax2&a=geth5Qrcode&url=${encodeURIComponent(
-        window.location.origin + '/neworder/order/' + id + '/' + sid
+        window.location.origin + '/neworder/cart/' + sid
       )}`
       ImagePreview({
         images: [url],

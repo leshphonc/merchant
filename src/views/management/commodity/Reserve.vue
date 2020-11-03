@@ -21,21 +21,21 @@
           <div slot="price">已预定：{{ item.appoint_sum }}</div>
           <div slot="footer" v-if="$route.fullPath === '/commodity'">
             <van-button :to="`/commodity/reservePreferential/${item.appoint_id}`" size="small">优惠</van-button>
-            <van-button :to="`/commodity/reserveCRU/${item.appoint_id}`" size="small" v-if="!item.type"
-              >编辑</van-button
-            >
+            <van-button :to="`/commodity/reserveCRU/${item.appoint_id}`" size="small" v-if="!item.type">
+              编辑
+            </van-button>
           </div>
           <div slot="footer" v-else>
-            <van-button :to="`/reward/reserveReward/${item.appoint_id}`" size="small" type="primary"
-              >推广分佣设置</van-button
-            >
+            <van-button :to="`/reward/reserveReward/${item.appoint_id}`" size="small" type="primary">
+              推广分佣设置
+            </van-button>
           </div>
         </van-card>
       </van-list>
     </van-pull-refresh>
-    <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'"
-      >点击右上角创建商品</van-divider
-    >
+    <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'">
+      点击右上角创建商品
+    </van-divider>
   </div>
 </template>
 

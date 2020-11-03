@@ -38,17 +38,22 @@
             size="small"
             type="primary"
             v-if="item.auth === '0' || item.auth === '2' || item.auth === '5'"
-            >资质审核</van-button
           >
-          <van-button :to="`/storefront/storeFrontCommodityManagement/${item.store_id}`" size="small" type="primary"
-            >商品</van-button
+            资质审核
+          </van-button>
+          <van-button
+            v-if="item.have_service === '1'"
+            :to="`/storefront/storeFrontCommodityManagement/${item.store_id}`"
+            size="small"
           >
-          <van-button :to="`/storefront/storeFrontBusiness/${item.store_id}`" size="small" type="primary"
-            >业务信息</van-button
-          >
-          <van-button :to="`/storefront/storefrontCRU/${item.store_id}`" size="small" type="primary"
-            >基础信息</van-button
-          >
+            商品
+          </van-button>
+          <van-button :to="`/storefront/storeFrontBusiness/${item.store_id}`" size="small">
+            业务信息
+          </van-button>
+          <van-button :to="`/storefront/storefrontCRU/${item.store_id}`" size="small">
+            基础信息
+          </van-button>
         </div>
       </van-panel>
       <div class="white-space"></div>

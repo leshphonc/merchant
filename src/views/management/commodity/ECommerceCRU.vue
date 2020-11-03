@@ -219,7 +219,7 @@
           readonly
           v-if="$route.params.type === '0'"
         />
-        <img-cropper :confirm="_pickPic" :list="pic" field="商品图片" title="商品图片"></img-cropper>
+        <img-cropper :confirm="_pickPic" :count="5" :list="pic" field="商品图片" title="商品图片"></img-cropper>
         <ValidationProvider name="商品描述" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"

@@ -20,7 +20,7 @@ export default {
       component: () => import('@/views/popularize/smartScreen/SmartScreenLayout'),
     },
     {
-      // 智能屏对话记录
+      // 智能屏机器人管理
       path: 'smartScreenChatRecord',
       component: () => import('@/views/popularize/smartScreen/SmartScreenChatRecord'),
     },

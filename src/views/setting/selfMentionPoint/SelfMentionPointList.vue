@@ -17,7 +17,7 @@
       >
         <div>
           <van-button :to="`/selfMentionPoint/selfMentionPointCRU/${item.pick_addr_id}`" size="small">编辑</van-button>
-          <van-button @click="_del(item.pick_addr_id)" class="sel_button" size="small">删除</van-button>
+          <van-button @click="_del(item.pick_addr_id)" class="sel_button" type="danger" size="small">删除</van-button>
         </div>
       </van-panel>
       <div class="white-space"></div>
@@ -102,11 +102,10 @@ export default {
 .van-panel__header-value {
   color: @black-c;
 }
+
 .sel_button {
-  color: @nav-bar-icon-color;
-  background-color: @nav-bar-background-color;
-}
-.sel_button {
+  // color: @nav-bar-icon-color;
+  // background-color: @nav-bar-background-color;
   margin-left: 4vw;
 }
 

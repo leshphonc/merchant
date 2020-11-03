@@ -26,28 +26,29 @@
                 size="small"
                 type="danger"
                 v-if="item.status == 1"
-                >停售</van-button
               >
-              <van-button @click="_changeGoodStatus(item.goods_id, item.status)" size="small" type="primary" v-else
-                >启售</van-button
-              >
+                停售
+              </van-button>
+              <van-button @click="_changeGoodStatus(item.goods_id, item.status)" size="small" type="primary" v-else>
+                启售
+              </van-button>
               <van-button :to="`/commodity/serviceSalesRecord/${item.goods_id}`" size="small">销售记录</van-button>
               <van-button :to="`/commodity/eCommercePreferential/${item.goods_id}`" size="small">优惠</van-button>
-              <van-button :to="`/commodity/eCommerceCRU/${item.goods_type}/${item.goods_id}`" size="small"
-                >编辑</van-button
-              >
+              <van-button :to="`/commodity/eCommerceCRU/${item.goods_type}/${item.goods_id}`" size="small">
+                编辑
+              </van-button>
             </div>
             <div slot="footer" v-else>
-              <van-button :to="`/reward/eCommerceReward/${item.goods_id}`" size="small" type="primary"
-                >推广分佣设置</van-button
-              >
+              <van-button :to="`/reward/eCommerceReward/${item.goods_id}`" size="small" type="primary">
+                推广分佣设置
+              </van-button>
             </div>
           </van-card>
         </van-list>
       </van-pull-refresh>
-      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'"
-        >点击右上角创建商品</van-divider
-      >
+      <van-divider :hairline="false" v-show="!loading && !list.length && $route.fullPath === '/commodity'">
+        点击右上角创建商品
+      </van-divider>
     </div>
     <div v-if="active === 1">
       <van-sticky :offset-top="offsetTop">
@@ -60,20 +61,17 @@
         </div>
       </van-sticky>
       <van-collapse accordion v-model="activeCategory">
-        <van-collapse-item
-          :key="item.sort_id"
-          :name="item.sort_id"
-          :title="item.sort_name"
-          v-for="item in firstCategoryList"
-        >
-          <div @click.stop="_deleteCategory(item.sort_id, 1)" slot="icon" v-show="navText[0] === '取消'">
-            <van-icon class="delete-icon" name="close" />
+        <van-collapse-item :key="item.sort_id" :name="item.sort_id" v-for="item in firstCategoryList">
+          <div slot="title">
+            {{ item.sort_name }}
+            <van-button @click.stop="modifyCategory(item)" size="mini" style="margin-left: 10px;">
+              编辑
+            </van-button>
           </div>
           <div v-if="!item.children.length">暂无分类</div>
           <van-tag
-            :closeable="navText[0] === '取消'"
             :key="child.sort_id"
-            @close="_deleteCategory(child.sort_id, 2)"
+            @click="modifyCategory(child)"
             size="medium"
             type="primary"
             v-for="child in item.children"
@@ -84,13 +82,7 @@
       </van-collapse>
     </div>
     <div class="tab-bar-holder-sp" v-if="$route.fullPath === '/commodity'"></div>
-    <van-tabbar
-      @change="_changeTab"
-      fixed
-      v-if="$route.fullPath === '/commodity'"
-      v-model="active"
-      safe-area-inset-bottom
-    >
+    <van-tabbar fixed v-if="$route.fullPath === '/commodity'" v-model="active" safe-area-inset-bottom>
       <van-tabbar-item icon="apps-o">商品</van-tabbar-item>
       <van-tabbar-item icon="label-o">分类</van-tabbar-item>
     </van-tabbar>
@@ -109,6 +101,7 @@
             ></van-field>
           </ValidationProvider>
           <van-field
+            v-show="curId == ''"
             :placeholder="categoryLabel"
             @click="_controlCategoryPicker"
             input-align="right"
@@ -121,13 +114,22 @@
           </van-cell>
           <van-cell v-if="formData.is_week === '1'">
             <van-checkbox-group :max="2" v-model="formData.week">
-              <van-checkbox :key="item.value" :name="index + 1" shape="square" v-for="(item, index) in week">{{
-                item.label
-              }}</van-checkbox>
+              <van-checkbox :key="item.value" :name="index + 1" shape="square" v-for="(item, index) in week">
+                {{ item.label }}
+              </van-checkbox>
             </van-checkbox-group>
           </van-cell>
         </van-cell-group>
         <div class="white-space-lg"></div>
+        <van-button
+          style="position:absolute; bottom: 0px; width: 100%;"
+          v-if="curId"
+          @click="_deleteCategory"
+          native-type="button"
+          type="danger"
+        >
+          删除
+        </van-button>
         <div class="wing-blank-lg">
           <van-button @click="_controlCategoryCRUPopup" native-type="button">取消</van-button>
           <van-button native-type="submit" type="primary">保存</van-button>
@@ -177,6 +179,7 @@ export default {
       firstCategoryList: [],
       showCategoryCRUPopup: false,
       showCategoryPicker: false,
+      curId: '',
       week: [
         {
           label: '周一',
@@ -204,7 +207,7 @@ export default {
   },
 
   computed: {
-    ...mapState('commodity', ['navText']),
+    ...mapState('commodity'),
     finishText() {
       return this.list.length ? '没有更多了' : ''
     },
@@ -250,6 +253,34 @@ export default {
         this.categoryLabel = '无'
         this.$refs.catePicker && this.$refs.catePicker.setIndexes([0])
       })
+      this.curId = ''
+      this.formData = {
+        name: '',
+        sort: 1,
+        week: [],
+        is_week: '0',
+        fid: '0',
+      }
+    },
+    modifyCategory(item) {
+      this.showCategoryCRUPopup = !this.showCategoryCRUPopup
+      this.$nextTick(() => {
+        this.$refs.observer.reset()
+        this.categoryLabel = '无'
+        this.$refs.catePicker && this.$refs.catePicker.setIndexes([0])
+      })
+      this.curId = item.sort_id
+      this.formData = {
+        name: item.sort_name,
+        sort: item.sort,
+        week: item.week
+          ? item.week.split(',').map(item => {
+              return item - 0
+            })
+          : [],
+        is_week: item.is_weekshow,
+        fid: item.fid,
+      }
     },
     // 分类归属开关
     _controlCategoryPicker() {
@@ -322,7 +353,7 @@ export default {
         .catch(() => {})
     },
     // 删除分类
-    _deleteCategory(id, type) {
+    _deleteCategory() {
       // type：1<Number> 1级分类
       // type：2<Number> 2级分类
       this.$dialog
@@ -331,13 +362,14 @@ export default {
           message: '删除后无法恢复，是否继续',
           beforeClose: (action, done) => {
             if (action === 'confirm') {
-              this.deleteECommerceCategory({ sort_id: id, type })
+              this.deleteECommerceCategory({ sort_id: this.curId, type: this.formData.fid == '0' ? 1 : 2 })
                 .then(() => {
                   this.$toast.success({
                     message: '删除成功',
                     duration: 800,
                     onClose: () => {
                       this._getECommerceFirstCategoryList()
+                      this._controlCategoryCRUPopup()
                     },
                   })
                   done()
@@ -360,13 +392,6 @@ export default {
       } else {
         return '到店'
       }
-    },
-    // 更改vuex中的变量，判断当前分类是不是管理状态
-    _changeTab(tabIndex) {
-      this.changeRightText({
-        index: 0,
-        text: tabIndex ? '管理' : '创建',
-      })
     },
     // 获取零售商品一级分类
     _getECommerceFirstCategoryList() {
@@ -396,6 +421,9 @@ export default {
         this.loading = true
         const params = JSON.parse(JSON.stringify(this.formData))
         params.week = params.week.join()
+        if (this.curId) {
+          params.id = this.curId
+        }
         if (params.is_week === '1' && !params.week) {
           this.$notify({
             type: 'warning',
@@ -415,13 +443,6 @@ export default {
                 this.loading = false
                 this._getECommerceFirstCategoryList()
                 this._controlCategoryCRUPopup()
-                this.formData = {
-                  name: '',
-                  sort: 1,
-                  week: [],
-                  is_week: '0',
-                  fid: '0',
-                }
               },
             })
           })
