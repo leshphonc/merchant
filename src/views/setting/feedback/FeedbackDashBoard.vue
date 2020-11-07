@@ -1,9 +1,7 @@
 <template>
   <div>
     <van-nav-bar
-      :right-text="active === 1 ? '创建' : ''"
       @click-left="$goBack"
-      @click-right="_create"
       fixed
       left-arrow
       title="意见反馈"
@@ -56,9 +54,9 @@ export default {
   destroyed() {},
 
   methods: {
-    _create() {
-      this.$refs['cru']._create()
-    },
+    // _create() {
+    //   this.$refs['cru']._create()
+    // },
   },
 }
 </script>

@@ -45,8 +45,10 @@
           </van-cell-group>
         </van-checkbox-group>
       </van-list>
-      <van-button @click="_controlCommodityPopup()" class="close-btn">关闭</van-button>
-      <van-button @click="_bindCommodity" class="add-btn" type="primary">确认</van-button>
+      <div class="btn-group">
+        <van-button @click="_controlCommodityPopup()" class="close-btn">关闭</van-button>
+        <van-button @click="_bindCommodity" class="add-btn" type="primary">确认</van-button>
+      </div>
     </van-popup>
     <!-- 绑定服务商品列表 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showServicePopup">
@@ -66,8 +68,10 @@
           </van-cell-group>
         </van-checkbox-group>
       </van-list>
-      <van-button @click="_controlServicePopup()" class="close-btn">关闭</van-button>
-      <van-button @click="_bindService" class="add-btn" type="primary">确认</van-button>
+      <div class="btn-group">
+        <van-button @click="_controlServicePopup()" class="close-btn">关闭</van-button>
+        <van-button @click="_bindService" class="add-btn" type="primary">确认</van-button>
+      </div>
     </van-popup>
   </div>
 </template>
@@ -306,24 +310,24 @@ export default {
 }
 
 .van-popup {
-  height: 100vh;
+ display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
   .van-list {
     padding-bottom: 44px;
   }
 
-  .close-btn {
-    position: fixed;
-    bottom: 0;
-    width: 50%;
+  .btn-group {
+    width: 100%;
+    z-index: 10;
+
+    .van-button {
+      width: 50%;
+      margin: 0;
+    }
   }
 
-  .add-btn {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    width: 50%;
-    margin: 0;
-  }
   .van-cell__left-icon {
     font-size: 60px;
     height: 60px;

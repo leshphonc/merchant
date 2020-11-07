@@ -127,10 +127,24 @@ const actions = {
       data ? resolve() : reject()
     })
   },
-  // 切换海报启用禁用状态
-  changePosterStatus(context, id) {
+  // 同城发布
+  aroundPush(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await smartScreenAPI.changePosterStatus(id)
+      const data = await smartScreenAPI.aroundPush(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 取消同城发布
+  cancelAroundPush(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.cancelAroundPush(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 切换海报启用禁用状态
+  deletePoster(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.deletePoster(id)
       data ? resolve() : reject()
     })
   },
@@ -141,18 +155,18 @@ const actions = {
       data ? resolve() : reject()
     })
   },
-  // 获取海报详情
-  getPosterDetail(context, id) {
-    return new Promise(async (resolve, reject) => {
-      const data = await smartScreenAPI.getPosterDetail(id)
-      data ? resolve(data) : reject()
-    })
-  },
   // 修改海报
   updatePoster(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await smartScreenAPI.updatePoster(payload)
       data ? resolve() : reject()
+    })
+  },
+  // 获取海报详情
+  getPosterDetail(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.getPosterDetail(id)
+      data ? resolve(data) : reject()
     })
   },
   // 获取海报可推广角色
@@ -184,9 +198,16 @@ const actions = {
     })
   },
   // 绑定海报到屏幕
-  bindPosterToSmartScreen(context, payload) {
+  localPush(context, payload) {
     return new Promise(async (resolve, reject) => {
-      const data = await smartScreenAPI.bindPosterToSmartScreen(payload)
+      const data = await smartScreenAPI.localPush(payload)
+      data ? resolve() : reject()
+    })
+  },
+  // 取消本店发布
+  cancelLocalPush(context, id) {
+    return new Promise(async (resolve, reject) => {
+      const data = await smartScreenAPI.cancelLocalPush(id)
       data ? resolve() : reject()
     })
   },

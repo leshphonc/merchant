@@ -13,7 +13,7 @@
       <template #header>
         <van-row class="panel-row">
           <van-col span="6">
-            <van-image :src="detail.goods_info ? detail.goods_info.goods_icon : ''" />
+            <van-image :src="detail.ad_img ? detail.ad_img : detail.goods_info.goods_icon" />
           </van-col>
           <van-col span="12">
             <div>{{ detail.goods_info ? detail.goods_info.goods_name : '' }}</div>

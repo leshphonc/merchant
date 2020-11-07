@@ -100,7 +100,7 @@ export default {
     }),
   // 推广海报列表
   getSmartScreenPosterList: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=getAdList', {
+    axios.post('/appapi.php?c=Merchantimax&a=get_ad_list', {
       ...payload,
       size: 10,
       ticket: localStorage.getItem('ticket'),
@@ -111,15 +111,33 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 同城发布
+  aroundPush: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=around_push', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 取消同城推广
+  cancelAroundPush: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=cancel_around', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
   // 切换海报启用禁用状态
-  changePosterStatus: id =>
-    axios.post('/appapi.php?c=Merchantimax&a=using', {
+  deletePoster: id =>
+    axios.post('/appapi.php?c=Merchantimax&a=ad_delete', {
       id,
       ticket: localStorage.getItem('ticket'),
     }),
   // 创建海报
   createPoster: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=savePushAd', {
+    axios.post('/appapi.php?c=Merchantimax&a=save_ad', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 修改海报
+  updatePoster: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=save_ad', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
@@ -127,12 +145,6 @@ export default {
   getPosterDetail: id =>
     axios.post('/appapi.php?c=Merchantimax&a=getAdDetail', {
       id: id,
-      ticket: localStorage.getItem('ticket'),
-    }),
-  // 修改海报
-  updatePoster: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=savePushAd', {
-      ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
   // 获取海报下推广角色
@@ -158,10 +170,17 @@ export default {
       imax_ids: ids,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 绑定海报到屏幕
-  bindPosterToSmartScreen: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=adBindImax', {
+  // 本店推荐
+  localPush: payload =>
+    // /appapi.php?c=Merchantimax&a=adBindImax
+    axios.post('/appapi.php?c=Merchantimax&a=local_push', {
       ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 取消本店推荐
+  cancelLocalPush: id =>
+    axios.post('/appapi.php?c=Merchantimax&a=cancel_local', {
+      id,
       ticket: localStorage.getItem('ticket'),
     }),
   // 获取海报下绑定的屏幕

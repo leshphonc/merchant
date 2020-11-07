@@ -49,6 +49,16 @@ export default {
       path: 'sameCityAdvisory/:imax?',
       component: () => import('@/views/popularize/smartScreen/SameCityAdvisory'),
     },
+    {
+      // 联盟推广管理
+      path: 'aroundPush',
+      component: () => import('@/views/popularize/smartScreen/AroundPushManage'),
+    },
+    {
+      // 联盟推广管理
+      path: 'aroundPushList',
+      component: () => import('@/views/popularize/smartScreen/AroundPushList'),
+    },
     // {
     //   // 顾客见面语列表
     //   path: 'customerMeetGreetingList/:imax',

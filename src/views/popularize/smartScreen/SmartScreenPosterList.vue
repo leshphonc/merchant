@@ -9,14 +9,12 @@
       title="机器人推广列表"
     ></van-nav-bar>
     <div class="nav-bar-holder"></div>
-    <van-tabs :offset-top="offsetTop" sticky v-model="active">
-      <van-tab title="启用中">
-        <van-pull-refresh @refresh="_eOnRefresh" v-model="eRefreshing">
-          <van-list :finished="eFinished" :finished-text="eFinishText" @load="_eOnLoad" v-model="loading">
-            <div :key="item.id" v-for="item in eList">
-              <van-panel>
-                <div>
-                  <!-- <van-row>
+    <van-pull-refresh @refresh="_eOnRefresh" v-model="eRefreshing">
+      <van-list :finished="eFinished" :finished-text="eFinishText" @load="_eOnLoad" v-model="loading">
+        <div :key="item.id" v-for="item in eList">
+          <van-panel>
+            <div>
+              <!-- <van-row>
                     <van-col span="10">触达人数：{{ item.reach || 111 }}</van-col>
                     <van-col span="10">播报次数：{{ item.scan || 111 }}</van-col>
                   </van-row>
@@ -25,13 +23,13 @@
                     <van-col span="10">浏览人数：{{ item.wait || 111 }}</van-col>
                     <van-col span="10">下单人数：{{ item.buy || 111 }}</van-col>
                   </van-row>-->
-                  <div class="white-space"></div>
-                  <van-row>
-                    <van-col span="5">关键词：</van-col>
-                    <van-col span="19">{{ item.keywords }}</van-col>
-                  </van-row>
-                  <div class="white-space"></div>
-                  <!-- <van-row>
+              <div class="white-space"></div>
+              <van-row>
+                <van-col span="5">关键词：</van-col>
+                <van-col span="19">{{ item.keywords }}</van-col>
+              </van-row>
+              <div class="white-space"></div>
+              <!-- <van-row>
                     <van-col span="5">推广分类：</van-col>
                     <van-col span="19">{{ item.cate_name }}</van-col>
                   </van-row>
@@ -40,102 +38,86 @@
                     <van-col span="5">推广标签：</van-col>
                     <van-col span="19">{{ item.label_names.join() }}</van-col>
                   </van-row>-->
-                  <div class="white-space"></div>
-                  <van-row>
-                    <van-col span="5">播报语音：</van-col>
-                    <van-col span="19">{{ item.read_txt }}</van-col>
-                  </van-row>
-                  <div class="white-space"></div>
-                </div>
-                <template #header>
-                  <van-row class="panel-row">
-                    <van-col span="6">
-                      <van-image :src="item.data_type === '0' ? item.ad_img : item.goods_info.goods_icon" />
-                    </van-col>
-                    <van-col span="12">
-                      <div>{{ item.data_type === '0' ? item.title : item.goods_info.goods_name }}</div>
-                      <div>{{ _currentDesc(item) }}</div>
-                    </van-col>
-                    <van-col span="6">
-                      <div>{{ _currentStatus(item) }}</div>
-                      <div>{{ item.local_push === 1 ? '本店已推' : '本店未推' }}</div>
-                    </van-col>
-                  </van-row>
-                </template>
-                <div slot="footer" v-if="item.is_shelves === '1'">
-                  <!-- <van-button disabled size="small" v-if="item.audit === '2'">同城审核中</van-button> -->
-                  <van-button @click="_cancelRelease(item.id)" size="small" type="danger" v-if="item.audit !== '2'">
-                    取消同城发布
-                  </van-button>
-                  <van-button @click="_openPopup(item)" size="small" type="primary">本店发布</van-button>
-                  <van-button
-                    @click="$router.push(`/smartScreen/smartScreenPromotionStatistics/${item.id}`)"
-                    size="small"
-                  >
-                    推广统计
-                  </van-button>
-                </div>
-                <div slot="footer" v-else-if="item.is_shelves === '2'">
-                  <van-button @click="_changeStatus(item.id)" size="small" type="danger">禁用</van-button>
-                  <van-button @click="_needCheckStore(item)" size="small" type="primary">同城发布</van-button>
-                  <van-button @click="_openPopup(item)" size="small" type="primary">本店发布</van-button>
-                  <van-button
-                    @click="$router.push(`/smartScreen/smartScreenPromotionStatistics/${item.id}`)"
-                    size="small"
-                  >
-                    推广统计
-                  </van-button>
-                  <van-button :to="`/smartScreen/smartScreenPosterCRU/${item.id}`" size="small">编辑</van-button>
-                </div>
-              </van-panel>
+              <div class="white-space"></div>
+              <van-row>
+                <van-col span="5">播报语音：</van-col>
+                <van-col span="19">{{ item.read_txt }}</van-col>
+              </van-row>
               <div class="white-space"></div>
             </div>
-          </van-list>
-        </van-pull-refresh>
-      </van-tab>
-      <van-tab title="禁用中">
-        <van-pull-refresh @refresh="_dOnRefresh" v-model="dRefreshing">
-          <van-list :finished="dFinished" :finished-text="dFinishText" @load="_dOnLoad" v-model="loading">
-            <div :key="item.id" v-for="item in dList">
-              <van-panel
-                class="disable-panel"
-                :desc="_currentDesc(item)"
-                :icon="item.data_type === '0' ? item.ad_img : item.goods_info.goods_icon"
-                :status="_currentStatus(item)"
-                :title="item.data_type === '0' ? item.title : item.goods_info.goods_name"
+            <template #header>
+              <van-row class="panel-row">
+                <van-col span="6">
+                  <van-image :src="item.data_type === '0' ? item.ad_img : item.goods_info.goods_icon" />
+                </van-col>
+                <van-col span="12">
+                  <div>{{ item.data_type === '0' ? item.title : item.goods_info.goods_name }}</div>
+                  <div>{{ _currentDesc(item) }}</div>
+                </van-col>
+                <van-col span="6">
+                  <div>{{ _currentStatus(item) }}</div>
+                  <div>{{ item.local_push == 1 ? '本店已推' : '本店未推' }}</div>
+                </van-col>
+              </van-row>
+            </template>
+            <div slot="footer">
+              <van-button
+                @click="_deletePoster(item.id)"
+                size="small"
+                type="danger"
+                v-if="item.local_push != '1' && (item.around_push != '1' || item.around_push != '2')"
               >
-                <div>
-                  <!-- <van-row>
-                    <van-col span="10">触达人数：{{ item.reach || 111 }}</van-col>
-                    <van-col span="10">播报次数：{{ item.scan || 111 }}</van-col>
-                  </van-row>
-                  <div class="white-space"></div>
-                  <van-row>
-                    <van-col span="10">浏览人数：{{ item.wait || 111 }}</van-col>
-                    <van-col span="10">下单人数：{{ item.buy || 111 }}</van-col>
-                  </van-row>-->
-                  <div class="white-space"></div>
-                  <van-row>
-                    <van-col span="5">关键词：</van-col>
-                    <van-col span="19">{{ item.keywords }}</van-col>
-                  </van-row>
-                  <div class="white-space"></div>
-                  <van-row>
-                    <van-col span="5">播报语音：</van-col>
-                    <van-col span="19">{{ item.read_txt }}</van-col>
-                  </van-row>
-                  <div class="white-space"></div>
-                </div>
-                <div slot="footer">
-                  <van-button @click="_changeStatus(item.id)" size="small" type="primary">启用</van-button>
-                </div>
-              </van-panel>
-              <div class="white-space"></div>
+                删除
+              </van-button>
+              <!-- <van-button disabled size="small" v-if="item.audit === '2'">同城审核中</van-button> -->
+              <van-button
+                @click="_needCheckStore(item)"
+                size="small"
+                type="primary"
+                v-if="
+                  item.local_push == 1 &&
+                    (item.around_push == '0' || item.around_push == '3' || item.around_push == '4')
+                "
+              >
+                同城发布
+              </van-button>
+              <van-button @click="_cancelAroundAuth(item.id)" size="small" type="danger" v-if="item.around_push == '1'">
+                取消同城审核
+              </van-button>
+              <van-button @click="_cancelAroundAuth(item.id)" size="small" type="danger" v-if="item.around_push == '2'">
+                取消同城发布
+              </van-button>
+
+              <van-button @click="_openPopup(item)" size="small" type="primary" v-if="item.local_push == '0'">
+                本店发布
+              </van-button>
+
+              <van-button
+                @click="_cancelReleaseLocal(item.id)"
+                size="small"
+                type="danger"
+                v-if="item.local_push == '1' && item.around_push != '1' && item.around_push != '2'"
+              >
+                取消本店发布
+              </van-button>
+
+              <van-button @click="$router.push(`/smartScreen/smartScreenPromotionStatistics/${item.id}`)" size="small">
+                推广统计
+              </van-button>
+
+              <van-button
+                :to="`/smartScreen/smartScreenPosterCRU/${item.id}`"
+                size="small"
+                v-if="item.local_push != '1' && (item.around_push != '1' || item.around_push != '2')"
+              >
+                编辑
+              </van-button>
             </div>
-          </van-list>
-        </van-pull-refresh>
-      </van-tab>
-    </van-tabs>
+          </van-panel>
+          <div class="white-space"></div>
+        </div>
+      </van-list>
+    </van-pull-refresh>
     <!-- 弹出层 -->
     <!-- 选择推广屏幕 -->
     <van-popup class="full-popup" position="bottom" safe-area-inset-bottom v-model="showPopup">
@@ -228,7 +210,7 @@
             type="info"
             v-if="formData.role.indexOf(6) > -1"
           >
-            店员取消
+            全部取消
           </van-button>
           <van-button
             @click="_checkAll"
@@ -237,7 +219,7 @@
             type="primary"
             v-if="formData.role.indexOf(6) > -1"
           >
-            店员全选
+            全选
           </van-button>
         </div>
         <time-picker
@@ -298,8 +280,21 @@
         <van-button @click="_submitSameCity" type="primary">发布到同城</van-button>
       </div>
     </van-popup>
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showAroundPushPopup" class="aroundPopup">
+      <van-cell-group title="同城推广时的产品售价">
+        <van-field v-model="around_price" label="产品价格" type="number" required placeholder="请输入价格" />
+      </van-cell-group>
+      <van-cell-group title="分给同城销售员的佣金">
+        <van-field v-model="spread_fee" label="推广佣金" type="number" required placeholder="不能为负数" />
+      </van-cell-group>
+
+      <div class="btn-group">
+        <van-button @click="_controlAroundPushPopup()" native-type="button">取消</van-button>
+        <van-button @click="_submitSameCity" type="primary">发布到同城</van-button>
+      </div>
+    </van-popup>
     <!-- 客人数量类型选则 -->
-    <van-popup position="bottom" safe-area-inset-bottom v-model="showGuestTypePicker">
+    <!-- <van-popup position="bottom" safe-area-inset-bottom v-model="showGuestTypePicker">
       <van-picker
         :columns="guestTypeColumns"
         :default-index="statusIndex"
@@ -308,7 +303,7 @@
         show-toolbar
         value-key="label"
       ></van-picker>
-    </van-popup>
+    </van-popup> -->
   </div>
 </template>
 
@@ -330,21 +325,20 @@ export default {
   data() {
     return {
       formData: {
-        ad_id: '',
+        id: '',
         role: [],
         screen: [],
         start_time: '07:00',
         end_time: '20:59',
         promotion_role_staff: [],
         promotion_role_member: [],
-        guest_num: '',
-        guest_num_type: '0',
-        guest_num_min: '',
-        guest_num_max: '',
+        // guest_num: '',
+        // guest_num_type: '0',
+        // guest_num_min: '',
+        // guest_num_max: '',
         // guest_demand_ids: [],
       },
       curStep: 0,
-      active: 0,
       screenList: [],
       roleList: [],
       memberList: [],
@@ -354,31 +348,30 @@ export default {
       eList: [],
       eRefreshing: false,
       eFinished: false,
-      dPage: 1,
-      dList: [],
-      dRefreshing: false,
-      dFinished: false,
       loading: false,
       showPopup: false,
       showStorePicker: false,
       storeColumns: [],
       lastAd: '',
       serviceScope: [],
-      guestTypeColumns: [
-        {
-          label: '不限',
-          value: '0',
-        },
-        {
-          label: '固定人数',
-          value: '1',
-        },
-        {
-          label: '人数区间',
-          value: '2',
-        },
-      ],
-      showGuestTypePicker: false,
+      // guestTypeColumns: [
+      //   {
+      //     label: '不限',
+      //     value: '0',
+      //   },
+      //   {
+      //     label: '固定人数',
+      //     value: '1',
+      //   },
+      //   {
+      //     label: '人数区间',
+      //     value: '2',
+      //   },
+      // ],
+      // showGuestTypePicker: false,
+      showAroundPushPopup: false,
+      around_price: '',
+      spread_fee: '',
     }
   },
 
@@ -388,9 +381,6 @@ export default {
     },
     eFinishText() {
       return this.eList.length ? '没有更多了' : '暂无推广内容'
-    },
-    dFinishText() {
-      return this.dList.length ? '没有更多了' : '暂无推广内容'
     },
     guestType() {
       const item = this.guestTypeColumns.find(item => item.value === this.formData.guest_num_type)
@@ -428,13 +418,16 @@ export default {
       'getSmartScreenList',
       'getSmartScreenPosterList',
       'changePosterRelease',
-      'changePosterStatus',
+      'deletePoster',
       'getSmartScreenRoleList',
       'getSmartScreenMemberList',
       'getSmartScreenStaffList',
       'getSmartScreenDemandList',
-      'bindPosterToSmartScreen',
       'getSmartScreenInPoster',
+      'localPush',
+      'cancelLocalPush',
+      'aroundPush',
+      'cancelAroundPush',
     ]),
     // 店铺选择开关
     _controlStorePicker(id) {
@@ -446,6 +439,9 @@ export default {
         this.lastAd = ''
       }
     },
+    _controlAroundPushPopup() {
+      this.showAroundPushPopup = !this.showAroundPushPopup
+    },
     _checkAll() {
       this.$refs.checkboxGroup.toggleAll(true)
     },
@@ -454,7 +450,7 @@ export default {
     },
     // 选择推广屏幕
     async _openPopup(item) {
-      this.formData.ad_id = item.id
+      this.formData.id = item.id
       this.formData.guest_num = item.guest_num
       this.formData.role = item.to_user_ids.map(i => {
         return i - 0
@@ -469,10 +465,11 @@ export default {
             return i
           })
         : [] // 会员
-      this.formData.guest_num = item.guest_num
-      this.formData.guest_num_type = item.guest_num_type
-      this.formData.guest_num_min = item.guest_num_min
-      this.formData.guest_num_max = item.guest_num_max
+
+      // this.formData.guest_num = item.guest_num
+      // this.formData.guest_num_type = item.guest_num_type
+      // this.formData.guest_num_min = item.guest_num_min
+      // this.formData.guest_num_max = item.guest_num_max
       // this.formData.guest_demand_ids = item.guest_demand_ids ? item.guest_demand_ids.split(',') : []
 
       item.time_start && (this.formData.start_time = item.time_start)
@@ -484,19 +481,49 @@ export default {
       })
       this.showPopup = true
     },
+    _cancelReleaseLocal(id) {
+      if (this.loading) return
+      this.loading = true
+      this.$dialog
+        .confirm({
+          title: '确认信息',
+          message: '确认取消店铺内的推广吗？',
+        })
+        .then(() => {
+          this.cancelLocalPush(id)
+            .then(() => {
+              this.$toast.success({
+                message: '操作成功',
+                forbidClick: true,
+                duration: 1500,
+                onClose: () => {
+                  // 解锁
+                  this.loading = false
+                  this._eOnRefresh()
+                },
+              })
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        })
+        .catch(() => {
+          // on cancel
+        })
+    },
     _closePopup() {
       this.formData = {
-        ad_id: '',
+        id: '',
         role: [],
         screen: [],
         start_time: '07:00',
         end_time: '20:59',
         promotion_role_staff: [],
         promotion_role_member: [],
-        guest_num: '',
-        guest_num_type: '0',
-        guest_num_min: '',
-        guest_num_max: '',
+        // guest_num: '',
+        // guest_num_type: '0',
+        // guest_num_min: '',
+        // guest_num_max: '',
         // guest_demand_ids: [],
       }
       this.curStep = 0
@@ -507,12 +534,11 @@ export default {
     _eOnRefresh() {
       this.getSmartScreenPosterList({
         page: 1,
-        status: '1',
       }).then(res => {
         this.ePage = 2
-        this.eList = res.lists
+        this.eList = res
         this.eRefreshing = false
-        if (res.lists.length < 10) {
+        if (res.length < 10) {
           this.eFinished = true
         } else {
           this.eFinished = false
@@ -523,46 +549,14 @@ export default {
     _eOnLoad() {
       this.getSmartScreenPosterList({
         page: this.ePage,
-        status: '1',
       }).then(res => {
         this.loading = false
-        if (res.lists.length < 10) {
+        if (res.length < 10) {
           this.eFinished = true
         } else {
           this.ePage += 1
         }
-        this.eList.push(...res.lists)
-      })
-    },
-    // 刷新列表
-    _dOnRefresh() {
-      this.getSmartScreenPosterList({
-        page: 1,
-        status: '0',
-      }).then(res => {
-        this.dPage = 2
-        this.dList = res.lists
-        this.dRefreshing = false
-        if (res.lists.length < 10) {
-          this.dFinished = true
-        } else {
-          this.dFinished = false
-        }
-      })
-    },
-    // 异步更新数据
-    _dOnLoad() {
-      this.getSmartScreenPosterList({
-        page: this.dPage,
-        status: '0',
-      }).then(res => {
-        this.loading = false
-        if (res.lists.length < 10) {
-          this.dFinished = true
-        } else {
-          this.dPage += 1
-        }
-        this.dList.push(...res.lists)
+        this.eList.push(...res)
       })
     },
     // 屏幕选择
@@ -594,9 +588,13 @@ export default {
     },
     // 同城发布
     _changeRelease(id) {
+      if (this.around_price < 0 || this.spread_fee < 0) {
+        this.$toast('金额不能小于0')
+        return
+      }
       if (this.loading) return
       this.loading = true
-      this.changePosterRelease({ id, status: 1 })
+      this.aroundPush({ id, spread_fee: this.spread_fee, around_price: this.around_price })
         .then(() => {
           this.$toast.success({
             message: '同城发布成功，待审核',
@@ -606,8 +604,8 @@ export default {
               // 解锁
               this.loading = false
               this._eOnRefresh()
-              if (this.showStorePicker) {
-                this._controlStorePicker()
+              if (this.showAroundPushPopup) {
+                this._controlAroundPushPopup()
               }
             },
           })
@@ -616,7 +614,7 @@ export default {
           this.loading = false
         })
     },
-    _cancelRelease(id) {
+    _cancelAroundAuth(id) {
       if (this.loading) return
       this.loading = true
       this.$dialog
@@ -626,19 +624,19 @@ export default {
         })
         .then(() => {
           // on confirm
-          this.changePosterRelease({ id, status: 0 })
+          this.cancelAroundPush({ id })
             .then(() => {
               this.$toast.success({
-                message: '已取消同城发布成功',
+                message: '取消成功',
                 forbidClick: true,
                 duration: 1500,
                 onClose: () => {
                   // 解锁
                   this.loading = false
                   this._eOnRefresh()
-                  if (this.showStorePicker) {
-                    this._controlStorePicker()
-                  }
+                  // if (this.showStorePicker) {
+                  //   this._controlStorePicker()
+                  // }
                 },
               })
             })
@@ -651,43 +649,56 @@ export default {
           this.loading = false
         })
     },
-    _changeStatus(id) {
+    _deletePoster(id) {
       if (this.loading) return
       this.loading = true
-      this.changePosterStatus(id)
+      this.$dialog
+        .confirm({
+          title: '确认信息',
+          message: '确认删除此条推广内容？（不可恢复）',
+        })
         .then(() => {
-          this.$toast.success({
-            message: '操作成功',
-            forbidClick: true,
-            duration: 1500,
-            onClose: () => {
-              // 解锁
+          this.deletePoster(id)
+            .then(() => {
+              this.$toast.success({
+                message: '操作成功',
+                forbidClick: true,
+                duration: 1500,
+                onClose: () => {
+                  // 解锁
+                  this.loading = false
+                  this._eOnRefresh()
+                },
+              })
+            })
+            .catch(() => {
               this.loading = false
-              this._eOnRefresh()
-              this._dOnRefresh()
-            },
-          })
+            })
         })
         .catch(() => {
-          this.loading = false
+          // on cancel
         })
     },
     _currentStatus(item) {
-      if (item.is_shelves === '2') {
-        if (item.audit === '9') {
-          return '未上架同城'
-        } else if (item.audit === '3') {
-          return '同城审核失败'
-        } else if (item.audit === '2') {
-          return '未发布同城'
-        } else {
-          return '未上架同城'
-        }
-      } else if (item.audit === '1') {
-        return '已发布同城'
-      } else if (item.audit === '2') {
-        return '同城审核中'
+      var str = ''
+      switch (item.around_push) {
+        case '0':
+          str = '同城未推'
+          break
+        case '1':
+          str = '同城正在审核'
+          break
+        case '2':
+          str = '同城已推'
+          break
+        case '3':
+          str = '同城审核不通过'
+          break
+        case '4':
+          str = '平台下架'
+          break
       }
+      return str
     },
     _currentDesc(item) {
       let str = ''
@@ -723,18 +734,8 @@ export default {
       this.formData.end_time = data
     },
     _needCheckStore(item) {
-      this.$dialog
-        .confirm({
-          title: '提示',
-          message: '确认发布同城吗',
-        })
-        .then(() => {
-          // on confirm
-          this._changeRelease(item.id)
-        })
-        .catch(() => {
-          // on cancel
-        })
+      this.lastAd = item.id
+      this._controlAroundPushPopup()
       // 1 商品
       // if (item.data_type === '1') {
       //   this.getSmartScreenDemandList(this.formData.screen).then(res => {
@@ -765,20 +766,20 @@ export default {
     },
     _submit() {
       const params = {
-        ad_id: this.formData.ad_id,
+        id: this.formData.id,
         imax_ids: this.formData.screen.join(),
         role_ids: this.formData.role.join(),
         time_start: this.formData.start_time,
         time_end: this.formData.end_time,
         promotion_role_staff: this.formData.promotion_role_staff.join(),
         promotion_role_member: this.formData.promotion_role_member.join(),
-        guest_num: this.formData.guest_num,
-        guest_num_type: this.formData.guest_num_type,
-        guest_num_min: this.formData.guest_num_min,
-        guest_num_max: this.formData.guest_num_max,
+        // guest_num: this.formData.guest_num,
+        // guest_num_type: this.formData.guest_num_type,
+        // guest_num_min: this.formData.guest_num_min,
+        // guest_num_max: this.formData.guest_num_max,
         // guest_demand_ids: this.formData.guest_demand_ids.join(),
       }
-      this.bindPosterToSmartScreen(params).then(res => {
+      this.localPush(params).then(res => {
         this.$toast.success({
           message: '操作成功',
           forbidClick: true,
@@ -820,6 +821,10 @@ export default {
           this.$toast('请选择推广店员身份')
           return
         }
+        if (this.formData.role.length === 0) {
+          this.$toast('请选择推广角色')
+          return
+        }
         this.curStep += 1
       } else if (this.curStep === 2) {
         this.curStep += 1
@@ -827,13 +832,13 @@ export default {
         this.curStep += 1
       }
     },
-    _pickGuestType(item) {
-      this.formData.guest_num_type = item.value
-      this._controlGuestTypePicker()
-    },
-    _controlGuestTypePicker() {
-      this.showGuestTypePicker = !this.showGuestTypePicker
-    },
+    // _pickGuestType(item) {
+    //   this.formData.guest_num_type = item.value
+    //   this._controlGuestTypePicker()
+    // },
+    // _controlGuestTypePicker() {
+    //   this.showGuestTypePicker = !this.showGuestTypePicker
+    // },
   },
 }
 </script>
@@ -929,6 +934,18 @@ export default {
   img {
     width: 100%;
     height: 100%;
+  }
+}
+
+.aroundPopup {
+  background: #eee;
+  .btn-group {
+    margin-top: 200px;
+    width: 100%;
+    .van-button {
+      width: 50%;
+      margin: 0;
+    }
   }
 }
 </style>
