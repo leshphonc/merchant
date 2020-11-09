@@ -66,6 +66,7 @@
         @confirm="_pickArea"
         show-toolbar
         value-key="label"
+        :loading="loading"
       />
     </van-popup>
     <!-- 商圈选择 -->
@@ -141,6 +142,7 @@ export default {
       showAreaPicker: false,
       showCirclePicker: false,
       showMarketPicker: false,
+      loading: false,
     }
   },
 
@@ -206,23 +208,90 @@ export default {
     _controlMarketPicker() {
       this.showMarketPicker = !this.showMarketPicker
     },
-    async _changeArea(picker, values) {
+    async _changeArea(picker, values, index) {
+      switch (index) {
+        case 0:
+          if (!values[index].children) {
+            this.loading = true
+            this.getCity({ id: values[index].value, shift: true })
+              .then(citys => {
+                values[index].children = citys
+                picker.setColumnValues(1, citys)
+                this.getArea({ id: citys[0].value, shift: true })
+                  .then(areas => {
+                    this.loading = false
+                    citys[0].children = areas
+                    picker.setColumnValues(2, areas)
+                  })
+                  .catch(() => {
+                    picker.setColumnValues(2, [])
+                    this.loading = false
+                  })
+              })
+              .catch(() => {
+                picker.setColumnValues(1, [])
+                picker.setColumnValues(2, [])
+                this.loading = false
+              })
+          } else {
+            picker.setColumnValues(1, values[index].children)
+            picker.setColumnValues(2, values[index].children[0].children)
+          }
+          break
+        case 1:
+          if (!values[index].children) {
+            this.loading = true
+            this.getArea({ id: values[index].value, shift: true })
+              .then(areas => {
+                this.loading = false
+                values[index].children = areas
+                picker.setColumnValues(2, areas)
+              })
+              .catch(() => {
+                this.loading = false
+                picker.setColumnValues(2, [])
+              })
+          } else {
+            picker.setColumnValues(2, values[index].children)
+          }
+          break
+        case 2:
+          break
+      }
+    },
+    async _changeArea2(picker, values) {
       if (!values[0].children) {
-        this.getCity({ id: values[0].value, shift: true }).then(res => {
-          values[0].children = res
-          picker.setColumnValues(1, res)
-          this.getArea({ id: res[0].value, shift: true }).then(res2 => {
-            res[0].children = res2
-            picker.setColumnValues(2, res2)
+        this.loading = true
+        this.getCity({ id: values[0].value, shift: true })
+          .then(res => {
+            values[0].children = res
+            picker.setColumnValues(1, res)
+            this.getArea({ id: res[0].value, shift: true })
+              .then(res2 => {
+                this.loading = false
+                res[0].children = res2
+                picker.setColumnValues(2, res2)
+              })
+              .catch(() => {
+                this.loading = false
+              })
           })
-        })
+          .catch(() => {
+            this.loading = false
+          })
       } else {
-        picker.setColumnValues(1, values[0].children)
+        // picker.setColumnValues(1, values[0].children)
         if (!values[1].children) {
-          this.getArea({ id: values[1].value, shift: true }).then(res2 => {
-            values[1].children = res2
-            picker.setColumnValues(2, res2)
-          })
+          this.loading = true
+          this.getArea({ id: values[1].value, shift: true })
+            .then(res2 => {
+              this.loading = false
+              values[1].children = res2
+              picker.setColumnValues(2, res2)
+            })
+            .catch(() => {
+              this.loading = false
+            })
         } else {
           picker.setColumnValues(2, values[1].children)
         }
