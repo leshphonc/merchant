@@ -692,10 +692,10 @@ export default {
           str = '同城已推'
           break
         case '3':
-          str = '同城审核不通过'
+          str = `同城审核不通过：${item.reason}`
           break
         case '4':
-          str = '平台下架'
+          str = '已被平台下架'
           break
       }
       return str

@@ -239,7 +239,6 @@ export default {
           }
           break
         case 1:
-          console.log(values)
           if (!values[index].children) {
             this.loading = true
             this.getArea({ id: values[index].value, shift: true })
@@ -261,7 +260,6 @@ export default {
       }
     },
     async _changeArea2(picker, values) {
-      console.log(picker)
       if (!values[0].children) {
         this.loading = true
         this.getCity({ id: values[0].value, shift: true })

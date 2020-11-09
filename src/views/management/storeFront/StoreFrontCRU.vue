@@ -23,7 +23,7 @@
         <van-cell placeholder="请填写用户名" title="是否设置成主店">
           <van-switch slot="default" v-model="formData.ismain"></van-switch>
         </van-cell>
-        <ValidationProvider name="联系电话" rules="required|phone" slim v-slot="{ errors }">
+        <ValidationProvider name="联系电话" rules="required|phoneAndLandline" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             label="联系电话"

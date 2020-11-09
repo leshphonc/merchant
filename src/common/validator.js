@@ -19,6 +19,20 @@ extend('phone', {
   message: '请填写正确的电话号码',
 })
 
+extend('landline', {
+  validate: value => {
+    return new RegExp(/^[0][1-9]{2,3}-[0-9]{5,10}$/).test(value)
+  },
+  message: '请填写正确的座机号码',
+})
+
+extend('phoneAndLandline', {
+  validate: value => {
+    return new RegExp(/^[1][3-9][0-9]{9}$/).test(value) || new RegExp(/^[0][0-9]{2,3}-[0-9]{5,10}$/).test(value)
+  },
+  message: '请填写正确的联系号码',
+})
+
 extend('decimal-max1', {
   validate: value => {
     return new RegExp(/^(([0-9]+)|(([0]\.\d?|[1-9][0-9]*\.\d?)))$/).test(value)
