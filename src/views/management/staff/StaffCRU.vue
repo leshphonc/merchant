@@ -89,7 +89,13 @@
             required
           ></van-field>
         </ValidationProvider>
-        <img-cropper :confirm="_pickAvatar" :list="avatar" field="店员头像" title="店员头像"></img-cropper>
+        <img-cropper
+          :confirm="_pickAvatar"
+          :delete="_deleteAvatar"
+          :list="avatar"
+          field="店员头像"
+          title="店员头像"
+        ></img-cropper>
       </van-cell-group>
       <van-cell-group title="技师等级（非必选）">
         <ValidationProvider name="技师等级" slim v-slot="{ errors }">
@@ -301,6 +307,10 @@ export default {
     },
     _pickAvatar(data) {
       this.formData.avatar = data[0].url
+    },
+    _deleteAvatar(data, index) {
+      this.formData.avatar = ''
+      this.avatar.splice(index, 1)
     },
     async _submit() {
       // 锁

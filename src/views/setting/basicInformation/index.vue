@@ -343,12 +343,7 @@ export default {
         })
       })
     },
-    _deletePic(data) {
-      let index = this.pictureList.findIndex(item => {
-        if (item.url === data.url) {
-          return item
-        }
-      })
+    _deletePic(data, index) {
       this.pictureList.splice(index, 1)
       if (this.pictureList.length > 0) {
         this.updateMerchantInfo({

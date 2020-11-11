@@ -50,6 +50,7 @@
       <img-cropper
         :compression="1"
         :confirm="_pickPic"
+        :delete="_deletePic"
         :list="picList"
         :ratio="[675, 252]"
         title="轮播海报图"
@@ -200,7 +201,11 @@ export default {
       this.showLotteryPicker = !this.showLotteryPicker
     },
     _pickPic(data) {
-      this.formData.pic = data.map(item => item.url)
+      this.formData.pic = data.map(item => item.url)[0]
+    },
+    _deletePic(data, index) {
+      this.formData.pic = ''
+      this.picList.splice(index, 1)
     },
     _pickLottery(item) {
       if (this.loading) return
@@ -304,7 +309,6 @@ export default {
         params.fid = this.swipeList[0].fid
       }
       params.imax_id = imax
-      params.pic = params.pic[0]
       this[method](params)
         .then(() => {
           this.$toast.success({

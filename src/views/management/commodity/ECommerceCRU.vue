@@ -219,7 +219,14 @@
           readonly
           v-if="$route.params.type === '0'"
         />
-        <img-cropper :confirm="_pickPic" :count="5" :list="pic" field="商品图片" title="商品图片"></img-cropper>
+        <img-cropper
+          :confirm="_pickPic"
+          :delete="_deletePic"
+          :count="5"
+          :list="pic"
+          field="商品图片"
+          title="商品图片"
+        ></img-cropper>
         <ValidationProvider name="商品描述" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -594,6 +601,10 @@ export default {
     // 商品图片截取
     _pickPic(data) {
       this.formData.pic = data.map(item => item.url)
+    },
+    _deletePic(data, index) {
+      this.formData.pic.splice(index, 1)
+      this.pic.splice(index, 1)
     },
     _changeHtml(data) {
       this.formData.des = data.html

@@ -1,6 +1,13 @@
 <template>
   <div>
-    <van-nav-bar :title="`${type}会员卡分组`" @click-left="$goBack" @click-right="_submit" fixed left-arrow right-text="保存"></van-nav-bar>
+    <van-nav-bar
+      :title="`${type}会员卡分组`"
+      @click-left="$goBack"
+      @click-right="_submit"
+      fixed
+      left-arrow
+      right-text="保存"
+    ></van-nav-bar>
     <div class="nav-bar-holder"></div>
     <ValidationObserver ref="observer" slim v-slot="{ invalid }">
       <van-cell-group>
@@ -37,7 +44,13 @@
             v-model.trim="formData.effdays"
           />
         </ValidationProvider>
-        <img-cropper :confirm="_pickPic" :list="pic" field="分组图片" title="分组图片"></img-cropper>
+        <img-cropper
+          :confirm="_pickPic"
+          :delete="_deletePic"
+          :list="pic"
+          field="分组图片"
+          title="分组图片"
+        ></img-cropper>
         <van-cell @click="_addGive" clickable title="赠送礼品券">
           <van-icon name="add-o" slot="right-icon" style="line-height: inherit;" />
         </van-cell>
@@ -220,7 +233,11 @@ export default {
     },
     // 截取店铺图片
     _pickPic(data) {
-      this.formData.img = data.map(item => item.url)
+      this.formData.img = data.map(item => item.url)[0]
+    },
+    _deletePic(data, index) {
+      this.formData.img = ''
+      this.pic.splice(index, 1)
     },
     // 会员卡详情
     _readMemberGroupDetail(id) {
@@ -252,7 +269,6 @@ export default {
           method = 'updateMemberGroup'
           params.gid = id
         }
-        params.img = params.img[0]
         this[method](params)
           .then(() => {
             this.$toast.success({

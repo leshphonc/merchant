@@ -13,6 +13,7 @@
       <van-cell-group>
         <img-cropper
           :confirm="_pickPic"
+          :delete="_deletePic"
           :list="picList"
           :ratio="[2, 1]"
           field="商户背景图"
@@ -421,6 +422,10 @@ export default {
     },
     _pickPic(data) {
       this.formData.background = data[0].url
+    },
+    _deletePic(data, index) {
+      this.formData.background = ''
+      this.picList.splice(index, 1)
     },
     // 预览二维码
     _preView() {

@@ -113,7 +113,14 @@
           placeholder="请选择（非必选）"
           readonly
         />
-        <img-cropper :confirm="_pickPic" :count="5" :list="pic" name="env_img" title="环境图片"></img-cropper>
+        <img-cropper
+          :confirm="_pickPic"
+          :delete="_deletePic"
+          :count="5"
+          :list="pic"
+          name="env_img"
+          title="环境图片"
+        ></img-cropper>
         <div class="btn-group">
           <van-button @click="_controlFlagEditor()" class="close-btn" native-type="button">关闭</van-button>
           <van-button class="create-btn" native-type="submit" type="primary">确认</van-button>
@@ -400,6 +407,9 @@ export default {
     },
     _pickPic(data) {
       // console.log(data)
+    },
+    _deletePic(data, index) {
+      this.pic.splice(index, 1)
     },
   },
 }

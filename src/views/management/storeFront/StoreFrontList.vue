@@ -62,7 +62,13 @@
     <!-- 资质审核 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showAuthPopup">
       <ValidationObserver ref="observer" slim v-slot="{ invalid }">
-        <img-cropper :confirm="_pickPic" :count="5" field="资质图片" title="资质图片"></img-cropper>
+        <img-cropper
+          :confirm="_pickPic"
+          :delete="_deletePic"
+          :count="5"
+          field="资质图片"
+          title="资质图片"
+        ></img-cropper>
       </ValidationObserver>
       <van-button @click="_submit" class="auth-btn" type="primary">提交审核</van-button>
     </van-popup>
@@ -155,6 +161,9 @@ export default {
     },
     _pickPic(data) {
       this.auth_files = data
+    },
+    _deletePic(data, index) {
+      this.auth_files.splice(index, 1)
     },
     _getStoreFrontList() {
       if (this.loading) return

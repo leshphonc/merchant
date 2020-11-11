@@ -111,7 +111,7 @@
           ></van-field>
         </ValidationProvider>
       </van-cell-group>
-      <img-cropper :confirm="_pickPic" :list="pic" field="套餐图片" title="套餐图片"></img-cropper>
+      <img-cropper :confirm="_pickPic" :delete="_deletePic" :list="pic" field="套餐图片" title="套餐图片"></img-cropper>
       <ValidationProvider name="套餐描述" rules="required" slim v-slot="{ errors }">
         <van-field
           :error-message="errors[0]"
@@ -594,6 +594,10 @@ export default {
     // 选择图片
     _pickPic(data) {
       this.formData.pic = data.map(item => item.url)[0]
+    },
+    _deletePic(data, index) {
+      this.formData.pic = ''
+      this.pic.splice(index, 1)
     },
     // 提交表单
     async _submit() {

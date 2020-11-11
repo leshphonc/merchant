@@ -85,7 +85,7 @@
             v-model.trim="formData.bank"
           ></van-field>
         </ValidationProvider>
-        <img-cropper :confirm="_pickInvoice" field="发票" title="发票"></img-cropper>
+        <img-cropper :confirm="_pickInvoice" :delete="_deleteInvoice" field="发票" title="发票"></img-cropper>
       </van-cell-group>
       <van-field
         autosize
@@ -218,6 +218,9 @@ export default {
     // 发票图片选择
     _pickInvoice(data) {
       this.formData.invoice = data[0].url
+    },
+    _deleteInvoice(data, index) {
+      this.formData.invoice = ''
     },
     // 读取微信账号列表
     _getWxAccount() {

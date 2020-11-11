@@ -431,9 +431,9 @@ export default {
     _pickPoster(data) {
       this.formData.ad_img = data[0].url
     },
-    _deletePoster(data) {
+    _deletePoster(data, index) {
       this.formData.ad_img = ''
-      this.posterList = []
+      this.posterList.splice(index, 1)
     },
     // 获取店铺名称
     _serviceScopeLabel(id) {

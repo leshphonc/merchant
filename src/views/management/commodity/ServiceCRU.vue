@@ -190,7 +190,13 @@
             required
           ></van-field>
         </ValidationProvider>
-        <img-cropper :confirm="_pickPic" :list="pic" field="服务项目图片" title="服务项目图片"></img-cropper>
+        <img-cropper
+          :confirm="_pickPic"
+          :delete="_deletePic"
+          :list="pic"
+          field="服务项目图片"
+          title="服务项目图片"
+        ></img-cropper>
         <ValidationProvider name="服务项目描述" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -460,7 +466,11 @@ export default {
     },
     // 服务商品图片
     _pickPic(data) {
-      this.formData.pic = data.map(item => item.url)
+      this.formData.pic = data.map(item => item.url)[0]
+    },
+    _deletePic(data, index) {
+      this.formData.pic = ''
+      this.pic.splice(index, 1)
     },
     // 生成服务商品分类 第二行数据
     _changeCategory(picker, values) {
@@ -551,7 +561,6 @@ export default {
         if (res.end_time !== '0') {
           this.formData.end_time = this.$moment(res.end_time * 1000)
         }
-        this.formData.pic = [res.pic]
         this.pic = [
           {
             url: res.pic,
@@ -590,7 +599,6 @@ export default {
         }
         params.start_time = this.$moment(this.formData.start_time).valueOf() / 1000
         params.end_time = this.$moment(this.formData.end_time).valueOf() / 1000
-        params.pic = this.formData.pic[0]
         if (params.need_service_fee.length) {
           params.need_service_personnel = 1
         } else {

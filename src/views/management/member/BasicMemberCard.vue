@@ -14,12 +14,19 @@
         <van-cell title="启用">
           <van-switch active-value="1" inactive-value="0" v-model="formData.status"></van-switch>
         </van-cell>
-        <img-cropper :confirm="_pickPic" :list="logoList" field="会员卡LOGO" title="会员卡LOGO"></img-cropper>
+        <img-cropper
+          :confirm="_pickPic"
+          :delete="_deletePic"
+          :list="logoList"
+          field="会员卡LOGO"
+          title="会员卡LOGO"
+        ></img-cropper>
         <van-cell title="使用默认背景图">
           <van-switch active-value="1" inactive-value="0" v-model="useDefault"></van-switch>
         </van-cell>
         <img-cropper
           :confirm="_pickBG"
+          :delete="_deleteBG"
           :list="bgList"
           field="背景图"
           title="上传背景图"
@@ -70,7 +77,13 @@
           </div>
           <van-switch active-value="1" inactive-value="0" v-model="formData.is_index"></van-switch>
         </van-cell>
-        <img-cropper :confirm="_pickBanner" :list="bannerList" field="首页海报" title="首页海报"></img-cropper>
+        <img-cropper
+          :confirm="_pickBanner"
+          :delete="_deleteBanner"
+          :list="bannerList"
+          field="首页海报"
+          title="首页海报"
+        ></img-cropper>
       </van-cell-group>
       <van-cell-group title="优惠券">
         <van-cell title="自动领取优惠券">
@@ -248,11 +261,23 @@ export default {
     _pickPic(data) {
       this.formData.logo = data.map(item => item.url)[0]
     },
+    _deletePic(data, index) {
+      this.formData.logo = ''
+      this.logoList.splice(index, 1)
+    },
     _pickBG(data) {
       this.formData.diybg = data.map(item => item.url)[0]
     },
+    _deleteBG(data, index) {
+      this.formData.diybg = ''
+      this.bgList.splice(index, 1)
+    },
     _pickBanner(data) {
       this.formData.posters = data.map(item => item.url)[0]
+    },
+    _deleteBanner(data, index) {
+      this.formData.posters = ''
+      this.bannerList.splice(index, 1)
     },
     // 提交表单
     async _submit() {

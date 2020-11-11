@@ -20,7 +20,7 @@
             v-model.trim="formData.name"
           />
         </ValidationProvider>
-        <img-cropper :confirm="_pickImg" :list="imgList" field="图片" title="图片"></img-cropper>
+        <img-cropper :confirm="_pickImg" :delete="_deleteImg" :list="imgList" field="图片" title="图片"></img-cropper>
         <van-cell title="与商家优惠券同时使用">
           <van-switch active-value="1" inactive-value="0" v-model="formData.use_with_card"></van-switch>
         </van-cell>
@@ -324,7 +324,13 @@
               v-model.trim="formData.notice"
             />
           </ValidationProvider>
-          <img-cropper :confirm="_pickCover" :list="coverList" field="封面图片" title="封面图片"></img-cropper>
+          <img-cropper
+            :confirm="_pickCover"
+            :delete="_deleteCover"
+            :list="coverList"
+            field="封面图片"
+            title="封面图片"
+          ></img-cropper>
           <ValidationProvider name="封面描述" rules="required" slim v-slot="{ errors }">
             <van-field
               :error-message="errors[0]"
@@ -365,8 +371,9 @@
                 size="small"
                 type="danger"
                 v-if="imageText.length > 1"
-                >删除</van-button
               >
+                删除
+              </van-button>
             </div>
             <img-cropper
               :confirm="_pickImageText"
@@ -706,6 +713,10 @@ export default {
     _pickImg(data) {
       this.formData.img = data[0].url
     },
+    _deleteImg(data, index) {
+      this.format.img = ''
+      this.imgList.splice(index, 1)
+    },
     _pickImageText(data, index) {
       this.imageText[index].image_url = [{ url: data[0].url }]
     },
@@ -768,6 +779,10 @@ export default {
     },
     _pickCover(data) {
       this.formData.icon_url_list = data[0].url
+    },
+    _deleteCover(data, index) {
+      this.formData.icon_url_list = ''
+      this.coverList.splice(index, 1)
     },
     // 获取详情
     _getCouponDetail(id) {

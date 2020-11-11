@@ -168,8 +168,8 @@
         </ValidationProvider>
         <img-cropper
           :confirm="_pickPic"
-          :count="5"
           :delete="_deletePic"
+          :count="5"
           :list="picList"
           field="商品图片"
           title="商品图片"
@@ -619,9 +619,9 @@ export default {
     _pickPic(data) {
       this.formData.pic = data.map(item => item.url)
     },
-    _deletePic(data) {
-      const index = this.formData.pic.findIndex(item => item === data.url)
-      index > -1 && this.formData.pic.splice(index, 1)
+    _deletePic(data, index) {
+      this.formData.pic.splice(index, 1)
+      this.picList.splice(index, 1)
     },
     _changeHtml(data) {
       this.formData.content = data.html

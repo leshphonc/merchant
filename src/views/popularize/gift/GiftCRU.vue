@@ -104,7 +104,14 @@
             v-model.trim="formData.sku"
           />
         </ValidationProvider>
-        <img-cropper :confirm="_pickPic" :count="5" :list="pic" field="图片" title="图片"></img-cropper>
+        <img-cropper
+          :confirm="_pickPic"
+          :delete="_deletePic"
+          :count="5"
+          :list="pic"
+          field="图片"
+          title="图片"
+        ></img-cropper>
         <ValidationProvider name="礼品简述" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -330,6 +337,10 @@ export default {
     },
     _pickPic(data) {
       this.formData.wap_pic = data.map(item => item.url)
+    },
+    _deletePic(data, index) {
+      this.formData.wap_pic.splice(index, 1)
+      this.pic.splice(index, 1)
     },
     _changeHtml(data) {
       this.formData.gift_content = data.html
