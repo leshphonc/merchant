@@ -171,9 +171,16 @@
             v-model.trim="formData.txt_info"
           ></van-field>
         </ValidationProvider>
-        <img-cropper :confirm="_pickShopLogo" :list="shop_logo" field="商户LOGO" title="商户LOGO"></img-cropper>
+        <img-cropper
+          :confirm="_pickShopLogo"
+          :delete="_deleteShopLogo"
+          :list="shop_logo"
+          field="商户LOGO"
+          title="商户LOGO"
+        ></img-cropper>
         <img-cropper
           :confirm="_pickPic"
+          :delete="_deletePic"
           :count="5"
           :list="pic"
           :ratio="[2, 1]"
@@ -182,9 +189,9 @@
         ></img-cropper>
         <img-cropper
           :confirm="_pickQRCode"
+          :delete="_deleteQRCode"
           :list="qrcode_backgroup"
           :ratio="[666, 1000]"
-          field="二维码背景图"
           title="二维码背景图"
         ></img-cropper>
         <van-field
@@ -585,13 +592,27 @@ export default {
     _pickShopLogo(data) {
       this.formData.shop_logo = data[0].url
     },
+    _deleteShopLogo(data, index) {
+      this.formData.shop_logo = ''
+      this.shop_logo.splice(index, 1)
+    },
     // 截取店铺图片
     _pickPic(data) {
       this.formData.pic = data.map(item => item.url)
     },
+    // 删除店铺图片
+    _deletePic(data, index) {
+      this.pic.splice(index, 1)
+      this.formData.pic.splice(index, 1)
+    },
     // 截取二维码背景图片
     _pickQRCode(data) {
       this.formData.qrcode_backgroup = data[0].url
+    },
+    // 删除二维码背景图
+    _deleteQRCode(data) {
+      this.formData.qrcode_backgroup = ''
+      this.qrcode_backgroup.splice(index, 1)
     },
     // 优惠类型选择
     _pickDisCount(data) {
@@ -660,11 +681,13 @@ export default {
         // 店铺图片
         this.pic = res.pic
         // 二维码图片
-        this.qrcode_backgroup = [
-          {
-            url: res.qrcode_backgroup,
-          },
-        ]
+        if (res.qrcode_backgroup) {
+          this.qrcode_backgroup = [
+            {
+              url: res.qrcode_backgroup,
+            },
+          ]
+        }
 
         this.clockInList = res.clock_in_type_arr
 
