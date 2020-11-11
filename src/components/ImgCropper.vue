@@ -186,8 +186,8 @@ export default {
     _cancel() {
       this.showPopup = false
     },
-    _deletePic(data) {
-      this.delete && this.delete(data)
+    _deletePic(data, detail) {
+      this.delete && this.delete(data, detail.index)
     },
   },
 }
