@@ -417,7 +417,6 @@ export default {
     ...mapActions('smartScreen', [
       'getSmartScreenList',
       'getSmartScreenPosterList',
-      'changePosterRelease',
       'deletePoster',
       'getSmartScreenRoleList',
       'getSmartScreenMemberList',

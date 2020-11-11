@@ -251,15 +251,27 @@ export default {
       size: 10,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 零售商品绑定推荐服务
+  // 零售商品绑定推荐服务(旧)
   commodityBindService: payload =>
     axios.post('/appapi.php?c=Merchantapp&a=servicePromotionRelationEdit', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 服务商品绑定推荐零售
+  // 服务商品绑定推荐零售(旧)
   serviceBindCommodity: payload =>
     axios.post('/appapi.php?c=Merchantapp&a=goodsPromotionRelationEdit', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 绑定推荐
+  bindRecommend: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=bind_spread', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 查询绑定关系
+  getBindRelation: payload =>
+    axios.post('/appapi.php?c=Merchantapp&a=select_bind', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),

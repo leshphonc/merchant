@@ -29,7 +29,7 @@
             label="联系电话"
             placeholder="联系电话"
             required
-            type="tel"
+            type="number"
             v-model.trim="formData.phone"
           />
         </ValidationProvider>

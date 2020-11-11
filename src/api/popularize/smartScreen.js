@@ -105,7 +105,7 @@ export default {
       size: 10,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 切换海报发布状态
+  // 发布同城（旧）
   changePosterRelease: payload =>
     axios.post('/appapi.php?c=Merchantimax&a=on', {
       ...payload,
@@ -255,4 +255,47 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 获取商家已勾选的联盟推广
+  getSelectedUnion: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=selected_union', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取商家未勾选的联盟推广
+  getUnSelectUnion: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=union_ad_list', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 选择联合推广
+  selectUnion: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=add_union', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 取消联合推广
+  unSelectUnion: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=delete_union', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 修改联合推广的屏幕
+  selectUnionRobot: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=change_union_imax', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取所有需求列表（联合推广用）
+  getAllNeedList: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=union_guest_demand_list', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+  // 获取已选需求列表（联合推广用）
+  getSelectNeedList: payload =>
+    axios.post('/appapi.php?c=Merchantimax&a=selected_union_guest_demand_list', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
+
 }

@@ -5,10 +5,29 @@
     <van-tabs v-model="active">
       <van-tab title="商品">
         <van-panel :icon="item.image" :key="index" :title="item.name" v-for="(item, index) in bindCList">
-          <div :key="index2" v-for="(item2, index2) in item.bind_list">{{ item2.name }}</div>
-          <div v-if="item.bind_list.length === 0">暂未绑定任何推广服务</div>
+          <van-row>
+            <van-col :span="12">
+              <div :key="index2" v-for="(item2, index2) in item.bind_goods_list">{{ item2.name }}</div>
+              <div v-if="item.bind_goods_list.length === 0">暂未绑定零售商品</div>
+            </van-col>
+            <van-col :span="12">
+              <div :key="index2" v-for="(item2, index2) in item.bind_appoint_list">{{ item2.name }}</div>
+              <div v-if="item.bind_appoint_list.length === 0">暂未绑定服务</div>
+            </van-col>
+          </van-row>
           <template #footer>
-            <van-button @click="_controlServicePopup(item.goods_id, item.bind_list)" size="small" type="primary">
+            <van-button
+              @click="_controlCommodityPopup(item.goods_id, item.bind_goods_list, 1)"
+              size="small"
+              type="primary"
+            >
+              绑定零售商品
+            </van-button>
+            <van-button
+              @click="_controlServicePopup(item.goods_id, item.bind_appoint_list, 1)"
+              size="small"
+              type="primary"
+            >
               绑定服务项目
             </van-button>
           </template>
@@ -16,11 +35,30 @@
       </van-tab>
       <van-tab title="服务">
         <van-panel :icon="item.image" :key="index" :title="item.name" v-for="(item, index) in bindSList">
-          <div :key="index2" v-for="(item2, index2) in item.bind_list">{{ item2.name }}</div>
-          <div v-if="item.bind_list.length === 0">暂未绑定任何推广商品</div>
+          <van-row>
+            <van-col :span="12">
+              <div :key="index2" v-for="(item2, index2) in item.bind_goods_list">{{ item2.name }}</div>
+              <div v-if="item.bind_goods_list.length === 0">暂未绑定零售商品</div>
+            </van-col>
+            <van-col :span="12">
+              <div :key="index2" v-for="(item2, index2) in item.bind_appoint_list">{{ item2.name }}</div>
+              <div v-if="item.bind_appoint_list.length === 0">暂未绑定服务</div>
+            </van-col>
+          </van-row>
           <template #footer>
-            <van-button @click="_controlCommodityPopup(item.appoint_id, item.bind_list)" size="small" type="primary">
+            <van-button
+              @click="_controlCommodityPopup(item.appoint_id, item.bind_goods_list, 2)"
+              size="small"
+              type="primary"
+            >
               绑定零售商品
+            </van-button>
+            <van-button
+              @click="_controlServicePopup(item.appoint_id, item.bind_appoint_list, 2)"
+              size="small"
+              type="primary"
+            >
+              绑定服务项目
             </van-button>
           </template>
         </van-panel>
@@ -36,11 +74,16 @@
               :icon="item.list_pic"
               :key="item.goods_id"
               :title="item.name"
-              @click="toggleC(index)"
+              @click="toggleC(index, item.goods_id)"
               clickable
               v-for="(item, index) in cList"
             >
-              <van-checkbox :name="item.goods_id" ref="checkboxesC" slot="right-icon" />
+              <van-checkbox
+                :name="item.goods_id"
+                :disabled="curID == item.goods_id"
+                ref="checkboxesC"
+                slot="right-icon"
+              />
             </van-cell>
           </van-cell-group>
         </van-checkbox-group>
@@ -59,11 +102,16 @@
               :icon="item.pic"
               :key="item.appoint_id"
               :title="item.appoint_name"
-              @click="toggleS(index)"
+              @click="toggleS(index, item.appoint_id)"
               clickable
               v-for="(item, index) in sList"
             >
-              <van-checkbox :name="item.appoint_id" ref="checkboxesS" slot="right-icon" />
+              <van-checkbox
+                :name="item.appoint_id"
+                :disabled="curID == item.appoint_id"
+                ref="checkboxesS"
+                slot="right-icon"
+              />
             </van-cell>
           </van-cell-group>
         </van-checkbox-group>
@@ -102,8 +150,8 @@ export default {
       sResult: [],
       showCommodityPopup: false,
       showServicePopup: false,
-      curCommodityID: '',
-      curServiceID: '',
+      curID: '',
+      curType: '',
       loading: false,
     }
   },
@@ -130,15 +178,18 @@ export default {
 
   methods: {
     ...mapActions('storeFront', [
-      'getBindingCommodityList',
-      'getBindingServiceList',
+      // 'getBindingCommodityList',
+      // 'getBindingServiceList',
       'commodityBindService',
       'serviceBindCommodity',
+      'bindRecommend',
+      'getBindRelation',
     ]),
     ...mapActions('commodity', ['getECommerceList', 'getServiceList']),
-    _controlCommodityPopup(id, list) {
+    _controlCommodityPopup(id, list, type) {
       if (id) {
-        this.curServiceID = id
+        this.curID = id
+        this.curType = type
       }
       if (list && list.length) {
         this.cResult = list.map(item => item.id)
@@ -147,9 +198,10 @@ export default {
       }
       this.showCommodityPopup = !this.showCommodityPopup
     },
-    _controlServicePopup(id, list) {
+    _controlServicePopup(id, list, type) {
       if (id) {
-        this.curCommodityID = id
+        this.curID = id
+        this.curType = type
       }
       if (list && list.length) {
         this.sResult = list.map(item => item.id)
@@ -160,18 +212,22 @@ export default {
     },
     _getBindingCommodityList() {
       const { id } = this.$route.params
-      this.getBindingCommodityList({
+      this.getBindRelation({
         store_id: id,
+        type: 1,
         page: 1,
+        size: 10,
       }).then(res => {
         this.bindCList = res
       })
     },
     _getBindingServiceList() {
       const { id } = this.$route.params
-      this.getBindingServiceList({
+      this.getBindRelation({
         store_id: id,
+        type: 2,
         page: 1,
+        size: 10,
       }).then(res => {
         this.bindSList = res
       })
@@ -201,7 +257,8 @@ export default {
         this.cList.push(...res.lists)
       })
     },
-    toggleC(index) {
+    toggleC(index, id) {
+      if (id == this.curID) return
       this.$refs.checkboxesC[index].toggle()
     },
     _sOnRefresh() {
@@ -229,17 +286,25 @@ export default {
         this.sList.push(...res)
       })
     },
-    toggleS(index) {
+    toggleS(index, id) {
+      if (id == this.curID) return
       this.$refs.checkboxesS[index].toggle()
     },
     _bindCommodity() {
       if (this.loading) return
       this.loading = true
       const { id } = this.$route.params
-      this.commodityBindService({
+      var type = ''
+      if (this.curType == 1) {
+        type = 1
+      } else if (this.curType == 2) {
+        type = 3
+      }
+      this.bindRecommend({
         store_id: id,
-        appoint_id: this.curServiceID,
-        goods_ids: this.cResult,
+        type: type,
+        id: this.curID,
+        ids: this.cResult,
       })
         .then(res => {
           this.$toast.success({
@@ -249,6 +314,7 @@ export default {
             onClose: () => {
               // 解锁
               this.loading = false
+              this._getBindingCommodityList()
               this._getBindingServiceList()
               this._controlCommodityPopup()
             },
@@ -262,10 +328,17 @@ export default {
       if (this.loading) return
       this.loading = true
       const { id } = this.$route.params
-      this.serviceBindCommodity({
+      var type = ''
+      if (this.curType == 1) {
+        type = 0
+      } else if (this.curType == 2) {
+        type = 2
+      }
+      this.bindRecommend({
         store_id: id,
-        goods_id: this.curCommodityID,
-        appoint_ids: this.sResult,
+        type: type,
+        id: this.curID,
+        ids: this.sResult,
       })
         .then(res => {
           this.$toast.success({
@@ -276,6 +349,7 @@ export default {
               // 解锁
               this.loading = false
               this._getBindingCommodityList()
+              this._getBindingServiceList()
               this._controlServicePopup()
             },
           })
@@ -310,15 +384,13 @@ export default {
 }
 
 .van-popup {
- display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
   .van-list {
     padding-bottom: 44px;
   }
 
   .btn-group {
+    position: fixed;
+    bottom: 0;
     width: 100%;
     z-index: 10;
 

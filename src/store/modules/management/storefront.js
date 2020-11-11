@@ -267,31 +267,45 @@ const actions = {
       data ? resolve() : reject()
     })
   },
-  // 获取店铺下产生绑定关系的零售商品
+  // 获取店铺下产生绑定关系的零售商品（旧）
   getBindingCommodityList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.getBindingCommodityList(payload)
       data ? resolve(data) : reject()
     })
   },
-  // 获取店铺下产生绑定关系的服务项目
+  // 获取店铺下产生绑定关系的服务项目（旧）
   getBindingServiceList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.getBindingServiceList(payload)
       data ? resolve(data) : reject()
     })
   },
-  // 零售商品绑定推荐服务
+  // 查询绑定关系
+  getBindRelation(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.getBindRelation(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 零售商品绑定推荐服务（旧）
   commodityBindService(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.commodityBindService(payload)
       data ? resolve(data) : reject()
     })
   },
-  // 服务商品绑定推荐零售
+  // 服务商品绑定推荐零售（旧）
   serviceBindCommodity(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await storeFrontAPI.serviceBindCommodity(payload)
+      data ? resolve(data) : reject()
+    })
+  },
+  // 绑定商品
+  bindRecommend(context, payload) {
+    return new Promise(async (resolve, reject) => {
+      const data = await storeFrontAPI.bindRecommend(payload)
       data ? resolve(data) : reject()
     })
   },
