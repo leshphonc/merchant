@@ -23,7 +23,7 @@
             :title="item.title"
             :desc="item.read_txt"
             :icon="item.ad_img"
-            :status="item.union_status == 1 ? '已失效' : ''"
+            :status="item.union_status == 1 ? '内容已失效' : ''"
           >
             <template #footer>
               <div>
@@ -42,14 +42,15 @@
                   <van-col :span="24">关键词：{{ item.keywords }}</van-col>
                 </van-row>
               </div>
-              <div style="text-align: right;margin-top:4px;">
+              <div style="text-align: right; margin-top: 4px">
+                <van-button size="small" @click="deletePromotion(item.union_id)">取消推广</van-button>
                 <van-button
                   size="small"
                   :disabled="item.union_status == 1"
                   type="primary"
                   @click="preViewRobotList(item)"
                 >
-                  查看推广机器人
+                  推广机器人
                 </van-button>
               </div>
             </template>
@@ -58,10 +59,31 @@
         </div>
       </van-list>
     </van-pull-refresh>
-    <van-popup v-model="show" style="width: 70vw">
+    <!-- <van-popup v-model="show" style="width: 70vw">
       <van-cell-group title="推广位置">
-        <van-cell v-for="item in curRobotList" :key="item.imax_id" :title="item.imax_name" :label="item.store_name" />
+        <van-cell v-for="item in curRobotList" :key="item.imax_id" :title="item.imax_name" :label="item.store_name">
+          <van-button type="danger" size="mini">删除</van-button>
+        </van-cell>
+        <van-cell icon="plus" title="添加" clickable @click="addRobot" />
       </van-cell-group>
+    </van-popup> -->
+    <van-popup v-model="show" position="bottom" safe-area-inset-bottom style="padding-top: 10px">
+      <div class="gray-title">请勾选推广此内容的机器人</div>
+      <van-checkbox-group v-model="robot">
+        <van-cell
+          v-for="(item, index) in robotList"
+          clickable
+          :key="item.id"
+          :label="`${item.store_name} - ${item.address}`"
+          :title="item.remark"
+          @click="toggle(index)"
+        >
+          <template #right-icon>
+            <van-checkbox :name="item.id" ref="checkboxes" />
+          </template>
+        </van-cell>
+      </van-checkbox-group>
+      <van-button block @click="modifyPromotionRobot" type="primary" style="margin-top: 20px">修改</van-button>
     </van-popup>
   </div>
 </template>
@@ -94,6 +116,9 @@ export default {
       loading: false,
       show: false,
       curRobotList: [],
+      curUnion: '',
+      robotList: [],
+      robot: [],
     }
   },
 
@@ -119,6 +144,7 @@ export default {
         }),
       ]
       this.option1 = arr
+      this.robotList = res
     })
     api.getSelectNeedList().then(res => {
       this.needList = res
@@ -181,13 +207,51 @@ export default {
     },
     preViewRobotList(item) {
       this.curRobotList = item.imaxList
+      this.robot = item.imaxList.map(item => {
+        return item.imax_id
+      })
       this.show = true
+      this.curUnion = item.union_id
     },
     changeRobot() {
       this.onRefresh()
     },
     changeCommodity() {
       this.onRefresh()
+    },
+    addRobot() {
+      // console.log(this.curRobotList)
+    },
+    toggle(index) {
+      this.$refs.checkboxes[index].toggle()
+    },
+    modifyPromotionRobot() {
+      api
+        .selectUnionRobot({
+          union_id: this.curUnion,
+          imax_ids: this.robot.join(','),
+        })
+        .then(() => {
+          this.$toast.success('修改成功')
+          this.onRefresh()
+          this.show = false
+        })
+    },
+    deletePromotion(id) {
+      this.$dialog
+        .confirm({
+          message: '确定取消此推广吗？',
+        })
+        .then(() => {
+          api
+            .unSelectUnion({
+              union_id: id,
+            })
+            .then(res => {
+              this.$toast.success('取消成功')
+              this.onRefresh()
+            })
+        })
     },
   },
 }
@@ -215,5 +279,11 @@ export default {
 
 .red {
   color: red;
+}
+
+.gray-title {
+  color: #777;
+  padding-left: 10px;
+  font-size: 13px;
 }
 </style>

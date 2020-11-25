@@ -79,6 +79,12 @@ axios.interceptors.response.use(
         })
         return false
       }
+      if (config.data.code === 0) {
+        return config.data
+      }
+      if (config.data.code === 6001) {
+        return config.data
+      }
       // 是否非法操作
       if (!config.data.errorCode) {
         Toast({

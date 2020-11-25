@@ -1,5 +1,12 @@
 import axios from 'axios'
 
+const { protocol } = window.location
+
+let url = 'go.9youke.com/robot'
+if (process.env.VUE_APP_ENV == 'prod') {
+  url = 'go.91gzt.com/robot'
+}
+
 export default {
   // 获取机器人设备列表
   getSmartScreenList: id =>
@@ -297,5 +304,17 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-
+  getMap: imei =>
+    axios.get(`${protocol}//${url}/workspace/${imei}`, {
+      ticket: localStorage.getItem('ticket'),
+    }),
+  getMapMarkList: imei =>
+    axios.get(`${protocol}//${url}/workspace/${imei}/marks`, {
+      ticket: localStorage.getItem('ticket'),
+    }),
+  changeMapMarkStatus: payload =>
+    axios.put(`${protocol}//${url}/workspace/${payload.imei}/marks/${payload.id}`, {
+      status: payload.status,
+      ticket: localStorage.getItem('ticket'),
+    }),
 }

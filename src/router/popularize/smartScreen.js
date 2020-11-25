@@ -59,6 +59,11 @@ export default {
       path: 'aroundPushList',
       component: () => import('@/views/popularize/smartScreen/AroundPushList'),
     },
+    {
+      // 机器人地图环境
+      path: 'workspace/:imei',
+      component: () => import('@/views/popularize/smartScreen/Workspace'),
+    },
     // {
     //   // 顾客见面语列表
     //   path: 'customerMeetGreetingList/:imax',

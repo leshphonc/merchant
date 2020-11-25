@@ -76,7 +76,7 @@
                 type="primary"
                 v-if="
                   item.local_push == 1 &&
-                    (item.around_push == '0' || item.around_push == '3' || item.around_push == '4')
+                  (item.around_push == '0' || item.around_push == '3' || item.around_push == '4')
                 "
               >
                 同城发布
@@ -206,7 +206,7 @@
           <van-button
             @click="_toggleAll"
             size="small"
-            style="float: right; margin-right: 8px;margin-top: 4px;"
+            style="float: right; margin-right: 8px; margin-top: 4px"
             type="info"
             v-if="formData.role.indexOf(6) > -1"
           >
@@ -215,7 +215,7 @@
           <van-button
             @click="_checkAll"
             size="small"
-            style="float: right; margin-right: 8px;margin-top: 4px;"
+            style="float: right; margin-right: 8px; margin-top: 4px"
             type="primary"
             v-if="formData.role.indexOf(6) > -1"
           >
@@ -586,8 +586,8 @@ export default {
       this.$refs.checkboxesSS[index].toggle()
     },
     // 同城发布
-    _changeRelease(id) {
-      if (this.around_price < 0 || this.spread_fee < 0) {
+    _changeRelease(id, check) {
+      if (check && (this.around_price < 0 || this.spread_fee < 0)) {
         this.$toast('金额不能小于0')
         return
       }
@@ -733,8 +733,12 @@ export default {
       this.formData.end_time = data
     },
     _needCheckStore(item) {
-      this.lastAd = item.id
-      this._controlAroundPushPopup()
+      if (item.data_type != 0) {
+        this.lastAd = item.id
+        this._controlAroundPushPopup()
+      } else {
+        this._changeRelease(item.id, false)
+      }
       // 1 商品
       // if (item.data_type === '1') {
       //   this.getSmartScreenDemandList(this.formData.screen).then(res => {
@@ -792,9 +796,8 @@ export default {
         })
       })
     },
-    // 选择店铺且将海报同城发布
     _submitSameCity() {
-      this._changeRelease(this.lastAd)
+      this._changeRelease(this.lastAd, true)
     },
     _nextStep() {
       if (this.curStep === 0) {

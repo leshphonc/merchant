@@ -40,7 +40,7 @@
           </van-pull-refresh>
         </van-tab>
         <!-- 团购 -->
-        <van-tab title="团购">
+        <!-- <van-tab title="团购">
           <van-pull-refresh @refresh="_gOnRefresh" v-model="gRefreshing">
             <van-list
               :finished="gFinished"
@@ -65,7 +65,7 @@
               </van-radio-group>
             </van-list>
           </van-pull-refresh>
-        </van-tab>
+        </van-tab> -->
         <!-- 服务 -->
         <van-tab title="服务">
           <van-pull-refresh @refresh="_sOnRefresh" v-model="sRefreshing">
