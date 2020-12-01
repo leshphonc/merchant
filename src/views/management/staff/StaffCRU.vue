@@ -89,6 +89,20 @@
             required
           ></van-field>
         </ValidationProvider>
+        <ValidationProvider name="工作时间" rules="required" slim v-slot="{ errors }">
+          <van-field
+            :error-message="errors[0]"
+            :value="workTimeLabel"
+            @click="_controlWorkTimePicker"
+            error-message-align="right"
+            input-align="right"
+            is-link
+            label="工作时间"
+            placeholder="请选择"
+            readonly
+            required
+          ></van-field>
+        </ValidationProvider>
         <img-cropper
           :confirm="_pickAvatar"
           :delete="_deleteAvatar"
@@ -135,6 +149,17 @@
         value-key="label"
       ></van-picker>
     </van-popup>
+    <!-- 工作时间 -->
+    <van-popup position="bottom" safe-area-inset-bottom v-model="showWorkTimePicker">
+      <van-picker
+        :columns="workTimeColumns"
+        :default-index="workTimeIndex"
+        @cancel="_controlWorkTimePicker"
+        @confirm="_pickWorkTime"
+        show-toolbar
+        value-key="label"
+      ></van-picker>
+    </van-popup>
     <!-- 技师等级列表 -->
     <van-popup position="bottom" safe-area-inset-bottom v-model="showStaffLevelPicker">
       <van-picker
@@ -150,6 +175,7 @@
 </template>
 
 <script>
+import api from '@/api/management/staff'
 import { mapActions } from 'vuex'
 import ImgCropper from '@/components/ImgCropper'
 
@@ -174,6 +200,7 @@ export default {
         tel: '',
         spread_rato: '',
         store_id: '',
+        clock_time: '',
         technician_grade_id: '0',
         avatar: '',
       },
@@ -181,8 +208,10 @@ export default {
       showStaffTypePicker: false,
       showStorePicker: false,
       showStaffLevelPicker: false,
+      showWorkTimePicker: false,
       staffTypeColumns: [],
       storeColumns: [],
+      workTimeColumns: [],
       staffLevelColumns: [{ id: '0', name: '无等级' }],
       avatar: [],
     }
@@ -210,6 +239,14 @@ export default {
       const index = this.storeColumns.findIndex(item => item.value === this.formData.store_id)
       return index
     },
+    workTimeLabel() {
+      const item = this.workTimeColumns.find(item => item.value === this.formData.clock_time)
+      return item && item.label
+    },
+    workTimeIndex() {
+      const index = this.workTimeColumns.findIndex(item => item.value === this.formData.clock_time)
+      return index
+    },
     staffLevelLabel() {
       const item = this.staffLevelColumns.find(item => item.id === this.formData.technician_grade_id)
       return item && item.name
@@ -226,6 +263,7 @@ export default {
 
   mounted() {
     this._getStoreList()
+    this._getWorkTimeList()
     this._getStaffType()
     const { id, sid } = this.$route.params
     id && sid && this._readStaffDetail(id, sid)
@@ -244,6 +282,9 @@ export default {
     _controlStorePicker() {
       this.showStorePicker = !this.showStorePicker
     },
+    _controlWorkTimePicker() {
+      this.showWorkTimePicker = !this.showWorkTimePicker
+    },
     // 技师等级开关
     _controlStaffLevelPicker() {
       this.showStaffLevelPicker = !this.showStaffLevelPicker
@@ -261,6 +302,10 @@ export default {
       this.formData.store_id = data.value
       this._controlStorePicker()
     },
+    _pickWorkTime(data) {
+      this.formData.clock_time = data.value
+      this._controlWorkTimePicker()
+    },
     // 技师等级选择
     _pickStaffLevel(data) {
       this.formData.technician_grade_id = data.id
@@ -276,6 +321,16 @@ export default {
     _getStoreList() {
       this.getStoreList().then(res => {
         this.storeColumns = res.store_list
+      })
+    },
+    _getWorkTimeList() {
+      api.getStaffWorkTimeList().then(res => {
+        this.workTimeColumns = res.map(item => {
+          return {
+            label: `${item.name}（${item.start_time} - ${item.end_time}）`,
+            value: item.id,
+          }
+        })
       })
     },
     _readStaffDetail(id, sid) {

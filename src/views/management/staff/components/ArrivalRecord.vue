@@ -23,7 +23,7 @@
         <div :key="index" v-for="(item, index) in list">
           <van-panel :desc="`${item.created_at}`" :status="_getType(item.type)" :title="item.name">
             <template v-if="item.type === '4'">
-              <div style="padding: 10px 16px;font-size: 13px;">离岗原因：{{ item.remark }}</div>
+              <div style="padding: 10px 16px; font-size: 13px">离岗原因：{{ item.remark }}</div>
             </template>
           </van-panel>
           <div class="white-space"></div>
@@ -55,16 +55,29 @@ export default {
       refreshing: false,
       finished: false,
       loading: false,
-      startTime: this.$moment()
-        .subtract(30, 'days')
-        .format('YYYY-MM-DD'),
+      startTime: this.$moment().subtract(30, 'days').format('YYYY-MM-DD'),
       endTime: this.$moment().format('YYYY-MM-DD'),
       store_id: '0',
       clock_type: '0',
       staff_id: '0',
-      storeColumns: [],
-      clockInColumns: [],
-      staffColumns: [],
+      storeColumns: [
+        {
+          text: '全部店铺',
+          value: '0',
+        },
+      ],
+      clockInColumns: [
+        {
+          text: '全部类型',
+          value: '0',
+        },
+      ],
+      staffColumns: [
+        {
+          text: '全部店员',
+          value: '0',
+        },
+      ],
     }
   },
 

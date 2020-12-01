@@ -25,10 +25,10 @@
     <div class="white-space"></div>
     <div class="white-space"></div>
     <v-chart :options="polar" autoresize ref="echart"></v-chart>
-    <van-row class="row-box" justify="space-around" type="flex">
+    <!-- <van-row class="row-box" justify="space-around" type="flex">
       <van-col @click="() => $router.push('/smartScreen/smartScreenChatRecord')" span="11">机器人对话日志</van-col>
-      <van-col @click="() => $router.push('/smartScreen')" span="11">机器人推广管理</van-col>
-    </van-row>
+      <van-col @click="() => $router.push('/smartScreen')" span="11">机器人管理</van-col>
+    </van-row> -->
     <div class="white-space"></div>
 
     <!-- 弹出层 -->

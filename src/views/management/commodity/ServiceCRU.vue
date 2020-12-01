@@ -253,7 +253,7 @@
         @change="_changeCategory"
         @confirm="_pickCategory"
         show-toolbar
-        value-key="cat_name"
+        value-key="name"
       ></van-picker>
     </van-popup>
     <van-popup class="staff-level" position="bottom" safe-area-inset-bottom v-model="showStaffLevelPopup">
@@ -270,6 +270,7 @@
 </template>
 
 <script>
+import api from '@/api/management/category'
 import { mapActions } from 'vuex'
 import ImgCropper from '@/components/ImgCropper'
 import QuillEditor from '@/components/QuillEditor'
@@ -358,14 +359,14 @@ export default {
     categoryLabel() {
       let resultStr = ''
       if (this.formData.cat_fid === '0' && this.formData.cat_id !== '0') {
-        const item = this.categoryColumnsOrigin.find(item => item.cat_id === this.formData.cat_id)
-        return item && item.cat_name
+        const item = this.categoryColumnsOrigin.find(item => item.id === this.formData.cat_id)
+        return item && item.name
       }
-      const item = this.categoryColumnsOrigin.find(item => item.cat_id === this.formData.cat_fid)
+      const item = this.categoryColumnsOrigin.find(item => item.id === this.formData.cat_fid)
       if (item) {
-        resultStr += item.cat_name
-        const child = item.children.find(item => item.cat_id === this.formData.cat_id)
-        child && (resultStr += ' / ' + child.cat_name)
+        resultStr += item.name
+        const child = item.children.find(item => item.id === this.formData.cat_id)
+        child && (resultStr += ' / ' + child.name)
       }
       return resultStr
     },
@@ -457,10 +458,10 @@ export default {
     _pickCategory(data) {
       if (!data[1]) {
         this.formData.cat_fid = '0'
-        this.formData.cat_id = data[0].cat_id
+        this.formData.cat_id = data[0].id
       } else {
-        this.formData.cat_fid = data[0].cat_id
-        this.formData.cat_id = data[1].cat_id
+        this.formData.cat_fid = data[0].id
+        this.formData.cat_id = data[1].id
       }
       this._controlCategoryPicker()
     },
@@ -481,8 +482,17 @@ export default {
     },
     // 读取服务商品分类
     _getServiceCategoryList(fid, id) {
-      this.getServiceCategoryList().then(res => {
-        this.categoryColumnsOrigin = res
+      // this.getServiceCategoryList().then(res => {
+      //   this.categoryColumnsOrigin = res
+      //   this._serializationECommerceCategory(fid, id)
+      // })
+      api.getCategoryList().then(res => {
+        this.categoryColumnsOrigin = res.map(item => {
+          return {
+            ...item,
+            children: item.child || [],
+          }
+        })
         this._serializationECommerceCategory(fid, id)
       })
     },
@@ -520,13 +530,13 @@ export default {
       let index1 = 0
       let index2 = 0
       if (fid && id) {
-        index1 = data.findIndex(item => item.cat_id === fid) >= 0 ? data.findIndex(item => item.cat_id === fid) : 0
+        index1 = data.findIndex(item => item.id === fid) >= 0 ? data.findIndex(item => item.id === fid) : 0
         index2 =
-          data[index1].children.findIndex(item => item.cat_id === id) >= 0
-            ? data[index1].children.findIndex(item => item.cat_id === id)
+          data[index1].children.findIndex(item => item.id === id) >= 0
+            ? data[index1].children.findIndex(item => item.id === id)
             : 0
       } else if (fid) {
-        index1 = data.findIndex(item => item.cat_id === fid) >= 0 ? data.findIndex(item => item.cat_id === fid) : 0
+        index1 = data.findIndex(item => item.id === fid) >= 0 ? data.findIndex(item => item.id === fid) : 0
       }
       this.categoryColumns = [
         {
@@ -571,7 +581,7 @@ export default {
         } else {
           this._getServiceCategoryList(res.cat_id)
         }
-        this.$nextTick(function() {
+        this.$nextTick(function () {
           this.$refs.editor.$refs.quillEditor.quill.enable(true)
           this.$refs.editor.$refs.quillEditor.quill.blur()
           window.scroll(0, 0)
@@ -616,7 +626,7 @@ export default {
           forbidClick: true,
         })
         this.createService(params)
-          .then(() => {
+          .then(res => {
             toast.clear()
             this.$toast.success({
               message: '操作成功',

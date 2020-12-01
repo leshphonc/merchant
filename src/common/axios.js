@@ -94,6 +94,7 @@ axios.interceptors.response.use(
         return false
       }
       Notify({ type: 'warning', message: config.data.errorMsg })
+      return config.data
     }
     return config.data.result
   },

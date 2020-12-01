@@ -1,4 +1,4 @@
-import smartScreenAPI from '@/api/popularize/smartScreen'
+import smartScreenAPI from '@/api/management/smartScreen'
 
 // initial state
 const state = {}

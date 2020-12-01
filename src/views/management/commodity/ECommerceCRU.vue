@@ -278,7 +278,7 @@
         @change="_changeCategory"
         @confirm="_pickCategory"
         show-toolbar
-        value-key="sort_name"
+        value-key="name"
       ></van-picker>
     </van-popup>
     <!-- 所属商城分类 -->
@@ -319,6 +319,7 @@
 </template>
 
 <script>
+import api from '@/api/management/category'
 import { mapActions } from 'vuex'
 import ImgCropper from '@/components/ImgCropper'
 import QuillEditor from '@/components/QuillEditor'
@@ -389,7 +390,7 @@ export default {
       // submit锁
       loading: false,
       // 后期需要修改的
-      sort_fid: '',
+      fid: '',
       keyword1: '',
       keyword2: '',
       keyword3: '',
@@ -451,16 +452,16 @@ export default {
     // 所属零售分类非空验证
     categoryLabel() {
       let resultStr = ''
-      if (this.sort_fid) {
-        const item = this.categoryColumnsOrigin.find(item => item.sort_id === this.sort_fid)
+      if (this.fid) {
+        const item = this.categoryColumnsOrigin.find(item => item.id === this.fid)
         if (item) {
-          resultStr += item.sort_name
-          const child = item.children.find(item => item.sort_id === this.formData.sort_id)
-          child && (resultStr += ' / ' + child.sort_name)
+          resultStr += item.name
+          const child = item.children.find(item => item.id === this.formData.sort_id)
+          child && (resultStr += ' / ' + child.name)
         }
       } else {
-        const item = this.categoryColumnsOrigin.find(item => item.sort_id === this.formData.sort_id)
-        item && (resultStr += item.sort_name)
+        const item = this.categoryColumnsOrigin.find(item => item.id === this.formData.sort_id)
+        item && (resultStr += item.name)
       }
       return resultStr
     },
@@ -558,11 +559,11 @@ export default {
     // 商品分类选择
     _pickCategory(data) {
       if (data[1]) {
-        this.sort_fid = data[0].sort_id
-        this.formData.sort_id = data[1].sort_id
+        this.fid = data[0].id
+        this.formData.sort_id = data[1].id
       } else {
-        this.sort_fid = ''
-        this.formData.sort_id = data[0].sort_id
+        this.fid = ''
+        this.formData.sort_id = data[0].id
       }
       this._controlCategoryPicker()
     },
@@ -611,8 +612,17 @@ export default {
     },
     // 读取商品分类
     _getECommerceFirstCategoryList(fid, id) {
-      this.getECommerceFirstCategoryList().then(res => {
-        this.categoryColumnsOrigin = res
+      // this.getECommerceFirstCategoryList().then(res => {
+      //   this.categoryColumnsOrigin = res
+      //   this._serializationECommerceCategory(fid, id)
+      // })
+      api.getCategoryList().then(res => {
+        this.categoryColumnsOrigin = res.map(item => {
+          return {
+            ...item,
+            children: item.child || [],
+          }
+        })
         this._serializationECommerceCategory(fid, id)
       })
     },
@@ -635,13 +645,13 @@ export default {
       let index1 = 0
       let index2 = 0
       if (fid && id) {
-        index1 = data.findIndex(item => item.sort_id === fid) >= 0 ? data.findIndex(item => item.sort_id === fid) : 0
+        index1 = data.findIndex(item => item.id === fid) >= 0 ? data.findIndex(item => item.id === fid) : 0
         index2 =
-          data[index1].children.findIndex(item => item.sort_id === id) >= 0
-            ? data[index1].children.findIndex(item => item.sort_id === id)
+          data[index1].children.findIndex(item => item.id === id) >= 0
+            ? data[index1].children.findIndex(item => item.id === id)
             : 0
       } else if (fid) {
-        index1 = data.findIndex(item => item.sort_id === fid) >= 0 ? data.findIndex(item => item.sort_id === fid) : 0
+        index1 = data.findIndex(item => item.id === fid) >= 0 ? data.findIndex(item => item.id === fid) : 0
       }
 
       this.categoryColumns = [
@@ -695,12 +705,12 @@ export default {
         this.formData.pic = [res.pic[0].url]
         this.pic = res.pic
         if (res.sort_fid) {
-          this.sort_fid = res.sort_fid
+          this.fid = res.sort_fid
           this._getECommerceFirstCategoryList(res.sort_fid, res.sort_id)
         } else {
           this._getECommerceFirstCategoryList(res.sort_id)
         }
-        this.$nextTick(function() {
+        this.$nextTick(function () {
           this.$refs.editor.$refs.quillEditor.quill.enable(true)
           this.$refs.editor.$refs.quillEditor.quill.blur()
           window.scroll(0, 0)
@@ -741,7 +751,7 @@ export default {
           forbidClick: true,
         })
         this[method](this.formData)
-          .then(() => {
+          .then(res => {
             toast.clear()
             this.$toast.success({
               message: '操作成功',

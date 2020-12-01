@@ -69,7 +69,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import api from '@/api/popularize/smartScreen'
+import api from '@/api/management/smartScreen'
 export default {
   name: 'AroundPushManage',
 

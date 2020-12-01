@@ -689,15 +689,15 @@ export default {
           ]
         }
 
-        this.clockInList = res.clock_in_type_arr
+        // this.clockInList = res.clock_in_type_arr
 
         // 设置默认选中的打卡
-        const cache = []
-        res.clock_in_type.forEach(item => {
-          const result = this.clockInList.find(i => i.id === item)
-          result && cache.push(result.id)
-        })
-        this.cache = cache
+        // const cache = []
+        // res.clock_in_type.forEach(item => {
+        //   const result = this.clockInList.find(i => i.id === item)
+        //   result && cache.push(result.id)
+        // })
+        // this.cache = cache
 
         // { label: '标准', value: 'have_service' },
         // { label: '外卖', value: 'have_peisong' },

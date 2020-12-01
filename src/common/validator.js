@@ -12,6 +12,13 @@ for (let rule in rules) {
 }
 
 // 定义自定义规则
+extend('zhCN', {
+  validate: value => {
+    return new RegExp(/^[u4e00-u9fa5]$/).test(value)
+  },
+  message: '请填写中文',
+})
+
 extend('phone', {
   validate: value => {
     return new RegExp(/^[1][3-9][0-9]{9}$/).test(value)

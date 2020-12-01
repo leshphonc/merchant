@@ -82,10 +82,10 @@
       </van-collapse>
     </div>
     <div class="tab-bar-holder-sp" v-if="$route.fullPath === '/commodity'"></div>
-    <van-tabbar fixed v-if="$route.fullPath === '/commodity'" v-model="active" safe-area-inset-bottom>
+    <!-- <van-tabbar fixed v-if="$route.fullPath === '/commodity'" v-model="active" safe-area-inset-bottom>
       <van-tabbar-item icon="apps-o">商品</van-tabbar-item>
       <van-tabbar-item icon="label-o">分类</van-tabbar-item>
-    </van-tabbar>
+    </van-tabbar> -->
     <!-- 弹出层 -->
     <!-- 编辑分类 -->
     <van-popup class="category-cru-popup" position="bottom" safe-area-inset-bottom v-model="showCategoryCRUPopup">
