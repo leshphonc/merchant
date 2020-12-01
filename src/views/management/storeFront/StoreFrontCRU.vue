@@ -20,7 +20,7 @@
             v-model.trim="formData.name"
           />
         </ValidationProvider>
-        <van-cell placeholder="请填写用户名" title="是否设置成主店">
+        <van-cell title="是否设置成主店">
           <van-switch slot="default" v-model="formData.ismain"></van-switch>
         </van-cell>
         <ValidationProvider name="联系电话" rules="required|max:12" slim v-slot="{ errors }">
@@ -109,7 +109,7 @@
             required
           ></van-field>
         </ValidationProvider>
-        <ValidationProvider name="打卡" rules="required" slim v-slot="{ errors }">
+        <!-- <ValidationProvider name="打卡" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
             :value="formData.clock_in_type.length ? '1' : ''"
@@ -128,7 +128,10 @@
               </div>
             </div>
           </van-field>
-        </ValidationProvider>
+        </ValidationProvider> -->
+        <van-cell title="员工打卡">
+          <van-switch slot="default" v-model="formData.clock_in" active-value="0" inactive-value="1"></van-switch>
+        </van-cell>
         <ValidationProvider name="营业开始时间" rules="required" slim v-slot="{ errors }">
           <van-field
             :error-message="errors[0]"
@@ -293,7 +296,7 @@
       ></van-picker>
     </van-popup>
     <!-- 选择打卡 -->
-    <van-popup position="top" safe-area-inset-bottom v-model="showClockInPopup">
+    <!-- <van-popup position="top" safe-area-inset-bottom v-model="showClockInPopup">
       <van-checkbox-group class="cache-list" v-model="cache">
         <van-cell-group>
           <van-cell
@@ -315,7 +318,7 @@
           <van-button @click="_pickClockIn" type="primary">确定</van-button>
         </van-col>
       </van-row>
-    </van-popup>
+    </van-popup> -->
   </div>
 </template>
 
@@ -374,7 +377,7 @@ export default {
         condition_price: '',
         minus_price: '',
         context: '',
-        clock_in_type: [],
+        clock_in: [],
       },
       // 默认数据
       shop_logo: [],
@@ -405,7 +408,7 @@ export default {
       showEndTimePicker: false,
       showStoreFrontCategory: false,
       showDisCount: false,
-      showClockInPopup: false,
+      // showClockInPopup: false,
       // 锁
       loading: false,
       // 后续需要后台更改的字段
@@ -521,17 +524,17 @@ export default {
     _controlDisCountPicker() {
       this.showDisCount = !this.showDisCount
     },
-    _controlClockInPopup() {
-      this.showClockInPopup = !this.showClockInPopup
-    },
-    _pickClockIn() {
-      const arr = []
-      this.cache.forEach(item => {
-        arr.push(item)
-      })
-      this.formData.clock_in_type = arr
-      this._controlClockInPopup()
-    },
+    // _controlClockInPopup() {
+    //   this.showClockInPopup = !this.showClockInPopup
+    // },
+    // _pickClockIn() {
+    //   const arr = []
+    //   this.cache.forEach(item => {
+    //     arr.push(item)
+    //   })
+    //   this.formData.clock_in_type = arr
+    //   this._controlClockInPopup()
+    // },
     // 生成店铺业务第二行数据
     _changeStoreFrontCategory(picker, values) {
       if (values[0].children) {
@@ -719,7 +722,7 @@ export default {
         // 获取平台分类数据
         this._getPlatformStoreFrontCategory(res.cat_fid, res.cat_id)
         this.defaultArea = [res.province_id, res.city_id, res.area_id, res.circle_id, res.market_id]
-        this.$nextTick(function() {
+        this.$nextTick(function () {
           this.$refs.editor.$refs.quillEditor.quill.blur()
           window.scroll(0, 0)
         })
