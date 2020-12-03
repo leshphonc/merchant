@@ -617,13 +617,17 @@ export default {
       //   this._serializationECommerceCategory(fid, id)
       // })
       api.getCategoryList().then(res => {
-        this.categoryColumnsOrigin = res.map(item => {
-          return {
-            ...item,
-            children: item.child || [],
-          }
-        })
-        this._serializationECommerceCategory(fid, id)
+        if (typeof res == 'string') {
+          this.$toast.fail(res)
+        } else {
+          this.categoryColumnsOrigin = res.map(item => {
+            return {
+              ...item,
+              children: item.child || [],
+            }
+          })
+          this._serializationECommerceCategory(fid, id)
+        }
       })
     },
     // 读取平台平台商城 商品分类
@@ -751,7 +755,7 @@ export default {
           forbidClick: true,
         })
         this[method](this.formData)
-          .then(res => {
+          .then(() => {
             toast.clear()
             this.$toast.success({
               message: '操作成功',

@@ -12,49 +12,49 @@ const actions = {
   async getRedEnvelopeList(context, page = 1) {
     return new Promise(async (resolve, reject) => {
       const data = await redEnvelopeAPI.getRedEnvelopeList(page)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 创建红包
   async createRedEnvelope(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await redEnvelopeAPI.createRedEnvelope(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 修改红包
   async updateRedEnvelope(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await redEnvelopeAPI.updateRedEnvelope(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 读取单个红包详情
   async readRedEnvelopeDetail(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await redEnvelopeAPI.readRedEnvelopeDetail(id)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 红包领取记录
   async getRedEnvelopeReceivingRecord(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await redEnvelopeAPI.getRedEnvelopeReceivingRecord(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 红包发布
   async publicRedEnvelope(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await redEnvelopeAPI.publicRedEnvelope(id)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 红包删除
   async deleteRedEnvelope(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await redEnvelopeAPI.deleteRedEnvelope(id)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

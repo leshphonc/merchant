@@ -65,7 +65,7 @@ export default {
           ticket: localStorage.getItem('ticket'),
         },
       })
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

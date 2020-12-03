@@ -5,21 +5,21 @@ export default {
   async getArrivalList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await orderAPI.getArrivalList(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 获取到店消费订单详情
   async getArrivalOrderDetail(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await orderAPI.getArrivalOrderDetail(id)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 获取到店消费店铺列表
   async getArrivalOrderStoreList(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await orderAPI.getArrivalOrderStoreList(id)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

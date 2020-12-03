@@ -487,13 +487,17 @@ export default {
       //   this._serializationECommerceCategory(fid, id)
       // })
       api.getCategoryList().then(res => {
-        this.categoryColumnsOrigin = res.map(item => {
-          return {
-            ...item,
-            children: item.child || [],
-          }
-        })
-        this._serializationECommerceCategory(fid, id)
+        if (typeof res == 'string') {
+          this.$toast.fail(res)
+        } else {
+          this.categoryColumnsOrigin = res.map(item => {
+            return {
+              ...item,
+              children: item.child || [],
+            }
+          })
+          this._serializationECommerceCategory(fid, id)
+        }
       })
     },
     _selectLevel(data) {

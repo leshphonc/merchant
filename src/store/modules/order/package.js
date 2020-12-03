@@ -5,14 +5,14 @@ export default {
   async getPackageList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await orderAPI.getPackageList(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 获取服务订单详情
   async getPackageOrderDetail(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await orderAPI.getPackageOrderDetail(id)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

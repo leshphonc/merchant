@@ -12,49 +12,49 @@ const actions = {
   async getFeedbackTypeList() {
     return new Promise(async (resolve, reject) => {
       const data = await feedbackAPI.getFeedbackTypeList()
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 创建评价类型
   async createFeedbackType(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await feedbackAPI.createFeedbackType(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 更新评价类型
   async updateFeedbackType(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await feedbackAPI.updateFeedbackType(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 删除评价类型
   async deleteFeedbackType(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await feedbackAPI.deleteFeedbackType(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 获取用户评价列表
   async getFeedbackList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await feedbackAPI.getFeedbackList(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 获取评价意图列表
   async getFeedbackIntentList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await feedbackAPI.getFeedbackIntentList(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 获取评价类型列表
   async getFeedbackTypeList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await feedbackAPI.getFeedbackTypeList(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

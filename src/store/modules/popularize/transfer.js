@@ -12,14 +12,14 @@ const actions = {
   async getCombinationCardList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await transferAPI.getCombinationCardList(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 组合卡过户操作
   async transferCombinationCard(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await transferAPI.transferCombinationCard(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

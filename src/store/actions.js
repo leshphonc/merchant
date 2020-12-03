@@ -179,70 +179,70 @@ export default {
   getCouponList() {
     return new Promise(async (resolve, reject) => {
       const data = await common.getCouponList()
-      data ? resolve(data) : reject()
+      typeof data != "string" ? resolve(data) : reject(data)
     })
   },
   // 获取微信配置信息
   getWxConfig() {
     return new Promise(async (resolve, reject) => {
       const data = await common.getWxConfig()
-      data ? resolve(data) : reject()
+      typeof data != "string" ? resolve(data) : reject(data)
     })
   },
   // 商铺列表
   getStoreList(context, flag) {
     return new Promise(async (resolve, reject) => {
       const data = await common.getStoreList(flag)
-      data ? resolve(data) : reject()
+      typeof data != "string" ? resolve(data) : reject(data)
     })
   },
   // 筛选商铺列表 (根据商品类型和海报类型)
   getFilterStoreList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await common.getFilterStoreList(payload)
-      data ? resolve(data) : reject()
+      typeof data != "string" ? resolve(data) : reject(data)
     })
   },
   // 获取平台配置信息
   getPlatFormInfo() {
     return new Promise(async (resolve, reject) => {
       const data = await common.getPlatFormInfo()
-      data ? resolve(data) : reject()
+      typeof data != "string" ? resolve(data) : reject(data)
     })
   },
   // 获取用户UID
   getMerchantDetail(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await common.getMerchantDetail(id)
-      data ? resolve(data) : reject()
+      typeof data != "string" ? resolve(data) : reject(data)
     })
   },
   // 获取商家配置的别名
   getAlias() {
     return new Promise(async (resolve, reject) => {
       const data = await common.getAlias()
-      data ? resolve(data) : reject()
+      typeof data != "string" ? resolve(data) : reject(data)
     })
   },
   // 获取商家分佣层级
   getUserLevel() {
     return new Promise(async (resolve, reject) => {
       const data = await common.getUserLevel()
-      data ? resolve(data) : reject()
+      typeof data != "string" ? resolve(data) : reject(data)
     })
   },
   // 根据微信code换取openid
   getOpenid(context, code) {
     return new Promise(async (resolve, reject) => {
       const data = await common.getOpenid(code)
-      data ? resolve(data) : reject()
+      typeof data != "string" ? resolve(data) : reject(data)
     })
   },
   // 使用open_id绑定微信
   bindWx(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await common.bindWx(id)
-      data ? resolve() : reject()
+      typeof data != "string" ? resolve(data) : reject(data)
     })
   },
   // 使用union_id绑定微信
@@ -251,7 +251,7 @@ export default {
     return new Promise(async (resolve, reject) => {
       const data = await common.bindWxByUnionID(id)
       alert('data' + JSON.stringify(data))
-      data ? resolve() : reject()
+      typeof data != "string" ? resolve(data) : reject(data)
     })
   },
 }

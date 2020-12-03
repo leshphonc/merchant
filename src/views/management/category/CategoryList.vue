@@ -164,13 +164,17 @@ export default {
           size: this.size,
         })
         .then(res => {
-          this.loading = false
-          if (res.length < 10) {
-            this.finished = true
+          if (typeof res == 'string') {
+            this.$toast.fail(res)
           } else {
-            this.page += 1
+            if (res.length < 10) {
+              this.finished = true
+            } else {
+              this.page += 1
+            }
+            this.list.push(...res)
           }
-          this.list.push(...res)
+          this.loading = false
         })
     },
     onRefresh() {
@@ -222,7 +226,9 @@ export default {
         })
         .then(() => {
           api.deleteCategory(this.form.id).then(res => {
-            if (!res.errorCode) {
+            if (typeof res === 'string') {
+              this.$toast.fail(res)
+            } else {
               this.$toast.success('删除成功')
               this.showCateCRUD = false
               this.showChild = false
@@ -230,18 +236,21 @@ export default {
             }
           })
         })
-        .catch(() => {})
     },
     onSubmit(value) {
       this.loading = true
       api
         .createOrModifyCategory(this.form)
         .then(res => {
-          this.showCateCRUD = false
-          this.showChild = false
+          if (typeof res == 'string') {
+            this.$toast.fail(res)
+          } else {
+            this.showCateCRUD = false
+            this.showChild = false
+            this.$toast.success('操作成功')
+            this.onRefresh()
+          }
           this.loading = false
-          this.$toast.success('操作成功')
-          this.onRefresh()
         })
         .catch(() => {
           this.loading = false

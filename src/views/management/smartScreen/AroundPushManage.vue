@@ -147,17 +147,21 @@ export default {
       this.robotList = res
     })
     api.getSelectNeedList().then(res => {
-      this.needList = res
-      var arr = [
-        { text: '全部需求', value: '' },
-        ...res.map(item => {
-          return {
-            text: item.name,
-            value: item.cat_id,
-          }
-        }),
-      ]
-      this.option2 = arr
+      if (typeof res == 'string') {
+        this.$toast.fail(res)
+      } else {
+        this.needList = res
+        var arr = [
+          { text: '全部需求', value: '' },
+          ...res.map(item => {
+            return {
+              text: item.name,
+              value: item.cat_id,
+            }
+          }),
+        ]
+        this.option2 = arr
+      }
     })
   },
 
@@ -177,13 +181,17 @@ export default {
           size: this.size,
         })
         .then(res => {
-          this.page = 2
-          this.list = res
-          this.refreshing = false
-          if (res.length < 10) {
-            this.finished = true
+          if (typeof res == 'string') {
+            this.$toast.fail(res)
           } else {
-            this.finished = false
+            this.page = 2
+            this.list = res
+            this.refreshing = false
+            if (res.length < 10) {
+              this.finished = true
+            } else {
+              this.finished = false
+            }
           }
         })
     },
@@ -196,13 +204,17 @@ export default {
           size: this.size,
         })
         .then(res => {
-          this.loading = false
-          if (res.length < 10) {
-            this.finished = true
+          if (typeof res == 'string') {
+            this.$toast.fail(res)
           } else {
-            this.page += 1
+            if (res.length < 10) {
+              this.finished = true
+            } else {
+              this.page += 1
+            }
+            this.list.push(...res)
           }
-          this.list.push(...res)
+          this.loading = false
         })
     },
     preViewRobotList(item) {
@@ -231,10 +243,14 @@ export default {
           union_id: this.curUnion,
           imax_ids: this.robot.join(','),
         })
-        .then(() => {
-          this.$toast.success('修改成功')
-          this.onRefresh()
-          this.show = false
+        .then(res => {
+          if (typeof res == 'string') {
+            this.$toast.fail(res)
+          } else {
+            this.$toast.success('修改成功')
+            this.onRefresh()
+            this.show = false
+          }
         })
     },
     deletePromotion(id) {
@@ -248,8 +264,12 @@ export default {
               union_id: id,
             })
             .then(res => {
-              this.$toast.success('取消成功')
-              this.onRefresh()
+              if (typeof res == 'string') {
+                this.$toast.fail(res)
+              } else {
+                this.$toast.success('取消成功')
+                this.onRefresh()
+              }
             })
         })
     },

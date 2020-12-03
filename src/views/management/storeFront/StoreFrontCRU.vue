@@ -793,8 +793,13 @@ export default {
                 },
               })
             })
-            .catch(() => {
+            .catch(msg => {
               toast.clear()
+              this.$toast.fail({
+                message: msg,
+                forbidClick: true,
+                duration: 1000,
+              })
               this.loading = false
             })
         }

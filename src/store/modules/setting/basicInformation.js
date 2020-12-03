@@ -12,14 +12,14 @@ const actions = {
   async readMerchantInfo() {
     return new Promise(async (resolve, reject) => {
       const data = await basicInformationAPI.readMerchantInfo()
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 基本信息编辑
   async updateMerchantInfo(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await basicInformationAPI.updateMerchantInfo(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

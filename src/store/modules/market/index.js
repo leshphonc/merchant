@@ -12,7 +12,7 @@ const actions = {
   async getMarketTypeList() {
     return new Promise(async (resolve, reject) => {
       const data = await marketAPI.getMarketTypeList()
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }
