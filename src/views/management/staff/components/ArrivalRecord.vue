@@ -23,11 +23,12 @@
         <div :key="index" v-for="(item, index) in list">
           <van-panel :desc="`${item.created_at}`" :status="_getType(item.type)" :title="item.name">
             <template v-if="item.type === '4'">
-              <div style="padding: 10px 16px;font-size: 13px;">离岗原因：{{ item.remark }}</div>
+              <div style="padding: 10px 16px; font-size: 13px">离岗原因：{{ item.remark }}</div>
             </template>
           </van-panel>
           <div class="white-space"></div>
         </div>
+        <van-empty description="暂无记录" v-if="list.length === 0" />
       </van-list>
     </van-pull-refresh>
   </div>
@@ -55,9 +56,7 @@ export default {
       refreshing: false,
       finished: false,
       loading: false,
-      startTime: this.$moment()
-        .subtract(30, 'days')
-        .format('YYYY-MM-DD'),
+      startTime: this.$moment().subtract(30, 'days').format('YYYY-MM-DD'),
       endTime: this.$moment().format('YYYY-MM-DD'),
       store_id: '0',
       clock_type: '0',
@@ -70,7 +69,7 @@ export default {
 
   computed: {
     finishText() {
-      return this.list.length ? '没有更多了' : '暂无记录'
+      return this.list.length ? '没有更多了' : ''
     },
     offsetTop() {
       return (84 / 375) * document.body.clientWidth

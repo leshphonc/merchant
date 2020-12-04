@@ -16,11 +16,12 @@
         </van-dropdown-item>
       </van-dropdown-menu>
     </van-sticky>
-    <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
+    <!-- <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
       <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
         <div :key="index" v-for="(item, index) in list">123</div>
       </van-list>
-    </van-pull-refresh>
+    </van-pull-refresh> -->
+    <van-empty description="暂无记录" />
   </div>
 </template>
 
@@ -51,9 +52,7 @@ export default {
       refreshing: false,
       finished: false,
       loading: false,
-      startTime: this.$moment()
-        .subtract(30, 'days')
-        .format('YYYY-MM-DD'),
+      startTime: this.$moment().subtract(30, 'days').format('YYYY-MM-DD'),
       endTime: this.$moment().format('YYYY-MM-DD'),
       store_id: '',
     }

@@ -12,7 +12,7 @@
     "compressorjs": "^1.0.6",
     "core-js": "^3.6.5",
     "moment": "^2.26.0",
-    "vant": "2.5.4",
+    "vant": "2.6.0",
     "vee-validate": "^3.3.2",
     "vue": "^2.6.11",
     "vue-baidu-map": "^0.21.22",
