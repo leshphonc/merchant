@@ -132,4 +132,19 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 获取店员工作时间列表
+  getStaffWorkTimeList: payload => axios.post('/appapi.php?c=Merchantapp&a=clockTimeTypeList', {
+    ...payload,
+    ticket: localStorage.getItem('ticket'),
+  }),
+  // 创建&编辑店员工作时间列表
+  createStaffWorkTimeList: payload => axios.post('/appapi.php?c=Merchantapp&a=editAndAddClockTimeType', {
+    ...payload,
+    ticket: localStorage.getItem('ticket'),
+  }),
+  // 删除店员工作时间列表
+  deleteStaffWorkTimeList: payload => axios.post('/appapi.php?c=Merchantapp&a=delClockTimeType', {
+    ...payload,
+    ticket: localStorage.getItem('ticket'),
+  }),
 }
