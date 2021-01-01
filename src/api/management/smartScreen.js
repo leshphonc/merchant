@@ -136,13 +136,13 @@ export default {
       id,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 创建海报
+  // 创建推广
   createPoster: payload =>
     axios.post('/appapi.php?c=Merchantimax&a=save_ad', {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 修改海报
+  // 修改推广
   updatePoster: payload =>
     axios.post('/appapi.php?c=Merchantimax&a=save_ad', {
       ...payload,
@@ -205,39 +205,39 @@ export default {
       ticket: localStorage.getItem('ticket'),
     }),
   // 获取商家店铺下上架且未推广的零售商品
-  getNotPopularizedECommerceList: payload =>
-    axios.post('/appapi.php?c=SpaceMerchant&a=spro', {
-      ...payload,
-      size: 10,
-      ticket: localStorage.getItem('ticket'),
-    }),
-  // 获取商家店铺下上架且未推广的团购商品
-  getNotPopularizedGroupList: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=...', {
-      ...payload,
-      ticket: localStorage.getItem('ticket'),
-    }),
+  // getNotPopularizedECommerceList: payload =>
+  //   axios.post('/appapi.php?c=SpaceMerchant&a=spro', {
+  //     ...payload,
+  //     size: 10,
+  //     ticket: localStorage.getItem('ticket'),
+  //   }),
+  // // 获取商家店铺下上架且未推广的团购商品
+  // getNotPopularizedGroupList: payload =>
+  //   axios.post('/appapi.php?c=Merchantimax&a=...', {
+  //     ...payload,
+  //     ticket: localStorage.getItem('ticket'),
+  //   }),
   // 获取商家店铺下上架且未推广的服务商品
-  getNotPopularizedServiceList: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=...', {
-      ...payload,
-      ticket: localStorage.getItem('ticket'),
-    }),
+  // getNotPopularizedServiceList: payload =>
+  //   axios.post('/appapi.php?c=Merchantimax&a=...', {
+  //     ...payload,
+  //     ticket: localStorage.getItem('ticket'),
+  //   }),
   // 获取商家店铺下上架且未推广的套餐商品
-  getNotPopularizedPackageList: payload =>
-    axios.post('/appapi.php?c=Merchantimax&a=...', {
-      ...payload,
-      ticket: localStorage.getItem('ticket'),
-    }),
+  // getNotPopularizedPackageList: payload =>
+  //   axios.post('/appapi.php?c=Merchantimax&a=...', {
+  //     ...payload,
+  //     ticket: localStorage.getItem('ticket'),
+  //   }),
   // 获取推广海报的分类和标签
-  getSmartScreenPosterTagAndCateList: payload =>
-    axios.get('/appapi.php?c=Merchantimax&a=getAdCategoryList', {
-      params: {
-        ...payload,
-        size: 10,
-        ticket: localStorage.getItem('ticket'),
-      },
-    }),
+  // getSmartScreenPosterTagAndCateList: payload =>
+  //   axios.get('/appapi.php?c=Merchantimax&a=getAdCategoryList', {
+  //     params: {
+  //       ...payload,
+  //       size: 10,
+  //       ticket: localStorage.getItem('ticket'),
+  //     },
+  //   }),
   // 获取同城商家列表
   getSameCityMerchant: payload =>
     axios.post('/appapi.php?c=Merchant&a=getSameCityList', {

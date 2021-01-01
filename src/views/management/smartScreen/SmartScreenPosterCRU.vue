@@ -408,7 +408,7 @@ export default {
       'createPoster',
       'getPosterDetail',
       'updatePoster',
-      'getSmartScreenPosterTagAndCateList',
+      // 'getSmartScreenPosterTagAndCateList',
       'getSmartScreenDemandList',
     ]),
     // _controlTagPicker() {
