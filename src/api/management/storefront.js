@@ -183,6 +183,12 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
+  // 删除店铺下的自定义标识位
+  deleteStoreFrontFlag: payload =>
+    axios.post('/appapi.php?c=SpaceMerchant&a=delStation', {
+      ...payload,
+      ticket: localStorage.getItem('ticket'),
+    }),
   // 获取店铺当前的标识位
   getStoreFrontCurrentFlag: id =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getStationFlag', {
