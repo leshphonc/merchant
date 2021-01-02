@@ -178,18 +178,13 @@
 import api from '@/api/management/staff'
 import { mapActions } from 'vuex'
 import ImgCropper from '@/components/ImgCropper'
-
 export default {
   name: 'staffCRU',
-
   mixins: [],
-
   components: {
     ImgCropper,
   },
-
   props: {},
-
   data() {
     return {
       formData: {
@@ -216,7 +211,6 @@ export default {
       avatar: [],
     }
   },
-
   computed: {
     // 页面类型
     type() {
@@ -256,11 +250,8 @@ export default {
       return index
     },
   },
-
   watch: {},
-
   created() {},
-
   mounted() {
     this._getStoreList()
     this._getWorkTimeList()
@@ -268,9 +259,7 @@ export default {
     const { id, sid } = this.$route.params
     id && sid && this._readStaffDetail(id, sid)
   },
-
   destroyed() {},
-
   methods: {
     ...mapActions(['getStoreList']),
     ...mapActions('staff', ['getStaffType', 'createStaff', 'updateStaff', 'readStaffDetail', 'getStaffLevelList']),

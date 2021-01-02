@@ -16,7 +16,7 @@
         </van-dropdown-item>
       </van-dropdown-menu>
     </van-sticky>
-    <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
+    <!-- <van-pull-refresh @refresh="_onRefresh" v-model="refreshing">
       <van-list :finished="finished" :finished-text="finishText" @load="_onLoad" v-model="loading">
         <div :key="index" v-for="(item, index) in list">
           <van-panel
@@ -40,7 +40,8 @@
           <div class="white-space"></div>
         </div>
       </van-list>
-    </van-pull-refresh>
+    </van-pull-refresh> -->
+    <van-empty description="暂无记录" />
   </div>
 </template>
 

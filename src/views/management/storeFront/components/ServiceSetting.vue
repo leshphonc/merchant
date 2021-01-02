@@ -121,6 +121,10 @@
           name="env_img"
           title="环境图片"
         ></img-cropper>
+
+        <div style="text-align: center; margin-top: 20px">
+          <van-button native-type="button" type="danger" @click.stop="deleteStation">删除标识</van-button>
+        </div>
         <div class="btn-group">
           <van-button @click="_controlFlagEditor()" class="close-btn" native-type="button">关闭</van-button>
           <van-button class="create-btn" native-type="submit" type="primary">确认</van-button>
@@ -134,6 +138,7 @@
 </template>
 
 <script>
+import api from '@/api/management/storefront'
 import { mapActions } from 'vuex'
 import { ImagePreview } from 'vant'
 import ImgCropper from '@/components/ImgCropper'
@@ -410,6 +415,30 @@ export default {
     },
     _deletePic(data, index) {
       this.pic.splice(index, 1)
+    },
+    deleteStation() {
+      this.$dialog
+        .confirm({
+          title: '提示',
+          message: '确认删除此标识位？',
+        })
+        .then(() => {
+          api
+            .deleteStoreFrontFlag({
+              station_id: this.lastId,
+            })
+            .then(() => {
+              const { id } = this.$route.params
+              this.$toast.success({
+                message: '操作成功',
+                duration: 1000,
+                onClose: () => {
+                  this._getStoreFrontFlagList(id)
+                  this._controlFlagEditor()
+                },
+              })
+            })
+        })
     },
   },
 }

@@ -28,6 +28,7 @@
           </van-panel>
           <div class="white-space"></div>
         </div>
+        <van-empty description="暂无记录" v-if="list.length === 0" />
       </van-list>
     </van-pull-refresh>
   </div>
@@ -83,7 +84,7 @@ export default {
 
   computed: {
     finishText() {
-      return this.list.length ? '没有更多了' : '暂无记录'
+      return this.list.length ? '没有更多了' : ''
     },
     offsetTop() {
       return (84 / 375) * document.body.clientWidth

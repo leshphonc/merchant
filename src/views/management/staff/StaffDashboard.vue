@@ -21,34 +21,24 @@ import StaffWorkRecord from './StaffWorkRecord'
 import StaffWorkTime from './StaffWorkTime'
 export default {
   name: 'staffDashboard',
-
   mixins: [],
-
   components: {
     StaffList,
     StaffLevel,
     StaffWorkRecord,
     StaffWorkTime,
   },
-
   props: {},
-
   data() {
     return {
       active: 0,
     }
   },
-
   computed: {},
-
   watch: {},
-
   created() {},
-
   mounted() {},
-
   destroyed() {},
-
   methods: {},
 }
 </script>

@@ -59,6 +59,7 @@ import {
   Card,
   CouponCell,
   CouponList,
+  Empty,
 } from 'vant'
 
 Vue.use(Button)
@@ -108,3 +109,4 @@ Vue.use(Area)
 Vue.use(Card)
 Vue.use(CouponCell)
 Vue.use(CouponList)
+Vue.use(Empty)
