@@ -17,13 +17,12 @@
           </a>
         </div>
         <div slot="footer">
-          <van-button v-if="$_isApp && item.imax_type == 3" size="small" @click="makeMap">店铺建图</van-button>
-          <van-button v-if="$_isApp && item.imax_type == 3" size="small" @click="makeMap">巡航路线</van-button>
+          <van-button v-if="_isApp && item.imax_type == 3" size="small" @click="makeMap(item.imax_id)">店铺建图</van-button>
           <van-button :to="`/smartScreen/smartScreenLayout/${item.imax_id}`" size="small">布局内容</van-button>
           <van-button :to="`/smartScreen/smartScreenSalesRecord/${item.store_id}/${item.imax_id}`" size="small">
             销售记录
           </van-button>
-          <van-button :to="`/smartScreen/Workspace/${item.imax_id}`" size="small">地图环境</van-button>
+          <van-button :to="`/smartScreen/Workspace/${item.imax_id}`" v-if="item.imax_type != 3" size="small">地图环境</van-button>
           <van-button :to="`/smartScreen/sameCityAdvisory/${item.imax_id}`" size="small">同城咨询</van-button>
           <!--<van-button :to="`/smartScreen/customerMeetGreetingList/${item.imax_id}`" size="small">顾客见面语</van-button>-->
           <!--<van-button :to="`/smartScreen/staffMeetGreetingList/${item.imax_id}`" size="small">员工见面语</van-button>-->
@@ -68,10 +67,9 @@ export default {
 
   methods: {
     ...mapActions('smartScreen', ['getSmartScreenList']),
-    makeMap() {
-      // console.log('makeMap')
-      // const json = { callback: '_writeOffCoupon', action: 'ScanQRCode' }
-      // this.$invokeAndroid(json)
+    makeMap(imei) {
+      const json = { imei: imei, action: 'ConnectToRobot' }
+      this.$invokeAndroid(json)
     },
   },
 }
