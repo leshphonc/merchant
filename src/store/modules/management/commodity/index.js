@@ -29,7 +29,7 @@ const actions = {
   async changeCommodityStatus(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.changeCommodityStatus(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

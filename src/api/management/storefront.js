@@ -189,13 +189,13 @@ export default {
       ...payload,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 获取店铺当前的标识位
+  // 获取店铺当前的标识位（车牌还是自定义）
   getStoreFrontCurrentFlag: id =>
     axios.post('/appapi.php?c=SpaceMerchant&a=getStationFlag', {
       store_id: id,
       ticket: localStorage.getItem('ticket'),
     }),
-  // 修改店铺的标识状态
+  // 修改店铺的标识状态（车牌还是自定义）
   changeStoreFlagStatus: payload =>
     axios.post('/appapi.php?c=SpaceMerchant&a=onOffStore', {
       ...payload,

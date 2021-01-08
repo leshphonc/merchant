@@ -4,16 +4,17 @@
     <div class="nav-bar-holder"></div>
     <van-cell-group>
       <van-cell :title="item.name" v-for="item in list" :key="item.id">
-        <van-button size="mini" @click="show = true">绑定分类</van-button>
+        <van-button size="mini" @click="openBindPopup(item.id, item.categoryList)">绑定分类</van-button>
       </van-cell>
     </van-cell-group>
-    <van-popup v-model="show" round position="bottom" :style="{ minHeight: '30vh' }">
-      <van-checkbox-group v-model="result" direction="horizontal">
-        <van-checkbox name="a">复选框 a</van-checkbox>
-        <van-checkbox name="b">复选框 b</van-checkbox>
-      </van-checkbox-group>
+    <van-popup v-model="show" safe-area-inset-bottom round position="bottom" :style="{ minHeight: '30vh' }">
+      <div class="category">
+        <van-checkbox-group v-model="result" direction="horizontal">
+          <van-checkbox :name="item.id" v-for="item in category" :key="item.id">{{ item.name }}</van-checkbox>
+        </van-checkbox-group>
+      </div>
       <div>
-        <van-button block>确定</van-button>
+        <van-button block type="primary" @click="bindCategory">确定</van-button>
       </div>
     </van-popup>
   </div>
@@ -35,7 +36,9 @@ export default {
     return {
       list: [],
       show: false,
+      category: [],
       result: [],
+      curId: '',
     }
   },
 
@@ -46,18 +49,59 @@ export default {
   created() {},
 
   mounted() {
-    api.getDemandList().then(res => {
-      this.list = res
-    })
+    this.getList()
     apiCate.getHasGoodsCategory().then(res => {
-      // console.log(res)
+      if (typeof res == 'string') {
+        this.$toast.fail(res)
+      } else {
+        this.category = res
+      }
     })
   },
 
   destroyed() {},
 
-  methods: {},
+  methods: {
+    getList() {
+      api.getDemandList().then(res => {
+        if (typeof res == 'string') {
+          this.$toast.fail(res)
+        } else {
+          this.list = res
+        }
+      })
+    },
+    openBindPopup(id, arr) {
+      this.result = arr.map(item => {
+        return item.id
+      })
+      this.curId = id
+      this.show = true
+    },
+    bindCategory() {
+      api
+        .bindCategory({
+          demand_id: this.curId,
+          class_ids: this.result,
+        })
+        .then(res => {
+          if (typeof res == 'string') {
+            this.$toast.fail(res)
+          } else {
+            this.show = false
+            this.getList()
+            this.$toast.success('操作成功')
+          }
+        })
+    },
+  },
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.category {
+  min-height: 200px;
+  padding: 15px 10px;
+  box-sizing: border-box;
+}
+</style>

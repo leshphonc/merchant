@@ -12,14 +12,14 @@ const actions = {
   async getSubPlatformList() {
     return new Promise(async (resolve, reject) => {
       const data = await platformAPI.getSubPlatformList()
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 加入子平台
   async joinTheSubPlatform(context, page = 1) {
     return new Promise(async (resolve, reject) => {
       const data = await platformAPI.joinTheSubPlatform(page)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

@@ -12,28 +12,28 @@ const actions = {
   async getFreightTemPlateList() {
     return new Promise(async (resolve, reject) => {
       const data = await freightAPI.getFreightTemPlateList()
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 创建运费模版
   async createFreightTemPlate(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await freightAPI.createFreightTemPlate(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 修改运费模版
   async updateFreightTemPlate(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await freightAPI.updateFreightTemPlate(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 查询运费模版详情
   async readFreightTemPlateDetail(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await freightAPI.readFreightTemPlateDetail(id)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

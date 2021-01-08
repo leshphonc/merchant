@@ -117,7 +117,11 @@ export default {
   methods: {
     getList() {
       api.getStaffWorkTimeList().then(res => {
-        this.list = res
+        if (typeof res == 'string') {
+          this.$toast.fail(res)
+        } else {
+          this.list = res
+        }
       })
     },
     modify(item) {
@@ -161,13 +165,16 @@ export default {
           end_time: this.form.end_time,
         })
         .then(res => {
-          if (res.errorMsg) {
-            this.$toast.fail(res.errorMsg)
+          if (typeof res == 'string') {
+            this.$toast.fail(res)
           } else {
             this.$toast('操作成功')
             this.getList()
             this.show = false
           }
+        })
+        .catch(res => {
+          this.$toast.fail(res.errorMsg)
         })
     },
     deleteItem(id) {
@@ -182,12 +189,15 @@ export default {
               id,
             })
             .then(res => {
-              if (res.errorMsg) {
-                this.$toast.fail(res.errorMsg)
+              if (typeof res == 'string') {
+                this.$toast.fail(res)
               } else {
                 this.$toast.success('操作成功')
                 this.getList()
               }
+            })
+            .catch(err => {
+              this.$toast.fail(err.errorMsg)
             })
         })
         .catch(() => {

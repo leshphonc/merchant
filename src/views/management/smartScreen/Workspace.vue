@@ -72,68 +72,76 @@ export default {
 
     const { imei } = this.$route.params
     api.getMap(imei).then(res => {
-      if (res.code === 6001) {
-        this.$toast({
-          forbidClick: true,
-          message: '暂未上传地图数据',
-          onClose: () => {
-            this.$goBack()
-          },
+      if (typeof res == 'string') {
+        this.$toast.fail(res)
+      } else {
+        if (res.code === 6001) {
+          this.$toast({
+            forbidClick: true,
+            message: '暂未上传地图数据',
+            onClose: () => {
+              this.$goBack()
+            },
+          })
+        }
+
+        let maxX = 0
+        let maxY = 0
+        let minX = 0
+        let minY = 0
+        var points = this.transPoints(res.data.points, this.fixedScale)
+        points.forEach(item => {
+          if (item[0] < minX) {
+            minX = item[0]
+          }
+          if (item[0] > maxX) {
+            maxX = item[0]
+          }
+          if (item[1] < minY) {
+            minY = item[1]
+          }
+          if (item[1] > maxY) {
+            maxY = item[1]
+          }
+        })
+        c.width = maxX + 30 < window.screen.width ? window.screen.width : maxX + 30
+        c.height = maxY + 30 < window.screen.height - 60 ? window.screen.height - 60 : maxY + 30
+
+        // var directionX = ''
+        // var directionY = ''
+        // if (Math.abs(minX) > Math.abs(maxX)) {
+        //   directionX = 'left'
+        // } else {
+        //   directionX = 'right'
+        // }
+        // if (Math.abs(minY) > Math.abs(maxY)) {
+        //   directionY = 'bottom'
+        // } else {
+        //   directionY = 'top'
+        // }
+        // if (directionX == 'left') {
+        //   this.robotScale.x = c.offsetWidth / 2 - (Math.abs(maxX) - Math.abs(minX))
+        // } else {
+        //   this.robotScale.x = c.offsetWidth / 2 + (Math.abs(maxX) - Math.abs(minX))
+        // }
+
+        // if (directionY == 'top') {
+        //   this.robotScale.y = c.offsetHeight / 2 - (Math.abs(maxY) - Math.abs(minY))
+        // } else {
+        //   this.robotScale.y = c.offsetHeight / 2 - (Math.abs(maxY) - Math.abs(minY))
+        // }
+
+        this.createMap(c.width, c.height)
+        this.strokePoints(res.data.points)
+        api.getMapMarkList(imei).then(res => {
+          if (typeof res == 'string') {
+            this.$toast.fail(res)
+          } else {
+            this.markList = res.data || []
+            this.strokeMarks(res.data)
+          }
         })
       }
-
-      let maxX = 0
-      let maxY = 0
-      let minX = 0
-      let minY = 0
-      var points = this.transPoints(res.data.points, this.fixedScale)
-      points.forEach(item => {
-        if (item[0] < minX) {
-          minX = item[0]
-        }
-        if (item[0] > maxX) {
-          maxX = item[0]
-        }
-        if (item[1] < minY) {
-          minY = item[1]
-        }
-        if (item[1] > maxY) {
-          maxY = item[1]
-        }
-      })
-      c.width = maxX + 30 < window.screen.width ? window.screen.width : maxX + 30
-      c.height = maxY + 30 < window.screen.height - 60 ? window.screen.height - 60 : maxY + 30
-
-      // var directionX = ''
-      // var directionY = ''
-      // if (Math.abs(minX) > Math.abs(maxX)) {
-      //   directionX = 'left'
-      // } else {
-      //   directionX = 'right'
-      // }
-      // if (Math.abs(minY) > Math.abs(maxY)) {
-      //   directionY = 'bottom'
-      // } else {
-      //   directionY = 'top'
-      // }
-      // if (directionX == 'left') {
-      //   this.robotScale.x = c.offsetWidth / 2 - (Math.abs(maxX) - Math.abs(minX))
-      // } else {
-      //   this.robotScale.x = c.offsetWidth / 2 + (Math.abs(maxX) - Math.abs(minX))
-      // }
-
-      // if (directionY == 'top') {
-      //   this.robotScale.y = c.offsetHeight / 2 - (Math.abs(maxY) - Math.abs(minY))
-      // } else {
-      //   this.robotScale.y = c.offsetHeight / 2 - (Math.abs(maxY) - Math.abs(minY))
-      // }
-
-      this.createMap(c.width, c.height)
-      this.strokePoints(res.data.points)
-      api.getMapMarkList(imei).then(res => {
-        this.markList = res.data || []
-        this.strokeMarks(res.data)
-      })
     })
   },
 
@@ -149,11 +157,19 @@ export default {
           status: marked == '1' ? '0' : '1',
         })
         .then(res => {
-          this.$toast('标记成功')
-          api.getMapMarkList(imei).then(res => {
-            this.markList = res.data || []
-            this.strokeMarks(res.data)
-          })
+          if (typeof res == 'string') {
+            this.$toast.fail(res)
+          } else {
+            this.$toast('标记成功')
+            api.getMapMarkList(imei).then(res => {
+              if (typeof res == 'string') {
+                this.$toast.fail(res)
+              } else {
+                this.markList = res.data || []
+                this.strokeMarks(res.data)
+              }
+            })
+          }
         })
     },
     transPoints(list, d) {

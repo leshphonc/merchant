@@ -314,12 +314,16 @@ export default {
     },
     _getWorkTimeList() {
       api.getStaffWorkTimeList().then(res => {
-        this.workTimeColumns = res.map(item => {
-          return {
-            label: `${item.name}（${item.start_time} - ${item.end_time}）`,
-            value: item.id,
-          }
-        })
+        if (typeof res == 'string') {
+          this.$toast.fail(res)
+        } else {
+          this.workTimeColumns = res.map(item => {
+            return {
+              label: `${item.name}（${item.start_time} - ${item.end_time}）`,
+              value: item.id,
+            }
+          })
+        }
       })
     },
     _readStaffDetail(id, sid) {

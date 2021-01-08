@@ -35,7 +35,7 @@
                   <van-col :span="24">关键词：{{ item.keywords }}</van-col>
                 </van-row>
               </div>
-              <div style="text-align: right;margin-top:4px;">
+              <div style="text-align: right; margin-top: 4px">
                 <van-button size="small" type="primary" @click="showChoose(item)" :disabled="item.selected == 1">
                   {{ item.selected == 1 ? '已推广' : '推广此产品' }}
                 </van-button>
@@ -46,7 +46,7 @@
         </div>
       </van-list>
     </van-pull-refresh>
-    <van-popup v-model="show" position="bottom" safe-area-inset-bottom style="padding-top:10px;">
+    <van-popup v-model="show" position="bottom" safe-area-inset-bottom style="padding-top: 10px">
       <div class="gray-title">请勾选机器人</div>
       <van-checkbox-group v-model="robot">
         <van-cell
@@ -62,7 +62,7 @@
           </template>
         </van-cell>
       </van-checkbox-group>
-      <van-button block @click="chooseProduct" type="primary" style="margin-top:20px;">推广</van-button>
+      <van-button block @click="chooseProduct" type="primary" style="margin-top: 20px">推广</van-button>
     </van-popup>
   </div>
 </template>
@@ -140,46 +140,58 @@ export default {
           size: this.size,
         })
         .then(res => {
-          this.page = 2
-          this.list = res
-          this.refreshing = false
-          if (res.length < 10) {
-            this.finished = true
+          if (typeof res == 'string') {
+            this.$toast.fail(res)
           } else {
-            this.finished = false
+            this.page = 2
+            this.list = res
+            this.refreshing = false
+            if (res.length < 10) {
+              this.finished = true
+            } else {
+              this.finished = false
+            }
           }
         })
     },
     onLoad() {
       if (!this.needList.length) {
         api.getAllNeedList().then(res => {
-          this.needList = res
-          var arr = [
-            { text: '全部需求', value: '' },
-            ...res.map(item => {
-              return {
-                text: item.name,
-                value: item.cat_id,
-              }
-            }),
-          ]
-          this.option1 = arr
-          api
-            .getUnSelectUnion({
-              sort: this.value2,
-              guest_demand_id: this.value1,
-              page: this.page,
-              size: this.size,
-            })
-            .then(res => {
-              this.loading = false
-              if (res.length < 10) {
-                this.finished = true
-              } else {
-                this.page += 1
-              }
-              this.list.push(...res)
-            })
+          if (typeof res == 'string') {
+            this.$toast.fail(res)
+          } else {
+            this.needList = res
+            var arr = [
+              { text: '全部需求', value: '' },
+              ...res.map(item => {
+                return {
+                  text: item.name,
+                  value: item.cat_id,
+                }
+              }),
+            ]
+            this.option1 = arr
+            api
+              .getUnSelectUnion({
+                sort: this.value2,
+                guest_demand_id: this.value1,
+                page: this.page,
+                size: this.size,
+              })
+              .then(res => {
+                if (typeof res == 'string') {
+                  this.$toast.fail(res)
+                } else {
+                  if (res.length < 10) {
+                    this.finished = true
+                  } else {
+                    this.page += 1
+                  }
+                  this.list.push(...res)
+                }
+                this.loading = false
+              })
+          }
         })
       } else {
         api
@@ -190,13 +202,17 @@ export default {
             size: this.size,
           })
           .then(res => {
-            this.loading = false
-            if (res.length < 10) {
-              this.finished = true
+            if (typeof res == 'string') {
+              this.$toast.fail(res)
             } else {
-              this.page += 1
+              if (res.length < 10) {
+                this.finished = true
+              } else {
+                this.page += 1
+              }
+              this.list.push(...res)
             }
-            this.list.push(...res)
+            this.loading = false
           })
       }
     },
@@ -231,9 +247,13 @@ export default {
           imax_ids: this.robot.join(','),
         })
         .then(res => {
-          this.$toast.success('选择成功')
-          this.show = false
-          this.onRefresh()
+          if (typeof res == 'string') {
+            this.$toast.fail(res)
+          } else {
+            this.$toast.success('选择成功')
+            this.show = false
+            this.onRefresh()
+          }
         })
     },
     toggle(index) {

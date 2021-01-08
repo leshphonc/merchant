@@ -5,77 +5,77 @@ export default {
   getPackageList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.getPackageList(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 创建套餐商品
   createPackage(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.createPackage(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 查询套餐商品详情
   readPackageDetail(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.readPackageDetail(id)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 修改套餐商品
   updatePackage(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.updatePackage(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 删除套餐商品
   deletePackage(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.deletePackage(id)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 修改套餐商品优惠
   updatePackagePreferential(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.updatePackagePreferential(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 读取套餐商品分类
   getPackageCategoryList() {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.getPackageCategoryList()
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 创建套餐商品分类
   createPackageCategory(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.createPackageCategory(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 删除套餐商品分类
   deletePackageCategory(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.deletePackageCategory(id)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 读取套餐内包含的服务项目
   readServiceOfPackage(context, id) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.readServiceOfPackage(id)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 读取套餐商品销售记录
   readPackageSalesRecord(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await commodityAPI.readPackageSalesRecord(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

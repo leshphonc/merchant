@@ -77,7 +77,7 @@ axios.interceptors.response.use(
             router.replace('/login')
           },
         })
-        return false
+        return '请重新登录'
       }
       if (config.data.code === 0) {
         return config.data
@@ -91,10 +91,10 @@ axios.interceptors.response.use(
           message: '后台接口未配置，请联系后台管理员',
           duration: 1500,
         })
-        return false
+        return '后台接口未配置，请联系后台管理员'
       }
       Notify({ type: 'warning', message: config.data.errorMsg })
-      return config.data
+      return config.data.errorMsg
     }
     return config.data.result
   },

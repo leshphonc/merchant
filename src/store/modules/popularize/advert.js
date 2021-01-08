@@ -12,7 +12,7 @@ const actions = {
   async getAdvertList(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await advertAPI.getAdvertList(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

@@ -12,42 +12,42 @@ const actions = {
   async updateECommerceReward(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await rewardAPI.updateECommerceReward(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 预定商品分销分佣修改
   updateReserveReward(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await rewardAPI.updateReserveReward(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 团购商品分销分佣修改
   updateGroupBuyReward(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await rewardAPI.updateGroupBuyReward(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 服务项目分销分佣修改
   updateServiceReward(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await rewardAPI.updateServiceReward(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 套餐商品分销分佣修改
   updatePackageReward(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await rewardAPI.updatePackageReward(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // 组合卡分销分佣修改
   updateCombinationCardReward(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await rewardAPI.updateCombinationCardReward(payload)
-      data ? resolve() : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
 }

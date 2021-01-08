@@ -27,20 +27,20 @@ const ManagementGrid = {
     {
       name: '分类管理',
       path: '/category',
-      enable: require('../assets/image/hygl2.png'),
-      disable: require('../assets/image/hygl_gray.png'),
+      enable: require('../assets/image/fenlei.png'),
+      disable: require('../assets/image/fenlei.png'),
     },
     {
       name: '需求管理',
       path: '/demand',
-      enable: require('../assets/image/hygl2.png'),
-      disable: require('../assets/image/hygl_gray.png'),
+      enable: require('../assets/image/xuqiu.png'),
+      disable: require('../assets/image/xuqiu.png'),
     },
     {
       name: '机器人管理',
       path: '/smartScreen',
-      enable: require('../assets/image/hygl2.png'),
-      disable: require('../assets/image/hygl_gray.png'),
+      enable: require('../assets/image/jiqiren.png'),
+      disable: require('../assets/image/jiqiren.png'),
     },
   ],
 }

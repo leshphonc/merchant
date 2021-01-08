@@ -38,42 +38,42 @@ const actions = {
   async getIncomeEchartData(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await homeAPI.getIncomeEchartData(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // echart订单总数
   async getOrderEchartData(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await homeAPI.getOrderEchartData(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // echart粉丝总数
   async getFansEchartData(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await homeAPI.getFansEchartData(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // echart访问人数
   async getVisitsPersonEchartData(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await homeAPI.getVisitsPersonEchartData(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // echart访问次数
   async getVisitsNumEchartData(context, payload) {
     return new Promise(async (resolve, reject) => {
       const data = await homeAPI.getVisitsNumEchartData(payload)
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   // // echart客流统计
   // async getVisitsFaceEchartData(context, payload) {
   //   return new Promise(async (resolve, reject) => {
   //     const data = await homeAPI.getVisitsFaceEchartData(payload)
-  //     data ? resolve(data) : reject()
+  //     typeof data  != "string" ? resolve(data) : reject(data)
   //   })
   // },
 }

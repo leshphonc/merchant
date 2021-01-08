@@ -20,14 +20,14 @@ const actions = {
   async getOrderTypeList() {
     return new Promise(async (resolve, reject) => {
       const data = await orderAPI.getOrderTypeList()
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   //  获取外卖订单状态列表
   async getOrderStatusList() {
     return new Promise(async (resolve, reject) => {
       const data = await orderAPI.getOrderStatusList()
-      data ? resolve(data) : reject()
+      typeof data  != "string" ? resolve(data) : reject(data)
     })
   },
   ...grourBuyActions,
